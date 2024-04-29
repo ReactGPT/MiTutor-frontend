@@ -8,3 +8,10 @@
 .letter-spacing-title {
     letter-spacing: 2px;
 }
+
+.border-custom {
+    border-radius: 1rem;
+    border-width: 1px;
+    border-style: solid;
+    border-color: rgba(116,170,255,0.70);
+}

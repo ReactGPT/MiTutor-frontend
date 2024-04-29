@@ -17,12 +17,12 @@ const Sidebar = ({ setTitle, sidebarLinks }: SidebarProps) => {
       </div>
       <div className="py-8 flex flex-1 flex-col gap-2 cursor-pointer">
         {sidebarLinks.map((link, index) => (
-          <NavLink 
+          <NavLink
             className={({ isActive }) =>
               isActive
-                  ? 'bg-primary text-white flex flex-start items-center gap-6 font-roboto text-base px-4 py-2 rounded-lg'
-                  : 'text-stone-700 flex flex-start items-center gap-6 font-roboto text-base px-4 py-2 hover:text-primary hover:font-bold'
-              }
+                ? 'bg-primary text-white flex flex-start items-center gap-6 font-roboto text-base px-4 py-2 rounded-lg font-semibold'
+                : 'text-stone-700 flex flex-start items-center gap-6 font-roboto text-base px-4 py-2 hover:text-primary'
+            }
             to={link.path}
             key={index} onClick={() => {
               setTitle(link.label);
@@ -32,7 +32,7 @@ const Sidebar = ({ setTitle, sidebarLinks }: SidebarProps) => {
           </NavLink>
         ))}
       </div>
-      <a className='text-stone-700 flex flex-start items-center gap-6 font-roboto text-base px-4 py-2 hover:text-primary hover:font-bold'>
+      <a className='text-stone-700 flex flex-start items-center gap-6 font-roboto text-base px-4 py-2 hover:text-primary'>
         <span className="text-xl"><BiLogOut fontSize={32} /></span>
         <span className='leading-4'>Cerrar Sesión</span>
       </a>

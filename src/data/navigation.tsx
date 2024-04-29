@@ -4,9 +4,9 @@ import {
   BiHome,
   BiListUl,
   BiUser
-} from "react-icons/bi"
+} from "react-icons/bi";
 
-import { SidebarLink } from "../store/types/SidebarLink"
+import { SidebarLink } from "../store/types/SidebarLink";
 
 export const DASHBOARD_SIDEBAR_LINKS: SidebarLink[] = [
   {

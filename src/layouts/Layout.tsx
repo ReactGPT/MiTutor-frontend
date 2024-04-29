@@ -1,6 +1,6 @@
-import { useState, useEffect } from "react"
-import Sidebar from "../components/Sidebar"
-import Header from "../components/ui/Header"
+import { useState, useEffect } from "react";
+import Sidebar from "../components/Sidebar";
+import Header from "../components/ui/Header";
 import { DASHBOARD_SIDEBAR_LINKS } from "../data/navigation";
 import { Outlet } from "react-router-dom";
 
@@ -8,7 +8,7 @@ function Layout() {
 
   const [headerTitle, setHeaderTitle] = useState<string>('');
   useEffect(() => {
-    setHeaderTitle('Inicio')
+    setHeaderTitle('Inicio');
   }, []);
 
   return (
@@ -25,7 +25,7 @@ function Layout() {
         </div>
       </div>
     </div>
-  )
+  );
 }
 
-export default Layout
+export default Layout;

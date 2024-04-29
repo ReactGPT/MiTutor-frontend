@@ -1,5 +1,5 @@
-import logo from '../assets/logo.png'
-import { BiLogOut } from 'react-icons/bi'
+import logo from '../assets/logo.png';
+import { BiLogOut } from 'react-icons/bi';
 import { SidebarLink } from '../store/types/SidebarLink';
 import { NavLink } from 'react-router-dom';
 
@@ -38,6 +38,6 @@ const Sidebar = ({ setTitle, sidebarLinks }: SidebarProps) => {
       </a>
     </nav>
   );
-}
+};
 
-export default Sidebar
+export default Sidebar;

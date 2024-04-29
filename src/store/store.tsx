@@ -3,11 +3,11 @@ import { setupListeners } from '@reduxjs/toolkit/query';
 //import { financeSlice,recipeSlice,parametersSlice,productSlice } from "./slices";
 
 
-export const store=configureStore({
+export const store = configureStore({
     reducer: {
         //[apiBuilder.reducerPath]: apiBuilder.reducer,
         //[demoBuilder.reducerPath] : demoBuilder.reducer
-        
+
     },
 });
 

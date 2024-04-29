@@ -1,11 +1,11 @@
-import Landing from "./components/Landing"
+import Landing from "./components/Landing";
 
 function App() {
   return (
     <>
       <Landing />
     </>
-  )
+  );
 }
 
-export default App
+export default App;

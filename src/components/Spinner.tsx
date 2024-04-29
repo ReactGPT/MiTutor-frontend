@@ -3,19 +3,19 @@ type SpinnerProps = {
   color?: string;
 };
 
-function Spinner({ size = 'sm', color = 'blue' }: SpinnerProps) {
+function Spinner({ size = "sm", color = "blue" }: SpinnerProps) {
   const sizeClasses: Record<string, string> = {
-    xs: 'h-2 w-2',
-    sm: 'h-3 w-3',
-    md: 'h-4 w-4',
-    lg: 'h-5 w-5',
-    xl: 'h-6 w-6',
+    xs: "h-2 w-2",
+    sm: "h-3 w-3",
+    md: "h-4 w-4",
+    lg: "h-5 w-5",
+    xl: "h-6 w-6",
   };
   const colorClasses: Record<string, string> = {
-    blue: 'fill-blue-600',
-    red: 'fill-red-600',
-    green: 'fill-green-600',
-    primary: 'fill-primary',
+    blue: "fill-blue-600",
+    red: "fill-red-600",
+    green: "fill-green-600",
+    primary: "fill-primary",
   };
   return (
     <div role="status">

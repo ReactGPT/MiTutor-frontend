@@ -10,12 +10,12 @@ type SidebarProps = {
 
 const Sidebar = ({ setTitle, sidebarLinks }: SidebarProps) => {
   return (
-    <nav className='h-full w-full bg-[rgba(255,_255,_255,_0.50)] p-3 py-7 flex flex-col text-black drop-shadow-xl select-none'>
+    <nav className='h-full w-full bg-[rgba(255,_255,_255,_0.50)] flex flex-col text-black sidebar-shaddow gap-6 px-3 py-7 select-none'>
       <div className='flex items-center justify-center gap-3 px-4 py-3 font-montserrat min-h-[60px]'>
         <img alt='Logo' src={logo} draggable="false"></img>
         <span className='text-neutral-950 text-4xl font-semibold letter-spacing-title'>MiTutor</span>
       </div>
-      <div className="py-8 flex flex-1 flex-col gap-2 cursor-pointer">
+      <div className="py-5 flex flex-1 flex-col gap-2 cursor-pointer">
         {sidebarLinks.map((link, index) => (
           <NavLink
             className={({ isActive }) =>

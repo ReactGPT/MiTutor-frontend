@@ -28,13 +28,13 @@ Este comando leerá el archivo `package.json` del proyecto y descargará todas l
 
 ## Ejecutar el proyecto localmente
 
-1. Después de instalar las dependencias, puedes iniciar el servidor de desarrollo local con el siguiente comando:
+1. Después de instalar las dependencias, puedes iniciar el servidor de desarrollo con el siguiente comando:
 
 ```
 npm run dev
 ```
 
-Este comando iniciará el servidor de desarrollo de React en la URL `http://localhost:5173/`.
+Este comando iniciará el servidor de desarrollo en la URL `http://localhost:5173/`.
 
 ## Detener el servidor
 

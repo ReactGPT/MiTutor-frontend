@@ -7,7 +7,11 @@ export default {
   theme: {
     extend: {
       colors: {
-        primary: '#042354'
+        primary: '#042354',
+        secondary: '#d0ddf1',
+        terciary: '#bdc1da',
+        quaternary: '#d0d1dd',
+        warning: '#d5b5c0'
       },
       fontFamily: {
         roboto: 'Roboto',

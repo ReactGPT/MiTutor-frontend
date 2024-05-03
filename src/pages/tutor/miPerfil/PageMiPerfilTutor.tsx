@@ -8,7 +8,7 @@ import ModalDesactivar from '../../../components/Tutor/ModalDesactivar';
 
 const PageMiPerfilTutor = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);  
-
+  const [isModalOpenP, setIsModalOpenP] = useState(false);  
   const openModal = () => {
     setIsModalOpen(true);  
   };
@@ -16,6 +16,15 @@ const PageMiPerfilTutor = () => {
   const closeModal = () => {
     setIsModalOpen(false);  
   };
+
+
+  const openModalP = () => {
+    setIsModalOpenP(true);  
+  };
+  const closeModalP = () => {
+    setIsModalOpenP(false);  
+  };
+
   return (
     <div className="w-full h-full flex">
       <div className="w-1/2 flex flex-col">
@@ -48,7 +57,7 @@ const PageMiPerfilTutor = () => {
                   <Button onClick={openModal} variant="call-to-action" text="Plan de Acción" />
                 </li>
                 <li className='mb-4'>
-                  <Button onClick={() => null} variant="call-to-action" text="Archivos" />
+                  <Button onClick={openModalP} variant="call-to-action" text="Archivos" />
                 </li>
                 <li className='mb-4'>
                   <Button onClick={() => null} variant="call-to-action" text="Historico de Citas" />
@@ -59,7 +68,8 @@ const PageMiPerfilTutor = () => {
         </div>
       </div>
        
-      {isModalOpen && <ModalDesactivar onClose={closeModal} />}
+      {isModalOpen && <ModalTutor onClose={closeModal} />}
+      {isModalOpenP && <ModalDesactivar onClose={closeModalP} />}
     </div>
   );
 };

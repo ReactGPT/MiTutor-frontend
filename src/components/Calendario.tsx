@@ -7,6 +7,8 @@ interface Cita {
   horaInicio: number;
   horaFin: number;
   nombre: string;
+  facultad: string;
+  especialidad: string;
 }
 
 interface CalendarioProps {

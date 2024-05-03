@@ -6,8 +6,10 @@ import App from './App.tsx';
 import PageInicioTutor from './pages/tutor/inicio/PageInicioTutor.tsx';
 import PageCalendarioTutor from './pages/tutor/calendario/PageCalendarioTutor.tsx';
 import PageListaDeCitasTutor from './pages/tutor/listaDeCitas/PageListaDeCitasTutor.tsx';
-import PageProgramasDeTutoriaTutor from './pages/tutor/programasDeTutoria/PageProgramasDeTutoriaTutor.tsx';
+//import PageProgramasDeTutoriaTutor from './pages/tutor/programasDeTutoria/PageProgramasDeTutoriaTutor.tsx';
 import PageMiPerfilTutor from './pages/tutor/miPerfil/PageMiPerfilTutor.tsx';
+import PageProgTutoria from './pages/coordinador/programasDeTutoria/PageProgTutoria.tsx';
+import PageProgramasTutoriaMaestro from './pages/coordinador/programasDeTutoria/PageProgramasTutoriaMaestro.tsx';
 
 const router = createBrowserRouter([
   {
@@ -23,8 +25,8 @@ const router = createBrowserRouter([
         element: <PageCalendarioTutor />,
       },
       {
-        path: '/programasDeTutoria',
-        element: <PageProgramasDeTutoriaTutor />,
+        path: '/programasDeTutoriaMaestro',
+        element: <PageProgramasTutoriaMaestro />,
       },
       {
         path: '/listaDeCitas',
@@ -34,6 +36,10 @@ const router = createBrowserRouter([
         path: '/miPerfil',
         element: <PageMiPerfilTutor />,
       },
+      {
+        path: '/programasDeTutoriaMaestro/nuevo',
+        element: <PageProgTutoria />,
+      }
     ],
   },
 ]);
@@ -43,3 +49,18 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
     <RouterProvider router={router} />
   </React.StrictMode>
 );
+
+/**
+ * children:[
+          {
+            path:'detalles:id',
+            element:<PageProgTutoria/>
+          },
+          {
+            path:'nuevo',
+            element:<PageProgTutoria/>
+          }
+        ],
+ * 
+ * 
+ */

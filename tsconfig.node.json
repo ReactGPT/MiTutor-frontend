@@ -5,7 +5,10 @@
     "module": "ESNext",
     "moduleResolution": "bundler",
     "allowSyntheticDefaultImports": true,
-    "strict": true
+    "strict": true,
+    "esModuleInterop": true,
+    //"allowSyntheticDefaultImports": true,
+    "forceConsistentCasingInFileNames": true,
   },
   "include": ["vite.config.ts"]
 }

@@ -3,21 +3,26 @@ import React from 'react';
 type ButtonProps = {
   variant?: 'call-to-action' | 'primario' | 'secundario' | 'terciario' | 'warning';
   onClick: () => void;
-  icon?: React.ReactNode;
+  icon?: any;
+  iconSize?:number;
+  heightSize?:number
   disabled?: boolean;
   text?: string;
 };
 
-const Button: React.FC<ButtonProps> = ({
+const Button = ({
   variant = 'call-to-action',
   onClick,
   icon,
+  iconSize=6,
+  heightSize=12,
   disabled = false,
-  text
-}) => {
-  let buttonClass = 'flex items-center justify-between gap-2 px-3 py-2 rounded-xl shadow-[3px_3px_6px_0px_rgba(0,0,0,0.25)] font-roboto text-sm font-medium transition-all duration-200 ease-linear';
-  let iconClass = 'text-2xl';
 
+  text
+}:ButtonProps) => {
+  let buttonClass = `flex items-center h-${heightSize} justify-between gap-2 px-3 py-2 rounded-xl shadow-[3px_3px_6px_0px_rgba(0,0,0,0.25)] font-roboto text-sm font-medium transition-all duration-200 ease-linear`;
+  let iconClass = 'text-2xl';
+  const Icon=icon;
   switch (variant) {
     case 'call-to-action':
       buttonClass += ' bg-primary text-white hover:bg-black hover:text-white';
@@ -44,8 +49,10 @@ const Button: React.FC<ButtonProps> = ({
 
   return (
     <button className={buttonClass} onClick={onClick} disabled={disabled}>
-      {icon && <span className={iconClass}>{icon}</span>}
+           
+      {icon && <Icon className={`h-${iconSize} w-${iconSize} ${iconClass}`}/>}
       {text}
+      
     </button>
   );
 };

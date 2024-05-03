@@ -70,7 +70,6 @@ interface Cita {
   especialidad: string;
 }
 
-
 const PageCalendarioTutor = () => {
 
   const [filteredCitas, setFilteredCitas] = useState(citas);

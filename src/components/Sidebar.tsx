@@ -26,9 +26,7 @@ const Sidebar = ({ setTitle, sidebarLinks }: SidebarProps) => {
             to={link.path}
             key={index} onClick={() => {
               setTitle(link.label);
-            }}
-            draggable='false'
-          >
+            }}>
             <span className="text-xl">{link.icon}</span>
             <span className="leading-5">{link.label}</span>
           </NavLink>

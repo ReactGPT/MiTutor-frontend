@@ -1,21 +1,22 @@
-import  { useState } from 'react';
+import { useState } from 'react';
 import Button from '../../../components/Button';
 import InputTutor from '../../../components/Tutor/InputTutor';
 import imagenTutor from '/src/assets/Tutor/usuario.jpg';
 import ModalTutor from '../../../components/Tutor/ModalTutor';
 import ModalDesactivar from '../../../components/Tutor/ModalDesactivar';
- 
+
 
 const PageMiPerfilTutor = () => {
-  const [isModalOpen, setIsModalOpen] = useState(false);  
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const openModal = () => {
-    setIsModalOpen(true);  
+    setIsModalOpen(true);
   };
 
   const closeModal = () => {
-    setIsModalOpen(false);  
+    setIsModalOpen(false);
   };
+
   return (
     <div className="w-full h-full flex">
       <div className="w-1/2 flex flex-col">
@@ -42,7 +43,7 @@ const PageMiPerfilTutor = () => {
           </div>
           <div className="flex justify-center">
             <div className="space-x-4 pt-5">
-              <ul className="flex flex-col items-center w-full">  
+              <ul className="flex flex-col items-center w-full">
                 <li className='mb-4'>
                   {/* Botón que abre el modal */}
                   <Button onClick={openModal} variant="call-to-action" text="Plan de Acción" />
@@ -58,7 +59,6 @@ const PageMiPerfilTutor = () => {
           </div>
         </div>
       </div>
-       
       {isModalOpen && <ModalDesactivar onClose={closeModal} />}
     </div>
   );

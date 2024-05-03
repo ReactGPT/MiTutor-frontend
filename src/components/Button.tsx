@@ -15,7 +15,7 @@ const Button: React.FC<ButtonProps> = ({
   disabled = false,
   text
 }) => {
-  let buttonClass = 'flex items-center justify-between gap-2 px-3 py-2 rounded-xl shadow-[3px_3px_6px_0px_rgba(0,0,0,0.25)] font-roboto text-sm font-medium transition-all duration-200 ease-linear';
+  let buttonClass = 'flex items-center justify-between h-[42px] gap-2 px-3 py-2 rounded-xl shadow-[3px_3px_6px_0px_rgba(0,0,0,0.25)] font-roboto text-sm font-medium transition-all duration-200 ease-linear';
   let iconClass = 'text-2xl';
 
   switch (variant) {

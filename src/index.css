@@ -5,6 +5,8 @@
 @tailwind components;
 @tailwind utilities;
 
+
+
 .letter-spacing-title {
     letter-spacing: 2px;
 }
@@ -19,3 +21,4 @@
 .sidebar-shaddow {
     box-shadow: 6px 0px 10px rgba(0, 0, 0, 0.15);
 }
+

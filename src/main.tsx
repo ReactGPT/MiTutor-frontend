@@ -5,10 +5,10 @@ import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import App from './App.tsx';
 import PageInicioTutor from './pages/tutor/inicio/PageInicioTutor.tsx';
 import PageCalendarioTutor from './pages/tutor/calendario/PageCalendarioTutor.tsx';
-import PageListaDeCitasTutor from './pages/tutor/listaDeCitas/PageListaDeCitasTutor.tsx';
 import PageProgramasDeTutoriaTutor from './pages/tutor/programasDeTutoria/PageProgramasDeTutoriaTutor.tsx';
 import PageMiPerfilTutor from './pages/tutor/miPerfil/PageMiPerfilTutor.tsx';
 import PageDetalleProgramaTutoriaTutor from './pages/tutor/programasDeTutoria/PageDetalleProgramaTutoriaTutor.tsx';
+import PageHistoricoDeCitas from './pages/tutor/listaDeCitas/PageHistoricoDeCitas.tsx';
 
 const router = createBrowserRouter([
   {
@@ -29,7 +29,7 @@ const router = createBrowserRouter([
       },
       {
         path: '/listaDeCitas',
-        element: <PageListaDeCitasTutor />,
+        element: <div/>,
       },
       {
         path: '/miPerfil',
@@ -39,6 +39,9 @@ const router = createBrowserRouter([
         path: '/programasDeTutoria/detalle-programa',
         element: <PageDetalleProgramaTutoriaTutor/> 
       },
+        path: '/historicoDeCitas',
+        element: <PageHistoricoDeCitas />,
+      },
     ],
   },
 ]);

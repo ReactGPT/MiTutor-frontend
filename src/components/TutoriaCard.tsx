@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import {
     BiMenu
 } from "react-icons/bi";
-
+import { DetailsIcon } from "../assets";
 interface CardProps {
     title: string;
     description: string;
@@ -36,7 +36,7 @@ const TutoriaCard: React.FC<CardProps> = ({ title, description, facultad, especi
                 <div className="text-xl mb-2">{rol}</div>   
             </div>
             <div className="flex items-center justify-center ">
-            <Button onClick={toDetail} variant="call-to-action" icon={< BiMenu/>} />
+            <Button onClick={toDetail} variant="call-to-action" icon={DetailsIcon} />
             </div>
             
         </div>

@@ -4,8 +4,8 @@ import { useEffect } from 'react';
 import Button from '../../../components/Button';
 
 const Alumno = {
-  nombre: 'Juanita',
-  apellido: 'Chavez'
+  nombre: 'Alonso',
+  apellido: 'Berrospi'
 }
 
 const listaCita = [

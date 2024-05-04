@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import Dropdown from './Dropdown';
 import Button from './Button';
-import { BiFilter } from 'react-icons/bi';
-
+//import { BiFilter } from 'react-icons/bi';
+import { AddCircleIcon } from '../assets';
 type Cita = {
   id: string;
   fecha: Date;
@@ -63,7 +63,7 @@ const FilterComponent: React.FC<FilterProps> = ({ citas, onFilter }) => {
         <Dropdown options={facultades} defaultOption="Todos" onSelect={(option) => handleSelect(option, 'facultad')} />
         <Dropdown options={especialidades} defaultOption="Todos" onSelect={(option) => handleSelect(option, 'especialidad')} />
       </div>
-      <Button onClick={handleFilter} icon={<BiFilter />} />
+      <Button onClick={handleFilter} icon={AddCircleIcon} />
     </div>
   );
 };

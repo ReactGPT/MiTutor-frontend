@@ -1,10 +1,10 @@
-interface InputProps {
-    titulo: string;
-    texto: string;
-    enable: boolean;
+type InputProps = {
+    titulo?: string;
+    texto?: string;
+    enable?: boolean;
 }
 
-const InputTutor: React.FC<InputProps> = ({ titulo, texto, enable }) => {
+const InputTutor = ({ titulo="", texto="", enable=true }:InputProps) => {
     return (
         <li className="drop-shadow-md p-5 flex items-center  space-x-5 height-100% personalizado"
         style={{display: "flex", height:"100%", flexDirection:"column", alignItems:"flex-start" }}>

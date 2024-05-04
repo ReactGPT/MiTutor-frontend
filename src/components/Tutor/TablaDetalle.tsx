@@ -10,6 +10,7 @@ import Button from '../Button';
 import {
     BiMenu
 } from "react-icons/bi";
+import { DetailsIcon } from '../../assets';
 import React from 'react';
 
 type TablaDetalleProps = {
@@ -61,7 +62,7 @@ const TablaDetalle: React.FC<TablaDetalleProps> = ({
             maxWidth: 200,
             cellStyle: { textAlign: 'left', justifyContent: 'left' },
             cellRenderer: Button,
-            cellRendererParams: { icon: <BiMenu />, variant: 'primario', onClick: onclick },
+            cellRendererParams: { icon: DetailsIcon, variant: 'primario', onClick: onclick },
         }
     ];
 

@@ -122,7 +122,7 @@ export default function PageProgramasTutoriaMaestro() {
         <div className='flex w-full h-[10%]'>
             <ProgramaTutoríaSearchBar/>
         </div>
-        <div className='flex w-full h-[75%] ag-theme-alpine'>
+        <div className='flex w-full h-[75%] ag-theme-alpine ag-theme-alpine2 '>
             <div className='w-full h-full'>
                 <AgGridReact
                     defaultColDef={defaultColDef}

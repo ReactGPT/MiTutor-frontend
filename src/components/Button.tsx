@@ -1,10 +1,10 @@
 import React from 'react';
 
 type ButtonProps = {
-  variant?: 'call-to-action' | 'primario' |'secundario' | 'terciario' | 'warning';
+  variant?: 'call-to-action' | 'primario' | 'secundario' | 'terciario' | 'warning';
   onClick: () => void;
   icon?: any;
-  iconSize?:number;
+  iconSize?: number;
   disabled?: boolean;
   text?: string;
 };
@@ -13,13 +13,13 @@ const Button = ({
   variant = 'call-to-action',
   onClick,
   icon,
-  iconSize=6,
+  iconSize = 6,
   disabled = false,
   text
-}:ButtonProps) => {
+}: ButtonProps) => {
   let buttonClass = 'flex items-center justify-between h-[42px] gap-2 px-3 py-2 shadow-custom rounded-xl font-roboto text-sm font-medium transition-all duration-200 ease-linear';
   let iconClass = 'text-2xl';
-  const Icon=icon;
+  const Icon = icon;
   switch (variant) {
     case 'call-to-action':
       buttonClass += ' border-custom bg-primary text-white hover:bg-black hover:text-white';
@@ -50,7 +50,6 @@ const Button = ({
       }
       {icon && <Icon className={iconClass} size={iconSize}></Icon>}
       {text}
-      
     </button>
   );
 };

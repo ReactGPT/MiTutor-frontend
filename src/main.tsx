@@ -7,6 +7,7 @@ import PageInicioTutor from './pages/tutor/inicio/PageInicioTutor.tsx';
 import PageCalendarioTutor from './pages/tutor/calendario/PageCalendarioTutor.tsx';
 import PageProgramasDeTutoriaTutor from './pages/tutor/programasDeTutoria/PageProgramasDeTutoriaTutor.tsx';
 import PageMiPerfilTutor from './pages/tutor/miPerfil/PageMiPerfilTutor.tsx';
+import PageDetalleProgramaTutoriaTutor from './pages/tutor/programasDeTutoria/PageDetalleProgramaTutoriaTutor.tsx';
 import PageHistoricoDeCitas from './pages/tutor/listaDeCitas/PageHistoricoDeCitas.tsx';
 import PageListaDeCitas from './pages/tutor/listaDeCitas/PageListaDeCitas.tsx';
 
@@ -35,6 +36,10 @@ const router = createBrowserRouter([
       {
         path: '/miPerfil',
         element: <PageMiPerfilTutor />,
+      },
+      {
+        path: '/programasDeTutoria/detalle-programa',
+        element: <PageDetalleProgramaTutoriaTutor />
       },
       {
         path: '/historicoDeCitas',

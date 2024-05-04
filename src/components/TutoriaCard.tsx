@@ -1,4 +1,8 @@
 import Button from "./Button";
+import { useNavigate } from "react-router-dom";
+import {
+    BiMenu
+} from "react-icons/bi";
 
 interface CardProps {
     title: string;
@@ -9,6 +13,10 @@ interface CardProps {
 }
 
 const TutoriaCard: React.FC<CardProps> = ({ title, description, facultad, especialidad, rol }) => {
+    const navigate = useNavigate();
+    const toDetail = () => { 
+        navigate('/programasDeTutoria/detalle-programa')
+    }
     return (
         <div className="flex flex-row rounded overflow-hidden shadow-lg relative">
             <div className="h-full w-10 shrink-0 grow-0 bg-green-600 absolute left-0 inset-y-0 rounded"/>
@@ -28,7 +36,7 @@ const TutoriaCard: React.FC<CardProps> = ({ title, description, facultad, especi
                 <div className="text-xl mb-2">{rol}</div>   
             </div>
             <div className="flex items-center justify-center ">
-            <button className="rounded-lg border border-primary p-3 bg-gradient-to-r from-gray-300 to-blue-600/40 h-fit">+</button>
+            <Button onClick={toDetail} variant="call-to-action" icon={< BiMenu/>} />
             </div>
             
         </div>

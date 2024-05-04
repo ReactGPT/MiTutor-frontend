@@ -1,7 +1,7 @@
 import React from 'react';
 
 type ButtonProps = {
-  variant?: 'call-to-action' | 'primario' | 'secundario' | 'terciario' | 'warning';
+  variant?: 'call-to-action' | 'primario' |'secundario' | 'terciario' | 'warning';
   onClick: () => void;
   icon?: React.ReactNode;
   disabled?: boolean;
@@ -15,15 +15,15 @@ const Button: React.FC<ButtonProps> = ({
   disabled = false,
   text
 }) => {
-  let buttonClass = 'flex items-center justify-between h-[42px] gap-2 px-3 py-2 rounded-xl shadow-[3px_3px_6px_0px_rgba(0,0,0,0.25)] font-roboto text-sm font-medium transition-all duration-200 ease-linear';
+  let buttonClass = 'flex items-center justify-between h-[42px] gap-2 px-3 py-2 shadow-custom rounded-xl font-roboto text-sm font-medium transition-all duration-200 ease-linear';
   let iconClass = 'text-2xl';
 
   switch (variant) {
     case 'call-to-action':
-      buttonClass += ' bg-primary text-white hover:bg-black hover:text-white';
+      buttonClass += ' border-custom bg-primary text-white hover:bg-black hover:text-white';
       break;
     case 'primario':
-      buttonClass += ' bg-secondary text-primary hover:bg-primary hover:text-white';
+      buttonClass += ' border-custom bg-secondary text-primary hover:bg-primary hover:text-white';
       break;
     case 'secundario':
       buttonClass += ' bg-terciary text-blue-700 hover:bg-blue-700 hover:text-white';

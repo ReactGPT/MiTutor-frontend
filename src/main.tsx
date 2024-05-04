@@ -8,6 +8,8 @@ import PageCalendarioTutor from './pages/tutor/calendario/PageCalendarioTutor.ts
 import PageProgramasDeTutoriaTutor from './pages/tutor/programasDeTutoria/PageProgramasDeTutoriaTutor.tsx';
 import PageMiPerfilTutor from './pages/tutor/miPerfil/PageMiPerfilTutor.tsx';
 import PageHistoricoDeCitas from './pages/tutor/listaDeCitas/PageHistoricoDeCitas.tsx';
+import PageListaDeCitas from './pages/tutor/listaDeCitas/PageListaDeCitas.tsx';
+
 
 const router = createBrowserRouter([
   {
@@ -28,7 +30,7 @@ const router = createBrowserRouter([
       },
       {
         path: '/listaDeCitas',
-        element: <div/>,
+        element: <PageListaDeCitas />,
       },
       {
         path: '/miPerfil',

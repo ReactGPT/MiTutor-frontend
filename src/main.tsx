@@ -9,6 +9,7 @@ import PageProgramasDeTutoriaTutor from './pages/tutor/programasDeTutoria/PagePr
 import PageMiPerfilTutor from './pages/tutor/miPerfil/PageMiPerfilTutor.tsx';
 import PageDetalleProgramaTutoriaTutor from './pages/tutor/programasDeTutoria/PageDetalleProgramaTutoriaTutor.tsx';
 import PageHistoricoDeCitas from './pages/tutor/listaDeCitas/PageHistoricoDeCitas.tsx';
+import PageListaDeCitas from './pages/tutor/listaDeCitas/PageListaDeCitas.tsx';
 import PageProgTutoria from './pages/coordinador/programasDeTutoria/PageProgTutoria.tsx';
 import PageProgramasTutoriaMaestro from './pages/coordinador/programasDeTutoria/PageProgramasTutoriaMaestro.tsx';
 
@@ -31,7 +32,7 @@ const router = createBrowserRouter([
       },
       {
         path: '/listaDeCitas',
-        element: <div />,
+        element: <PageListaDeCitas />,
       },
       {
         path: '/miPerfil',

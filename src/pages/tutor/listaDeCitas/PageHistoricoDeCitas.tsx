@@ -63,7 +63,6 @@ const PageHistoricoDeCitas = () => {
         console.log(startIndex,endIndex)
       }
     }
-    
   };
 
   const controlColor = (color: string) => {

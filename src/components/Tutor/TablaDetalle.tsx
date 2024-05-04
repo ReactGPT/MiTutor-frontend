@@ -6,7 +6,6 @@ import { AgGridReact } from 'ag-grid-react';
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-alpine.css';
 import { ColDef } from 'ag-grid-community';
-import './styles.css';
 import Button from '../Button';
 import {
     BiMenu
@@ -15,55 +14,58 @@ import React from 'react';
 
 type TablaDetalleProps = {
     onclick: () => void;
-}
+};
 
 const TablaDetalle: React.FC<TablaDetalleProps> = ({
     onclick
 }) => {
 
     const defaultColDef = {
-    suppressMenu: true,
-    flex: 1,
-    sortable: true,
-    resizable: true,
-    cellStyle: {
-        textAlign: 'center',
-        justifyContent: 'center',
-        alignItems: 'center',
-        display: 'flex',
-    },
+        suppressMenu: true,
+        flex: 1,
+        sortable: true,
+        resizable: true,
+        cellStyle: {
+            textAlign: 'center',
+            justifyContent: 'center',
+            alignItems: 'center',
+            display: 'flex',
+        },
     };
 
     const columnDefs: ColDef[] = [
-        { headerName: 'Código', 
+        {
+            headerName: 'Código',
             field: 'Código',
             minWidth: 200,
             maxWidth: 200,
-            cellStyle: {textAlign: 'left', justifyContent: 'left'}
+            cellStyle: { textAlign: 'left', justifyContent: 'left' }
         },
-        { headerName: 'Estudiante', 
-            field: 'Estudiante', 
+        {
+            headerName: 'Estudiante',
+            field: 'Estudiante',
             minWidth: 250,
             maxWidth: 500,
-            cellStyle: {textAlign: 'left', justifyContent: 'left' }
+            cellStyle: { textAlign: 'left', justifyContent: 'left' }
         },
-        { headerName: 'Correo PUCP', 
+        {
+            headerName: 'Correo PUCP',
             field: 'Correo_PUCP',
-            minWidth: 200   ,
+            minWidth: 200,
             maxWidth: 300,
-            cellStyle: {textAlign: 'left', justifyContent: 'left' }
+            cellStyle: { textAlign: 'left', justifyContent: 'left' }
         },
         {
             headerName: 'Ver más',
             minWidth: 200,
             maxWidth: 200,
-            cellStyle: {textAlign: 'left', justifyContent: 'left' },
+            cellStyle: { textAlign: 'left', justifyContent: 'left' },
             cellRenderer: Button,
-            cellRendererParams: { icon: <BiMenu />, variant: 'primario', onClick: onclick},
+            cellRendererParams: { icon: <BiMenu />, variant: 'primario', onClick: onclick },
         }
-        ];
+    ];
 
-        const rowData3 = [
+    const rowData3 = [
         {
             Código: '20206759',
             Estudiante: 'Perez Aliaga, Alonso Fernando',
@@ -81,20 +83,20 @@ const TablaDetalle: React.FC<TablaDetalleProps> = ({
         },
     ];
     return (
-    <div className="flex py-5">
-        <div
-        className="ag-theme-alpine"
-        style={{ height: '300px', width: '100%' }}
-        >
-        <AgGridReact
-            defaultColDef={defaultColDef}
-            columnDefs={columnDefs}
-            rowData={rowData3}
-            rowHeight={60}
-        />
+        <div className="flex py-5">
+            <div
+                className="ag-theme-alpine"
+                style={{ height: '300px', width: '100%' }}
+            >
+                <AgGridReact
+                    defaultColDef={defaultColDef}
+                    columnDefs={columnDefs}
+                    rowData={rowData3}
+                    rowHeight={60}
+                />
+            </div>
         </div>
-    </div>
     );
-}
+};
 
 export default TablaDetalle;

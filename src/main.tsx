@@ -29,7 +29,7 @@ const router = createBrowserRouter([
       },
       {
         path: '/listaDeCitas',
-        element: <div/>,
+        element: <div />,
       },
       {
         path: '/miPerfil',
@@ -37,8 +37,9 @@ const router = createBrowserRouter([
       },
       {
         path: '/programasDeTutoria/detalle-programa',
-        element: <PageDetalleProgramaTutoriaTutor/> 
-      },
+        element: <PageDetalleProgramaTutoriaTutor />
+      },
+      {
         path: '/historicoDeCitas',
         element: <PageHistoricoDeCitas />,
       },

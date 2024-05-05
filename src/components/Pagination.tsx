@@ -33,12 +33,12 @@ const Pagination: React.FC<PaginationProps> = ({
   }
 
   return (
-    <div className="m-5 flex justify-center items-center space-x-4">
+    <div className="m-5 flex justify-center items-center space-x-4 font-roboto">
       <Button variant="primario" text="Ant." onClick={() => onPageChange(currentPage - 1)} disabled={currentPage === 1} />
       {pageNumbers.map(number => (
         <button
           key={number}
-          className={`px-3 py-2 border-custom ${number === currentPage ? 'bg-primary text-white' : 'bg-white bg-primary'} hover:bg-primary hover:text-white`}
+          className={`shadow-custom px-3 py-2 border-custom ${number === currentPage ? 'bg-primary text-white' : 'bg-white'} hover:bg-primary hover:text-white`}
           onClick={() => onPageChange(number)}
         >
           {number}

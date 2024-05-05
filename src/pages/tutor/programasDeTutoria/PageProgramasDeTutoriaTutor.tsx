@@ -1,65 +1,305 @@
-import TutoriaCard from "../../../components/TutoriaCard";
+import { useState } from "react";
+import { SearchInput } from "../../../components";
+import TutoringProgramCard from "../../../components/Tutor/TutoringProgramCard";
+import { TutoringProgram } from "../../../store/types/TutoringProgram";
+import Pagination from "../../../components/Pagination";
+
+const tutoringPrograms: TutoringProgram[] = [
+  {
+    tutorId: 1,
+    tutorProgramTutorTypeId: 1,
+    tutoringProgramId: 1,
+    faceToFace: true,
+    groupBased: false,
+    individualBased: true,
+    membersCount: 10,
+    programName: 'Programa de Matemáticas Avanzadas',
+    description: 'Descripción del programa 1',
+    facultyId: 1,
+    facultyName: 'Facultad de Ingeniería',
+    specialtyId: 1,
+    specialtyName: 'Ingeniería Informática',
+    tutorTypeId: 1,
+    tutorTypeDescription: 'Tutor Fijo',
+  },
+  {
+    tutorId: 2,
+    tutorProgramTutorTypeId: 2,
+    tutoringProgramId: 2,
+    faceToFace: false,
+    groupBased: true,
+    individualBased: false,
+    membersCount: 5,
+    programName: 'Programa de Biología Celular',
+    description: 'Descripción del programa 2',
+    facultyId: 2,
+    facultyName: 'Facultad de Ciencias',
+    specialtyId: 2,
+    specialtyName: 'Biología',
+    tutorTypeId: 2,
+    tutorTypeDescription: 'Tutor Variable',
+  },
+  {
+    tutorId: 3,
+    tutorProgramTutorTypeId: 3,
+    tutoringProgramId: 3,
+    faceToFace: true,
+    groupBased: true,
+    individualBased: false,
+    membersCount: 15,
+    programName: 'Programa de Contabilidad Financiera',
+    description: 'Descripción del programa 3',
+    facultyId: 3,
+    facultyName: 'Facultad de Economía',
+    specialtyId: 3,
+    specialtyName: 'Contabilidad',
+    tutorTypeId: 1,
+    tutorTypeDescription: 'Tutor Fijo',
+  },
+  {
+    tutorId: 4,
+    tutorProgramTutorTypeId: 4,
+    tutoringProgramId: 4,
+    faceToFace: false,
+    groupBased: false,
+    individualBased: true,
+    membersCount: 8,
+    programName: 'Programa de Ingeniería Civil Estructural',
+    description: 'Descripción del programa 4',
+    facultyId: 1,
+    facultyName: 'Facultad de Ingeniería',
+    specialtyId: 4,
+    specialtyName: 'Ingeniería Civil',
+    tutorTypeId: 2,
+    tutorTypeDescription: 'Tutor Variable',
+  },
+  {
+    tutorId: 5,
+    tutorProgramTutorTypeId: 5,
+    tutoringProgramId: 5,
+    faceToFace: true,
+    groupBased: true,
+    individualBased: true,
+    membersCount: 20,
+    programName: 'Programa de Química Orgánica',
+    description: 'Descripción del programa 5',
+    facultyId: 2,
+    facultyName: 'Facultad de Ciencias',
+    specialtyId: 5,
+    specialtyName: 'Química',
+    tutorTypeId: 1,
+    tutorTypeDescription: 'Tutor Fijo',
+  },
+  {
+    tutorId: 6,
+    tutorProgramTutorTypeId: 1,
+    tutoringProgramId: 6,
+    faceToFace: true,
+    groupBased: false,
+    individualBased: true,
+    membersCount: 12,
+    programName: 'Programa de Física Cuántica',
+    description: 'Descripción del programa 6',
+    facultyId: 4,
+    facultyName: 'Facultad de Ciencias Físicas',
+    specialtyId: 6,
+    specialtyName: 'Física Cuántica',
+    tutorTypeId: 1,
+    tutorTypeDescription: 'Tutor Fijo',
+  },
+  {
+    tutorId: 7,
+    tutorProgramTutorTypeId: 2,
+    tutoringProgramId: 7,
+    faceToFace: false,
+    groupBased: true,
+    individualBased: false,
+    membersCount: 7,
+    programName: 'Programa de Literatura Comparada',
+    description: 'Descripción del programa 7',
+    facultyId: 5,
+    facultyName: 'Facultad de Letras',
+    specialtyId: 7,
+    specialtyName: 'Literatura',
+    tutorTypeId: 2,
+    tutorTypeDescription: 'Tutor Variable',
+  },
+  {
+    tutorId: 8,
+    tutorProgramTutorTypeId: 3,
+    tutoringProgramId: 8,
+    faceToFace: true,
+    groupBased: true,
+    individualBased: false,
+    membersCount: 18,
+    programName: 'Programa de Marketing Estratégico',
+    description: 'Descripción del programa 8',
+    facultyId: 6,
+    facultyName: 'Facultad de Negocios',
+    specialtyId: 8,
+    specialtyName: 'Marketing',
+    tutorTypeId: 1,
+    tutorTypeDescription: 'Tutor Fijo',
+  },
+  {
+    tutorId: 9,
+    tutorProgramTutorTypeId: 4,
+    tutoringProgramId: 9,
+    faceToFace: false,
+    groupBased: false,
+    individualBased: true,
+    membersCount: 6,
+    programName: 'Programa de Arquitectura Sustentable',
+    description: 'Descripción del programa 9',
+    facultyId: 7,
+    facultyName: 'Facultad de Arquitectura',
+    specialtyId: 9,
+    specialtyName: 'Arquitectura',
+    tutorTypeId: 2,
+    tutorTypeDescription: 'Tutor Variable',
+  },
+  {
+    tutorId: 10,
+    tutorProgramTutorTypeId: 5,
+    tutoringProgramId: 10,
+    faceToFace: true,
+    groupBased: true,
+    individualBased: true,
+    membersCount: 25,
+    programName: 'Programa de Neurociencia Cognitiva',
+    description: 'Descripción del programa 10',
+    facultyId: 8,
+    facultyName: 'Facultad de Psicología',
+    specialtyId: 10,
+    specialtyName: 'Neurociencia',
+    tutorTypeId: 1,
+    tutorTypeDescription: 'Tutor Fijo',
+  },
+  {
+    tutorId: 11,
+    tutorProgramTutorTypeId: 1,
+    tutoringProgramId: 11,
+    faceToFace: true,
+    groupBased: false,
+    individualBased: true,
+    membersCount: 11,
+    programName: 'Programa de Astrofísica Avanzada',
+    description: 'Descripción del programa 11',
+    facultyId: 4,
+    facultyName: 'Facultad de Ciencias Físicas',
+    specialtyId: 11,
+    specialtyName: 'Astrofísica',
+    tutorTypeId: 1,
+    tutorTypeDescription: 'Tutor Fijo',
+  },
+  {
+    tutorId: 12,
+    tutorProgramTutorTypeId: 2,
+    tutoringProgramId: 12,
+    faceToFace: false,
+    groupBased: true,
+    individualBased: false,
+    membersCount: 9,
+    programName: 'Programa de Historia del Arte',
+    description: 'Descripción del programa 12',
+    facultyId: 5,
+    facultyName: 'Facultad de Letras',
+    specialtyId: 12,
+    specialtyName: 'Historia del Arte',
+    tutorTypeId: 2,
+    tutorTypeDescription: 'Tutor Variable',
+  },
+  {
+    tutorId: 13,
+    tutorProgramTutorTypeId: 3,
+    tutoringProgramId: 13,
+    faceToFace: true,
+    groupBased: true,
+    individualBased: false,
+    membersCount: 20,
+    programName: 'Programa de Gestión Empresarial',
+    description: 'Descripción del programa 13',
+    facultyId: 6,
+    facultyName: 'Facultad de Negocios',
+    specialtyId: 13,
+    specialtyName: 'Gestión Empresarial',
+    tutorTypeId: 1,
+    tutorTypeDescription: 'Tutor Fijo',
+  },
+  {
+    tutorId: 14,
+    tutorProgramTutorTypeId: 4,
+    tutoringProgramId: 14,
+    faceToFace: false,
+    groupBased: false,
+    individualBased: true,
+    membersCount: 5,
+    programName: 'Programa de Diseño Urbano',
+    description: 'Descripción del programa 14',
+    facultyId: 7,
+    facultyName: 'Facultad de Arquitectura',
+    specialtyId: 14,
+    specialtyName: 'Diseño Urbano',
+    tutorTypeId: 2,
+    tutorTypeDescription: 'Tutor Variable',
+  },
+  {
+    tutorId: 15,
+    tutorProgramTutorTypeId: 5,
+    tutoringProgramId: 15,
+    faceToFace: true,
+    groupBased: true,
+    individualBased: true,
+    membersCount: 30,
+    programName: 'Programa de Lingüística Aplicada',
+    description: 'Descripción del programa 15',
+    facultyId: 9,
+    facultyName: 'Facultad de Lenguas',
+    specialtyId: 15,
+    specialtyName: 'Lingüística',
+    tutorTypeId: 1,
+    tutorTypeDescription: 'Tutor Fijo',
+  },
+];
 
 const PageProgramasDeTutoriaTutor = () => {
+  const [searchText, setSearchText] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 5;
+
+  const handleSearch = (text: string) => {
+    setSearchText(text);
+    setCurrentPage(1);
+  };
+
+  const filteredPrograms = tutoringPrograms.filter(program =>
+    program.programName.toLowerCase().includes(searchText.toLowerCase())
+  );
+
+  const indexOfLastProgram = currentPage * itemsPerPage;
+  const indexOfFirstProgram = indexOfLastProgram - itemsPerPage;
+  const currentPrograms = filteredPrograms.slice(indexOfFirstProgram, indexOfLastProgram);
+
+  const handlePageChange = (pageNumber: number) => {
+    setCurrentPage(pageNumber);
+  };
+
   return (
-    <div className="w-full h-full flex flex-col gap-6">
+    <div className="flex flex-col gap-5 w-full">
+      <SearchInput placeholder="Programa de Tutoria" onSearch={handleSearch} />
 
-      <div className="bg-secondary flex divide-x-2 divide-primary  w-full h-10 rounded-xl border border-primary">
-
-        <input className="w-full bg-transparent placeholder:text-gray-500 basis-1/4 rounded-l-xl px-2 py-1" placeholder="Programa de Tutoria o Código"/>
-
-        <div className="basis-1/4 flex justify-center items-center gap-3 text-primary">
-          <div className="w-full h-full px-10 bg-transparent">
-            <select className="w-full h-full bg-transparent">
-              <option>Ciencias e Ingeniería</option>
-              <option>Contabilidad</option>
-              <option>Derecho</option>
-              <option>Artes</option>
-            </select>
-        </div>
-          </div>
-        <div className="basis-1/4 flex justify-center items-center gap-3 text-primary">
-        <div className="w-full h-full px-10 bg-transparent">
-            <select className="w-full h-full bg-transparent">
-              <option>Ingeniería Informática</option>
-              <option>Ingeniería Industrial</option>
-              <option>Ingeniería Civil</option>
-              <option>Ingeniería Geológica</option>
-            </select>
-        </div>
-        </div>
-        <div className="basis-1/4">
-        <div className="w-full h-full px-10 bg-transparent">
-            <select className="w-full h-full bg-transparent">
-              <option>Tutor Fijo</option>
-              <option>Tutor Variable</option>
-            </select>
-        </div>
-        </div>
-        <button className="grow-0 px-3 bg-primary text-white rounded-r-xl">+</button>
+      <div className="w-full flex flex-col gap-5">
+        {currentPrograms.map((program) => (
+          <TutoringProgramCard key={program.tutoringProgramId} data={program} />
+        ))}
       </div>
 
-      <div className="flex flex-col gap-6 overflow-y-auto flex-1">
-        <TutoriaCard title="Tutoría de Cachimbos" description="Código: TC000000" facultad="Ciencias e Ingeniería" 
-        especialidad="Ingeniería Informática" rol="Tutor Fijo"/>
-        <TutoriaCard title="Tutoría General" description="Código: TF00000" facultad="Ciencias e Ingeniería" 
-        especialidad="Ingeniería Industrial" rol="Tutor Variable"/>
-        <TutoriaCard title="Tutoría de Cachimbos Ciencias" description="Código: TC00000" facultad="Contabilidad" 
-        especialidad="Contabilidad Financiera" rol="Tutor Variable"/>
-        <TutoriaCard title="Tutoría Maestrías" description="Código: TM00000" facultad="Contabilidad"
-        especialidad="Contabilidad Financiera" rol="Tutor Variable"/> 
-        <TutoriaCard title="Tutoría Futuro Laboral" description="Código: TF00000" facultad="Contabilidad"
-        especialidad="Contabilidad Legal" rol="Tutor Variable"/> 
-      </div>
-      <div className="flex justify-center">
-        <div className="flex border bg-white rounded-full overflow-clip ">
-          <button className="border px-3 py-1.5 truncate w-20 text-center">Anterior</button>
-          <button className=" bg-primary text-white  px-3">1</button>
-          <button className="  px-3">2</button>
-          <button className="  px-3">3</button>
-          <button className="border px-3 py-1.5 truncate w-20 text-center">Siguiente</button>
-        </div>
-      </div>
+      <Pagination
+        currentPage={currentPage}
+        totalItems={filteredPrograms.length}
+        itemsPerPage={itemsPerPage}
+        onPageChange={handlePageChange}
+      />
     </div>
   );
 };

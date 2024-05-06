@@ -1,5 +1,6 @@
 import React from "react";
 import Button from "../Button";
+import IconDetails from '../../assets/svg/IconDetails';
 
 interface AppointmentItemProps {
   nombre: string;
@@ -94,7 +95,7 @@ export const AppointmentItem: React.FC<AppointmentItemProps> = ({ nombre, codigo
         </div>
 
         <div className="m-5">
-          <Button variant="primario" onClick={onClick} />
+          <Button variant="primario" onClick={onClick} icon={IconDetails}/>
         </div>
 
       </div>

@@ -1,10 +1,7 @@
-import React from 'react';
 import { useState } from 'react';
-import { useEffect } from 'react';
 import Button from '../../../components/Button';
 import AppointmentItem from "../../../components/Tutor/AppointmentItem";
 import Pagination from "../../../components/Pagination";
-import { BiSearch } from 'react-icons/bi';
 
 const listaCita = [
 
@@ -75,7 +72,7 @@ const PageListaDeCitas = () => {
       </div>
       {/* Item de Cita       */}
 
-      <div className="w-full h-[65%] min-h-[60%]">
+      <div className="w-full h-[65%] min-h-[80%]">
         {arrayCitasMostrar.map((cita) => (
           <AppointmentItem
             nombre={cita.nombre}

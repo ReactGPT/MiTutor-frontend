@@ -288,7 +288,7 @@ const PageProgramasDeTutoriaTutor = () => {
     <div className="flex flex-col gap-5 w-full">
       <SearchInput placeholder="Programa de Tutoria" onSearch={handleSearch} />
 
-      <div className="w-full flex flex-col gap-5">
+      <div className="w-full h-[80%] flex flex-col gap-5">
         {currentPrograms.map((program) => (
           <TutoringProgramCard key={program.tutoringProgramId} data={program} />
         ))}

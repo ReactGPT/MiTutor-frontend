@@ -3,8 +3,11 @@ import Button from '../../../components/Button';
 import FilterComponent from '../../../components/FilterComponent';
 import Calendario from '../../../components/Calendario';
 import ModalBase from '../../../components/Tutor/ModalBase';
-import { Datepicker, Dropdown, Label, Radio, TextInput } from 'flowbite-react';
+import Select from 'react-dropdown-select';
+import { Datepicker, Label, Radio, TextInput, Textarea } from 'flowbite-react';
 import { SaveIcon } from '../../../assets';
+import { AgGridReact } from 'ag-grid-react';
+import { ColDef } from 'ag-grid-community';
 
 
 const citas = [
@@ -75,6 +78,27 @@ interface Cita {
 }
 
 const PageCalendarioTutor = () => {
+  //Datos Tabla
+  const defaultColDef = {
+    suppressHeaderMenuButton: true,
+    flex: 1,
+    sortable: true,
+    resizable: true,
+    cellStyle: {
+      textAlign: 'center',
+      justifyContent: 'center',
+      alignItems: 'center',
+      display: 'flex',
+    },
+  };
+  const columnDefs: ColDef[] = [
+    { headerName: 'Código Alumno', field: 'cod_alumno', maxWidth: 150 },
+    { headerName: 'Nombre', field: 'nombre_alumno' },
+    { headerName: 'Facultad/Especialidad', field: 'unidad_academica' },
+  ];
+  const rowData = null;
+  //
+
   //Modal de seleccion de horario
   const [isModalHorarioOpen, setIsModalHorarioOpen] = useState(false);
   const openModalHorario = () => setIsModalHorarioOpen(true);
@@ -116,31 +140,68 @@ const PageCalendarioTutor = () => {
 
       {/* Modal de seleccion de fecha y hora */}
       <ModalBase isOpen={isModalHorarioOpen} onClose={closeModalHorario}>
-        <div className="flex items-center justify-between pb-2 border-b rounded-t font-roboto">
-          <h3 className="text-lg font-semibold text-gray-900">
-            Seleccionar horario
-          </h3>
-        </div>
+        <div className="flex flex-col p-4 gap-2  border-custom shadow-custom bg-[rgba(255,255,255,0.50)]">
+          <div className="flex items-center justify-center font-roboto">
+            <h3 className="text-xl font-semibold text-gray-900">
+              Seleccionar horario
+            </h3>
+          </div>
 
-        <div className="flex flex-col p-4 gap-2 pt-2">
           <Datepicker inline className="font-roboto" language='es-PE' showClearButton={false} showTodayButton={false} />
           <label className="font-roboto text-sm font-medium text-gray-900 mb-2 block">
             Escoge la hora
           </label>
-          <ul id="timetable" className="grid w-full grid-cols-3 gap-2 mb-5">
+          <ul id="timetable" className="grid w-full grid-cols-3 gap-2 mb-2">
             <li>
               <input type="radio" id="10-am" value="" className="hidden peer" name="timetable" />
-              <label htmlFor="10-am" className="inline-flex items-center justify-center w-full px-2 py-1 text-sm font-medium text-center hover:text-gray-900 bg-white border rounded-lg cursor-pointer text-gray-500 border-gray-200 hover:bg-gray-50">
+              <label
+                className="inline-flex items-center justify-center w-full px-2 py-1 text-sm font-medium text-center hover:text-gray-900 dark:hover:text-white bg-white dark:bg-gray-800 border rounded-lg cursor-pointer text-gray-500 border-gray-200 dark:border-gray-700 dark:peer-checked:border-blue-500 peer-checked:border-blue-700 dark:hover:border-gray-600 dark:peer-checked:text-blue-500 peer-checked:bg-blue-50 peer-checked:text-blue-700 hover:bg-gray-50 dark:text-gray-400 dark:hover:bg-gray-600 dark:peer-checked:bg-blue-900">
                 10:00 AM
+              </label>
+            </li>
+            <li>
+              <input type="radio" id="10-30-am" value="" className="hidden peer" name="timetable" />
+              <label
+                className="inline-flex items-center justify-center w-full px-2 py-1 text-sm font-medium text-center hover:text-gray-900 dark:hover:text-white bg-white dark:bg-gray-800 border rounded-lg cursor-pointer text-gray-500 border-gray-200 dark:border-gray-700 dark:peer-checked:border-blue-500 peer-checked:border-blue-700 dark:hover:border-gray-600 dark:peer-checked:text-blue-500 peer-checked:bg-blue-50 peer-checked:text-blue-700 hover:bg-gray-50 dark:text-gray-400 dark:hover:bg-gray-600 dark:peer-checked:bg-blue-900">
+                10:30 AM
+              </label>
+            </li>
+            <li>
+              <input type="radio" id="11-am" value="" className="hidden peer" name="timetable" />
+              <label
+                className="inline-flex items-center justify-center w-full px-2 py-1 text-sm font-medium text-center hover:text-gray-900 dark:hover:text-white bg-white dark:bg-gray-800 border rounded-lg cursor-pointer text-gray-500 border-gray-200 dark:border-gray-700 dark:peer-checked:border-blue-500 peer-checked:border-blue-700 dark:hover:border-gray-600 dark:peer-checked:text-blue-500 peer-checked:bg-blue-50 peer-checked:text-blue-700 hover:bg-gray-50 dark:text-gray-400 dark:hover:bg-gray-600 dark:peer-checked:bg-blue-900">
+                11:00 AM
+              </label>
+            </li>
+            <li>
+              <input type="radio" id="11-30-am" value="" className="hidden peer" name="timetable" />
+              <label
+                className="inline-flex items-center justify-center w-full px-2 py-1 text-sm font-medium text-center hover:text-gray-900 dark:hover:text-white bg-white dark:bg-gray-800 border rounded-lg cursor-pointer text-gray-500 border-gray-200 dark:border-gray-700 dark:peer-checked:border-blue-500 peer-checked:border-blue-700 dark:hover:border-gray-600 dark:peer-checked:text-blue-500 peer-checked:bg-blue-50 peer-checked:text-blue-700 hover:bg-gray-50 dark:text-gray-400 dark:hover:bg-gray-600 dark:peer-checked:bg-blue-900">
+                11:30 AM
+              </label>
+            </li>
+            <li>
+              <input type="radio" id="12-am" value="" className="hidden peer" name="timetable" />
+              <label
+                className="inline-flex items-center justify-center w-full px-2 py-1 text-sm font-medium text-center hover:text-gray-900 dark:hover:text-white bg-white dark:bg-gray-800 border rounded-lg cursor-pointer text-gray-500 border-gray-200 dark:border-gray-700 dark:peer-checked:border-blue-500 peer-checked:border-blue-700 dark:hover:border-gray-600 dark:peer-checked:text-blue-500 peer-checked:bg-blue-50 peer-checked:text-blue-700 hover:bg-gray-50 dark:text-gray-400 dark:hover:bg-gray-600 dark:peer-checked:bg-blue-900">
+                12:00 AM
+              </label>
+            </li>
+            <li>
+              <input type="radio" id="12-30-pm" value="" className="hidden peer" name="timetable" />
+              <label
+                className="inline-flex items-center justify-center w-full px-2 py-1 text-sm font-medium text-center hover:text-gray-900 dark:hover:text-white bg-white dark:bg-gray-800 border rounded-lg cursor-pointer text-gray-500 border-gray-200 dark:border-gray-700 dark:peer-checked:border-blue-500 peer-checked:border-blue-700 dark:hover:border-gray-600 dark:peer-checked:text-blue-500 peer-checked:bg-blue-50 peer-checked:text-blue-700 hover:bg-gray-50 dark:text-gray-400 dark:hover:bg-gray-600 dark:peer-checked:bg-blue-900">
+                12:30 PM
               </label>
             </li>
           </ul>
           <div className="flex justify-around">
             <Button text="Cancelar" variant="warning" onClick={closeModalHorario} />
-            <Button text="Guardar" onClick={nextModal} />
+            <Button text="Continuar" onClick={nextModal} />
           </div>
         </div>
       </ModalBase>
+
       {/* Modal de seleccionar Tutoria y participantes */}
       <ModalBase isOpen={isModalSeleccionOpen} onClose={closeModalSeleccion}>
         <div className="flex flex-col w-[990px] h-[550px] gap-5">
@@ -172,7 +233,7 @@ const PageCalendarioTutor = () => {
               <div className="block">
                 <Label value="Motivo de Tutoría" className='font-roboto text-primary' />
               </div>
-              <TextInput type="text" />
+              <Textarea className="max-h-[105px] min-h-[50px]" />
 
               <div className="block">
                 <Label value="Modalidad" className='font-roboto text-primary' />
@@ -197,9 +258,51 @@ const PageCalendarioTutor = () => {
                 <Label value="Unidad" className='font-roboto text-primary' />
               </div>
 
+              <Select
+                labelField='text'
+                valueField='text'
+                options={[{ key: "eeggcc", text: "Estudios Generales Ciencias", value: "eeggcc" }, { key: "faci", text: "Ciencias e Ingenieria", value: "faci" }, { key: "inf", text: "Ingenieria Informatica", value: "inf" }]}
+                values={[]}
+                onChange={() => { }}
+                placeholder="Selecciona Unidad"
+                searchable={false}
+                className="bg-white text-sm"
+                dropdownPosition="top"
+              />
 
             </div>
-            <div className="flex-1 shadow-custom border-custom bg-[rgba(255,255,255,0.50)] p-4">
+            <div className="flex-1 shadow-custom border-custom bg-[rgba(255,255,255,0.50)] p-4 flex flex-col gap-2">
+              <label className="text-2xl font-semibold font-roboto text-gray-900">
+                Programa de Tutoría
+              </label>
+
+              <Select
+                labelField='text'
+                valueField='text'
+                options={[{ key: "eeggcc", text: "Programa de EEGGCC", value: "eeggcc" }, { key: "faci", text: "Feria de Empleabilidad", value: "faci" }, { key: "inf", text: "Programa de Cachimbos", value: "inf" }]}
+                values={[]}
+                onChange={() => { }}
+                placeholder="Selecciona Programa de Tutoría"
+                searchable={false}
+                className="bg-white text-sm"
+              />
+
+              <label className="text-2xl font-semibold font-roboto text-gray-900">
+                Participantes
+              </label>
+
+              {/* Tabla */}
+
+              <div className='flex w-full h-[75%] ag-theme-alpine ag-theme-alpine2 '>
+                <div className='w-full h-full'>
+                  <AgGridReact
+                    defaultColDef={defaultColDef}
+                    columnDefs={columnDefs}
+                    rowData={rowData}
+                  />
+                </div>
+
+              </div>
 
             </div>
           </div>

@@ -15,7 +15,7 @@ const ModalBase: React.FC<ModalProps> = ({ isOpen, onClose, children }) => {
           <div className="flex items-center justify-center min-h-screen px-4 text-center">
             <Dialog.Overlay className="fixed inset-0 bg-black opacity-50" />
 
-            <div className="z-10 inline-block p-4 my-8 text-left align-middle bg-blue-200 rounded-lg shadow-custom border-custom">
+            <div className="z-10 inline-block p-4 my-8 text-left align-middle bg-[rgb(209,228,254)] rounded-lg shadow-custom border-custom">
 
               {children}
 

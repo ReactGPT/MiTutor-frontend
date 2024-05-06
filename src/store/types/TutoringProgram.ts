@@ -1,7 +1,7 @@
 export type TutoringProgram = {
-  tutorId: number;
-  tutorProgramTutorTypeId: number;
-  tutoringProgramId: number;
+  tutorId?: number;
+  tutorProgramTutorTypeId?: number;
+  tutoringProgramId?: number;
   faceToFace: boolean;
   groupBased: boolean;
   individualBased: boolean;
@@ -12,6 +12,6 @@ export type TutoringProgram = {
   facultyName: string;
   specialtyId: number;
   specialtyName: string;
-  tutorTypeId: number;
-  tutorTypeDescription: string;
+  tutorTypeId?: number;
+  tutorTypeDescription?: string;
 };

@@ -12,6 +12,10 @@ import { useNavigate } from 'react-router-dom';
 export default function PageProgramasTutoriaMaestro() {
     const navigate=useNavigate();
     
+    useEffect(()=>{
+        
+    },[])
+
     const defaultColDef = {
         suppressHeaderMenuButton: true,
         flex: 1,
@@ -118,21 +122,19 @@ export default function PageProgramasTutoriaMaestro() {
 ];
 
     return (
-    <div className='flex w-full h-full flex-col space-y-10 mt-5'>
+    <div className='flex w-full h-full flex-col space-y-10 mt-10'>
         <div className='flex w-full h-[10%]'>
             <ProgramaTutoríaSearchBar/>
         </div>
-        <div className='flex w-full h-[75%] ag-theme-alpine ag-theme-alpine2 '>
+        <div className='flex w-full h-[80%] ag-theme-alpine'>
             <div className='w-full h-full'>
                 <AgGridReact
                     defaultColDef={defaultColDef}
                     columnDefs={columnDefs}
                     rowData={rowData}
                 />
-            </div>
-            
-        </div>
-        
+            </div>            
+        </div>        
     </div>
   )
 }

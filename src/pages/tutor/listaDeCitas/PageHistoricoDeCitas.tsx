@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { useEffect } from 'react';
 import AppointmentItem from "../../../components/Tutor/AppointmentItem";
 import Pagination from "../../../components/Pagination";
 import { SearchInput } from "../../../components";
@@ -33,7 +32,6 @@ const PageHistoricoDeCitas = () => {
   const itemsPerPage = 5;
   const [searchText, setSearchText] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
-  const [totalItems, setTotalItems] = useState(listaCita.length);
 
   const citasFiltradas = listaCita.filter(cita =>
     cita.nombre.toLowerCase().includes(searchText.toLowerCase())
@@ -83,7 +81,7 @@ const PageHistoricoDeCitas = () => {
 
       <Pagination
         currentPage={currentPage}
-        totalItems={totalItems}
+        totalItems={citasFiltradas.length}
         itemsPerPage={itemsPerPage}
         onPageChange={handlePageChange}
       />

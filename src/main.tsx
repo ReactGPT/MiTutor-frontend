@@ -12,6 +12,7 @@ import PageHistoricoDeCitas from './pages/tutor/listaDeCitas/PageHistoricoDeCita
 import PageListaDeCitas from './pages/tutor/listaDeCitas/PageListaDeCitas.tsx';
 import PageProgTutoria from './pages/coordinador/programasDeTutoria/PageProgTutoria.tsx';
 import PageProgramasTutoriaMaestro from './pages/coordinador/programasDeTutoria/PageProgramasTutoriaMaestro.tsx';
+import PageDerivacionesHechas from './pages/tutor/miPerfil/PageDerivacionesHechas.tsx';
 
 const router = createBrowserRouter([
   {
@@ -53,6 +54,10 @@ const router = createBrowserRouter([
       {
         path: '/programasDeTutoriaMaestro',
         element: <PageProgramasTutoriaMaestro />,
+      },
+      {
+        path: '/misDerivacionesHechas',
+        element: <PageDerivacionesHechas />
       }
     ],
   },

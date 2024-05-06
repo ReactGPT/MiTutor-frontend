@@ -2,10 +2,11 @@ import React from "react";
 import Button from "../Button";
 import IconDetails from '../../assets/svg/IconDetails';
 
-interface AppointmentItemProps {
+interface AppointmentItemDerivProps {
   nombre: string;
   codigo: string;
-  estado: string;
+  unidad: string;
+  programa: string;
   fecha: string;
   onClick: () => void;
   color: string;
@@ -72,7 +73,7 @@ const controlColor = (color: string, tipo: string) => {
   }
 };
 
-export const AppointmentItem: React.FC<AppointmentItemProps> = ({ nombre, codigo, estado, fecha, onClick, color }) => {
+export const AppointmentItemDeriv: React.FC<AppointmentItemDerivProps> = ({ nombre, codigo, unidad, programa, fecha, onClick, color }) => {
   console.log(color);
   return (
     <div className="w-full h-[20%]">
@@ -92,12 +93,17 @@ export const AppointmentItem: React.FC<AppointmentItemProps> = ({ nombre, codigo
         </div>
 
         <div className="w-[50%] flex">
-          <pre className="font-montserrat text-2xl text-black">Estado:  </pre>
-          <span className={`font-montserrat text-2xl ${controlColor(color, 'text')}`}>{estado}</span>
+          <pre className="font-montserrat text-2xl text-black">Unidad:  </pre>
+          <span className="font-montserrat text-2xl text-primary">{unidad}</span>
+        </div>
+
+        <div className="w-[50%] flex">
+          <pre className="font-montserrat text-2xl text-black">Programa de tutoría:  </pre>
+          <span className="font-montserrat text-2xl">{programa}</span>
         </div>
 
         <div className="w-[50%]">
-          <span className="font-montserrat text-2xl text-black"> Fecha: {fecha} </span>
+          <span className="font-montserrat text-2xl text-black"> Fecha Derivación: {fecha} </span>
         </div>
 
         <div className="m-5">
@@ -110,4 +116,4 @@ export const AppointmentItem: React.FC<AppointmentItemProps> = ({ nombre, codigo
 };
 
 
-export default AppointmentItem;
+export default AppointmentItemDeriv;

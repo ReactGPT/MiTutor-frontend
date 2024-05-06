@@ -265,7 +265,7 @@ const tutoringPrograms: TutoringProgram[] = [
 const PageProgramasDeTutoriaTutor = () => {
   const [searchText, setSearchText] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 5;
+  const itemsPerPage = 6;
 
   const handleSearch = (text: string) => {
     setSearchText(text);
@@ -286,9 +286,11 @@ const PageProgramasDeTutoriaTutor = () => {
 
   return (
     <div className="flex flex-col gap-5 w-full">
-      <SearchInput placeholder="Programa de Tutoria" onSearch={handleSearch} />
-
-      <div className="w-full h-[80%] flex flex-col gap-5">
+      <div className="w-full h-[5%]">
+        <SearchInput placeholder="Programa de Tutoria" onSearch={handleSearch} />
+      </div>
+      
+      <div className="w-full h-[95%] flex flex-col gap-5">
         {currentPrograms.map((program) => (
           <TutoringProgramCard key={program.tutoringProgramId} data={program} />
         ))}

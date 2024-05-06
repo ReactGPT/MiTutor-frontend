@@ -53,7 +53,7 @@ const Calendario: React.FC<CalendarioProps> = ({ horaInicio, horaFin, citas }) =
   const rangoDias = `${format(startOfWeek(fecha), 'd MMMM')} - ${format(addDays(primerDiaSemana, 6), 'd MMMM yyyy')}`;
 
   return (
-    <div className="container mx-auto px-4 py-8 font-roboto">
+    <div className="container mx-auto font-roboto">
       <div className="flex justify-between items-center mb-4">
         <button onClick={retrocederSemana} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
           {'<'}

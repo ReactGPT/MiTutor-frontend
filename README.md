@@ -38,4 +38,4 @@ Este comando iniciará el servidor de desarrollo en la URL `http://localhost:517
 
 ## Detener el servidor
 
-1. Para detener el servidor de desarrollo, puedes presionar `Ctrl + C` en la terminal donde se está ejecutando el servidor. Esto detendrá el servidor y liberará el puerto `5173`.
+1. Para detener el servidor de desarrollo, puedes presionar `Ctrl + C` en la terminal donde se está ejecutando el servidor. Esto detendrá el servidor y liberará el puerto `5173`.-

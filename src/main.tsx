@@ -13,6 +13,7 @@ import PageListaDeCitas from './pages/tutor/listaDeCitas/PageListaDeCitas.tsx';
 import PageProgTutoria from './pages/coordinador/programasDeTutoria/PageProgTutoria.tsx';
 import PageProgramasTutoriaMaestro from './pages/coordinador/programasDeTutoria/PageProgramasTutoriaMaestro.tsx';
 import PageAgregarCitasTutoria from './pages/tutor/calendario/PageAgregarCitasTutoria.tsx';
+import PageAgregarDisponibilidadTutor from './pages/tutor/calendario/PageAgregarDisponibilidadTutor.tsx';
 
 const router = createBrowserRouter([
   {
@@ -25,7 +26,7 @@ const router = createBrowserRouter([
       },
       {
         path: '/calendario',
-        element: <PageCalendarioTutor />,
+        element: <PageAgregarDisponibilidadTutor />,
       },
       {
         path: '/agregarCita',

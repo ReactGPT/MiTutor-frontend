@@ -1,14 +1,21 @@
 import React, { useState } from 'react';
 import IconTime from '../../../assets/svg/IconTime';
 import ToggleButton from '../../../components/ToggleButton';
+import { Button } from '../../../components';
+import IconPencil from '../../../assets/svg/IconPencil';
 
 const PageAgregarDisponibilidadTutor: React.FC = () => {
   return (
     <div className="w-full h-full flex flex-col gap-6">
-      <h1 className="flex items-center  text-3xl font-semibold text-black font-roboto">
-        Disponibilidad Semanal
-      </h1>
-      <form className='flex flex-col gap-3'>
+      <div className="flex justify-between">
+        <h1 className="flex items-center  text-3xl font-semibold text-black font-roboto">
+          Disponibilidad Semanal
+        </h1>
+        <div className="flex gap-5">
+          <Button text="Editar" onClick={() => { }} icon={IconPencil} />
+        </div>
+      </div>
+      <div className='flex flex-col gap-3'>
         {/* Horarios */}
         <SeleccionDia day="Lunes" />
         <hr className="border-t border-gray-300"></hr>
@@ -23,7 +30,7 @@ const PageAgregarDisponibilidadTutor: React.FC = () => {
         <SeleccionDia day="Sabado" />
         <hr className="border-t border-gray-300"></hr>
         <SeleccionDia day="Domingo" />
-      </form>
+      </div>
     </div>
   );
 };

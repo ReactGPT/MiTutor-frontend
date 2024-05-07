@@ -26,7 +26,7 @@ const router = createBrowserRouter([
       },
       {
         path: '/calendario',
-        element: <PageAgregarDisponibilidadTutor />,
+        element: <PageCalendarioTutor />,
       },
       {
         path: '/agregarCita',
@@ -59,7 +59,12 @@ const router = createBrowserRouter([
       {
         path: '/programasDeTutoriaMaestro',
         element: <PageProgramasTutoriaMaestro />,
-      }
+      },
+      {
+        path: '/agregarDisponibilidad',
+        element: <PageAgregarDisponibilidadTutor />,
+      },
+
     ],
   },
 ]);

@@ -8,6 +8,7 @@ import { Datepicker, Label, Radio, TextInput, Textarea } from 'flowbite-react';
 import { SaveIcon } from '../../../assets';
 import { AgGridReact } from 'ag-grid-react';
 import { ColDef } from 'ag-grid-community';
+import { useNavigate } from 'react-router-dom';
 
 
 const citas = [
@@ -125,13 +126,20 @@ const PageCalendarioTutor = () => {
     setFilteredCitas(filteredData);
   };
 
+  //ir a disponibilidad
+  const navigate = useNavigate();
+
+  const goToDisponibilidad = () => {
+    navigate('/agregarDisponibilidad');
+  };
+
   return (
     <div className="w-full h-full flex flex-col gap-5">
       <div className="w-full flex items-center justify-between gap-5">
         <FilterComponent citas={citas} onFilter={handleFilter} />
         <div className="flex gap-5">
           <Button onClick={openModalHorario} variant="call-to-action" text='Programar Cita' />
-          <Button onClick={() => null} variant="call-to-action" text='Modificar Disponibilidad' />
+          <Button onClick={goToDisponibilidad} variant="call-to-action" text='Modificar Disponibilidad' />
         </div>
       </div>
       <div className="w-full overflow-auto">

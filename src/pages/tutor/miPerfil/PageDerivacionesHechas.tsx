@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import AppointmentItem, { AppointmentItemDeriv } from "../../../components/Tutor/AppointmentItemDeriv";
+import { AppointmentItemDeriv } from "../../../components/Tutor/AppointmentItemDeriv";
 import Pagination from "../../../components/Pagination";
 import { SearchInput } from "../../../components";
 

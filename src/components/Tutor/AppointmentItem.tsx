@@ -9,6 +9,7 @@ interface AppointmentItemProps {
   fecha: string;
   onClick: () => void;
   color: string;
+  alumno?: string;
 }
 
 const textClasses = {
@@ -72,8 +73,8 @@ const controlColor = (color: string, tipo: string) => {
   }
 };
 
-export const AppointmentItem: React.FC<AppointmentItemProps> = ({ nombre, codigo, estado, fecha, onClick, color }) => {
-  console.log(color);
+export const AppointmentItem: React.FC<AppointmentItemProps> = ({ nombre, codigo, estado, fecha, onClick, color, alumno = null }) => {
+
   return (
     <div className="w-full h-[20%]">
       <div className="w-full h-[90%] flex flex-row justify-right items-center bg-[rgba(235,_236,_250,_1.00)] border-custom drop-shadow-md">
@@ -95,6 +96,11 @@ export const AppointmentItem: React.FC<AppointmentItemProps> = ({ nombre, codigo
           <pre className="font-montserrat text-2xl text-black">Estado:  </pre>
           <span className={`font-montserrat text-2xl ${controlColor(color, 'text')}`}>{estado}</span>
         </div>
+
+        {alumno && <div className="w-[50%] flex">
+          <pre className="font-montserrat text-2xl text-black">Participante:  </pre>
+          <span className="font-montserrat text-2xl">{alumno}</span>
+        </div>}
 
         <div className="w-[50%]">
           <span className="font-montserrat text-2xl text-black"> Fecha: {fecha} </span>

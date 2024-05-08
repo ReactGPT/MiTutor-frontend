@@ -63,14 +63,16 @@ const PageListaDeCitas = () => {
       {/* Item de Cita       */}
 
       <div className="w-full h-[85%]">
-        {citasFiltradasRango.map((cita) => (
+        {citasFiltradasRango.map((cita,index) => (
           <AppointmentItem
+            key={`ap-Item-${index}`}
             nombre={cita.nombre}
             codigo={cita.codigo}
             estado={cita.estado}
             fecha={cita.fecha}
             onClick={() => console.log("Ver más clickeado para", cita.codigo)}
             color={cita.estado}
+            alumno="Jaimito"
           />
         ))}
       </div>

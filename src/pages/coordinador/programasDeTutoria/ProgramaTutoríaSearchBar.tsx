@@ -1,64 +1,157 @@
-import React from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 //import { Button, Cell, Filters } from '../components'
-import { Button } from '../../../components'
-import { AddCircleIcon,MagnifyGlassWhite,ArrowDown } from '../../../assets'
+import { Button, Dropdown } from '../../../components'
+import { AddCircleIcon,MagnifyGlassWhite,ArrowDown, MagnifyGlass } from '../../../assets'
 import { useNavigate } from 'react-router-dom';
-
-
+import { Combobox,InputCell } from '../../../components';
+import { Faculty, Specialty } from '../../../store/types';
 
 
 export default function ProgramaTutoríaSearchBar() {
-    
     const navigate=useNavigate();
-
     const handleClickNuevaTutoria = ()=>{
         navigate("/programasDeTutoriaMaestro/nuevo");
     }
 
-    const handleOnSubmit = ()=>{
+    
+    const specialities = [
+        {
+            id:1,
+            name:"Ing.Informatica",
+            acronym:"INF",
+            numberStudents:153,
+            facultyId:1    
+        },
+        {
+            id:2,
+            name:"Ing.Industrial",
+            acronym:"INF",
+            numberStudents:153,
+            facultyId:2    
+        },
+        {
+            id:3,
+            name:"Ing.Electronica",
+            acronym:"INF",
+            numberStudents:153,
+            facultyId:3    
+        },
+        {
+            id:4,
+            name:"Ing.Civil",
+            acronym:"INF",
+            numberStudents:153,
+            facultyId:1    
+        },
+        {
+            id:5,
+            name:"Ing.Minas",
+            acronym:"INF",
+            numberStudents:153,
+            facultyId:2    
+        },
+        {
+            id:6,
+            name:"Ing.Mecatronica",
+            acronym:"INF",
+            numberStudents:153,
+            facultyId:3    
+        },
+        {
+            id:7,
+            name:"Ing.Mecanica",
+            acronym:"INF",
+            numberStudents:153,
+            facultyId:1    
+        }
+
+    ]
+    const faculties = [
+        {
+            id:1,
+            name:"Ciencias e Ingeniería",
+            acronym:"FACI",
+            numberStudents:50,
+            numberTutors:15
+        },
+        {
+            id:2,
+            name:"Generales Ciencias",
+            acronym:"EE.GG.CC",
+            numberStudents:50,
+            numberTutors:15
+        },
+        {
+            id:3,
+            name:"Humanidades",
+            acronym:"CCHH",
+            numberStudents:50,
+            numberTutors:15
+        },
         
-    }   
+    ]
+    /*const [filters,setFilters] = useState({
+        idSpeciality : null,
+        idFacultty : null,
+        name:null
+    });*/
+
+    
+
+    const [specialitySelected,setSpecialitySelected]= useState<Specialty|null>(null);
+    const [facultySelected,setFacultySelected]= useState<Faculty|null>(null);
+    const [searchQuery,setSearchQuery] = useState<string|null>(null);
+    
+    const specialityOptions = useMemo(()=>{
+        if(!facultySelected?.id){
+            return [...specialities]
+        }
+        else return [...specialities.filter(item=>item.facultyId===facultySelected?.id)] 
+        //: specialities.map((item)=>item)]
+    },[facultySelected]);
+    const handleOnChangeQuery = (value:string|number)=>{
+        if(typeof value ==='string'){
+            setSearchQuery(value);
+        }
+    };
+
+    const handleOnChangeFaculty = (value:Faculty)=>{
+        console.log(specialitySelected?.facultyId);
+        if((facultySelected && facultySelected.id!== value.id)||(!facultySelected && specialitySelected?.facultyId!==value.id)){
+            setSpecialitySelected(null);
+        }
+        setFacultySelected(value);
+    };
+
+    const filters = useMemo(()=>{
+        return {
+            idSpeciality: specialitySelected?.id,
+            idFaculty: facultySelected?.id,
+            name:searchQuery
+        }
+    },[specialitySelected,facultySelected,searchQuery]);
+
+    const handleOnSubmit = (e:React.FormEvent<HTMLFormElement>)=>{
+        e.preventDefault();
+        console.log(filters);
+    };
+
+    useEffect(()=>{
+        //console.log(filters);
+
+    },[filters]);
     return (
         <div className='flex w-full h-full flex-row py-5'>    
-            <form className="w-[70%] h-full">
-                <div className="flex">
-                    <label htmlFor="search-dropdown" 
-                    className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Your Email</label>
-                    <button id="dropdown-button" 
-                            data-dropdown-toggle="dropdown" 
-                            className="flex-shrink-0 z-10 inline-flex items-center py-2.5 px-4 text-sm font-medium text-center text-gray-900 bg-gray-100 border border-gray-300 rounded-s-lg hover:bg-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:focus:ring-gray-700 dark:text-white dark:border-gray-600" 
-                            type="button">All categories 
-                            <ArrowDown className='h-4 w-4'/></button>
-                    <div id="dropdown" className="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700">
-                        <ul className="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdown-button">
-                        <li>
-                            <button type="button" className="inline-flex w-full px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Mockups</button>
-                        </li>
-                        <li>
-                            <button type="button" className="inline-flex w-full px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Templates</button>
-                        </li>
-                        <li>
-                            <button type="button" className="inline-flex w-full px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Design</button>
-                        </li>
-                        <li>
-                            <button type="button" className="inline-flex w-full px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Logos</button>
-                        </li>
-                        </ul>
-                    </div>
-                    <div className="relative w-full">
-                        <input type="search" id="search-dropdown" 
-                            className="block p-2.5 w-full z-20 text-sm text-gray-900 bg-gray-50 rounded-e-lg border-s-gray-50 border-s-2 border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-s-gray-700  dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:border-blue-500" 
-                            placeholder="Ej: Cachimbos Ciencias" 
-                            required 
-                        />
-                        <button type="submit" 
-                                className="absolute top-0 end-0 p-2.5 text-sm font-medium h-full text-white bg-primary rounded-e-lg border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                            <MagnifyGlassWhite size={4}/>
-                            <span className="sr-only">Search</span>
-                        </button>
-                    </div>
-                </div>
-            </form>
+            <form className="w-[70%] max-w-[70%] min-w-[70%] h-full flex flex-row gap-4" onSubmit={handleOnSubmit}>            
+            
+                <Combobox boxSize='w-[250px] ' text='Seleccione una Facultad' options={faculties} onChange={handleOnChangeFaculty} value={facultySelected}/>
+                <Combobox boxSize='w-[300px] ' text='Seleccione una especialidad' options={specialityOptions} onChange={setSpecialitySelected} value={specialitySelected}/>
+                <span className='flex gap-1'>
+                    <InputCell boxSize='w-[250px] h-[37px]' onChange={{tipo:"simple",onChange : handleOnChangeQuery}} />
+                    
+                    <Button onClick={()=>console.log(filters)} icon={MagnifyGlass} iconSize={4}/>
+                </span>
+                </form>
             <div className='flex w-[30%] h-12 justify-end'>
                 <Button onClick={handleClickNuevaTutoria} text="Nueva Tutoria" icon={AddCircleIcon}/>
             </div>

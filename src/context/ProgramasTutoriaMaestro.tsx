@@ -7,11 +7,15 @@ type ProgramasTutoriaMaestroContextType = {
     fetchData : ()=>Promise<void>;
 }
 
-export const ProgramasTutoriasMaestroContext = createContext<ProgramasTutoriaMaestroContextType>({
+const ProgramasTutoriasMaestroContext = createContext<ProgramasTutoriaMaestroContextType>({
     data:[],
     fetchData : async()=>{}
 })
-
-//export const ProgramasTutoriaMaestroProvider : React.FC = ({children}=>{
-
-//},[]);
+type ContextProps = {
+    children: React.ReactElement;
+};
+/*
+function ProgramasTutoriaMaestroProvider = ({children}: ContextProps){
+    const value:ProgramasTutoriaMaestroContextType = use
+    return <ProgramasTutoriasMaestroContext.Provider value={value}>{children}</ProgramasTutoriasMaestroContext.Provider>;
+};*/

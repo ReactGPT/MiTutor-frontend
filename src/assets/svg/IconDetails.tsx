@@ -1,7 +1,9 @@
 type IconProps = {
-    className?: string;
-    size?: number;
-};
+    className?:string;
+    size?:number;
+    fill?:string;
+  }
+  
 
 function IconDetails({
     className = "",

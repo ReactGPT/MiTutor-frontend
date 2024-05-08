@@ -6,6 +6,6 @@ import Dropdown from "./Dropdown";
 import Modal from "./Modal";
 import SearchInput from "./SearchInput";
 import FilterComponent from "./FilterComponent";
-
-
-export {Button,Landing,Sidebar,Spinner,Dropdown,Modal,SearchInput,FilterComponent};
+import Combobox from "./Combobox";
+import InputCell from "./InputCell";
+export {Button,Landing,Sidebar,Spinner,Dropdown,Modal,SearchInput,FilterComponent,Combobox,InputCell};

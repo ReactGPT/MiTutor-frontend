@@ -10,8 +10,8 @@ import MagnifyGlassWhite from './svg/MagnifyGlassWhite';
 import ArrowDown from './svg/ChevronDownIcon';
 import SaveIcon from './svg/SaveIcon';
 import TrashIcon from './svg/DeleteIcon';
-
-
+import EyeIcon from './svg/EyeIcon';
+import EditIcon from './svg/EditIcon';
 
 //import {ReactComponent as ArrowDown} from './svg/chevronDownIcon.svg'
 //import {ReactComponent as CloseIcon} from './svg/closeIcon.svg';
@@ -27,5 +27,7 @@ export{
     MagnifyGlassWhite,
     ArrowDown,
     SaveIcon,
-    TrashIcon
+    TrashIcon,
+    EyeIcon,
+    EditIcon
 }

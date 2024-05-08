@@ -1,4 +1,5 @@
 export type TutoringProgram = {
+  id?:number;
   tutorId?: number;
   tutorProgramTutorTypeId?: number;
   tutoringProgramId?: number;

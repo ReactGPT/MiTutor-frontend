@@ -3,6 +3,7 @@ import { Button } from '../../../components'
 import ProgramaTutoriaBox1 from './ProgramaTutoriaBox1'
 import ProgramaTutoriaBox2 from './ProgramaTutoriaBox2'
 
+
 export default function PageProgTutoria() {
   return (
     <div className='flex flex-col w-full h-full gap-4'>
@@ -12,7 +13,6 @@ export default function PageProgTutoria() {
       <div id="ProgramaTutoriaBox2" className='flex flex-row w-full h-[70%]'>
         <ProgramaTutoriaBox2/>
       </div>
-      
     </div>
   )
 }

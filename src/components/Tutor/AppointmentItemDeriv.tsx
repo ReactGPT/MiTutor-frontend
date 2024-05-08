@@ -2,14 +2,14 @@ import React from "react";
 import Button from "../Button";
 import IconDetails from '../../assets/svg/IconDetails';
 
-interface AppointmentItemProps {
+interface AppointmentItemDerivProps {
   nombre: string;
   codigo: string;
-  estado: string;
+  unidad: string;
+  programa: string;
   fecha: string;
   onClick: () => void;
   color: string;
-  alumno?: string;
 }
 
 const textClasses = {
@@ -73,8 +73,8 @@ const controlColor = (color: string, tipo: string) => {
   }
 };
 
-export const AppointmentItem: React.FC<AppointmentItemProps> = ({ nombre, codigo, estado, fecha, onClick, color, alumno = null }) => {
-
+export const AppointmentItemDeriv: React.FC<AppointmentItemDerivProps> = ({ nombre, codigo, unidad, programa, fecha, onClick, color }) => {
+  console.log(color);
   return (
     <div className="w-full h-[20%]">
       <div className="w-full h-[90%] flex flex-row justify-right items-center bg-[rgba(235,_236,_250,_1.00)] border-custom drop-shadow-md">
@@ -93,17 +93,17 @@ export const AppointmentItem: React.FC<AppointmentItemProps> = ({ nombre, codigo
         </div>
 
         <div className="w-[50%] flex">
-          <pre className="font-montserrat text-2xl text-black">Estado:  </pre>
-          <span className={`font-montserrat text-2xl ${controlColor(color, 'text')}`}>{estado}</span>
+          <pre className="font-montserrat text-2xl text-black">Unidad:  </pre>
+          <span className="font-montserrat text-2xl text-primary">{unidad}</span>
         </div>
 
-        {alumno && <div className="w-[50%] flex">
-          <pre className="font-montserrat text-2xl text-black">Participante:  </pre>
-          <span className="font-montserrat text-2xl">{alumno}</span>
-        </div>}
+        <div className="w-[50%] flex">
+          <pre className="font-montserrat text-2xl text-black">Programa de tutoría:  </pre>
+          <span className="font-montserrat text-2xl">{programa}</span>
+        </div>
 
         <div className="w-[50%]">
-          <span className="font-montserrat text-2xl text-black"> Fecha: {fecha} </span>
+          <span className="font-montserrat text-2xl text-black"> Fecha Derivación: {fecha} </span>
         </div>
 
         <div className="m-5">
@@ -116,4 +116,4 @@ export const AppointmentItem: React.FC<AppointmentItemProps> = ({ nombre, codigo
 };
 
 
-export default AppointmentItem;
+export default AppointmentItemDeriv;

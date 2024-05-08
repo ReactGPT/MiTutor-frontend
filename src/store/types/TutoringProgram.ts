@@ -1,6 +1,6 @@
 export type TutoringProgram = {
-  tutorId: number;
-  tutorProgramTutorTypeId: number;
+  tutorId?: number;
+  tutorProgramTutorTypeId?: number;
   tutoringProgramId: number;
   faceToFace: boolean;
   groupBased: boolean;

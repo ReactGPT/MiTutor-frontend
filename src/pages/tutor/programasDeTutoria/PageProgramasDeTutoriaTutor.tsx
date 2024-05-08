@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { SearchInput } from "../../../components";
 import TutoringProgramCard from "../../../components/Tutor/TutoringProgramCard";
 import { TutoringProgram } from "../../../store/types/TutoringProgram";
 import Pagination from "../../../components/Pagination";
+import { useProgramaDeTutoria } from "../../../store/hooks/useProgramaDeTutoria";
 
 const tutoringPrograms: TutoringProgram[] = [
   {
@@ -263,18 +264,34 @@ const tutoringPrograms: TutoringProgram[] = [
 ];
 
 const PageProgramasDeTutoriaTutor = () => {
+
+  const {programaTutoria,fetchProgramaDeTutoria} = useProgramaDeTutoria(1);
+
+  useEffect(() => {
+    fetchProgramaDeTutoria();
+  },[])
+  
+
   const [searchText, setSearchText] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 5;
+  const itemsPerPage = 6;
 
   const handleSearch = (text: string) => {
     setSearchText(text);
     setCurrentPage(1);
   };
 
-  const filteredPrograms = tutoringPrograms.filter(program =>
-    program.programName.toLowerCase().includes(searchText.toLowerCase())
-  );
+  // const filteredPrograms = programaTutoria?.filter(program =>
+  //   program.programName.toLowerCase().includes(searchText.toLowerCase())
+  // );
+
+  const filteredPrograms = useMemo(() => {
+    console.log(programaTutoria);
+    return programaTutoria.filter(program =>
+      program.programName.toLowerCase().includes(searchText.toLowerCase())
+    )
+
+  },[searchText])
 
   const indexOfLastProgram = currentPage * itemsPerPage;
   const indexOfFirstProgram = indexOfLastProgram - itemsPerPage;
@@ -286,9 +303,11 @@ const PageProgramasDeTutoriaTutor = () => {
 
   return (
     <div className="flex flex-col gap-5 w-full">
-      <SearchInput placeholder="Programa de Tutoria" onSearch={handleSearch} />
-
-      <div className="w-full flex flex-col gap-5">
+      <div className="w-full h-[5%]">
+        <SearchInput placeholder="Programa de Tutoria" onSearch={handleSearch} />
+      </div>
+      
+      <div className="w-full h-[95%] flex flex-col gap-5">
         {currentPrograms.map((program) => (
           <TutoringProgramCard key={program.tutoringProgramId} data={program} />
         ))}

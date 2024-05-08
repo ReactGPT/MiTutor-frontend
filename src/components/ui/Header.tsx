@@ -1,11 +1,11 @@
 import IconBack from "../../assets/svg/IconBack";
 import IconBell from "../../assets/svg/IconBell";
+import { useTitle } from "../../context/TitleContext";
 
-interface HeaderProps {
-  title: string;
-}
+const Header: React.FC = () => {
 
-const Header: React.FC<HeaderProps> = ({ title }) => {
+  const { title } = useTitle();
+
   return (
     <div className="w-full h-full flex flex-row justify-between items-center bg-[rgba(255,_255,_255,_0.50)] border-custom drop-shadow-md p-5">
       <button onClick={() => { }} className="bg-white text-primary rounded-full p-2.5 size-13">

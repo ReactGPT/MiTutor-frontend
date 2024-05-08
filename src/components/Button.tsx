@@ -9,14 +9,14 @@ type ButtonProps = {
   text?: string;
 };
 
-const Button = ({
+const Button: React.FC<ButtonProps> = ({
   variant = 'call-to-action',
   onClick,
   icon,
   iconSize = 6,
   disabled = false,
   text
-}: ButtonProps) => {
+}) => {
   let buttonClass = 'flex items-center justify-between h-[42px] gap-2 px-3 py-2 shadow-custom rounded-xl font-roboto text-sm font-medium transition-all duration-200 ease-linear';
   let iconClass = 'text-2xl';
   const Icon = icon;

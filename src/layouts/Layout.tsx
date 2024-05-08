@@ -1,4 +1,3 @@
-import { useState, useEffect } from "react";
 import Sidebar from "../components/Sidebar";
 import Header from "../components/ui/Header";
 import { DASHBOARD_SIDEBAR_LINKS } from "../data/navigation";

@@ -7,9 +7,6 @@ import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-alpine.css';
 import { ColDef } from 'ag-grid-community';
 import Button from '../Button';
-import {
-    BiMenu
-} from "react-icons/bi";
 import { DetailsIcon } from '../../assets';
 import React from 'react';
 

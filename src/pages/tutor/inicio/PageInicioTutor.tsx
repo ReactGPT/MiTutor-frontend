@@ -1,10 +1,10 @@
 import React from 'react';
 import { AddCircleIcon } from '../../../assets';
 import Button from '../../../components/Button';
-const PageInicioTutor = () => {
+const PageInicioTutor: React.FC = () => {
   return (
     <div className="w-full h-full">
-      <Button onClick={()=>{}} icon={AddCircleIcon}/>
+      <Button onClick={() => { }} icon={AddCircleIcon} />
     </div>
   );
 };

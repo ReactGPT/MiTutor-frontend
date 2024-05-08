@@ -3,7 +3,7 @@ import InputTutor from '../../../components/Tutor/InputTutor';
 import TablaDetalle from '../../../components/Tutor/TablaDetalle';
 import { useNavigate } from "react-router-dom";
 
-const PageDetalleProgramaTutoriaTutor = () => {
+const PageDetalleProgramaTutoriaTutor: React.FC = () => {
   const navigate = useNavigate();
   const toDetail = () => {
     navigate('/miPerfil');

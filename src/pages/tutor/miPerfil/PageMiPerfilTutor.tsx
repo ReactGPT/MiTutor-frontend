@@ -2,7 +2,6 @@ import { useState } from 'react';
 import Button from '../../../components/Button';
 import InputTutor from '../../../components/Tutor/InputTutor';
 import imagenTutor from '/src/assets/Tutor/usuario.jpg';
-import ModalTutor from '../../../components/Tutor/ModalTutor';
 import ModalDesactivar from '../../../components/Tutor/ModalDesactivar';
 
 

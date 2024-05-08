@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import Button from '../../../components/Button';
-import FilterComponent from '../../../components/FilterComponent';
 import Calendario from '../../../components/Calendario';
 import { useNavigate } from 'react-router-dom';
 import ProgramarCitaTutor from '../../../components/Tutor/ProgramarCitaTutor';
+import { FilterComponent } from '../../../components';
 
 
 const citas = [
@@ -90,7 +90,7 @@ const PageCalendarioTutor = () => {
   return (
     <div className="w-full h-full flex flex-col gap-5">
       <div className="w-full flex items-center justify-end gap-5">
-        {/* <FilterComponent citas={citas} onFilter={handleFilter} /> */}
+        <FilterComponent citas={citas} onFilter={handleFilter} />
         <div className="flex gap-5">
           <ProgramarCitaTutor />
           <Button onClick={goToDisponibilidad} variant="call-to-action" text='Modificar Disponibilidad' />

@@ -1,11 +1,11 @@
-import { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { SearchInput } from "../../../components";
 import TutoringProgramCard from "../../../components/Tutor/TutoringProgramCard";
-import { TutoringProgram } from "../../../store/types/TutoringProgram";
+//import { TutoringProgram } from "../../../store/types/TutoringProgram";
 import Pagination from "../../../components/Pagination";
 import { useProgramaDeTutoria } from "../../../store/hooks/useProgramaDeTutoria";
 
-const tutoringPrograms: TutoringProgram[] = [
+/* const tutoringPrograms: TutoringProgram[] = [
   {
     tutorId: 1,
     tutorProgramTutorTypeId: 1,
@@ -261,16 +261,16 @@ const tutoringPrograms: TutoringProgram[] = [
     tutorTypeId: 1,
     tutorTypeDescription: 'Tutor Fijo',
   },
-];
+]; */
 
-const PageProgramasDeTutoriaTutor = () => {
+const PageProgramasDeTutoriaTutor: React.FC = () => {
 
-  const {programaTutoria,fetchProgramaDeTutoria} = useProgramaDeTutoria(1);
+  const { programaTutoria, fetchProgramaDeTutoria } = useProgramaDeTutoria(1);
 
   useEffect(() => {
     fetchProgramaDeTutoria();
-  },[])
-  
+  }, []);
+
 
   const [searchText, setSearchText] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
@@ -289,9 +289,9 @@ const PageProgramasDeTutoriaTutor = () => {
     console.log(programaTutoria);
     return programaTutoria.filter(program =>
       program.programName.toLowerCase().includes(searchText.toLowerCase())
-    )
+    );
 
-  },[searchText])
+  }, [searchText]);
 
   const indexOfLastProgram = currentPage * itemsPerPage;
   const indexOfFirstProgram = indexOfLastProgram - itemsPerPage;
@@ -306,7 +306,7 @@ const PageProgramasDeTutoriaTutor = () => {
       <div className="w-full h-[5%]">
         <SearchInput placeholder="Programa de Tutoria" onSearch={handleSearch} />
       </div>
-      
+
       <div className="w-full h-[95%] flex flex-col gap-5">
         {currentPrograms.map((program) => (
           <TutoringProgramCard key={program.tutoringProgramId} data={program} />

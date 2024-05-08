@@ -1,8 +1,5 @@
 import Button from "./Button";
 import { useNavigate } from "react-router-dom";
-import {
-  BiMenu
-} from "react-icons/bi";
 import { DetailsIcon } from "../assets";
 interface CardProps {
   title: string;

@@ -2,13 +2,14 @@ import logo from '../assets/logo.png';
 import { BiLogOut } from 'react-icons/bi';
 import { SidebarLink } from '../store/types/SidebarLink';
 import { NavLink } from 'react-router-dom';
+import { useTitle } from '../context/TitleContext';
 
 type SidebarProps = {
-  setTitle: (title: string) => void;
   sidebarLinks: SidebarLink[];
 };
 
-const Sidebar = ({ setTitle, sidebarLinks }: SidebarProps) => {
+const Sidebar = ({ sidebarLinks }: SidebarProps) => {
+  const { setTitle } = useTitle();
   return (
     <nav className='h-full w-full bg-[rgba(255,_255,_255,_0.50)] flex flex-col text-black sidebar-shaddow gap-6 px-3 py-7 select-none'>
       <div className='flex items-center justify-center gap-3 px-4 py-3 font-montserrat min-h-[60px]'>

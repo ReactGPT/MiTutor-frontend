@@ -2,12 +2,12 @@ import React from 'react';
 
 type ButtonProps = {
   variant?: 'call-to-action' | 'primario' | 'secundario' | 'terciario' | 'warning';
-  onClick: () => void;
+  onClick?: () => void;
   icon?: any;
   iconSize?: number;
   disabled?: boolean;
   text?: string;
-};
+} & React.ButtonHTMLAttributes<HTMLButtonElement>
 
 const Button = ({
   variant = 'call-to-action',
@@ -15,10 +15,12 @@ const Button = ({
   icon,
   iconSize = 6,
   disabled = false,
-  text
+  text,
+  ...props
 }: ButtonProps) => {
+  
   let buttonClass = 'flex items-center justify-between h-[42px] gap-2 px-3 py-2 shadow-custom rounded-xl font-roboto text-sm font-medium transition-all duration-200 ease-linear';
-  let iconClass = 'text-2xl';
+  const iconClass = 'text-2xl';
   const Icon = icon;
   switch (variant) {
     case 'call-to-action':
@@ -45,7 +47,7 @@ const Button = ({
   }
 
   return (
-    <button className={buttonClass} onClick={onClick} disabled={disabled}>
+    <button  className={buttonClass} onClick={onClick} disabled={disabled} {...props}>
       {//icon && <span className={iconClass}>{icon}</span>
       }
       {icon && <Icon className={iconClass} size={iconSize}></Icon>}

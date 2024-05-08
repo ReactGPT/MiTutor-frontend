@@ -17,7 +17,12 @@ type InputProps = {
 function ResultadoCitaBlock2({className,cita,onChangeCita}:InputProps) {
 
     
-    const [enableAttendance,setEnableAttendance] = useState<Boolean>(false);
+    const [enableAttendance,setEnableAttendance] = useState<boolean>(false);
+
+    const assistanceState = [
+        { name: 'Asistió' },
+        { name: 'Faltó' },
+      ]
     
     const attributesToRender =[
         {
@@ -52,29 +57,39 @@ function ResultadoCitaBlock2({className,cita,onChangeCita}:InputProps) {
     },[])
   return (
     <div className={className}>
-        <div className='flex w-full flex-col h-[30%] border-custom drop-shadow-md p-4'>
+        <div className='flex w-full flex-col justify-between h-[30%] border-custom drop-shadow-md p-4'>
             <h3 className='font-montserrat text-lg font-bold text-primary w-full'>Datos de Cita</h3>
-            {attributesToRender.length>0 && attributesToRender.map((item,index)=>(
-                <span key={`label-${index}`} className='block truncate flex flex-row gap-2 w-full mt-4'>
-                    <label className='font-montserrat text-sm w-[50%] font-bold'>{item.name}</label>
-                    <p className='font-montserrat text-sm w-[50%] justify-begin font-semibold block truncate'>{item.value}</p>
-                </span>
-            ))}
+            <div className='flex flex-col gap-2'>
+                {attributesToRender.length>0 && attributesToRender.map((item)=>(
+                    <div key={`label-${item.name}`} className='flex w-full'>
+                        <label className='font-montserrat text-sm w-[50%] font-bold'>{item.name}</label>
+                        <p className='font-montserrat text-sm w-[50%] justify-begin font-semibold block truncate'>{item.value}</p>
+                    </div>
+                ))}
+            </div>
         </div>
-        <div className='flex w-full flex-col h-[70%] border-custom drop-shadow-md p-4'>
-            <div className='flex w-full h-[40%]'>
-                Comentario Alumno
+        <div className='flex flex-col h-[70%] border-custom drop-shadow-md p-4'>
+        <div className='w-full flex items-center mb-5'>
+                <h3 className='font-montserrat text-lg font-bold text-primary w-full'>Asistencia</h3>
+                <div className='flex gap-4'>
+                    <Combobox disabled={!enableAttendance} name={'Estado'} onChange={()=>{}} options={assistanceState} className='w-[150px]'/>
+                    <Button variant='primario' onClick={()=>{setEnableAttendance(true)}} icon={EditIcon}/>
+                </div>
             </div>
-            <div className='flex w-full h-[40%]'>
-                Comentario Privado
+            <div className='flex flex-col w-full h-[40%] pb-5'>
+                <h3 className='font-montserrat text-lg font-bold text-primary w-full mb-2'>Comentario Alumno</h3>
+                <div className='w-full h-full '>
+                    <textarea placeholder='Comentario respecto al alumno' className='w-full h-full rounded-md resize-none outline-none px-3 py-2 mt-1 font-montserrat text-[90%] border-custom drop-shadow-md font-bold '></textarea>
+                </div>
             </div>
-            <div className='w-full flex h-[20%]'>
-                <Combobox disabled={!enableAttendance} text='Estado' value={null} onChange={()=>{}} options={[]} boxSize='w-[40%]'/>
-                <Button  onClick={()=>{setEnableAttendance(true)}} icon={EditIcon}/>
+            <div className='flex flex-col w-full h-[40%] pb-5'>
+                <h3 className='font-montserrat text-lg font-bold text-primary w-full mb-2'>Comentario Privado</h3>
+                <div className='w-full h-full '>
+                    <textarea placeholder='Comentario respecto al alumno' className='w-full h-full rounded-md resize-none outline-none px-3 py-2 mt-1 font-montserrat text-[90%] border-custom drop-shadow-md font-bold'></textarea>
+                </div>
             </div>
-            
+
         </div>
-        
     </div>
   )
 }

@@ -13,6 +13,7 @@ import PageListaDeCitas from './pages/tutor/listaDeCitas/PageListaDeCitas.tsx';
 import PageProgTutoria from './pages/coordinador/programasDeTutoria/PageProgTutoria.tsx';
 import PageProgramasTutoriaMaestro from './pages/coordinador/programasDeTutoria/PageProgramasTutoriaMaestro.tsx';
 import PageResultadoCitaIndividual from './pages/tutor/resultadoCita/PageResultadoCitaIndividual.tsx';
+import PageMiPerfilAlumno from './pages/alumno/miPerfil/PageMiPerfilAlumno.tsx';
 
 const router = createBrowserRouter([
   {
@@ -58,6 +59,10 @@ const router = createBrowserRouter([
       {
         path: '/resultadoCitaIndividual',
         element:<PageResultadoCitaIndividual/>
+      },
+      {
+        path: '/PerfilAlumno',
+        element:<PageMiPerfilAlumno/>
       },
     ],
   },

@@ -78,11 +78,11 @@ const PageListaDeCitas = () => {
       <div className="w-full h-[65%] min-h-[60%]">
         {arrayCitasMostrar.map((cita) => (
           <AppointmentItem
+            key={cita.codigo}
             nombre={cita.nombre}
             codigo={cita.codigo}
             estado={cita.estado}
             fecha={cita.fecha}
-            onClick={() => console.log("Ver más clickeado para", cita.codigo)}
             color={cita.estado}
           />
         ))}

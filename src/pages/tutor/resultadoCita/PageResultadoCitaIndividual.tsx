@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from 'react'
-import ResultadoCitaBlock1 from './ResultadoCitaBlock1';
+import { useEffect, useState } from 'react'
+import ResultadoCitaBlockAlumno from './ResultadoCitaBlockAlumno';
 import ResultadoCitaBlock2 from './ResultadoCitaBlock2';
 import ResultadoCitaBlock3 from './ResultadoCitaBlock3';
 import { useLocation,useNavigate,useParams } from 'react-router-dom';
 import { Appointment } from '../../../store/types';
+
 type Student = {
     id:number;
     nombre:string;
@@ -43,18 +44,19 @@ const AppointmentAttendanceOptions=[
 ]
 
 
-function pageResultadoCitaIndividual() {
+function PageResultadoCitaIndividual() {
     const navigate = useNavigate();
-    const {state} = useLocation();
-    const {cita} = state;
-    const [citaModified,setCitaModified] = useState<Appointment>(cita);
+    // const {state} = useLocation();
+    // const {cita} = state;
+    const [citaModified,setCitaModified] = useState<Appointment | undefined>({});
     const handleOnChangeCita = (name:string,value:any)=>{
-        setCitaModified({...citaModified,
-            [name]:value
-        })
+        if(citaModified){
+            setCitaModified({...citaModified,
+                [name]:value
+            })
+        }
     }
-    //const [testValue,setTestValue] = useState<any>(state)
-    /*useEffect(()=>{
+    useEffect(()=>{
         const cita={
             id:1,
             date:"08/10/2024",
@@ -76,34 +78,35 @@ function pageResultadoCitaIndividual() {
                 comment:""
             }
         }
-        !!!state && setTestValue({
-            cita:{...cita}
-        })
-    },[]);*/
-    useEffect(()=>{
-        //console.log(paramName);
         setCitaModified({...cita})
-    },[])
+    },[]);
+
     const handleClickVerPerfil= ()=>{
-        //navigate("/");
+        navigate("/PerfilAlumno");
     };
     const handleClickPlanAccion=()=>{
         //navigate("/");
     }
+
   return (
-    <div className='flex flex-col w-full h-full gap-4'>
-        <ResultadoCitaBlock1 
-            className='gap-4 flex w-full h-[10%] min-h-[90px] max-h-[140px] py-4'
-            nombreAlumno={citaModified?.student?.nombre}
-            onClickVerPerfil={handleClickVerPerfil}
-            onClickPlanAccion={handleClickPlanAccion}
-            />
-        <div className='flex w-full h-full max-h-[90%] gap-4'>
-            <ResultadoCitaBlock2 cita={citaModified} onChangeCita={handleOnChangeCita} className='flex w-[50%] h-full flex-col gap-2'/>
-            <ResultadoCitaBlock3 className='flex w-[50%] h-full border-custom drop-shadow-md p-4'/>
-        </div>
+    <div className='w-full'>
+        {citaModified && (
+            <>
+                <ResultadoCitaBlockAlumno 
+                    className='gap-4 flex w-full h-[10%] min-h-[90px] max-h-[140px] py-4'
+                    nombreAlumno={citaModified?.student?.nombre}
+                    onClickVerPerfil={handleClickVerPerfil}
+                    onClickPlanAccion={handleClickPlanAccion}
+                    />
+                <div className='flex w-full h-full max-h-[90%] gap-4'>
+                    <ResultadoCitaBlock2 cita={citaModified} onChangeCita={handleOnChangeCita} className='flex w-[50%] h-full flex-col gap-4'/>
+                    <ResultadoCitaBlock3 className='w-[50%] h-full border-custom drop-shadow-md p-4'/>
+                </div>
+            </>
+
+        )}
     </div>
   )
 }
 
-export default pageResultadoCitaIndividual
+export default PageResultadoCitaIndividual

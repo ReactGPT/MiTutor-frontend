@@ -1,12 +1,13 @@
 import React from "react";
 import Button from "../Button";
+import { NavLink } from "react-router-dom";
 
 interface AppointmentItemProps {
   nombre: string;
   codigo: string;
   estado: string;
   fecha: string;
-  onClick: () => void;
+  onClick?: () => void;
   color: string;
 }
 
@@ -93,9 +94,16 @@ export const AppointmentItem: React.FC<AppointmentItemProps> = ({ nombre, codigo
           <span className="font-montserrat text-2xl text-black"> Fecha: {fecha} </span>
         </div>
 
-        <div className="m-5">
-          <Button variant="primario" onClick={onClick} />
+        <div className="w-[5%]">
+        {
+          (estado === 'Completado' || estado === 'Pendiente') ? (
+              <NavLink to={'/resultadoCitaIndividual'} state={codigo}>
+                <Button variant="primario" />
+              </NavLink>
+          ) : null
+        }
         </div>
+
 
       </div>
     </div>

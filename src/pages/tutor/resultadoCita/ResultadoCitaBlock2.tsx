@@ -79,13 +79,18 @@ function ResultadoCitaBlock2({className,cita,onChangeCita}:InputProps) {
             <div className='flex flex-col w-full h-[40%] pb-5'>
                 <h3 className='font-montserrat text-lg font-bold text-primary w-full mb-2'>Comentario Alumno</h3>
                 <div className='w-full h-full '>
-                    <textarea placeholder='Comentario respecto al alumno' className='w-full h-full rounded-md resize-none outline-none px-3 py-2 mt-1 font-montserrat text-[90%] border-custom drop-shadow-md font-bold '></textarea>
+                    <textarea name='studentAnnotations'value={cita.studentAnnotations} placeholder='Comentario respecto al alumno' onChange={(e)=>{
+                      const {name,value} = e.target;
+                      onChangeCita(name,value);
+                    }}className='w-full h-full rounded-md resize-none outline-none px-3 py-2 mt-1 font-montserrat text-[90%] border-custom drop-shadow-md font-bold '></textarea>
                 </div>
             </div>
             <div className='flex flex-col w-full h-[40%] pb-5'>
                 <h3 className='font-montserrat text-lg font-bold text-primary w-full mb-2'>Comentario Privado</h3>
                 <div className='w-full h-full '>
-                    <textarea placeholder='Comentario respecto al alumno' className='w-full h-full rounded-md resize-none outline-none px-3 py-2 mt-1 font-montserrat text-[90%] border-custom drop-shadow-md font-bold'></textarea>
+                    <textarea name='privateAnnotation'value={cita.privateAnnotation} placeholder='Comentario respecto al alumno' onChange={(e)=>{
+                      const {name,value} = e.target;
+                      onChangeCita(name,value);}} className='w-full h-full rounded-md resize-none outline-none px-3 py-2 mt-1 font-montserrat text-[90%] border-custom drop-shadow-md font-bold'></textarea>
                 </div>
             </div>
 

@@ -1,6 +1,6 @@
 import { Button } from '../../../components';
 import { EyeIcon, MagnifyGlass } from '../../../assets';
-import imagenTutor from "../../../../../../../../src/assets/Tutor/usuario.jpg";
+//import imagenTutor from "../../../../../../../../src/assets/Tutor/usuario.jpg";
 import { NavLink } from 'react-router-dom';
 
 type InputProps = {
@@ -20,7 +20,7 @@ function ResultadoCitaBlockAlumno({className,nombreAlumno,onClickVerPerfil,onCli
             </span>
         <div className="flex">
           <NavLink to={'/PerfilAlumno'}>
-            <img src={imagenTutor} alt="Imagen Tutor" className="w-[40px] h-[40px] rounded-full" />
+            {/* <img src={null} alt="Imagen Tutor" className="w-[40px] h-[40px] rounded-full" /> */}
           </NavLink>
         </div>
         </div>

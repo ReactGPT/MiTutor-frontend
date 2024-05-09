@@ -2,11 +2,14 @@ import { useState } from 'react'
 import { Button, Combobox } from '../../../components';
 import { EditIcon } from '../../../assets';
 import ModalDerivacion from '../../../components/Tutor/ModalDerivacion';
+import { Appointment } from '../../../store/types';
 
 
 
 type InputProps = {
     className:string;
+    cita:Appointment;
+    onChange:(name:string,value:any)=>void;
 }
 
 // const assistanceAreas = [
@@ -21,7 +24,7 @@ type IAssistanceAreas = {
 
 
 
-function ResultadoCitaBlock3({className}:InputProps) {
+function ResultadoCitaBlock3({className,cita,onChange}:InputProps) {
   
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [derivarOptions, setDerivarOptions] = useState([])
@@ -59,13 +62,25 @@ function ResultadoCitaBlock3({className}:InputProps) {
             <div className='flex flex-col w-full h-[35%] pb-5'>
                 <h3 className='font-montserrat text-lg font-bold text-primary w-full mb-2'>Motivos</h3>
                 <div className='w-full h-full '>
-                    <textarea placeholder='Motivos de derivación' className='w-full h-full rounded-md resize-none outline-none px-3 py-2 mt-1 font-montserrat text-[90%] border-custom drop-shadow-md font-bold '></textarea>
+                    <textarea name='reason'value={cita.derivation?.reason} placeholder='Motivos de derivación' onChange={(e)=>{
+                      const {name,value} = e.target;
+                      const derivation = {...cita.derivation};
+                      onChange('derivation',{...derivation,
+                        [name]:value
+                      });
+                    }} className='w-full h-full rounded-md resize-none outline-none px-3 py-2 mt-1 font-montserrat text-[90%] border-custom drop-shadow-md font-bold '></textarea>
                 </div>
             </div>
             <div className='flex flex-col w-full h-[35%] pb-5'>
                 <h3 className='font-montserrat text-lg font-bold text-primary w-full mb-2'>Comentarios</h3>
                 <div className='w-full h-full '>
-                    <textarea placeholder='Comentario respecto al alumno' className='w-full h-full rounded-md resize-none outline-none px-3 py-2 mt-1 font-montserrat text-[90%] border-custom drop-shadow-md font-bold'></textarea>
+                    <textarea name='comment' value={cita.derivation?.comment} placeholder='Comentario respecto al alumno' onChange={(e)=>{
+                      const {name,value} = e.target;
+                      const derivation = {...cita.derivation};
+                      onChange('derivation',{...derivation,
+                        [name]:value
+                      });
+                    }} className='w-full h-full rounded-md resize-none outline-none px-3 py-2 mt-1 font-montserrat text-[90%] border-custom drop-shadow-md font-bold'></textarea>
                 </div>
             </div>
 

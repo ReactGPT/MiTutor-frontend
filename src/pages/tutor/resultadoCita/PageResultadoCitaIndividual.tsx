@@ -46,9 +46,9 @@ const AppointmentAttendanceOptions=[
 
 function PageResultadoCitaIndividual() {
     const navigate = useNavigate();
-    // const {state} = useLocation();
-    // const {cita} = state;
-    const [citaModified,setCitaModified] = useState<Appointment | undefined>({});
+    const {state} = useLocation();
+    const {cita} = state;
+    const [citaModified,setCitaModified] = useState<Appointment>(cita);
     const handleOnChangeCita = (name:string,value:any)=>{
         if(citaModified){
             setCitaModified({...citaModified,
@@ -56,31 +56,34 @@ function PageResultadoCitaIndividual() {
             })
         }
     }
+    // useEffect(()=>{
+    //     const cita={
+    //         id:1,
+    //         date:"08/10/2024",
+    //         startTime:"09:00",
+    //         endTime:"10:00",
+    //         reason:"Futuro Laboral",
+    //         studentProgramId:5,
+    //         studentProgramName:"Programa Vocacional",
+    //         isInPerson:true,
+    //         attendanceId:2,
+    //         studentAnnotations:"El alumnno...zzzz",
+    //         privateAnnotation:"Tomar en cuenta ....zzz",
+    //         student:{
+    //             id:3,
+    //             nombre:"Renato Suarez Campos"
+    //         },
+    //         derivation:{
+    //             reason:"No cumple sus compromisos",
+    //             comment:""
+    //         }
+    //     }
+    //     setCitaModified({...cita})
+    // },[]);
     useEffect(()=>{
-        const cita={
-            id:1,
-            date:"08/10/2024",
-            startTime:"09:00",
-            endTime:"10:00",
-            reason:"Futuro Laboral",
-            studentProgramId:5,
-            studentProgramName:"Programa Vocacional",
-            isInPerson:true,
-            attendanceId:2,
-            studentAnnotations:"El alumnno...zzzz",
-            privateAnnotation:"Tomar en cuenta ....zzz",
-            student:{
-                id:3,
-                nombre:"Renato Suarez Campos"
-            },
-            derivation:{
-                reason:"No cumple sus compromisos",
-                comment:""
-            }
-        }
-        setCitaModified({...cita})
-    },[]);
-
+        console.log(citaModified);
+    },[citaModified])
+    
     const handleClickVerPerfil= ()=>{
         navigate("/PerfilAlumno");
     };
@@ -100,7 +103,7 @@ function PageResultadoCitaIndividual() {
                     />
                 <div className='flex w-full h-full max-h-[90%] gap-4'>
                     <ResultadoCitaBlock2 cita={citaModified} onChangeCita={handleOnChangeCita} className='flex w-[50%] h-full flex-col gap-4'/>
-                    <ResultadoCitaBlock3 className='w-[50%] h-full border-custom drop-shadow-md p-4'/>
+                    <ResultadoCitaBlock3 cita={citaModified} onChange={handleOnChangeCita} className='w-[50%] h-full border-custom drop-shadow-md p-4'/>
                 </div>
             </>
 

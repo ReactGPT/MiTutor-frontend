@@ -1,15 +1,12 @@
 import React from "react";
 import Button from "../Button";
 import IconDetails from '../../assets/svg/IconDetails';
+import { useNavigate } from "react-router-dom";
+import { ListCita } from "../../store/types/ListCita";
 
 interface AppointmentItemProps {
-  nombre: string;
-  codigo: string;
-  estado: string;
-  fecha: string;
-  onClick: () => void;
-  color: string;
-  alumno?: string;
+  appointment : ListCita;
+  tipo: "lista" | "historico";
 }
 
 const textClasses = {
@@ -39,7 +36,7 @@ const controlColor = (color: string, tipo: string) => {
       return fromClasses.yellow;
     } else if (color == 'Completado') {
       return fromClasses.blue;
-    } else if (color == 'Registrado') {
+    } else if (color == 'Registrada') {
       return fromClasses.green;
     }else if (color == 'Pendiente') {
       return fromClasses.red;
@@ -51,7 +48,7 @@ const controlColor = (color: string, tipo: string) => {
       return textClasses.yellow;
     } else if (color == 'Completado') {
       return textClasses.blue;
-    } else if (color == 'Registrado') {
+    } else if (color == 'Registrada') {
       return textClasses.green;
     }else if (color == 'Pendiente') {
       return textClasses.red;
@@ -63,7 +60,7 @@ const controlColor = (color: string, tipo: string) => {
       return toClasses.yellow;
     } else if (color == 'Completado') {
       return toClasses.blue;
-    } else if (color == 'Registrado') {
+    } else if (color == 'Registrada') {
       return toClasses.green;
     }else if (color == 'Pendiente') {
       return toClasses.red;
@@ -73,41 +70,42 @@ const controlColor = (color: string, tipo: string) => {
   }
 };
 
-export const AppointmentItem: React.FC<AppointmentItemProps> = ({ nombre, codigo, estado, fecha, onClick, color, alumno = null }) => {
+export const AppointmentItem: React.FC<AppointmentItemProps> = ({appointment,tipo}) => {
+
+  const navigate = useNavigate();
+
+  const goToDetalleCita = () => {
+    navigate("/",{state: {appointment}})
+  } 
 
   return (
     <div className="w-full h-[20%]">
       <div className="w-full h-[90%] flex flex-row justify-right items-center bg-[rgba(235,_236,_250,_1.00)] border-custom drop-shadow-md">
         
         <div className="w-[5%] h-full">
-          <div className={`w-[50%] h-full bg-gradient-to-b ${controlColor(color, 'from')} ${controlColor(color, 'to')} rounded-l-xl`}></div>
+          <div className={`w-[50%] h-full bg-gradient-to-b ${controlColor(appointment.appointmentStatus, 'from')} ${controlColor(appointment.appointmentStatus, 'to')} rounded-l-xl`}></div>
         </div>
 
-        <div className="w-[50%] my-5">
-          <div className="w-full h-[50%] ">
-            <span className="font-montserrat text-2xl text-black"> {nombre} </span>
-          </div>
-          <div className="w-full h-[50%]">
-            <span className="font-montserrat text-xl text-gray-600"> Codigo: {codigo} </span>
-          </div>
+        <div className="w-[50%] flex">
+          <span className="font-montserrat text-2xl text-black"> {appointment.programName} </span>
         </div>
 
         <div className="w-[50%] flex">
           <pre className="font-montserrat text-2xl text-black">Estado:  </pre>
-          <span className={`font-montserrat text-2xl ${controlColor(color, 'text')}`}>{estado}</span>
+          <span className={`font-montserrat text-2xl ${controlColor(appointment.appointmentStatus, 'text')}`}>{appointment.appointmentStatus}</span>
         </div>
 
-        {alumno && <div className="w-[50%] flex">
+        {tipo == "lista" && <div className="w-[50%] flex">
           <pre className="font-montserrat text-2xl text-black">Participante:  </pre>
-          <span className="font-montserrat text-2xl">{alumno}</span>
+          <span className="font-montserrat text-2xl">{`${appointment.name} ${appointment.lastName} ${appointment.secondLastName}`}</span>
         </div>}
 
         <div className="w-[50%]">
-          <span className="font-montserrat text-2xl text-black"> Fecha: {fecha} </span>
+          <span className="font-montserrat text-2xl text-black"> Fecha: {appointment.creationDate} </span>
         </div>
 
         <div className="m-5">
-          <Button variant="primario" onClick={onClick} icon={IconDetails}/>
+          <Button variant="primario" onClick={goToDetalleCita} icon={IconDetails}/>
         </div>
 
       </div>

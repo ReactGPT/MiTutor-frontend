@@ -284,7 +284,7 @@ const PageProgramasDeTutoriaTutor: React.FC = () => {
   const filteredPrograms = programaTutoria?.filter(program =>
     program.programName.toLowerCase().includes(searchText.toLowerCase())
   );
-
+  
   // const filteredPrograms = useMemo(() => {
   //   console.log(programaTutoria);
   //   return programaTutoria.filter(program =>

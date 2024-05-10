@@ -5,91 +5,17 @@ import { AddCircleIcon,MagnifyGlassWhite,ArrowDown, MagnifyGlass } from '../../.
 import { useNavigate } from 'react-router-dom';
 import { Combobox,InputCell } from '../../../components';
 import { Faculty, Specialty } from '../../../store/types';
-
-
+import { RootState } from '../../../store/store';
+import { useAppSelector } from '../../../store/hooks';
 export default function ProgramaTutoríaSearchBar() {
     const navigate=useNavigate();
+    const {specialityList,facultyList} = useAppSelector((state:RootState)=>state.parameters)
     const handleClickNuevaTutoria = ()=>{
-        navigate("/programasDeTutoriaMaestro/nuevo");
+        //navigate("/programasDeTutoriaMaestro/nuevo");
+        navigate("/programasDeTutoriaMaestro/nuevo",{state:{programaTutoria:null}})
     }
 
     
-    const specialities = [
-        {
-            id:1,
-            name:"Ing.Informatica",
-            acronym:"INF",
-            numberStudents:153,
-            facultyId:1    
-        },
-        {
-            id:2,
-            name:"Ing.Industrial",
-            acronym:"INF",
-            numberStudents:153,
-            facultyId:2    
-        },
-        {
-            id:3,
-            name:"Ing.Electronica",
-            acronym:"INF",
-            numberStudents:153,
-            facultyId:3    
-        },
-        {
-            id:4,
-            name:"Ing.Civil",
-            acronym:"INF",
-            numberStudents:153,
-            facultyId:1    
-        },
-        {
-            id:5,
-            name:"Ing.Minas",
-            acronym:"INF",
-            numberStudents:153,
-            facultyId:2    
-        },
-        {
-            id:6,
-            name:"Ing.Mecatronica",
-            acronym:"INF",
-            numberStudents:153,
-            facultyId:3    
-        },
-        {
-            id:7,
-            name:"Ing.Mecanica",
-            acronym:"INF",
-            numberStudents:153,
-            facultyId:1    
-        }
-
-    ]
-    const faculties = [
-        {
-            id:1,
-            name:"Ciencias e Ingeniería",
-            acronym:"FACI",
-            numberStudents:50,
-            numberTutors:15
-        },
-        {
-            id:2,
-            name:"Generales Ciencias",
-            acronym:"EE.GG.CC",
-            numberStudents:50,
-            numberTutors:15
-        },
-        {
-            id:3,
-            name:"Humanidades",
-            acronym:"CCHH",
-            numberStudents:50,
-            numberTutors:15
-        },
-        
-    ]
     /*const [filters,setFilters] = useState({
         idSpeciality : null,
         idFacultty : null,
@@ -104,9 +30,9 @@ export default function ProgramaTutoríaSearchBar() {
     
     const specialityOptions = useMemo(()=>{
         if(!facultySelected?.id){
-            return [...specialities]
+            return [...specialityList]
         }
-        else return [...specialities.filter(item=>item.facultyId===facultySelected?.id)] 
+        else return [...specialityList.filter(item=>item.facultyId===facultySelected?.id)] 
         //: specialities.map((item)=>item)]
     },[facultySelected]);
     const handleOnChangeQuery = (value:string|number)=>{
@@ -133,7 +59,7 @@ export default function ProgramaTutoríaSearchBar() {
 
     const handleOnSubmit = (e:React.FormEvent<HTMLFormElement>)=>{
         e.preventDefault();
-        console.log(filters);
+        //console.log(filters);
     };
 
     useEffect(()=>{
@@ -144,10 +70,10 @@ export default function ProgramaTutoríaSearchBar() {
         <div className='flex w-full h-full flex-row py-5'>    
             <form className="w-[70%] max-w-[70%] min-w-[70%] h-full flex flex-row gap-4" onSubmit={handleOnSubmit}>            
             
-                <Combobox boxSize='w-[250px] ' text='Seleccione una Facultad' options={faculties} onChange={handleOnChangeFaculty} value={facultySelected}/>
+                <Combobox boxSize='w-[250px] ' text='Seleccione una Facultad' options={facultyList} onChange={handleOnChangeFaculty} value={facultySelected}/>
                 <Combobox boxSize='w-[300px] ' text='Seleccione una especialidad' options={specialityOptions} onChange={setSpecialitySelected} value={specialitySelected}/>
                 <span className='flex gap-1'>
-                    <InputCell boxSize='w-[250px] h-[37px]' onChange={{tipo:"simple",onChange : handleOnChangeQuery}} />
+                    <InputCell boxSize='w-[250px] h-[37px] mt-1' onChange={{tipo:"simple",onChange : handleOnChangeQuery}} />
                     
                     <Button onClick={()=>console.log(filters)} icon={MagnifyGlass} iconSize={4}/>
                 </span>

@@ -13,7 +13,8 @@ import PageListaDeCitas from './pages/tutor/listaDeCitas/PageListaDeCitas.tsx';
 import PageProgTutoria from './pages/coordinador/programasDeTutoria/PageProgTutoria.tsx';
 import PageProgramasTutoriaMaestro from './pages/coordinador/programasDeTutoria/PageProgramasTutoriaMaestro.tsx';
 import PageResultadoCitaIndividual from './pages/tutor/resultadoCita/PageResultadoCitaIndividual.tsx';
-
+import { Provider } from 'react-redux';
+import { store } from './store/store.ts';
 const router = createBrowserRouter([
   {
     path: '/',
@@ -59,12 +60,18 @@ const router = createBrowserRouter([
         path: '/resultadoCitaIndividual',
         element:<PageResultadoCitaIndividual/>
       },
+      {
+        path:'/programasDeTutoriaMaestro/editar',
+        element:<PageProgTutoria/>
+      }
     ],
   },
 ]);
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
+    <Provider store={store}>
     <RouterProvider router={router} />
+    </Provider>
   </React.StrictMode>
 );

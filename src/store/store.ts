@@ -1,10 +1,12 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { setupListeners } from '@reduxjs/toolkit/query';
-import { tutoringProgramSlice } from "./slices"; 
+import { tutoringProgramSlice,parametersSlice } from "./slices"; 
 
 export const store = configureStore({
     reducer: {
         tutoringProgram: tutoringProgramSlice.reducer,
+        parameters: parametersSlice.reducer,
+        
         //[apiBuilder.reducerPath]: apiBuilder.reducer,
         //[demoBuilder.reducerPath] : demoBuilder.reducer
 

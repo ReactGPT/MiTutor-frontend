@@ -2,12 +2,12 @@ import { useState } from "react";
 
 type onChangeSimple = {
     tipo: "simple"
-    onChange :(value:string|number)=>void;
+    onChange :(value:any)=>void;
 }
 
 type onChangeComplex = {
     tipo: "object"
-    onChange : (value:string|number,name?:string)=>void;
+    onChange : (name:string,value:any)=>void;
 }
 type InputCellProps = {
     text?: string|number;
@@ -32,30 +32,31 @@ function InputCell({
     onChange,   
     right=false
 }:InputCellProps){
+    //console.log(text);
     const [query,setQuery] = useState<string|number>(text);
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { value, name } = e.target;
         setQuery(value);
         switch(onChange.tipo){
             case "simple":
-                onChange.onChange(value);
-                break
+                onChange.onChange(type!=='string'?parseInt(value):value);
+                break;
             case "object":
-                onChange.onChange(value,name);
-                break
+                onChange.onChange(name,type!=='string'?parseInt(value):value);
+                break;
         }
         
     };
     return (
         <div className={boxSize}>
             <input 
-            className={`w-full mt-1 h-full px-3 py-2 rounded-md border focus:outline-none placeholder-text-xs text-xs ${(readOnly||disabled)&& "opacity-[0.6]"} ${!readOnly && "  focus:ring focus:border-blue-500"} ${right && "text-right"}`}
+            className={`w-full h-full px-3 py-2 rounded-md border focus:outline-none placeholder-text-xs text-xs ${(readOnly||disabled)&& "opacity-[0.6]"} ${!readOnly && "  focus:ring focus:border-blue-500"} ${right && "text-right"}`}
             type={type}
             name={name}
             disabled={disabled}
             readOnly={readOnly}
             placeholder={placeholder}
-            value={query}
+            value={text}
             onChange={handleChange}
             >       
             </input>

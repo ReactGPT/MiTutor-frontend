@@ -32,7 +32,7 @@ export default function Combobox({
 }: FiltersProps) {
   const [selected, setSelected] = useState(value);
   const displayedText = !value? text: value?.name ? value.name : '';
-
+  console.log(displayedText);
   useEffect(() => {
     setSelected(value);
   }, [value]);
@@ -65,7 +65,7 @@ export default function Combobox({
                   aria-hidden="true"/>}
             
             <span className="pr-4 block truncate dark:text-secondary01 h-[20px]">
-              {displayedText}
+              <p className='block text-xs font-semibold'>{displayedText}</p>
             </span>
             <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
               <ArrowDown

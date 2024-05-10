@@ -3,12 +3,15 @@ import Sidebar from "../components/Sidebar";
 import Header from "../components/ui/Header";
 import { DASHBOARD_SIDEBAR_LINKS } from "../data/navigation";
 import { Outlet } from "react-router-dom";
-
+import { useParameters } from "../store/hooks";
 function Layout() {
 
+  const {fetchEspecialidades,fetchFacultades}=useParameters();
   const [headerTitle, setHeaderTitle] = useState<string>('');
   useEffect(() => {
     setHeaderTitle('Inicio');
+    fetchEspecialidades();
+    fetchFacultades();
   }, []);
 
   return (
@@ -20,7 +23,7 @@ function Layout() {
         <div className="w-full flex h-[6.5%] min-h-[60px]">
           <Header title={headerTitle} />
         </div>
-        <div className="w-full h-full flex bg-[rgba(255,_255,_255,_0.50)] border-custom drop-shadow-md p-5">
+        <div className="w-full h-full flex bg-[rgba(255,_255,_255,_0.50)] overflow-y-auto border-custom drop-shadow-md p-5">
           <Outlet />
         </div>
       </div>

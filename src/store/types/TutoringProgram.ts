@@ -8,6 +8,7 @@ export type TutoringProgram = {
   individualBased: boolean;
   membersCount: number;
   programName: string;
+  duration?:string;
   description: string;
   facultyId: number;
   facultyName: string;

@@ -26,6 +26,8 @@ const PageProgramasDeTutoriaTutor: React.FC = () => {
     program.programName.toLowerCase().includes(searchText.toLowerCase())
   );
 
+  //const filtro1 = Array.from(new Set(programaTutoria.map(obj => obj.facultyName)));
+
   const indexOfLastProgram = currentPage * itemsPerPage;
   const indexOfFirstProgram = indexOfLastProgram - itemsPerPage;
   const currentPrograms = filteredPrograms.slice(indexOfFirstProgram, indexOfLastProgram);

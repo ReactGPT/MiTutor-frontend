@@ -30,15 +30,15 @@ const PagePerfilAlumnoTutor = () => {
         </div>
         <div className="flex-1 pt-12">
           <ul className="px-11">
-            <Label value="Codigo:" className="text-primary" />
+            <Label value="Codigo:" className="text-primary font-roboto" />
             <InputTutor texto={data.pucpCode} enable={false} />
-            <Label value="Correo:" className="text-primary" />
+            <Label value="Correo:" className="text-primary font-roboto" />
             <InputTutor texto={data.institutionalEmail} enable={false} />
-            <Label value="Telefono:" className="text-primary" />
+            <Label value="Telefono:" className="text-primary font-roboto" />
             <InputTutor texto={data.phone} enable={false} />
-            <Label value="Facultad:" className="text-primary" />
+            <Label value="Facultad:" className="text-primary font-roboto" />
             <InputTutor texto={data.facultyName} enable={false} />
-            <Label value="Especialidad:" className="text-primary" />
+            <Label value="Especialidad:" className="text-primary font-roboto" />
             <InputTutor texto={data.specialtyName} enable={false} />
           </ul>
         </div>

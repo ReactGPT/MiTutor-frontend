@@ -92,14 +92,4 @@ function PageResultadoCitaIndividual() {
 
 export default PageResultadoCitaIndividual
 
-
-/*<ResultadoCitaBlockAlumno 
-                    className='gap-4 flex w-full h-[10%] min-h-[90px] max-h-[140px] py-4'
-                    nombreAlumno={citaModified?.student?.nombre}
-                    onClickVerPerfil={handleClickVerPerfil}
-                    onClickPlanAccion={handleClickPlanAccion}
-                    />
-                <div className='flex w-full h-[80%] max-h-[90%] gap-4'>
-                    <ResultadoCitaBlock2 cita={citaModified} onChangeCita={handleOnChangeCita} className='flex w-[50%] h-full flex-col gap-4'/>
-                    <ResultadoCitaBlock3 cita={citaModified} onChange={handleOnChangeCita} className='w-[50%] h-full border-custom drop-shadow-md p-4'/>
-                </div> */
+ 

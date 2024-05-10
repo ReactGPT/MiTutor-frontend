@@ -10,8 +10,6 @@ type Derivation= {
     comment:string;
 }
 
-
-
 export type Appointment = {
     id:number;
     date:string;

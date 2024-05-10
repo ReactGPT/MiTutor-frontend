@@ -289,9 +289,7 @@ const PageProgramasDeTutoriaTutor: React.FC = () => {
     console.log(programaTutoria);
     return programaTutoria.filter(program =>
       program.programName.toLowerCase().includes(searchText.toLowerCase())
-    );
-
-  }, [searchText]);
+  );}, [searchText]);
 
   const indexOfLastProgram = currentPage * itemsPerPage;
   const indexOfFirstProgram = indexOfLastProgram - itemsPerPage;

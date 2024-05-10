@@ -4,7 +4,6 @@ import IconDetails from '../../assets/svg/IconDetails';
 
 interface AppointmentItemProps {
   nombre: string;
-  codigo: string;
   estado: string;
   fecha: string;
   onClick: () => void;
@@ -39,7 +38,7 @@ const controlColor = (color: string, tipo: string) => {
       return fromClasses.yellow;
     } else if (color == 'Completado') {
       return fromClasses.blue;
-    } else if (color == 'Registrado') {
+    } else if (color == 'Registrada') {
       return fromClasses.green;
     }else if (color == 'Pendiente') {
       return fromClasses.red;
@@ -51,7 +50,7 @@ const controlColor = (color: string, tipo: string) => {
       return textClasses.yellow;
     } else if (color == 'Completado') {
       return textClasses.blue;
-    } else if (color == 'Registrado') {
+    } else if (color == 'Registrada') {
       return textClasses.green;
     }else if (color == 'Pendiente') {
       return textClasses.red;
@@ -63,7 +62,7 @@ const controlColor = (color: string, tipo: string) => {
       return toClasses.yellow;
     } else if (color == 'Completado') {
       return toClasses.blue;
-    } else if (color == 'Registrado') {
+    } else if (color == 'Registrada') {
       return toClasses.green;
     }else if (color == 'Pendiente') {
       return toClasses.red;
@@ -73,7 +72,7 @@ const controlColor = (color: string, tipo: string) => {
   }
 };
 
-export const AppointmentItem: React.FC<AppointmentItemProps> = ({ nombre, codigo, estado, fecha, onClick, color, alumno = null }) => {
+export const AppointmentItem: React.FC<AppointmentItemProps> = ({ nombre, estado, fecha, onClick, color, alumno = null }) => {
 
   return (
     <div className="w-full h-[20%]">
@@ -83,13 +82,8 @@ export const AppointmentItem: React.FC<AppointmentItemProps> = ({ nombre, codigo
           <div className={`w-[50%] h-full bg-gradient-to-b ${controlColor(color, 'from')} ${controlColor(color, 'to')} rounded-l-xl`}></div>
         </div>
 
-        <div className="w-[50%] my-5">
-          <div className="w-full h-[50%] ">
-            <span className="font-montserrat text-2xl text-black"> {nombre} </span>
-          </div>
-          <div className="w-full h-[50%]">
-            <span className="font-montserrat text-xl text-gray-600"> Codigo: {codigo} </span>
-          </div>
+        <div className="w-[50%] flex">
+          <span className="font-montserrat text-2xl text-black"> {nombre} </span>
         </div>
 
         <div className="w-[50%] flex">

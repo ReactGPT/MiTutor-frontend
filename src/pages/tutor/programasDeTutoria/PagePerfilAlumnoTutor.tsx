@@ -3,9 +3,15 @@ import Button from '../../../components/Button';
 import InputTutor from '../../../components/Tutor/InputTutor';
 import image from '/src/assets/Tutor/no-avatar.webp';
 import ModalDesactivar from '../../../components/Tutor/ModalDesactivar';
+import { Label } from 'flowbite-react';
+import { useLocation } from 'react-router-dom';
+import { ListStudent } from '../../../store/types/ListStudent';
 
 
-const PageMiPerfilTutor = () => {
+const PagePerfilAlumnoTutor = () => {
+  const location = useLocation();
+  const data: ListStudent = location.state?.data;
+
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const openModal = () => {
@@ -20,15 +26,20 @@ const PageMiPerfilTutor = () => {
     <div className="w-full h-full flex">
       <div className="w-1/2 flex flex-col">
         <div className="flex justify-center">
-          <h1 className="font-montserrat text-[50px] font-bold text-primary pt-12">Juanita Chávez</h1>
+          <h1 className="font-montserrat text-[50px] font-bold text-primary pt-12">{`${data.name} ${data.lastName} ${data.secondLastName}`}</h1>
         </div>
         <div className="flex-1 pt-12">
           <ul className="px-11">
-            <InputTutor texto="Codigo: " />
-            <InputTutor texto="Correo: " />
-            <InputTutor texto="Teléfono: " />
-            <InputTutor texto="Facultad: " />
-            <InputTutor texto="Especialidad: " />
+            <Label value="Codigo:" className="text-primary" />
+            <InputTutor texto={data.pucpCode} enable={false} />
+            <Label value="Correo:" className="text-primary" />
+            <InputTutor texto={data.institutionalEmail} enable={false} />
+            <Label value="Telefono:" className="text-primary" />
+            <InputTutor texto={data.phone} enable={false} />
+            <Label value="Facultad:" className="text-primary" />
+            <InputTutor texto={data.facultyName} enable={false} />
+            <Label value="Especialidad:" className="text-primary" />
+            <InputTutor texto={data.specialtyName} enable={false} />
           </ul>
         </div>
       </div>
@@ -63,4 +74,4 @@ const PageMiPerfilTutor = () => {
   );
 };
 
-export default PageMiPerfilTutor;
+export default PagePerfilAlumnoTutor;

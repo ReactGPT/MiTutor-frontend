@@ -14,6 +14,7 @@ import PageProgTutoria from './pages/coordinador/programasDeTutoria/PageProgTuto
 import PageProgramasTutoriaMaestro from './pages/coordinador/programasDeTutoria/PageProgramasTutoriaMaestro.tsx';
 import PageAgregarDisponibilidadTutor from './pages/tutor/calendario/PageAgregarDisponibilidadTutor.tsx';
 import PageDerivacionesHechas from './pages/tutor/miPerfil/PageDerivacionesHechas.tsx';
+import PagePerfilAlumnoTutor from './pages/tutor/programasDeTutoria/PagePerfilAlumnoTutor.tsx';
 
 
 const router = createBrowserRouter([
@@ -44,6 +45,10 @@ const router = createBrowserRouter([
       {
         path: '/programasDeTutoria/detalle-programa',
         element: <PageDetalleProgramaTutoriaTutor />
+      },
+      {
+        path: '/programasDeTutoria/detalle-programa/alumno',
+        element: <PagePerfilAlumnoTutor />
       },
       {
         path: '/historicoDeCitas',

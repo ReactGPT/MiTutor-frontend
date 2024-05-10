@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { getProgramaDeTutoriaByTutorId } from '../services/programaDeTutoria';
-import { TutoringProgram } from '../types/TutoringProgram';
+import { ListTutoringProgram } from '../types/ListTutoringProgram';
 
 type ProgramaTutoriaHooksReturn = {
-    programaTutoria: TutoringProgram[];
+    programaTutoria: ListTutoringProgram[];
     loading: boolean;
     error: any;
     fetchProgramaDeTutoria: () => Promise<void>;
@@ -11,7 +11,7 @@ type ProgramaTutoriaHooksReturn = {
 
 function useProgramaDeTutoria(tutorId: number): ProgramaTutoriaHooksReturn {
 
-    const [programaTutoria, setProgramaTutoria] = useState<TutoringProgram[]>([]);
+    const [programaTutoria, setProgramaTutoria] = useState<ListTutoringProgram[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<any>(null);
 

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from "react";
-import { SearchInput } from "../../../components";
+import { SearchInput, Spinner } from "../../../components";
 import TutoringProgramCard from "../../../components/Tutor/TutoringProgramCard";
 //import { TutoringProgram } from "../../../store/types/TutoringProgram";
 import Pagination from "../../../components/Pagination";
@@ -265,7 +265,7 @@ import { useProgramaDeTutoria } from "../../../store/hooks/useProgramaDeTutoria"
 
 const PageProgramasDeTutoriaTutor: React.FC = () => {
 
-  const { programaTutoria, fetchProgramaDeTutoria } = useProgramaDeTutoria(1);
+  const { programaTutoria, fetchProgramaDeTutoria, loading } = useProgramaDeTutoria(1);
 
   useEffect(() => {
     fetchProgramaDeTutoria();
@@ -281,17 +281,17 @@ const PageProgramasDeTutoriaTutor: React.FC = () => {
     setCurrentPage(1);
   };
 
-  // const filteredPrograms = programaTutoria?.filter(program =>
-  //   program.programName.toLowerCase().includes(searchText.toLowerCase())
-  // );
+  const filteredPrograms = programaTutoria?.filter(program =>
+    program.programName.toLowerCase().includes(searchText.toLowerCase())
+  );
 
-  const filteredPrograms = useMemo(() => {
-    console.log(programaTutoria);
-    return programaTutoria.filter(program =>
-      program.programName.toLowerCase().includes(searchText.toLowerCase())
-    );
+  // const filteredPrograms = useMemo(() => {
+  //   console.log(programaTutoria);
+  //   return programaTutoria.filter(program =>
+  //     program.programName.toLowerCase().includes(searchText.toLowerCase())
+  //   );
 
-  }, [searchText]);
+  // }, [searchText]);
 
   const indexOfLastProgram = currentPage * itemsPerPage;
   const indexOfFirstProgram = indexOfLastProgram - itemsPerPage;
@@ -302,16 +302,22 @@ const PageProgramasDeTutoriaTutor: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col gap-5 w-full">
+    <div className="flex flex-col gap-5 w-full h-full">
       <div className="w-full h-[5%]">
         <SearchInput placeholder="Programa de Tutoria" onSearch={handleSearch} />
       </div>
 
-      <div className="w-full h-[95%] flex flex-col gap-5">
-        {currentPrograms.map((program) => (
-          <TutoringProgramCard key={program.tutoringProgramId} data={program} />
-        ))}
-      </div>
+      {loading ?
+        <div className="w-full h-[95%] flex items-center justify-center">
+          <Spinner size="xl" />
+        </div>
+        :
+        <div className="w-full h-[95%] flex flex-col gap-5">
+          {currentPrograms.map((program, index) => (
+            <TutoringProgramCard key={`dpt${index}`} data={program} />
+          ))}
+        </div>
+      }
 
       <Pagination
         currentPage={currentPage}

@@ -1,4 +1,4 @@
-import { useState,useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import AppointmentItem from "../../../components/Tutor/AppointmentItem";
 import Pagination from "../../../components/Pagination";
 import { SearchInput } from "../../../components";
@@ -46,21 +46,21 @@ const PageListaDeCitas = () => {
     setSearchText(text);
     setCurrentPage(1);
   };
-  
+
   const citasFiltradas = cita?.filter(cita =>
     cita.programName.toLowerCase().includes(searchText.toLowerCase())
   );
 
   const indiceUltimaCita = currentPage * itemsPerPage;
   const indicePrimeraCita = indiceUltimaCita - itemsPerPage;
-  const citasFiltradasRango = citasFiltradas.slice(indicePrimeraCita,indiceUltimaCita);
+  const citasFiltradasRango = citasFiltradas.slice(indicePrimeraCita, indiceUltimaCita);
 
   const handlePageChange = (newPage: number) => {
     setCurrentPage(newPage);
   };
 
   return (
-    <div className="w-full h-full">
+    <div className="w-full h-full flex flex-col gap-5">
       {/* Filtro de búsqueda */}
 
       <div className="h-[7%]">
@@ -69,8 +69,8 @@ const PageListaDeCitas = () => {
 
       {/* Item de Cita       */}
 
-      <div className="w-full h-[85%]">
-        {citasFiltradasRango.map((cita,index) => (
+      <div className="w-full h-[85%] flex flex-col gap-5">
+        {citasFiltradasRango.map((cita, index) => (
           <AppointmentItem
             key={`ap-Item-${index}`}
             appointment={cita}

@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { ListCita } from "../../store/types/ListCita";
 
 interface AppointmentItemProps {
-  appointment : ListCita;
+  appointment: ListCita;
   tipo: "lista" | "historico";
 }
 
@@ -38,7 +38,7 @@ const controlColor = (color: string, tipo: string) => {
       return fromClasses.blue;
     } else if (color == 'Registrada') {
       return fromClasses.green;
-    }else if (color == 'Pendiente') {
+    } else if (color == 'Pendiente') {
       return fromClasses.red;
     } else {
       return fromClasses.green;
@@ -50,7 +50,7 @@ const controlColor = (color: string, tipo: string) => {
       return textClasses.blue;
     } else if (color == 'Registrada') {
       return textClasses.green;
-    }else if (color == 'Pendiente') {
+    } else if (color == 'Pendiente') {
       return textClasses.red;
     } else {
       return textClasses.green;
@@ -62,7 +62,7 @@ const controlColor = (color: string, tipo: string) => {
       return toClasses.blue;
     } else if (color == 'Registrada') {
       return toClasses.green;
-    }else if (color == 'Pendiente') {
+    } else if (color == 'Pendiente') {
       return toClasses.red;
     } else {
       return toClasses.green;
@@ -70,44 +70,52 @@ const controlColor = (color: string, tipo: string) => {
   }
 };
 
-export const AppointmentItem: React.FC<AppointmentItemProps> = ({appointment,tipo}) => {
+export const AppointmentItem: React.FC<AppointmentItemProps> = ({ appointment, tipo }) => {
 
   const navigate = useNavigate();
 
   const goToDetalleCita = () => {
-    navigate("/",{state: {appointment}})
-  } 
+    navigate("/", { state: { appointment } });
+  };
 
   return (
-    <div className="w-full h-[20%]">
-      <div className="w-full h-[90%] flex flex-row justify-right items-center bg-[rgba(235,_236,_250,_1.00)] border-custom drop-shadow-md">
-        
-        <div className="w-[5%] h-full">
-          <div className={`w-[50%] h-full bg-gradient-to-b ${controlColor(appointment.appointmentStatus, 'from')} ${controlColor(appointment.appointmentStatus, 'to')} rounded-l-xl`}></div>
+    <div className="w-full h-32 border-custom shadow-custom flex bg-[rgba(235,_236,_250,_1.00)] overflow-hidden font-roboto">
+      <div className={`w-[2%] max-w-6 bg-gradient-to-b ${controlColor(appointment.appointmentStatus, 'from')} ${controlColor(appointment.appointmentStatus, 'to')}`}></div>
+
+      <div className="w-full flex p-5 gap-5 justify-between items-center">
+        <div className="w-1/3">
+          <span className="text-2xl text-black"> {appointment.programName} </span>
         </div>
 
-        <div className="w-[50%] flex">
-          <span className="font-montserrat text-2xl text-black"> {appointment.programName} </span>
+        <div className="flex gap-6 items-center h-full text-center justify-between">
+          <div className="flex flex-col items-start">
+            <span className="text-black font-semibold">Estado:</span>
+            <span className={`font-semibold ${controlColor(appointment.appointmentStatus, 'text')}`}>{appointment.appointmentStatus}</span>
+          </div>
+          <hr className="h-full border-custom" />
+          {
+            tipo == "lista" && (
+              <>
+                <div className="flex flex-col items-start min-w-40">
+                  <span className="text-black font-semibold">Participante:</span>
+                  <span className="text-primary">{`${appointment.name} ${appointment.lastName} ${appointment.secondLastName}`}</span>
+                </div>
+                <hr className="h-full border-custom" />
+              </>
+            )
+          }
+          <div className="flex flex-col items-start">
+            <span className="text-black font-semibold">Fecha:</span>
+            <span className="text-primary">{appointment.creationDate}</span>
+          </div>
+          <hr className="h-full border-custom" />
+          <div className="flex flex-col items-start">
+            <span className="text-black font-semibold">Hora:</span>
+            <span className="text-primary">{`${appointment.startTime}`}</span>
+          </div>
+
+          <Button variant='primario' onClick={goToDetalleCita} icon={IconDetails} />
         </div>
-
-        <div className="w-[50%] flex">
-          <pre className="font-montserrat text-2xl text-black">Estado:  </pre>
-          <span className={`font-montserrat text-2xl ${controlColor(appointment.appointmentStatus, 'text')}`}>{appointment.appointmentStatus}</span>
-        </div>
-
-        {tipo == "lista" && <div className="w-[50%] flex">
-          <pre className="font-montserrat text-2xl text-black">Participante:  </pre>
-          <span className="font-montserrat text-2xl">{`${appointment.name} ${appointment.lastName} ${appointment.secondLastName}`}</span>
-        </div>}
-
-        <div className="w-[50%]">
-          <span className="font-montserrat text-2xl text-black"> Fecha: {appointment.creationDate} </span>
-        </div>
-
-        <div className="m-5">
-          <Button variant="primario" onClick={goToDetalleCita} icon={IconDetails}/>
-        </div>
-
       </div>
     </div>
   );

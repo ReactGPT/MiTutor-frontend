@@ -15,8 +15,8 @@ const PageInicioTutor = () => {
     studentProgramName:"Programa Vocacional",
     isInPerson:true,
     attendanceId:2,
-    studentAnnotations:"El alumnno...zzzz",
-    privateAnnotation:"Tomar en cuenta ....zzz",
+    studentAnnotations:"",
+    privateAnnotation:"",
     student:{
         id:3,
         nombre:"Renato Suarez Campos"

@@ -56,30 +56,7 @@ function PageResultadoCitaIndividual() {
             })
         }
     }
-    // useEffect(()=>{
-    //     const cita={
-    //         id:1,
-    //         date:"08/10/2024",
-    //         startTime:"09:00",
-    //         endTime:"10:00",
-    //         reason:"Futuro Laboral",
-    //         studentProgramId:5,
-    //         studentProgramName:"Programa Vocacional",
-    //         isInPerson:true,
-    //         attendanceId:2,
-    //         studentAnnotations:"El alumnno...zzzz",
-    //         privateAnnotation:"Tomar en cuenta ....zzz",
-    //         student:{
-    //             id:3,
-    //             nombre:"Renato Suarez Campos"
-    //         },
-    //         derivation:{
-    //             reason:"No cumple sus compromisos",
-    //             comment:""
-    //         }
-    //     }
-    //     setCitaModified({...cita})
-    // },[]);
+     
     useEffect(()=>{
         console.log(citaModified);
     },[citaModified])
@@ -92,24 +69,37 @@ function PageResultadoCitaIndividual() {
     }
 
   return (
-    <div className='w-full'>
-        {citaModified && (
-            <>
+    <div className='w-full overflow-hidden'>
+        <div className='max-h-[80vh] overflow-auto'>
+            {citaModified && (
+                <>
                 <ResultadoCitaBlockAlumno 
                     className='gap-4 flex w-full h-[10%] min-h-[90px] max-h-[140px] py-4'
                     nombreAlumno={citaModified?.student?.nombre}
                     onClickVerPerfil={handleClickVerPerfil}
                     onClickPlanAccion={handleClickPlanAccion}
-                    />
-                <div className='flex w-full h-full max-h-[90%] gap-4'>
+                />  
+                <div className='flex w-full h-[90%] max-h-[90%] gap-4'>
                     <ResultadoCitaBlock2 cita={citaModified} onChangeCita={handleOnChangeCita} className='flex w-[50%] h-full flex-col gap-4'/>
                     <ResultadoCitaBlock3 cita={citaModified} onChange={handleOnChangeCita} className='w-[50%] h-full border-custom drop-shadow-md p-4'/>
                 </div>
-            </>
-
-        )}
+                </>
+            )}
+        </div>
     </div>
   )
 }
 
 export default PageResultadoCitaIndividual
+
+
+/*<ResultadoCitaBlockAlumno 
+                    className='gap-4 flex w-full h-[10%] min-h-[90px] max-h-[140px] py-4'
+                    nombreAlumno={citaModified?.student?.nombre}
+                    onClickVerPerfil={handleClickVerPerfil}
+                    onClickPlanAccion={handleClickPlanAccion}
+                    />
+                <div className='flex w-full h-[80%] max-h-[90%] gap-4'>
+                    <ResultadoCitaBlock2 cita={citaModified} onChangeCita={handleOnChangeCita} className='flex w-[50%] h-full flex-col gap-4'/>
+                    <ResultadoCitaBlock3 cita={citaModified} onChange={handleOnChangeCita} className='w-[50%] h-full border-custom drop-shadow-md p-4'/>
+                </div> */

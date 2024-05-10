@@ -73,12 +73,8 @@ const PageListaDeCitas = () => {
         {citasFiltradasRango.map((cita,index) => (
           <AppointmentItem
             key={`ap-Item-${index}`}
-            nombre={cita.programName}
-            estado={cita.appointmentStatus}
-            fecha={cita.creationDate}
-            onClick={() => console.log("clickeado")}
-            color={cita.appointmentStatus}
-            alumno="Alonso Berrospi"
+            appointment={cita}
+            tipo="lista"
           />
         ))}
       </div>

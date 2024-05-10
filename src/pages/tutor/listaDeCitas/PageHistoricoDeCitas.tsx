@@ -76,11 +76,8 @@ const PageHistoricoDeCitas = () => {
         {citasFiltradasRango.map((cita,index) => (
           <AppointmentItem
           key={`ap-Item-${index}`}
-          nombre={cita.programName}
-          estado={cita.appointmentStatus}
-          fecha={cita.creationDate}
-          onClick={() => console.log("clickeado")}
-          color={cita.appointmentStatus}
+          appointment={cita}
+          tipo="historico"
           />
         ))}
 

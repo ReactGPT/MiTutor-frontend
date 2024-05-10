@@ -1,7 +1,8 @@
-import { useState } from 'react';
+import { useState,useEffect } from 'react';
 import AppointmentItem from "../../../components/Tutor/AppointmentItem";
 import Pagination from "../../../components/Pagination";
 import { SearchInput } from "../../../components";
+import { useCitasPorTutorPorAlumno } from '../../../store/hooks/useCita';
 
 const Alumno = {
   nombre: 'Alonso',
@@ -28,6 +29,12 @@ const listaCita = [
 ];
 
 const PageHistoricoDeCitas = () => {
+
+  const { cita, fetchCita } = useCitasPorTutorPorAlumno(1,2);
+
+  useEffect(() => {
+    fetchCita();
+  }, []);
 
   const itemsPerPage = 5;
   const [searchText, setSearchText] = useState('');
@@ -66,8 +73,9 @@ const PageHistoricoDeCitas = () => {
       
       <div className="w-full h-[65%] min-h-[60px]">
 
-        {citasFiltradasRango.map((cita) => (
+        {citasFiltradasRango.map((cita,index) => (
           <AppointmentItem
+          key={`ap-Item-${index}`}
           nombre={cita.nombre}
           codigo={cita.codigo}
           estado={cita.estado}

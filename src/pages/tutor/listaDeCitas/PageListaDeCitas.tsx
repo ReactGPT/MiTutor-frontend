@@ -1,7 +1,8 @@
-import { useState } from 'react';
+import { useState,useEffect } from 'react';
 import AppointmentItem from "../../../components/Tutor/AppointmentItem";
 import Pagination from "../../../components/Pagination";
 import { SearchInput } from "../../../components";
+import { useCitasPorTutor } from "../../../store/hooks/useCita";
 
 const listaCita = [
 
@@ -30,6 +31,12 @@ const listaCita = [
 ];
 
 const PageListaDeCitas = () => {
+
+  const { cita, fetchCita } = useCitasPorTutor(1);
+
+  useEffect(() => {
+    fetchCita();
+  }, []);
 
   const itemsPerPage = 5;
   const [searchText, setSearchText] = useState('');

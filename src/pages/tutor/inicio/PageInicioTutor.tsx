@@ -15,15 +15,15 @@ const PageInicioTutor = () => {
     studentProgramName:"Programa Vocacional",
     isInPerson:true,
     attendanceId:2,
-    studentAnnotations:"El alumnno...zzzz",
-    privateAnnotation:"Tomar en cuenta ....zzz",
+    studentAnnotations:"",
+    privateAnnotation:"",
     student:{
         id:3,
         nombre:"Renato Suarez Campos"
     },
     derivation:{
         reason:"No cumple sus compromisos",
-        comment:""
+        comment:"No es mi área de especialidad"
     }
   }
   const handleTestNavigation= ()=>{

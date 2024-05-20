@@ -1,89 +1,80 @@
-import React from 'react';
-import { useState } from 'react';
-import { useEffect } from 'react';
-import Button from '../../../components/Button';
+import { useState, useEffect } from 'react';
 import AppointmentItem from "../../../components/Tutor/AppointmentItem";
 import Pagination from "../../../components/Pagination";
-import { BiSearch } from 'react-icons/bi';
+import { SearchInput } from "../../../components";
+import { useCitasPorTutor } from "../../../store/hooks/useCita";
 
-const listaCita = [
+// const listaCita = [
 
-  { nombre: 'Futuro Laboral', codigo: 'FL000000', estado: 'Solicitado', fecha: '05/11/2024' },
-  { nombre: 'Asesoría academica', codigo: 'AA000000', estado: 'Completado', fecha: '01/11/2024' },
-  { nombre: 'Programa organizacional', codigo: 'PO000000', estado: 'Registrado', fecha: '02/11/2024' },
-  { nombre: 'Programa Ultimo ciclo', codigo: 'PU000000', estado: 'Pendiente', fecha: '14/11/2024' },
-  { nombre: 'Futuro Laboral', codigo: 'FL000000', estado: 'Registrado', fecha: '04/11/2024' },
-  { nombre: 'Futuro Laboral', codigo: 'FL000000', estado: 'Solicitado', fecha: '16/11/2024' },
-  { nombre: 'Programa Ultimo ciclo', codigo: 'PU000000', estado: 'Completado', fecha: '23/11/2024' },
-  { nombre: 'Futuro Laboral', codigo: 'FL000000', estado: 'Solicitado', fecha: '12/11/2024' },
-  { nombre: 'Programa Ultimo ciclo', codigo: 'PU000000', estado: 'Registrado', fecha: '23/11/2024' },
-  { nombre: 'Asesoría academica', codigo: 'AA000000', estado: 'Completado', fecha: '01/11/2024' },
-  { nombre: 'Programa organizacional', codigo: 'PO000000', estado: 'Registrado', fecha: '02/11/2024' },
-  { nombre: 'Programa Ultimo ciclo', codigo: 'PU000000', estado: 'Solicitado', fecha: '05/11/2024' },
-  { nombre: 'Futuro Laboral', codigo: 'FL000000', estado: 'Registrado', fecha: '13/11/2024' },
-  { nombre: 'Futuro Laboral', codigo: 'FL000000', estado: 'Pendiente', fecha: '16/11/2024' },
-  { nombre: 'Futuro Laboral', codigo: 'FL000000', estado: 'Solicitado', fecha: '12/11/2024' },
-  { nombre: 'Programa Ultimo ciclo', codigo: 'PU000000', estado: 'Registrado', fecha: '23/11/2024' },
-  { nombre: 'Asesoría academica', codigo: 'AA000000', estado: 'Completado', fecha: '01/11/2024' },
-  { nombre: 'Programa organizacional', codigo: 'PO000000', estado: 'Registrado', fecha: '02/11/2024' },
-  { nombre: 'Programa Ultimo ciclo', codigo: 'PU000000', estado: 'Solicitado', fecha: '05/11/2024' },
-  { nombre: 'Futuro Laboral', codigo: 'FL000000', estado: 'Registrado', fecha: '13/11/2024' },
-  { nombre: 'Futuro Laboral', codigo: 'FL000000', estado: 'Pendiente', fecha: '16/11/2024' }
+//   { nombre: 'Futuro Laboral', codigo: 'FL000000', estado: 'Solicitado', fecha: '05/11/2024' },
+//   { nombre: 'Asesoría academica', codigo: 'AA000000', estado: 'Completado', fecha: '01/11/2024' },
+//   { nombre: 'Programa organizacional', codigo: 'PO000000', estado: 'Registrado', fecha: '02/11/2024' },
+//   { nombre: 'Programa Ultimo ciclo', codigo: 'PU000000', estado: 'Pendiente', fecha: '14/11/2024' },
+//   { nombre: 'Futuro Laboral', codigo: 'FL000000', estado: 'Registrado', fecha: '04/11/2024' },
+//   { nombre: 'Futuro Laboral', codigo: 'FL000000', estado: 'Solicitado', fecha: '16/11/2024' },
+//   { nombre: 'Programa Ultimo ciclo', codigo: 'PU000000', estado: 'Completado', fecha: '23/11/2024' },
+//   { nombre: 'Futuro Laboral', codigo: 'FL000000', estado: 'Solicitado', fecha: '12/11/2024' },
+//   { nombre: 'Programa Ultimo ciclo', codigo: 'PU000000', estado: 'Registrado', fecha: '23/11/2024' },
+//   { nombre: 'Asesoría academica', codigo: 'AA000000', estado: 'Completado', fecha: '01/11/2024' },
+//   { nombre: 'Programa organizacional', codigo: 'PO000000', estado: 'Registrado', fecha: '02/11/2024' },
+//   { nombre: 'Programa Ultimo ciclo', codigo: 'PU000000', estado: 'Solicitado', fecha: '05/11/2024' },
+//   { nombre: 'Futuro Laboral', codigo: 'FL000000', estado: 'Registrado', fecha: '13/11/2024' },
+//   { nombre: 'Futuro Laboral', codigo: 'FL000000', estado: 'Pendiente', fecha: '16/11/2024' },
+//   { nombre: 'Futuro Laboral', codigo: 'FL000000', estado: 'Solicitado', fecha: '12/11/2024' },
+//   { nombre: 'Programa Ultimo ciclo', codigo: 'PU000000', estado: 'Registrado', fecha: '23/11/2024' },
+//   { nombre: 'Asesoría academica', codigo: 'AA000000', estado: 'Completado', fecha: '01/11/2024' },
+//   { nombre: 'Programa organizacional', codigo: 'PO000000', estado: 'Registrado', fecha: '02/11/2024' },
+//   { nombre: 'Programa Ultimo ciclo', codigo: 'PU000000', estado: 'Solicitado', fecha: '05/11/2024' },
+//   { nombre: 'Futuro Laboral', codigo: 'FL000000', estado: 'Registrado', fecha: '13/11/2024' },
+//   { nombre: 'Futuro Laboral', codigo: 'FL000000', estado: 'Pendiente', fecha: '16/11/2024' }
 
-];
+// ];
 
 const PageListaDeCitas = () => {
 
-  const itemsPerPage = 5;
-  const [currentPage, setCurrentPage] = useState(1);
-  const totalItems = listaCita.length;
-  const startIndex = (currentPage - 1) * itemsPerPage;
-  const endIndex = startIndex + itemsPerPage;
+  const { cita, fetchCita } = useCitasPorTutor(1);
 
-  const arrayCitasMostrar = listaCita.slice(startIndex, endIndex);
+  useEffect(() => {
+    fetchCita();
+  }, []);
+
+  const [searchText, setSearchText] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 5;
+
+  const handleSearch = (text: string) => {
+    setSearchText(text);
+    setCurrentPage(1);
+  };
+
+  const citasFiltradas = cita?.filter(cita =>
+    cita.programName.toLowerCase().includes(searchText.toLowerCase())
+  );
+
+  const indiceUltimaCita = currentPage * itemsPerPage;
+  const indicePrimeraCita = indiceUltimaCita - itemsPerPage;
+  const citasFiltradasRango = citasFiltradas.slice(indicePrimeraCita, indiceUltimaCita);
 
   const handlePageChange = (newPage: number) => {
     setCurrentPage(newPage);
   };
 
-  const imprimirValores = () => {
-    console.log(startIndex, endIndex);
-  };
-
-  const [query, setQuery] = useState("");
-
   return (
-    <div className="w-full h-full">
+    <div className="w-full h-full flex flex-col gap-5">
       {/* Filtro de búsqueda */}
-      <div className="w-full flex h-[12%] min-h-[60px]">
-        <div className="w-full h-[50%] flex flex-row justify-right items-center bg-[rgba(235,_236,_250,_1.00)] border-custom drop-shadow-md p-5 pr-0">
-          <input className="w-[77%] bg-[rgba(255,_255,_255,_0.0)] border-transparent focus:outline-none focus:placeholder-none font-roboto text-2xl text-primary" placeholder="Cosa a buscar" type="Text" value={query} onChange={e => setQuery(e.target.value)}></input>
-          <div className="w-[12%] flex items-center">
-            <pre className="font-montserrat text-2xl text-primary">Estado  </pre>
-            <Button variant="primario" text="" onClick={() => console.log('Botón clickeado')} />
-          </div>
-          <div className="w-[20%] flex items-center">
-            <pre className="font-montserrat text-2xl text-primary">Todas las fechas  </pre>
-            <Button variant="primario" text="" onClick={() => console.log('Botón clickeado')} />
-          </div>
-          <div>
-            <Button
-              variant="call-to-action"
-              onClick={() => imprimirValores()} />
-          </div>
-        </div>
+
+      <div className="h-[7%]">
+        <SearchInput placeholder="Cosa a buscar" onSearch={handleSearch} />
       </div>
+
       {/* Item de Cita       */}
 
-      <div className="w-full h-[65%] min-h-[60%]">
-        {arrayCitasMostrar.map((cita) => (
+      <div className="w-full h-[85%] flex flex-col gap-5">
+        {citasFiltradasRango.map((cita, index) => (
           <AppointmentItem
-            nombre={cita.nombre}
-            codigo={cita.codigo}
-            estado={cita.estado}
-            fecha={cita.fecha}
-            onClick={() => console.log("Ver más clickeado para", cita.codigo)}
-            color={cita.estado}
+            key={`ap-Item-${index}`}
+            appointment={cita}
+            tipo="lista"
           />
         ))}
       </div>
@@ -91,7 +82,7 @@ const PageListaDeCitas = () => {
       {/* Botones de cambio de indice */}
       <Pagination
         currentPage={currentPage}
-        totalItems={totalItems}
+        totalItems={citasFiltradas.length}
         itemsPerPage={itemsPerPage}
         onPageChange={handlePageChange}
       />

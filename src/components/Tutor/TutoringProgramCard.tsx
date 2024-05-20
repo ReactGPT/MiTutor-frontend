@@ -1,17 +1,24 @@
 import React from 'react';
 import Button from '../Button';
 import IconDetails from '../../assets/svg/IconDetails';
-import { TutoringProgram } from '../../store/types/TutoringProgram';
+import { ListTutoringProgram } from '../../store/types/ListTutoringProgram';
+import { useNavigate } from 'react-router-dom';
 
 type TutoringProgramCardProps = {
-  data: TutoringProgram;
+  data: ListTutoringProgram;
 };
 
 const TutoringProgramCard: React.FC<TutoringProgramCardProps> = ({ data }) => {
-  //TODO: Agregar redireccionamiento al apretar el boton
+  const navigate = useNavigate();
+
+  const goToProgramDetails = () => {
+    navigate("/programasDeTutoria/detalle-programa", { state: { data } });
+  };
+
   return (
-    <div className="border-custom shadow-custom flex min-h-28 bg-[rgba(235,_236,_250,_1.00)] overflow-hidden font-roboto">
-      <div className="bg-green-500 w-[20px]" />
+    <div className="w-full h-24 border-custom shadow-custom flex bg-[rgba(235,_236,_250,_1.00)] overflow-hidden font-roboto">
+
+      <div className="bg-green-400 w-[2%] max-w-6"></div>
 
       <div className="w-full flex p-5 gap-5 justify-between items-center">
         <div className="w-1/3">
@@ -23,9 +30,9 @@ const TutoringProgramCard: React.FC<TutoringProgramCardProps> = ({ data }) => {
           <hr className="h-full border-custom" />
           <span className="text-primary w-36"> {data.specialtyName} </span>
           <hr className="h-full border-custom" />
-          <span className="text-primary w-24"> {data.tutorTypeDescription} </span>
+          <span className="text-primary w-24"> Tutor {data.tutorType} </span>
 
-          <Button variant='primario' onClick={() => { }} icon={IconDetails} />
+          <Button variant='primario' onClick={goToProgramDetails} icon={IconDetails} />
         </div>
       </div>
     </div>

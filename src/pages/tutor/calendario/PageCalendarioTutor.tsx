@@ -1,7 +1,10 @@
 import { useState } from 'react';
 import Button from '../../../components/Button';
-import FilterComponent from '../../../components/FilterComponent';
 import Calendario from '../../../components/Calendario';
+import { useNavigate } from 'react-router-dom';
+import ProgramarCitaTutor from '../../../components/Tutor/ProgramarCitaTutor';
+import { FilterComponent } from '../../../components';
+
 
 const citas = [
   {
@@ -71,24 +74,32 @@ interface Cita {
 }
 
 const PageCalendarioTutor = () => {
-
   const [filteredCitas, setFilteredCitas] = useState(citas);
 
   const handleFilter = (filteredData: Cita[]) => {
     setFilteredCitas(filteredData);
   };
 
+  //ir a disponibilidad
+  const navigate = useNavigate();
+
+  const goToDisponibilidad = () => {
+    navigate('/agregarDisponibilidad');
+  };
+
   return (
     <div className="w-full h-full flex flex-col gap-5">
-      <div className="w-full flex items-center justify-center gap-5">
+      <div className="w-full flex items-center justify-end gap-5">
         <FilterComponent citas={citas} onFilter={handleFilter} />
-        <Button onClick={() => null} variant="call-to-action" text='Agregar Cita' />
-        <Button onClick={() => null} variant="call-to-action" text='Modificar Disponibilidad' />
+        <div className="flex gap-5">
+          <ProgramarCitaTutor />
+          <Button onClick={goToDisponibilidad} variant="call-to-action" text='Modificar Disponibilidad' />
+        </div>
       </div>
       <div className="w-full overflow-auto">
         <Calendario horaInicio={8} horaFin={22} citas={filteredCitas} />
       </div>
-    </div>
+    </div >
   );
 };
 

@@ -1,7 +1,3 @@
-
-//import {ReactComponent as DetailsIcon} from './svg/moreDetails.svg';
-//import {ReactComponent as MagnifyGlass} from './svg/magnifyGlass.svg'
-//import {ReactComponent as MagnifyGlassWhite} from './svg/magnifyGlassWhite.svg'
 import AddCircleIcon from './svg/AddCircleIcon';
 import DetailsIcon from './svg/MoreDetails';
 import CloseIcon from './svg/CloseIcon';
@@ -12,12 +8,14 @@ import SaveIcon from './svg/SaveIcon';
 import TrashIcon from './svg/DeleteIcon';
 import EyeIcon from './svg/EyeIcon';
 import EditIcon from './svg/EditIcon';
-
-//import {ReactComponent as ArrowDown} from './svg/chevronDownIcon.svg'
-//import {ReactComponent as CloseIcon} from './svg/closeIcon.svg';
-//import {ReactComponent as SaveIcon} from './svg/saveIcon.svg';
-//import {ReactComponent as TrashIcon} from './svg/deleteIcon.svg';
-
+import AddIcon from './svg/IconAdd';
+import BackIcon from './svg/IconBack';
+import BellIcon from './svg/IconBell';
+import IconDelete from './svg/IconDelete';
+import IconDetails from './svg/IconDetails';
+import PencilIcon from './svg/IconPencil';
+import IconSearch from './svg/IconSearch';
+import IconTime from './svg/IconTime';
 
 export{
     DetailsIcon,
@@ -29,5 +27,13 @@ export{
     SaveIcon,
     TrashIcon,
     EyeIcon,
-    EditIcon
+    EditIcon,
+    AddIcon,
+    BackIcon,
+    BellIcon,
+    IconDelete,
+    IconDetails,
+    PencilIcon,
+    IconSearch,
+    IconTime
 }

@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import Button from '../../../components/Button';
 import InputTutor from '../../../components/Tutor/InputTutor';
-import imagenTutor from '/src/assets/Tutor/usuario.jpg';
+import imagenTutor from '../../../assets/Tutor/usuario.jpg';
 import ModalTutor from '../../../components/Tutor/ModalTutor';
 import ModalDesactivar from '../../../components/Tutor/ModalDesactivar';
 
@@ -46,13 +46,13 @@ const PageMiPerfilAlumno = () => {
               <ul className="flex flex-col items-center w-full">
                 <li className='mb-4'>
                   {/* Botón que abre el modal */}
-                  <Button onClick={openModal} style={{'width':'200px','justifyContent':'center'}}  variant="primario" text="Plan de Acción" />
+                  <Button onClick={openModal}  variant="primario" text="Plan de Acción" />
                 </li>
                 <li className='mb-4'>
-                  <Button onClick={() => null} style={{'width':'200px','justifyContent':'center'}}  variant="primario" text="Archivos" />
+                  <Button onClick={() => null}  variant="primario" text="Archivos" />
                 </li>
                 <li className='mb-4'>
-                  <Button onClick={() => null} style={{'width':'200px','justifyContent':'center'}}  variant="primario" text="Historico de Citas" />
+                  <Button onClick={() => null}  variant="primario" text="Historico de Citas" />
                 </li>
               </ul>
             </div>

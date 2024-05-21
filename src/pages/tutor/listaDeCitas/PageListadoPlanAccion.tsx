@@ -9,26 +9,27 @@ import ModalNuevoPlanAccion from '../../../components/Tutor/ModalNuevoPlanAccion
 import ModalRegistroExitoso from '../../../components/Tutor/ModalRegistroExitoso';
 import { useEffect } from 'react';
 import axios from 'axios';
-import { useTitle } from '../../../context/TitleContext';
+//import { useTitle } from '../../../context/TitleContext';
 import { FaCheckCircle } from "react-icons/fa";
-
+import {Services as ServicesProperties} from '../../../config';
 
 
 const PageListadoPlanAccion = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [registrationModalOpen, setRegistrationModalOpen] = useState(false);
   const [actionPlans, setActionPlans] = useState<ActionPlan[]>([]);
-  const { setTitle } = useTitle();
+  
+  //const { setTitle } = useTitle();
 
 
   useEffect(() => {
-    setTitle("Listado Planes de Acción del Alumno");
+    //setTitle("Listado Planes de Acción del Alumno");
     fetchData();
   }, []);
 
   const fetchData = async () => {
     try {
-      const response = await axios.get('https://localhost:44369/listarActionPlans?StudentProgramId=1&TutorId=1');
+      const response = await axios.get(ServicesProperties.BaseUrl+'/listarActionPlans?StudentProgramId=1&TutorId=1');
       setActionPlans(response.data.data);
     } catch (error) {
       console.error('Error fetching data:', error);

@@ -14,11 +14,13 @@ import { useEffect } from 'react';
 import { FaRegEye, FaSave, FaTimes } from "react-icons/fa";
 import { HiOutlinePencil } from "react-icons/hi";
 import { FaRegEyeSlash } from "react-icons/fa";
-import { useTitle } from '../../../context/TitleContext';
+//import { useTitle } from '../../../context/TitleContext';
 import { FaCheckCircle, FaRegTrashAlt } from "react-icons/fa";
 import { RiErrorWarningLine } from "react-icons/ri";
 import { TrashIcon } from '../../../assets';
 import ModalAdvertencia from '../../../components/Tutor/ModalAdvertencia';
+import {Services as ServicesProperties} from '../../../config';
+
 
 const PageDetallePlanAccion = () => {
   const { id } = useParams();
@@ -30,21 +32,21 @@ const PageDetallePlanAccion = () => {
   const [editable, setEditable] = useState(false);
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
-  const { setTitle } = useTitle();
+  //const { setTitle } = useTitle();
   const [deleteCommintModalOpen, setdeleteCommintModalOpen] = useState(false);
   const [editCommintModalOpen, seteditCommintModalOpen] = useState(false);
   const [deleteActionPlanModalOpen, setdeleteActionPlanModalOpen] = useState(false);
   const [tablaEditable, setTablaEditable] = useState(false);
 
   useEffect(() => {
-    setTitle("Detalle Plan de Acción");
+    //setTitle("Detalle Plan de Acción");
     fetchData();
   }, []);
 
   // Trae los datos del plan de acción
   const fetchData = async () => {
     try {
-      const response = await axios.get('https://localhost:44369/listarActionPlansPorId?ActionPlanId=' + id);
+      const response = await axios.get(ServicesProperties.BaseUrl+'/listarActionPlansPorId?ActionPlanId=' + id);
       const data = response.data.data;
       if (data.length > 0) {
         const plan = data[0];
@@ -88,7 +90,7 @@ const PageDetallePlanAccion = () => {
         "modificationDate": "2024-05-09T07:35:12.513Z"
       };
       console.log(newData);
-      await axios.put(`https://localhost:44369/actualizarActionPlan`, newData);
+      await axios.put(`${ServicesProperties.BaseUrl}/actualizarActionPlan`, newData);
       seteditionModalOpen(true);
       setEditable(false);
     } catch (error) {
@@ -97,7 +99,7 @@ const PageDetallePlanAccion = () => {
   };
 
   const handleDeleteActionPlan = async () => {
-    await axios.put('https://localhost:44369/eliminarActionPlan?actionPlanId=' + id);
+    await axios.put(ServicesProperties.BaseUrl+'/eliminarActionPlan?actionPlanId=' + id);
     setdeleteActionPlanModalOpen(false);
     window.location.pathname = 'listadoPlanAccion';
   }
@@ -114,7 +116,7 @@ const PageDetallePlanAccion = () => {
         "creationDate": "2024-05-10T04:39:19.094Z", //no necesita
         "modificationDate": "2024-05-10T04:39:19.094Z" //no necesita
       }
-      await axios.put('https://localhost:44369/actualizarActionPlan', data3);
+      await axios.put(ServicesProperties.BaseUrl+'/actualizarActionPlan', data3);
       setdeleteActionPlanModalOpen(false);
       window.location.reload();
     } catch (error) {
@@ -134,7 +136,7 @@ const PageDetallePlanAccion = () => {
         "creationDate": "2024-05-10T04:39:19.094Z", //no necesita
         "modificationDate": "2024-05-10T04:39:19.094Z" //no necesita
       }
-      await axios.put('https://localhost:44369/actualizarActionPlan', data3);
+      await axios.put(ServicesProperties.BaseUrl+'/actualizarActionPlan', data3);
       setdeleteActionPlanModalOpen(false);
       window.location.reload();
     } catch (error) {

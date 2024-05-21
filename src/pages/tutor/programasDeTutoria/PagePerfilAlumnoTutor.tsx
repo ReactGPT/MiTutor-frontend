@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import Button from '../../../components/Button';
 import InputTutor from '../../../components/Tutor/InputTutor';
-import image from '/src/assets/Tutor/no-avatar.webp';
+import image from '../../../assets/Tutor/no-avatar.webp';
 import ModalDesactivar from '../../../components/Tutor/ModalDesactivar';
 import { Label } from 'flowbite-react';
 import { useLocation } from 'react-router-dom';

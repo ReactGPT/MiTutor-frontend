@@ -5,7 +5,7 @@ import TextAreaTutor from '../../../components/Tutor/TextAreaTutor';
 import IconDetails from '../../../assets/svg/IconDetails';
 import TablaDetallePlanAccion from '../../../components/Tutor/TablaDetallePlanAccion';
 import { useState } from "react";
-import { useLocation, useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { ActionPlan } from '../../../store/types/ActionPlan';
 import ModalNuevoCompromiso from '../../../components/Tutor/ModalNuevoCompromiso';
 import ModalRegistroExitoso from '../../../components/Tutor/ModalRegistroExitoso';
@@ -26,6 +26,7 @@ const PageDetallePlanAccion = () => {
   //const { id } = useParams();
   const {state} = useLocation();
   const {id} = state;
+  const navigate = useNavigate();
 
   const [modalOpen, setModalOpen] = useState(false);
   const [actionPlans, setActionPlans] = useState<ActionPlan[]>([]);
@@ -103,7 +104,7 @@ const PageDetallePlanAccion = () => {
   const handleDeleteActionPlan = async () => {
     await axios.put(ServicesProperties.BaseUrl + '/eliminarActionPlan?actionPlanId=' + id);
     setdeleteActionPlanModalOpen(false);
-    window.location.pathname = 'listadoPlanAccion';
+    navigate(-1);
   }
 
   const handleDisabledActionPlan = async () => {

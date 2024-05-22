@@ -34,8 +34,9 @@ const PageListadoPlanAccion = () => {
   const fetchData = async () => {
     try {
       const response = await axios.get(ServicesProperties.BaseUrl+'/listarActionPlans?studentId='+studentId+'&programId='+programId+'&TutorId=1');
-      console.log(studentId,programId);
+      //console.log(studentId,programId);
       setActionPlans(response.data.data);
+      //console.log('planes:', response.data.data.length);
     } catch (error) {
       console.error('Error fetching data:', error);
     }
@@ -94,9 +95,18 @@ const PageListadoPlanAccion = () => {
 
 
       <div className="w-full h-[85%] flex flex-col gap-5">
-        {currentPlans.map((plan) => (
+      {currentPlans.length === 0 ? (
+        <div className="flex flex-col items-center justify-center text-center">
+          <img src="src\assets\Tutor\no-planes.png" alt="No plans" className="w-1/4 h-auto mb-4" />
+          <i className="your-icon-class-name mb-2"></i> {/* Cambia `your-icon-class-name` por la clase de tu ícono */}
+          <p className="text-xl font-bold">Ups... Todavía no tienes ningún plan de acción para el alumno</p>
+          <p className="text-md">Crea un nuevo plan de acción para hacer seguimiento de los compromisos acordados.</p>
+        </div>
+      ) : (
+        currentPlans.map((plan) => (
           <CardPlanAccion key={plan.actionPlanId} data={plan} />
-        ))}
+        ))
+      )}
       </div>
 
       <Pagination

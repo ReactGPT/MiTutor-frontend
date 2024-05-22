@@ -6,21 +6,16 @@ import { AgGridReact } from 'ag-grid-react';
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-alpine.css';
 import { ColDef } from 'ag-grid-community';
-import Button from '../Button';
-import {
-  BiTrash
-} from "react-icons/bi";
-import DeleteIcon from '../../assets/svg/DeleteIcon';
 import React from 'react';
 import EtiquetaCompromiso from './EtiquetaCompromiso';
 import axios from 'axios';
 import { useEffect } from 'react';
 import { Commintment } from '../../store/types/Commintment';
-import IconPencil from '../../assets/svg/IconPencil';
-import IconDelete from '../../assets/svg/IconDelete';
 import ModalAdvertencia from './ModalAdvertencia';
 import { RiErrorWarningLine } from 'react-icons/ri';
 import ModalEditarCompromiso from './ModalEditarCompromiso';
+import ActionCellRenderer from './ActionCellRenderer'; // Importa el nuevo componente
+import {Services as ServicesProperties} from '../../config';
 
 type TablaDetalleProps = {
   onclickEdit: () => void;
@@ -40,25 +35,27 @@ const TablaDetalle: React.FC<TablaDetalleProps> = ({
   const [commitmentId, setCommitmentId] = useState(0);
   const [compromiso, setCompromiso] = useState<Commintment>({} as Commintment);
 
-  const handleConfirmDeleteCommit = () => {
+  const handleConfirmDeleteCommit = (data: Commintment) => {
+    setCommitmentId(data.commitmentId);
     setdeleteCommintModalOpen(true);
-  }
+  };
 
-  const openModalEdit = () => {
+  const openModalEdit = (data: Commintment) => {
+    setCompromiso(data);
     seteditCommintModalOpen(true);
-  }
+  };
 
   const closeModalEdit = () => {
     seteditCommintModalOpen(false);
-  }
+  };
 
   useEffect(() => {
     fetchData();
-  }, [actionPlanId]); // Se ejecuta cada vez que actionPlanId cambia
+  }, [actionPlanId]);
 
   const fetchData = async () => {
     try {
-      const response = await axios.get(`https://localhost:44369/listarCommitment?IdPlanAction=${actionPlanId}`);
+      const response = await axios.get(ServicesProperties.BaseUrl+'/listarCommitment?IdPlanAction='+actionPlanId);
       setRowData(response.data.data);
     } catch (error) {
       console.error('Error fetching data:', error);
@@ -120,22 +117,21 @@ const TablaDetalle: React.FC<TablaDetalleProps> = ({
       minWidth: 100,
       maxWidth: 150,
       filter: false,
-      cellRenderer: () =>
-        <div className="flex" >
-          <div className="mr-2">
-            <Button variant='secundario' icon={IconPencil} onClick={openModalEdit} />
-          </div>
-          <Button variant='warning' icon={IconDelete} onClick={handleConfirmDeleteCommit} />
-        </div>
+      cellRenderer: (params: any) => (
+        <ActionCellRenderer
+          data={params.data}
+          openModalEdit={openModalEdit}
+          handleConfirmDeleteCommit={handleConfirmDeleteCommit}
+        />
+      )
     }
   ]);
 
-  
   const handleDeleteCompromiso = async () => {
-    await axios.put('https://localhost:44369/eliminarCommitment?commitmentId=' + commitmentId);
+    await axios.put(ServicesProperties.BaseUrl+'/eliminarCommitment?commitmentId=' + commitmentId);
     setdeleteCommintModalOpen(false);
     fetchData();
-  }
+  };
 
   const defaultColDef = useMemo(() => {
     return {
@@ -157,7 +153,7 @@ const TablaDetalle: React.FC<TablaDetalleProps> = ({
   return (
     <div className="flex py-5">
       {deleteCommintModalOpen && (
-        <ModalAdvertencia //es un modal de advertencia de aliminar el compormiso
+        <ModalAdvertencia
           title="¿Está seguro de eliminar el compromiso?"
           description="Esta acción no puede revertirse."
           icon={RiErrorWarningLine}
@@ -166,15 +162,13 @@ const TablaDetalle: React.FC<TablaDetalleProps> = ({
           action={handleDeleteCompromiso}
         />
       )}
-      {
-        editCommintModalOpen && (
-          <ModalEditarCompromiso 
-          onClose = { closeModalEdit }
-          updatePage =  {fetchData}
-          compromiso = {compromiso} 
-          />
-        )
-      }
+      {editCommintModalOpen && (
+        <ModalEditarCompromiso 
+          onClose={closeModalEdit}
+          updatePage={fetchData}
+          compromiso={compromiso}
+        />
+      )}
       <div
         className="ag-theme-alpine"
         style={{ height: '500px', width: '100%' }}
@@ -191,7 +185,7 @@ const TablaDetalle: React.FC<TablaDetalleProps> = ({
             setCommitmentId(event.data.commitmentId);
             setCompromiso(event.data);
             console.log(event.data.commitmentId);
-            console.log('compromiso: ',compromiso);
+            console.log('compromiso: ', compromiso);
           }}
         />
       </div>

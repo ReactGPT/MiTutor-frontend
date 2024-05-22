@@ -23,6 +23,12 @@ import { RiErrorWarningLine } from 'react-icons/ri';
 import ModalEditarCompromiso from './ModalEditarCompromiso';
 import ActionCellRenderer from './ActionCellRenderer'; // Importa el nuevo componente
 
+type TablaDetalleProps = {
+  onclickEdit: () => void;
+  onclickDelete: () => void;
+  actionPlanId: number;
+};
+
 const TablaDetalle: React.FC<TablaDetalleProps> = ({
   onclickEdit,
   onclickDelete,

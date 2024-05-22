@@ -1,8 +1,6 @@
 import { Dialog, Transition } from '@headlessui/react';
 import { Fragment, useState } from 'react';
 
-import Button from '../Button';
-
 interface ModalResultadoCitaProps {
   onClose: () => void; // Tipo de onClose
 }

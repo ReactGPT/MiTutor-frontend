@@ -73,10 +73,6 @@ const router = createBrowserRouter([
         element: <PageDetallePlanAccion />,
       },
       {
-        path: '/resultadoCitaIndividual',
-        element:<PageResultadoCitaIndividual/>
-      },
-      {
         path: '/PerfilAlumno',
         element:<PageMiPerfilAlumno/>
       },
@@ -95,6 +91,10 @@ const router = createBrowserRouter([
       {
         path:'/programasDeTutoriaMaestro/editar',
         element:<PageProgTutoria/>
+      },
+      {
+        path: '/listaDeCitas/resultadoCitaIndividual',
+        element:<PageResultadoCitaIndividual/>
       }
     ],
   },

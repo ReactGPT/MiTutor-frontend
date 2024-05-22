@@ -1,13 +1,12 @@
 import { Listbox, Transition } from '@headlessui/react';
-//import { isArray } from 'lodash';
 import { Fragment, useEffect, useState } from 'react';
 import { ArrowDown,AddCircleIcon } from '../assets';
 
 type FiltersProps = {
   name?: string;
-  boxSize?: string;
+  className?: string;
   options:any[];
-  value:any|null;
+  value?:any|null;
   text?: string;
   icon?:any;
   iconSize?:number;
@@ -19,7 +18,7 @@ type FiltersProps = {
 
 export default function Combobox({
   name,
-  boxSize,
+  className,
   options = [],
   value,
   text,
@@ -31,14 +30,14 @@ export default function Combobox({
   buttonStyle,
 }: FiltersProps) {
   const [selected, setSelected] = useState(value);
-  const displayedText = !value? text: value?.name ? value.name : '';
-  //console.log(displayedText);
+  // const displayedText = !value? text: value?.name ? value.name : '';
+
   useEffect(() => {
     setSelected(value);
   }, [value]);
   const Icon=icon;
   return (
-    <div data-testid="initial-display" className={boxSize}>
+    <div data-testid="initial-display" className={className}>
       <Listbox        
         disabled={disabled}
         value={selected}
@@ -48,24 +47,18 @@ export default function Combobox({
         }}
       >
         <div className="relative mt-1">
-          
+
           <Listbox.Button
-            className={`${buttonStyle} relative w-full dark:bg-secondary bg-white py-2 ${icon? "pl-10": "pl-3"} pr-10 text-left focus:outline-none border border-secondary09 dark:border-0 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm rounded-lg ${
+            className={`${buttonStyle} relative w-full dark:bg-secondary bg-white py-2 ${icon ? "pl-10" : "pl-3"} pr-10 text-left focus:outline-none border border-secondary09 dark:border-0 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm rounded-lg ${
               disabled ? 'cursor-default' : 'cursor-pointer'
             }`}
           >
-            
-            <Listbox.Label
-              className={`font-bold dark:text-secondary01 ${
-                disabled ? 'cursor-default' : 'cursor-pointer'
-              }`}
-            >
-            </Listbox.Label>
-            {icon && <Icon size={iconSize} className="absolute left-2 top-1/2 transform -translate-y-1/2 h-5 w-5 text-black dark:text-secondary01"
-                  aria-hidden="true"/>}
-            
+            {icon && (
+              <Icon size={iconSize} className="absolute left-2 top-1/2 transform -translate-y-1/2 h-5 w-5 text-black dark:text-secondary01"
+                aria-hidden="true"/>
+            )}
             <span className="pr-4 block truncate dark:text-secondary01 h-[20px]">
-              <p className='block text-xs font-semibold'>{displayedText}</p>
+              {selected?.name || name}
             </span>
             <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
               <ArrowDown
@@ -74,6 +67,8 @@ export default function Combobox({
               />
             </span>
           </Listbox.Button>
+
+
           <Transition
             as={Fragment}
             leave="transition ease-in duration-100"
@@ -110,3 +105,4 @@ export default function Combobox({
     </div>
   );
 }
+ 

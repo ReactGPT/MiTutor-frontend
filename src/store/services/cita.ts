@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { ListCita } from '../types/ListCita';
-import {Services as ServicesProperties} from '../../config';
+
 
 type listaResponse = {
     listaDeCitas : ListCita[];
@@ -10,10 +10,11 @@ type listaResponse = {
 async function getListaDeCitasByTutorId(tutorId : number): Promise<listaResponse> {
 
     try{
-        const response = await axios.get(`${ServicesProperties.BaseUrl}/listarCitasPorTutor/${tutorId}`);
+        const response = await axios.get(`https://localhost:44369/listarCitasPorTutor/${tutorId}`);
         const listaDeCitas: ListCita[] = response.data.data.map((item: any) => {
             return {
                 appointmentId : item.appointmentId,
+                programId : item.programId,
                 programName : item.programName,
                 appointmentStatus : item.appointmentStatus,
                 groupBased : item.groupBased,
@@ -39,7 +40,7 @@ async function getListaDeCitasByTutorId(tutorId : number): Promise<listaResponse
 async function getListaDeCitasByTutorIdByStudentId(tutorId : number, studentId : number): Promise<listaResponse> {
 
     try{
-        const response = await axios.get(`${ServicesProperties.BaseUrl}/listarCitasPorTutorPorAlumno/${tutorId}/${studentId}`);
+        const response = await axios.get(`https://localhost:44369/listarCitasPorTutorPorAlumno/${tutorId}/${studentId}`);
         const listaDeCitas: ListCita[] = response.data.data.map((item: any) => {
             return {
                 appointmentId : item.appointmentId,

@@ -66,5 +66,13 @@ export const PageTitles = [
   {
     path: '/programasDeTutoriaMaestro/editar',
     pageName: "Editar Programa"
+  },
+  {
+    path: '/listaDeCitas/resultadoCitaIndividual',
+    pageName: "Resultado de Cita Individual"
+  },
+  {
+    path: '/listadoPlanAccion/:id',
+    pageName: "Detalle de Plan de Acción"
   }
 ]

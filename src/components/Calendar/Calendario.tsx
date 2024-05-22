@@ -65,8 +65,8 @@ function transformCitaToEvent(cita: ListCita): CustomEvent {
 
   return {
     title: `Cita en ${programName}`,
-    start: combineDateAndTime(creationDate, startTime),
-    end: combineDateAndTime(creationDate, endTime),
+    start: combineDateAndTime(creationDate, startTime.toString()),
+    end: combineDateAndTime(creationDate, endTime.toString()),
     resource: cita
   };
 }

@@ -1,9 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import Button from '../../../components/Button';
 import Calendario from '../../../components/Calendar/Calendario';
 import { Event } from 'react-big-calendar';
 import ModalEliminarDisponibilidad from '../../../components/Tutor/ModalEliminarDisponibilidad';
-import { useTitle } from '../../../context/TitleContext';
 
 interface CustomEvent extends Event {
   isBackgroundEvent?: boolean;
@@ -15,8 +14,6 @@ interface CustomEvent extends Event {
 }
 
 const PageAgregarDisponibilidadTutor: React.FC = () => {
-  const { setTitle } = useTitle();
-  setTitle("Disponibilidad del Tutor");
 
   const [selectable, setSelectable] = useState(false);
   const [showModal, setShowModal] = useState(false);

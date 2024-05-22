@@ -1,14 +1,10 @@
 import Button from '../../../components/Button';
 import { useNavigate } from 'react-router-dom';
 import Calendario from '../../../components/Calendar/Calendario';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useCitasPorTutor } from '../../../store/hooks/useCita';
-import { useTitle } from '../../../context/TitleContext';
 
-const PageCalendarioTutor = () => {
-  const { setTitle } = useTitle();
-  setTitle("Calendario");
-
+const PageCalendarioTutor: React.FC = () => {
   const { cita, fetchCita } = useCitasPorTutor(1);
 
   useEffect(() => {

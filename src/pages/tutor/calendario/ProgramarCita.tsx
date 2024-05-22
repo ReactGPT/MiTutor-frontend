@@ -5,8 +5,9 @@ import { Label, Radio, TextInput, Textarea } from 'flowbite-react';
 import Select from 'react-dropdown-select';
 import { AgGridReact } from 'ag-grid-react';
 import { ColDef } from 'ag-grid-community';
+import { SaveIcon } from '../../../assets';
 
-const ProgramarCita = () => {
+const ProgramarCita: React.FC = () => {
   //Datos Tabla
   const defaultColDef = {
     suppressHeaderMenuButton: true,
@@ -28,7 +29,7 @@ const ProgramarCita = () => {
   const rowData = null;
   //Modal para seleccion de tutoria y alumnos
   const [isModalSeleccionOpen, setIsModalSeleccionOpen] = useState(false);
-  const openModalSeleccion = () => setIsModalSeleccionOpen(true);
+  //const openModalSeleccion = () => setIsModalSeleccionOpen(true);
   const closeModalSeleccion = () => setIsModalSeleccionOpen(false);
   //Manejar la modalidad
   const [showClassroom, setShowClassroom] = useState(false);

@@ -26,21 +26,22 @@ type TitleProviderProps = {
 
 
 const TitleProvider: React.FC<TitleProviderProps> = ({ children }) => {
-  const location= useLocation();
+  const location = useLocation();
   const [title, setTitle] = useState<string>('');
 
-  const handleSetTitle = (title:string)=>{
+  const handleSetTitle = (title: string) => {
     setTitle(title);
   };
-  useEffect(()=>{
-    handleSetTitle("Inicio");
-  },[]);
 
-  useEffect(()=>{
-    const actualPage=PageTitles.find((item)=>item.path===location.pathname);
+  useEffect(() => {
+    handleSetTitle("Inicio");
+  }, []);
+
+  useEffect(() => {
+    const actualPage = PageTitles.find((item) => item.path === location.pathname);
     //console.log(actualPage)
-    setTitle(!!actualPage? actualPage.pageName:'');
-  },[location.pathname])
+    setTitle(!!actualPage ? actualPage.pageName : '');
+  }, [location.pathname]);
 
   return (
     <TitleContext.Provider value={{ title, handleSetTitle }}>
@@ -49,4 +50,4 @@ const TitleProvider: React.FC<TitleProviderProps> = ({ children }) => {
   );
 };
 
-export {TitleContext,TitleProvider,useTitle};
+export { TitleContext, TitleProvider, useTitle };

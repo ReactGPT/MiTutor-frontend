@@ -16,7 +16,6 @@ import PageAgregarDisponibilidadTutor from './pages/tutor/calendario/PageAgregar
 import PageDerivacionesHechas from './pages/tutor/miPerfil/PageDerivacionesHechas.tsx';
 import PagePerfilAlumnoTutor from './pages/tutor/programasDeTutoria/PagePerfilAlumnoTutor.tsx';
 
-
 const router = createBrowserRouter([
   {
     path: '/',
@@ -63,7 +62,7 @@ const router = createBrowserRouter([
         element: <PageProgramasTutoriaMaestro />,
       },
       {
-        path: '/agregarDisponibilidad',
+        path: '/calendario/agregarDisponibilidad',
         element: <PageAgregarDisponibilidadTutor />,
       },
       {

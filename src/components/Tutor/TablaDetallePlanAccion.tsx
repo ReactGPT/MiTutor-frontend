@@ -6,22 +6,16 @@ import { AgGridReact } from 'ag-grid-react';
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-alpine.css';
 import { ColDef } from 'ag-grid-community';
-import Button from '../Button';
-import {
-  BiTrash
-} from "react-icons/bi";
-import DeleteIcon from '../../assets/svg/DeleteIcon';
 import React from 'react';
 import EtiquetaCompromiso from './EtiquetaCompromiso';
 import axios from 'axios';
 import { useEffect } from 'react';
 import { Commintment } from '../../store/types/Commintment';
-import IconPencil from '../../assets/svg/IconPencil';
-import IconDelete from '../../assets/svg/IconDelete';
 import ModalAdvertencia from './ModalAdvertencia';
 import { RiErrorWarningLine } from 'react-icons/ri';
 import ModalEditarCompromiso from './ModalEditarCompromiso';
 import ActionCellRenderer from './ActionCellRenderer'; // Importa el nuevo componente
+import {Services as ServicesProperties} from '../../config';
 
 type TablaDetalleProps = {
   onclickEdit: () => void;
@@ -61,7 +55,7 @@ const TablaDetalle: React.FC<TablaDetalleProps> = ({
 
   const fetchData = async () => {
     try {
-      const response = await axios.get(`https://localhost:44369/listarCommitment?IdPlanAction=${actionPlanId}`);
+      const response = await axios.get(ServicesProperties.BaseUrl+'/listarCommitment?IdPlanAction='+actionPlanId);
       setRowData(response.data.data);
     } catch (error) {
       console.error('Error fetching data:', error);
@@ -134,7 +128,7 @@ const TablaDetalle: React.FC<TablaDetalleProps> = ({
   ]);
 
   const handleDeleteCompromiso = async () => {
-    await axios.put('https://localhost:44369/eliminarCommitment?commitmentId=' + commitmentId);
+    await axios.put(ServicesProperties.BaseUrl+'/eliminarCommitment?commitmentId=' + commitmentId);
     setdeleteCommintModalOpen(false);
     fetchData();
   };

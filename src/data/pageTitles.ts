@@ -66,5 +66,9 @@ export const PageTitles = [
   {
     path: '/programasDeTutoriaMaestro/editar',
     pageName: "Editar Programa"
+  },
+  {
+    path: '/calendario/agregarDisponibilidad',
+    pageName: "Disponibilidad del Tutor"
   }
-]
+];

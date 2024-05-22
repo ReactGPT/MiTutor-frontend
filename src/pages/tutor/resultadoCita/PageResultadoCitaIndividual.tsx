@@ -29,7 +29,7 @@ const PageResultadoCitaIndividual: React.FC = () =>{
         navigate("/PerfilAlumno");
     };
     const handleClickPlanAccion=()=>{
-        navigate("/listadoPlanAccion");
+        navigate("/listadoPlanAccion", {state: {studentId: citaModified?.personId, programId: citaModified?.programId}});
     }
 
   return (

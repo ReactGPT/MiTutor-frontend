@@ -12,13 +12,17 @@ import axios from 'axios';
 //import { useTitle } from '../../../context/TitleContext';
 import { FaCheckCircle } from "react-icons/fa";
 import {Services as ServicesProperties} from '../../../config';
+import { useLocation } from 'react-router-dom';
 
 
 const PageListadoPlanAccion = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [registrationModalOpen, setRegistrationModalOpen] = useState(false);
   const [actionPlans, setActionPlans] = useState<ActionPlan[]>([]);
-  
+  const {state} = useLocation();
+  const {studentId} = state;
+  const {programId} = state;
+
   //const { setTitle } = useTitle();
 
 
@@ -29,7 +33,8 @@ const PageListadoPlanAccion = () => {
 
   const fetchData = async () => {
     try {
-      const response = await axios.get(ServicesProperties.BaseUrl+'/listarActionPlans?StudentProgramId=1&TutorId=1');
+      const response = await axios.get(ServicesProperties.BaseUrl+'/listarActionPlans?studentId='+studentId+'&programId='+programId+'&TutorId=1');
+      console.log(studentId,programId);
       setActionPlans(response.data.data);
     } catch (error) {
       console.error('Error fetching data:', error);
@@ -73,10 +78,10 @@ const PageListadoPlanAccion = () => {
   const currentPlans = filteredPlans.slice(indexOfFirstPlan, indexOfLastPlan);
 
   return (
-    <div className="flex flex-col gap-5 w-full">
+    <div className="w-full h-full flex flex-col gap-5">
       <div className='flex justify-end'>
         <Button variant='call-to-action' onClick={openModal} text='Nuevo Plan de Acción' />
-        <ModalNuevoPlanAccion isOpen={modalOpen} onClose={closeModal} updatePage={updatePlans} />
+        <ModalNuevoPlanAccion isOpen={modalOpen} onClose={closeModal} updatePage={updatePlans} studentId={studentId} programId={programId}/>
         {registrationModalOpen && ( // Mostrar el modal de registro exitoso si registrationModalOpen es true
           <ModalRegistroExitoso
             title="¡Registro Exitoso!"
@@ -88,7 +93,7 @@ const PageListadoPlanAccion = () => {
       </div>
 
 
-      <div className="w-full flex flex-col gap-5">
+      <div className="w-full h-[85%] flex flex-col gap-5">
         {currentPlans.map((plan) => (
           <CardPlanAccion key={plan.actionPlanId} data={plan} />
         ))}

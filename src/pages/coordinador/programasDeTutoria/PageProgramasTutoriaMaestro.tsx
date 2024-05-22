@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useState, useEffect } from 'react';
+import { useState, useEffect,useMemo } from 'react';
 import ProgramaTutoríaSearchBar from './ProgramaTutoríaSearchBar';
 import { AgGridReact } from 'ag-grid-react';
 import 'ag-grid-community/styles/ag-grid.css';
@@ -21,13 +21,31 @@ export default function PageProgramasTutoriaMaestro() {
     const navigate=useNavigate();
     //const history = useHistory();
     const {isLoading,programaTutoriaData,fetchProgramaTutorias} = useProgramaTutoria();
+    //const [programaTutoriaFiltered,setProgramaTutoriaFiltered] = useState<ProgramaTutoria[]|null>(null)
     useEffect(()=>{
         fetchProgramaTutorias();
     },[])
+    
     const handleNavigation=(data:ProgramaTutoria)=>{
         //console.log(data);
         navigate('editar',{state:{programaTutoria:data}});
     }
+
+    const [filters,setFilters]=useState<any>({
+        idSpeciality:null,
+        idFaculty:null,
+        name:null
+    });
+    const handleOnChangeFilters = (filter:any)=>{
+        setFilters(filter);
+    }
+    const programaTutoriaFiltered : ProgramaTutoria[]=  useMemo(()=>{
+        return [...(programaTutoriaData).filter((item)=>
+            item.nombre.toLowerCase().includes(filters.name?filters.name:"")&&(filters.idSpeciality?filters.idSpeciality===item.especialidadId:true)&&(filters.idFaculty?filters.idFaculty===item.facultadId:true)
+    )]
+    },[programaTutoriaData,filters])
+    
+    
     const defaultColDef = {
         suppressHeaderMenuButton: true,
         flex: 1,
@@ -71,14 +89,14 @@ export default function PageProgramasTutoriaMaestro() {
     return (
     <div className='flex w-full h-full flex-col space-y-10 mt-10'>
         <div className='flex w-full h-[10%]'>
-            <ProgramaTutoríaSearchBar/>
+            <ProgramaTutoríaSearchBar handleOnChangeFilters={handleOnChangeFilters}/>
         </div>
         <div className='flex w-full h-[80%] ag-theme-alpine items-center justify-center'>
             {isLoading?<Spinner size='lg'/>:<div className='w-full h-full'>
                 <AgGridReact
                     defaultColDef={defaultColDef}
                     columnDefs={columnDefs}
-                    rowData={programaTutoriaData}
+                    rowData={programaTutoriaFiltered}
                 />
             </div>}            
         </div>        

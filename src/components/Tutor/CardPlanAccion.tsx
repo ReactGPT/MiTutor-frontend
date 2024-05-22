@@ -15,7 +15,8 @@ const CardPlanAccion: React.FC<CardPlanAccionProps> = ({ data }) => {
 
   // Función para navegar a la página de detalles con el ID dado
   const toDetail = (id: any) => {
-    navigate(`/listadoPlanAccion/${id}`);
+    console.log(id, 'id')
+    navigate('/detallePlanAccion', {state: {id: id}});
     //console.log('navegando a detalle de plan de acción con id: ', id);
   };
 

@@ -71,7 +71,7 @@ const router = createBrowserRouter([
         element: <PageListadoPlanAccion />,
       },
       {
-        path: '/listadoPlanAccion/:id',
+        path: '/detallePlanAccion',
         element: <PageDetallePlanAccion />,
       },
       {

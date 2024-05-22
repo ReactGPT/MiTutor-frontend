@@ -40,8 +40,8 @@ export const PageTitles = [
     pageName: "Plan de Acción",
   },
   {
-    path: '/listadoPlanAccion/:id',
-    pageName: "Plan de Acción",
+    path: '/detallePlanAccion',
+    pageName: "Detalle Plan de Acción",
   },
   {
     path: '/resultadoCitaIndividual',

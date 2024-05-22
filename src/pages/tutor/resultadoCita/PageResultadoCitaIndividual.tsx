@@ -65,7 +65,7 @@ function PageResultadoCitaIndividual() {
         navigate("/PerfilAlumno");
     };
     const handleClickPlanAccion=()=>{
-        navigate("/listadoPlanAccion");
+        navigate("/listadoPlanAccion", {state: {studentProgramId: citaModified?.studentProgramId}});
     }
 
   return (

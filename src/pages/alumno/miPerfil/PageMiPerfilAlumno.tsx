@@ -14,7 +14,7 @@ import { Label } from 'flowbite-react';
 const PageMiPerfilAlumno = () => {
   const {state} = useLocation();
   const {studentId} = state;
-  const [student, setStudent] = useState<ListStudent>();;
+  const [student, setStudent] = useState<ListStudent>();
    
   // Trae los datos de estudiante
   const fetchData = async () => {

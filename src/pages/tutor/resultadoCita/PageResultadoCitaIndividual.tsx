@@ -46,7 +46,7 @@ const PageResultadoCitaIndividual: React.FC = () =>{
                 <div className='flex w-full h-[90%] max-h-[90%] gap-4'>
                     <ResultadoCitaBlock2 cita={citaModified} onChangeCita={handleOnChangeCita} className='flex w-[50%] max-h-[90vh] h-full flex-col gap-4'/>
                     <div className='w-[50%] h-[100%] overflow-y-auto'>
-                        <GoogleForm className='flex w-[100%] max-h-[90vh] h-full flex-col gap-4'/>
+                        <GoogleForm className='flex w-[100%] max-h-[90vh] h-full flex-col gap-4' cita={citaModified}/>
                     </div>
                 </div>
                 </>

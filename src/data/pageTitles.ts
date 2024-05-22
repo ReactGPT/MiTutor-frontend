@@ -72,7 +72,7 @@ export const PageTitles = [
     pageName: "Resultado de Cita Individual"
   },
   {
-    path: '/listadoPlanAccion/:id',
-    pageName: "Detalle de Plan de Acción"
+    path: '/calendario/agregarDisponibilidad',
+    pageName: "Disponibilidad del Tutor"
   }
-]
+];

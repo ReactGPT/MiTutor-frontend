@@ -215,7 +215,9 @@ const PageDetallePlanAccion = () => {
                 description="El compromiso se registró con éxito."
                 icon={FaCheckCircle}
                 iconSize={60}
-                onClose={() => window.location.reload()} />
+                onClose={() => {
+                  window.location.reload()
+                }} />
             )}
             {editionModalOpen && ( // Mostrar el modal de edición exitoso si editionModalOpen es true
               <ModalRegistroExitoso //el mismo componente modal, solo le cambio los datos que dalen

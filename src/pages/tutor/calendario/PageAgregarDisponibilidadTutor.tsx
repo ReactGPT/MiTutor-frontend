@@ -56,6 +56,12 @@ const PageAgregarDisponibilidadTutor: React.FC = () => {
     <>
       <div className="w-full h-full flex flex-col gap-5">
         <div className="w-full flex items-center justify-between gap-5">
+          <div className='flex h-full items-center gap-3'>
+            <div className='flex bg-white p-1 items-center gap-3 rounded px-2'>
+              <div className='bg-[#65C3D0] w-2.5 h-2.5'></div>
+              <label>Disponible</label>
+            </div>
+          </div>
           <div className="text-xl text-primary font-bold">
             {modificarDisponibilidad ? "Modificar Disponibilidad" : ""}
           </div>

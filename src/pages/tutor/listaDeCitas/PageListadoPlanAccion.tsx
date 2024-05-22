@@ -20,7 +20,8 @@ const PageListadoPlanAccion = () => {
   const [registrationModalOpen, setRegistrationModalOpen] = useState(false);
   const [actionPlans, setActionPlans] = useState<ActionPlan[]>([]);
   const {state} = useLocation();
-  const {studentProgramId} = state;
+  const {studentId} = state;
+  const {programId} = state;
 
   //const { setTitle } = useTitle();
 
@@ -32,8 +33,8 @@ const PageListadoPlanAccion = () => {
 
   const fetchData = async () => {
     try {
-      const response = await axios.get(ServicesProperties.BaseUrl+'/listarActionPlans?StudentProgramId='+studentProgramId+'&TutorId=1');
-      console.log(studentProgramId);
+      const response = await axios.get(ServicesProperties.BaseUrl+'/listarActionPlans?studentId='+studentId+'&programId='+programId+'&TutorId=1');
+      console.log(studentId,programId);
       setActionPlans(response.data.data);
     } catch (error) {
       console.error('Error fetching data:', error);
@@ -80,7 +81,7 @@ const PageListadoPlanAccion = () => {
     <div className="w-full h-full flex flex-col gap-5">
       <div className='flex justify-end'>
         <Button variant='call-to-action' onClick={openModal} text='Nuevo Plan de Acción' />
-        <ModalNuevoPlanAccion isOpen={modalOpen} onClose={closeModal} updatePage={updatePlans} studentProgramId={studentProgramId}/>
+        <ModalNuevoPlanAccion isOpen={modalOpen} onClose={closeModal} updatePage={updatePlans} studentId={studentId} programId={programId}/>
         {registrationModalOpen && ( // Mostrar el modal de registro exitoso si registrationModalOpen es true
           <ModalRegistroExitoso
             title="¡Registro Exitoso!"

@@ -9,10 +9,11 @@ interface ModalNuevoPlanAccionProps {
   isOpen: boolean;
   onClose: () => void;
   updatePage: () => void; // Nueva prop para la función de actualización
-  studentProgramId: number;
+  studentId: number;
+  programId: number;
 }
 
-export default function ModalNuevoPlanAccion({ isOpen, onClose, updatePage,studentProgramId }: ModalNuevoPlanAccionProps) {
+export default function ModalNuevoPlanAccion({ isOpen, onClose, updatePage,studentId, programId }: ModalNuevoPlanAccionProps) {
   const [planData, setPlanData] = useState({
     name: '',
     description: ''
@@ -33,7 +34,8 @@ export default function ModalNuevoPlanAccion({ isOpen, onClose, updatePage,stude
       const newData = {
         name: planData.name,
         description: planData.description,
-        studentProgramId: studentProgramId, // Asigna el valor correspondiente para studentProgramId
+        studentId: studentId, // Asigna el valor correspondiente para studentId
+        programId: programId, // Asigna el valor correspondiente para programId 
         tutorId: 1, // Asigna el valor correspondiente para tutorId
       };
   

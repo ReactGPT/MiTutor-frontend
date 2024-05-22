@@ -9,7 +9,7 @@ type SidebarProps = {
 };
 
 const Sidebar = ({ sidebarLinks }: SidebarProps) => {
-  const { setTitle } = useTitle();
+  //const { setTitle } = useTitle();
   return (
     <nav className='h-full w-full bg-[rgba(255,_255,_255,_0.50)] flex flex-col text-black sidebar-shaddow gap-6 px-3 py-7 select-none'>
       <div className='flex items-center justify-center gap-3 px-4 py-3 font-montserrat min-h-[60px]'>
@@ -26,7 +26,7 @@ const Sidebar = ({ sidebarLinks }: SidebarProps) => {
             }
             to={link.path}
             key={index} onClick={() => {
-              setTitle(link.label);
+              //setTitle(link.label);
             }}>
             <span className="text-xl">{link.icon}</span>
             <span className="leading-5">{link.label}</span>

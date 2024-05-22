@@ -1,103 +1,56 @@
-import { useState } from 'react';
 import Button from '../../../components/Button';
-import Calendario from '../../../components/Calendario';
 import { useNavigate } from 'react-router-dom';
-import ProgramarCitaTutor from '../../../components/Tutor/ProgramarCitaTutor';
-import { FilterComponent } from '../../../components';
-
-
-const citas = [
-  {
-    id: '1',
-    fecha: new Date(),
-    horaInicio: 10,
-    horaFin: 12,
-    nombre: 'Cita en 4ta matricula',
-    facultad: 'Ciencias e Ingenieria',
-    especialidad: 'Ingeneria Informatica'
-  },
-  {
-    id: '2',
-    fecha: new Date(),
-    horaInicio: 13,
-    horaFin: 15,
-    nombre: 'Cita con Flores',
-    facultad: 'Ciencias e Ingenieria',
-    especialidad: 'Ingeneria de Minas'
-  },
-  {
-    id: '3',
-    fecha: new Date(2024, 3, 30),
-    horaInicio: 16,
-    horaFin: 17,
-    nombre: 'Cita con Carlos',
-    facultad: 'Ciencias e Ingenieria',
-    especialidad: 'Ingeneria Civil'
-  },
-  {
-    id: '4',
-    fecha: new Date(2024, 3, 29),
-    horaInicio: 18,
-    horaFin: 20,
-    nombre: 'Cita con María',
-    facultad: 'Facultad 2',
-    especialidad: 'Especialidad 2.1'
-  },
-  {
-    id: '5',
-    fecha: new Date(2024, 4, 1),
-    horaInicio: 11,
-    horaFin: 13,
-    nombre: 'Cita con Juan',
-    facultad: 'Facultad 2',
-    especialidad: 'Especialidad 2.2'
-  },
-  {
-    id: '6',
-    fecha: new Date(2024, 3, 26),
-    horaInicio: 8,
-    horaFin: 10,
-    nombre: 'Cita con Roberto',
-    facultad: 'Facultad 2',
-    especialidad: 'Especialidad 2.3'
-  },
-];
-
-interface Cita {
-  id: string;
-  fecha: Date;
-  horaInicio: number;
-  horaFin: number;
-  nombre: string;
-  facultad: string;
-  especialidad: string;
-}
+import Calendario from '../../../components/Calendar/Calendario';
+import { useEffect, useState } from 'react';
+import { useCitasPorTutor } from '../../../store/hooks/useCita';
+import { useTitle } from '../../../context/TitleContext';
 
 const PageCalendarioTutor = () => {
-  const [filteredCitas, setFilteredCitas] = useState(citas);
+  const { setTitle } = useTitle();
+  setTitle("Calendario");
 
-  const handleFilter = (filteredData: Cita[]) => {
-    setFilteredCitas(filteredData);
-  };
+  const { cita, fetchCita } = useCitasPorTutor(1);
+
+  useEffect(() => {
+    fetchCita();
+  }, []);
 
   //ir a disponibilidad
   const navigate = useNavigate();
 
   const goToDisponibilidad = () => {
-    navigate('/agregarDisponibilidad');
+    navigate('/calendario/agregarDisponibilidad');
   };
 
   return (
     <div className="w-full h-full flex flex-col gap-5">
-      <div className="w-full flex items-center justify-end gap-5">
-        <FilterComponent citas={citas} onFilter={handleFilter} />
+      <div className="w-full flex items-center justify-between gap-5">
+        <div className="flex gap-5 h-full">
+          <div className='flex h-full items-center gap-3'>
+            <div className='flex bg-white p-1 items-center gap-3 rounded px-2'>
+              <div className='bg-[#65C3D0] w-2.5 h-2.5'></div>
+              <label>Disponible</label>
+            </div>
+            <div className='flex bg-white p-1 items-center gap-3 rounded px-2'>
+              <div className='bg-[#52D076] w-2.5 h-2.5'></div>
+              <label>Registrado</label>
+            </div>
+            <div className='flex bg-white p-1 items-center gap-3 rounded px-2'>
+              <div className='bg-[#D05252] w-2.5 h-2.5'></div>
+              <label>Pendiente Resultados</label>
+            </div>
+            <div className='flex bg-white p-1 items-center gap-3 rounded px-2'>
+              <div className='bg-[#206CE5] w-2.5 h-2.5'></div>
+              <label>Cita completada</label>
+            </div>
+          </div>
+        </div>
         <div className="flex gap-5">
-          <ProgramarCitaTutor />
-          <Button onClick={goToDisponibilidad} variant="call-to-action" text='Modificar Disponibilidad' />
+          <Button text='Ver Disponibilidad' onClick={goToDisponibilidad} variant="primario" />
         </div>
       </div>
-      <div className="w-full overflow-auto">
-        <Calendario horaInicio={8} horaFin={22} citas={filteredCitas} />
+      <div className="flex-1 w-full overflow-auto bg-white rounded-md p-4">
+        <Calendario citas={cita} />
       </div>
     </div >
   );

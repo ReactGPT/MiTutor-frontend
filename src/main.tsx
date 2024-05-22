@@ -17,12 +17,14 @@ import PageProgramasTutoriaMaestro from './pages/coordinador/programasDeTutoria/
 import PageAgregarDisponibilidadTutor from './pages/tutor/calendario/PageAgregarDisponibilidadTutor.tsx';
 import PageDerivacionesHechas from './pages/tutor/miPerfil/PageDerivacionesHechas.tsx';
 import PagePerfilAlumnoTutor from './pages/tutor/programasDeTutoria/PagePerfilAlumnoTutor.tsx';
+
 import { Provider } from 'react-redux';
 import { store } from './store/store.ts';
 import PageListadoPlanAccion from './pages/tutor/listaDeCitas/PageListadoPlanAccion.tsx';
 import PageDetallePlanAccion from './pages/tutor/listaDeCitas/PageDetallePlanAccion.tsx';
 import PageResultadoCitaIndividual from './pages/tutor/resultadoCita/PageResultadoCitaIndividual.tsx';
 import PageMiPerfilAlumno from './pages/alumno/miPerfil/PageMiPerfilAlumno.tsx';
+
 const router = createBrowserRouter([
   {
     path: '/',
@@ -81,7 +83,7 @@ const router = createBrowserRouter([
         element: <PageProgramasTutoriaMaestro />,
       },
       {
-        path: '/agregarDisponibilidad',
+        path: '/calendario/agregarDisponibilidad',
         element: <PageAgregarDisponibilidadTutor />,
       },
       {

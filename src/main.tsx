@@ -10,11 +10,20 @@ import PageMiPerfilTutor from './pages/tutor/miPerfil/PageMiPerfilTutor.tsx';
 import PageDetalleProgramaTutoriaTutor from './pages/tutor/programasDeTutoria/PageDetalleProgramaTutoriaTutor.tsx';
 import PageHistoricoDeCitas from './pages/tutor/listaDeCitas/PageHistoricoDeCitas.tsx';
 import PageListaDeCitas from './pages/tutor/listaDeCitas/PageListaDeCitas.tsx';
+
 import PageProgTutoria from './pages/coordinador/programasDeTutoria/PageProgTutoria.tsx';
 import PageProgramasTutoriaMaestro from './pages/coordinador/programasDeTutoria/PageProgramasTutoriaMaestro.tsx';
+
 import PageAgregarDisponibilidadTutor from './pages/tutor/calendario/PageAgregarDisponibilidadTutor.tsx';
 import PageDerivacionesHechas from './pages/tutor/miPerfil/PageDerivacionesHechas.tsx';
 import PagePerfilAlumnoTutor from './pages/tutor/programasDeTutoria/PagePerfilAlumnoTutor.tsx';
+
+import { Provider } from 'react-redux';
+import { store } from './store/store.ts';
+import PageListadoPlanAccion from './pages/tutor/listaDeCitas/PageListadoPlanAccion.tsx';
+import PageDetallePlanAccion from './pages/tutor/listaDeCitas/PageDetallePlanAccion.tsx';
+import PageResultadoCitaIndividual from './pages/tutor/resultadoCita/PageResultadoCitaIndividual.tsx';
+import PageMiPerfilAlumno from './pages/alumno/miPerfil/PageMiPerfilAlumno.tsx';
 
 const router = createBrowserRouter([
   {
@@ -58,6 +67,18 @@ const router = createBrowserRouter([
         element: <PageProgTutoria />,
       },
       {
+        path: '/listadoPlanAccion',
+        element: <PageListadoPlanAccion />,
+      },
+      {
+        path: '/listadoPlanAccion/:id',
+        element: <PageDetallePlanAccion />,
+      },
+      {
+        path: '/PerfilAlumno',
+        element:<PageMiPerfilAlumno/>
+      },
+      {
         path: '/programasDeTutoriaMaestro',
         element: <PageProgramasTutoriaMaestro />,
       },
@@ -68,6 +89,14 @@ const router = createBrowserRouter([
       {
         path: '/misDerivacionesHechas',
         element: <PageDerivacionesHechas />
+      },
+      {
+        path:'/programasDeTutoriaMaestro/editar',
+        element:<PageProgTutoria/>
+      },
+      {
+        path: '/listaDeCitas/resultadoCitaIndividual',
+        element:<PageResultadoCitaIndividual/>
       }
     ],
   },
@@ -75,6 +104,9 @@ const router = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
+    <Provider store={store}>
     <RouterProvider router={router} />
+    </Provider>
   </React.StrictMode>
+  
 );

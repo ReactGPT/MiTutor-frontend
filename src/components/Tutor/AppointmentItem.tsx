@@ -71,11 +71,11 @@ const controlColor = (color: string, tipo: string) => {
 };
 
 export const AppointmentItem: React.FC<AppointmentItemProps> = ({ appointment, tipo }) => {
-
+  
   const navigate = useNavigate();
 
   const goToDetalleCita = () => {
-    navigate("/", { state: { appointment } });
+    navigate("/listaDeCitas/resultadoCitaIndividual", { state: { cita: appointment } });
   };
 
   return (

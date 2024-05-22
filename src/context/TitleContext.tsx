@@ -1,13 +1,15 @@
-import React, { createContext, useContext, useState } from "react";
+import React, { ReactElement, createContext, useContext, useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
+import { PageTitles } from "../data/pageTitles";
 
 type TitleContextType = {
   title: string;
-  setTitle: (title: string) => void;
+  handleSetTitle: (title: string) => void;
 };
 
-const TitleContext = createContext<TitleContextType | undefined>(undefined);
+const TitleContext = createContext<TitleContextType>({} as TitleContextType);
 
-export const useTitle = () => {
+const useTitle = () => {
   const context = useContext(TitleContext);
   if (!context) {
     throw new Error("useTitle solo se puede usar dentro del TitleProvider");
@@ -16,15 +18,35 @@ export const useTitle = () => {
 };
 
 type TitleProviderProps = {
-  children: React.ReactNode;
+  children: ReactElement;
 };
 
-export const TitleProvider: React.FC<TitleProviderProps> = ({ children }) => {
+
+
+
+
+const TitleProvider: React.FC<TitleProviderProps> = ({ children }) => {
+  const location= useLocation();
   const [title, setTitle] = useState<string>('');
 
+  const handleSetTitle = (title:string)=>{
+    setTitle(title);
+  };
+  useEffect(()=>{
+    handleSetTitle("Inicio");
+  },[]);
+
+  useEffect(()=>{
+    const actualPage=PageTitles.find((item)=>item.path===location.pathname);
+    //console.log(actualPage)
+    setTitle(!!actualPage? actualPage.pageName:'');
+  },[location.pathname])
+
   return (
-    <TitleContext.Provider value={{ title, setTitle }}>
+    <TitleContext.Provider value={{ title, handleSetTitle }}>
       {children}
     </TitleContext.Provider>
   );
 };
+
+export {TitleContext,TitleProvider,useTitle};

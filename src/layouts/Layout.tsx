@@ -1,9 +1,19 @@
 import Sidebar from "../components/Sidebar";
+import { useState, useEffect } from "react";
 import Header from "../components/ui/Header";
 import { DASHBOARD_SIDEBAR_LINKS } from "../data/navigation";
 import { Outlet } from "react-router-dom";
+import { useParameters } from "../store/hooks";
 
 function Layout() {
+  const {fetchEspecialidades,fetchFacultades}=useParameters();
+  const [headerTitle, setHeaderTitle] = useState<string>('');
+  useEffect(() => {
+    setHeaderTitle('Inicio');
+    fetchEspecialidades();
+    fetchFacultades();
+  }, []);
+
   return (
     <div className="flex flex-row bg-gradient-to-br from-white to-blue-300 h-screen w-screen min-w-[1080px] min-h-[720px]">
       <div className="h-full w-[20%] min-w-[255px] max-w-[300px]">

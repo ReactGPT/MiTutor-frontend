@@ -1,5 +1,6 @@
 export type ListCita = {
     appointmentId : number,
+    programId : number,
     programName : string,
     appointmentStatus : string,
     groupBased : boolean,
@@ -9,7 +10,7 @@ export type ListCita = {
     lastName : string,
     secondLastName : string,
     isInPerson : boolean,
-    startTime : string,
-    endTime : string,
+    startTime : Date,
+    endTime : Date,
     reason : string
 }

@@ -4,7 +4,12 @@ import { Fragment, useState } from 'react';
 import Button from '../Button';
 
 interface ModalDesactivarProps {
+<<<<<<< Updated upstream
     onClose: () => void; // Tipo de onClose
+=======
+  onClose: () => void;
+  children?: React.ReactNode; // Hacemos children opcional
+>>>>>>> Stashed changes
 }
 
 export default function ModalDesactivar({ onClose }: ModalDesactivarProps) {

@@ -23,6 +23,9 @@ import PageListadoPlanAccion from './pages/tutor/listaDeCitas/PageListadoPlanAcc
 import PageDetallePlanAccion from './pages/tutor/listaDeCitas/PageDetallePlanAccion.tsx';
 import PageResultadoCitaIndividual from './pages/tutor/resultadoCita/PageResultadoCitaIndividual.tsx';
 import PageMiPerfilAlumno from './pages/alumno/miPerfil/PageMiPerfilAlumno.tsx';
+import PageListaDeTutorias from './pages/alumno/listaDeTutorias/pageListaDeTutorias.tsx';
+import PageDetalleDeCita from './pages/alumno/detalleDeCita/pageDetalleDeCita.tsx';
+
 const router = createBrowserRouter([
   {
     path: '/',
@@ -95,6 +98,14 @@ const router = createBrowserRouter([
       {
         path:'/programasDeTutoriaMaestro/editar',
         element:<PageProgTutoria/>
+      },
+      {
+        path:'/listaTutoriasAlumno',
+        element:<PageListaDeTutorias/>
+      },
+      {
+        path:'/detalleDeCita',
+        element:<PageDetalleDeCita/>
       }
     ],
   },

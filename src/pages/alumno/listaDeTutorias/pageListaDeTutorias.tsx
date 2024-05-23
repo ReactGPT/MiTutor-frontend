@@ -12,6 +12,13 @@ const lista: ListTutoringProgram[] = [
         description: 'Individual',
         facultyName: 'Ciencias e ingeniería',
         specialtyName: 'Ingeniería Informática',
+        tutorType: 'Martina Solis'
+    },    {
+        tutoringProgramId: 2,
+        programName: 'Tutoría con Diego ramos',
+        description: 'Individual',
+        facultyName: 'Ciencias e ingeniería',
+        specialtyName: 'Ingeniería Informática',
         tutorType: 'Diego ramos'
     },
 
@@ -49,17 +56,18 @@ const PageListaDeTutorias = () => {
                 <SearchInput placeholder="Programa de Tutoria" onSearch={handleSearch} />
             </div>
 
-            {/* { loading ?
-                <div className="w-full h-[95%] flex items-center justify-center">
-                <Spinner size="xl" />
-                </div>
-                : */}
+            { 
+                // loading ?
+                // <div className="w-full h-[95%] flex items-center justify-center">
+                // <Spinner size="xl" />
+                // </div>
+                // :
                 <div className="w-full h-[95%] flex flex-col gap-5">
                 {currentPrograms.map((program, index) => (
                     <TutoringProgramCard key={`dpt${index}`} data={program} />
                 ))}
                 </div>
-            
+            }
 
             <Pagination
                 currentPage={currentPage}

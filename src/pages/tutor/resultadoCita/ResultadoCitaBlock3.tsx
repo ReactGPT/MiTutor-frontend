@@ -2,20 +2,20 @@ import { useState } from 'react'
 import { Button, Combobox } from '../../../components';
 import { EditIcon } from '../../../assets';
 import ModalDerivacion from '../../../components/Tutor/ModalDerivacion';
-import { Appointment } from '../../../store/types';
-
+//import { Appointment } from '../../../store/types';
+import { ListCita } from '../../../store/types/ListCita';
 
 
 type InputProps = {
     className:string;
-    cita:Appointment;
+    cita:ListCita;
     onChange:(name:string,value:any)=>void;
 }
 
-// const assistanceAreas = [
-//   { name: 'Centro de Psicología' },
-//   { name: 'Medical PUCP' },
-// ]
+ const assistanceAreas = [
+   { name: 'Centro de Psicología' },
+   { name: 'Medical PUCP' },
+ ]
 
 type IAssistanceAreas = {
   id: number

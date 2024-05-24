@@ -9,14 +9,14 @@ const PageMiPerfilTutor: React.FC = () => {
     <div className="w-full h-full flex">
       <div className="w-1/2 flex flex-col">
         <div className="flex justify-center">
-          <h1 className="font-montserrat text-[50px] font-bold text-primary pt-12">Juanita Chávez</h1>
+          <h1 className="font-montserrat text-[50px] font-bold text-primary pt-12">{userData.username}</h1>
         </div>
         <div className="flex-1 pt-12">
           <ul className="px-11">
             <Label value="Codigo:" className="text-primary font-roboto" />
             <InputTutor texto="20004587" enable={false} />
             <Label value="Correo Electronico:" className="text-primary font-roboto" />
-            <InputTutor texto="20004587@pucp.edu.pe" enable={false} />
+            <InputTutor texto={userData.email} enable={false} />
             <Label value="Telefono:" className="text-primary font-roboto" />
             <InputTutor texto="998675729" enable={false} />
           </ul>

@@ -1,9 +1,10 @@
 import InputTutor from '../../../components/Tutor/InputTutor';
 import image from '/src/assets/Tutor/no-avatar.webp';
 import { Label } from 'flowbite-react';
-
+import { useAuth } from '../../../context';
 
 const PageMiPerfilTutor: React.FC = () => {
+  const {userData}=useAuth();
   return (
     <div className="w-full h-full flex">
       <div className="w-1/2 flex flex-col">
@@ -23,7 +24,7 @@ const PageMiPerfilTutor: React.FC = () => {
       </div>
       <div className="w-1/2">
         <div className="flex w-full justify-center items-center py-48">
-          <img src={image} alt="Imagen Tutor" className="w-[200px] h-[200px] rounded-full" />
+          <img src={userData.imageUrl} alt="Imagen Tutor" className="w-[200px] h-[200px] rounded-full" />
         </div>
       </div>
     </div>

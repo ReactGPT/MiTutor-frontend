@@ -24,6 +24,8 @@ import PageListadoPlanAccion from './pages/tutor/listaDeCitas/PageListadoPlanAcc
 import PageDetallePlanAccion from './pages/tutor/listaDeCitas/PageDetallePlanAccion.tsx';
 import PageResultadoCitaIndividual from './pages/tutor/resultadoCita/PageResultadoCitaIndividual.tsx';
 import PageMiPerfilAlumno from './pages/alumno/miPerfil/PageMiPerfilAlumno.tsx';
+import PageListadoPlanAccionAlumno from './pages/alumno/PlanDeAccion/PageListadoPlanAccionAlumno.tsx';
+import PageDetallePlanAccionAlumno from './pages/alumno/PlanDeAccion/PageDetallePlanAccionAlumno.tsx';
 
 const router = createBrowserRouter([
   {
@@ -97,6 +99,14 @@ const router = createBrowserRouter([
       {
         path: '/listaDeCitas/resultadoCitaIndividual',
         element:<PageResultadoCitaIndividual/>
+      },
+      {
+        path: '/listadoPlanAccionAlumno',
+        element:<PageListadoPlanAccionAlumno/>
+      },
+      {
+        path: '/detallePlanAccionAlumno',
+        element:<PageDetallePlanAccionAlumno/>
       }
     ],
   },

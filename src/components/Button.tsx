@@ -1,7 +1,7 @@
 import React from 'react';
 
 type ButtonProps = {
-  variant?: 'call-to-action' | 'primario' | 'secundario' | 'terciario' | 'warning';
+  variant?: 'call-to-action' | 'primario' | 'secundario' | 'terciario' | 'warning' | 'accept' | 'reject';
   onClick: () => void;
   icon?: any;
   iconSize?: number;
@@ -35,6 +35,12 @@ const Button: React.FC<ButtonProps> = ({
       break;
     case 'warning':
       buttonClass += ' bg-warning text-black hover:bg-red-700 hover:text-white';
+      break;
+    case 'accept':
+      buttonClass += ' border-custom bg-primary text-white hover:bg-blue-700 hover:text-white';
+      break;
+    case 'reject':
+      buttonClass += ' bg-red-700 text-white hover:bg-red-550 hover:text-white';
       break;
     default:
       buttonClass += ' bg-blue-500 text-white hover:bg-blue-600';

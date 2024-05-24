@@ -26,6 +26,8 @@ import PageResultadoCitaIndividual from './pages/tutor/resultadoCita/PageResulta
 import PageMiPerfilAlumno from './pages/alumno/miPerfil/PageMiPerfilAlumno.tsx';
 import PageSolicitarAlumno from './pages/tutor/solicitarTutor/PageSolicitarAlumno.tsx';
 
+import PageGestionSolicitudes from './pages/coordinador/gestionSolicitudes/SolicitudGestion.tsx';
+
 const router = createBrowserRouter([
   {
     path: '/',
@@ -102,6 +104,10 @@ const router = createBrowserRouter([
       {
         path: '/solicitarTutor',
         element: <PageSolicitarAlumno/>
+      },
+      {
+        path: '/coordinador/gestion-solicitudes',
+        element: <PageGestionSolicitudes />,
       }
     ],
   },

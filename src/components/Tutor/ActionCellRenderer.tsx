@@ -8,15 +8,21 @@ type ActionCellRendererProps = {
   data: Commintment;
   openModalEdit: (data: Commintment) => void;
   handleConfirmDeleteCommit: (data: Commintment) => void;
+  usuario: string;
 };
 
-const ActionCellRenderer: React.FC<ActionCellRendererProps> = ({ data, openModalEdit, handleConfirmDeleteCommit }) => {
+const ActionCellRenderer: React.FC<ActionCellRendererProps> = ({ data, openModalEdit, handleConfirmDeleteCommit, usuario }) => {
   return (
     <div className="flex">
       <div className="mr-2">
         <Button variant="secundario" icon={IconPencil} onClick={() => openModalEdit(data)} />
       </div>
-      <Button variant="warning" icon={IconDelete} onClick={() => handleConfirmDeleteCommit(data)} />
+      {
+        // Si el usuario es tutor, entonces mostrar el botón de eliminar
+        usuario === 'tutor' && (
+          <Button variant="warning" icon={IconDelete} onClick={() => handleConfirmDeleteCommit(data)} />
+        )
+      }
     </div>
   );
 };

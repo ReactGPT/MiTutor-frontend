@@ -23,20 +23,19 @@ const PageListadoPlanAccion = () => {
   const {studentId} = state;
   const {programId} = state;
 
-  //const { setTitle } = useTitle();
-
+  // Estados para la búsqueda y paginación
+  const [searchText, setSearchText] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 5;
 
   useEffect(() => {
-    //setTitle("Listado Planes de Acción del Alumno");
     fetchData();
   }, []);
 
   const fetchData = async () => {
     try {
       const response = await axios.get(ServicesProperties.BaseUrl+'/listarActionPlans?studentId='+studentId+'&programId='+programId+'&TutorId=1');
-      //console.log(studentId,programId);
       setActionPlans(response.data.data);
-      //console.log('planes:', response.data.data.length);
     } catch (error) {
       console.error('Error fetching data:', error);
     }
@@ -54,11 +53,6 @@ const PageListadoPlanAccion = () => {
     await fetchData();
     setRegistrationModalOpen(true); // Abre el modal de registro exitoso después de actualizar los planes
   };
-
-
-  const [searchText, setSearchText] = useState('');
-  const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 5;
 
   const handleSearch = (text: string) => {
     setSearchText(text);

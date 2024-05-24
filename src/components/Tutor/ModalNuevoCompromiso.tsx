@@ -19,10 +19,21 @@ export default function ModalNuevoCompromiso({ isOpen, onClose,  updatePage, act
     commitmentStatusDescription: '',
   });
 
+  // Estado para el mensaje de error del nombre del compromiso
+  const [nameError, setNameError] = useState('');
+
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setCommitmentData({ ...commitmentData, [name]: value });
   };
+
+  const onBlurName = (e: ChangeEvent<HTMLInputElement>) => {
+    if (!commitmentData.description.trim()) {
+      setNameError('El compromiso no puede estar vacío');
+    } else {
+      setNameError('');
+    }
+  }
 
   const guardarDatos = async () => {
     try {
@@ -77,11 +88,13 @@ export default function ModalNuevoCompromiso({ isOpen, onClose,  updatePage, act
                   name="description"
                   value={commitmentData.description}
                   onChange={handleChange}
+                  manejarBlur={onBlurName}
                   />
+                  {nameError && <p className="text-red-500 pl-6">{nameError}</p>}
                 </div>
                 <div className="flex justify-between items-center mx-25 my-3">
                   <Button text="Cancelar" onClick={onClose} variant='secundario' />
-                  <Button text="Crear Compromiso" onClick={guardarDatos} variant='call-to-action' />
+                  <Button text="Crear Compromiso" onClick={guardarDatos} variant='call-to-action' disabled={!commitmentData.description.trim()}/>
                 </div>
               </div>
             </div>

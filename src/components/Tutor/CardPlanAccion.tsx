@@ -7,17 +7,22 @@ import { useNavigate } from "react-router-dom";
 
 type CardPlanAccionProps = {
   data: ActionPlan;
+  usuario: string;
 };
 
-const CardPlanAccion: React.FC<CardPlanAccionProps> = ({ data }) => {
+const CardPlanAccion: React.FC<CardPlanAccionProps> = ({ data,  usuario}) => {
   const navigate = useNavigate();
 
 
   // Función para navegar a la página de detalles con el ID dado
   const toDetail = (id: any) => {
     console.log(id, 'id')
-    navigate('/detallePlanAccion', {state: {id: id}});
-    //console.log('navegando a detalle de plan de acción con id: ', id);
+    if(usuario === 'tutor'){
+      navigate('/detallePlanAccion', {state: {id: id}});
+    }
+    else{
+      navigate('/detallePlanAccionAlumno', {state: {id: id}});
+    }
   };
 
   //TODO: Agregar redireccionamiento al apretar el boton

@@ -1,43 +1,28 @@
-import React, { useState, useEffect } from "react";
-import { SearchInput,Spinner } from "../../../components";
-import { useProgramaDeTutoria } from "../../../store/hooks/useProgramaDeTutoria";
-import TutoringProgramCard from "../../../components/Tutor/TutoringProgramCard";
+import { useState, useEffect } from "react";
+import { Button, SearchInput,Spinner } from "../../../components";
+import { useProgramaDeTutoriaAlumno } from "../../../store/hooks/useProgramaDeTutoriaAlumno";
 import Pagination from "../../../components/Pagination";
-import { ListTutoringProgram } from '../../../store/types/ListTutoringProgram';
-
-const lista: ListTutoringProgram[] = [
-    {
-        tutoringProgramId: 1,
-        programName: 'Tutoría con Martina Solis',
-        description: 'Individual',
-        facultyName: 'Ciencias e ingeniería',
-        specialtyName: 'Ingeniería Informática',
-        tutorType: 'Martina Solis'
-    },    {
-        tutoringProgramId: 2,
-        programName: 'Tutoría con Diego ramos',
-        description: 'Individual',
-        facultyName: 'Ciencias e ingeniería',
-        specialtyName: 'Ingeniería Informática',
-        tutorType: 'Diego ramos'
-    },
-
-]
+import TutoringProgramCardAlumno from "../../../components/Tutor/TutoringProgramCardAlumno";
+import IconAdd from "../../../assets/svg/IconAdd";
 
 const PageListaDeTutorias = () => {
 
-    //const { programaTutoria, fetchProgramaDeTutoria, loading } = useProgramaDeTutoria(1);
+    const { programaTutoriaAlumno, fetchProgramaDeTutoriaAlumno, loading } = useProgramaDeTutoriaAlumno(2);
+
+    useEffect(() => {
+        fetchProgramaDeTutoriaAlumno();
+    }, []);
 
     const [searchText, setSearchText] = useState('');
     const [currentPage, setCurrentPage] = useState(1);
-    const itemsPerPage = 6;
+    const itemsPerPage = 5;
 
     const handleSearch = (text: string) => {
         setSearchText(text);
         setCurrentPage(1);
     };    
 
-    const filteredPrograms = lista?.filter(program =>
+    const filteredPrograms = programaTutoriaAlumno?.filter(program =>
         program.programName.toLowerCase().includes(searchText.toLowerCase())
     );
 
@@ -49,25 +34,32 @@ const PageListaDeTutorias = () => {
         setCurrentPage(pageNumber);
     };
 
+    const debugClick = () => {
+        console.log('boton clickeado')
+    };
+
     return(
-        <div>
-            <div className="flex flex-col gap-5 w-full h-full">
+        <div className="flex flex-col gap-5 w-full h-full">
             <div className="w-full h-[5%]">
                 <SearchInput placeholder="Programa de Tutoria" onSearch={handleSearch} />
             </div>
 
             { 
-                // loading ?
-                // <div className="w-full h-[95%] flex items-center justify-center">
-                // <Spinner size="xl" />
-                // </div>
-                // :
-                <div className="w-full h-[95%] flex flex-col gap-5">
+                loading ?
+                <div className="w-full h-[90%] flex items-center justify-center">
+                <Spinner size="xl" />
+                </div>
+                :
+                <div className="w-full h-[90%] flex flex-col gap-5">
                 {currentPrograms.map((program, index) => (
-                    <TutoringProgramCard key={`dpt${index}`} data={program} />
+                    <TutoringProgramCardAlumno key={`dpt${index}`} data={program} />
                 ))}
                 </div>
             }
+            
+            <div className="w-full h-full flex items-center justify-end p-5">
+                <Button onClick={debugClick} icon={IconAdd} iconSize={8}/>
+            </div>
 
             <Pagination
                 currentPage={currentPage}
@@ -75,7 +67,6 @@ const PageListaDeTutorias = () => {
                 itemsPerPage={itemsPerPage}
                 onPageChange={handlePageChange}
             />
-            </div>
         </div>
     );
 

@@ -3,11 +3,10 @@ import { useEffect, useState } from 'react'
 import ResultadoCitaBlockAlumno from './ResultadoCitaBlockAlumno';
 import ResultadoCitaBlock2 from './ResultadoCitaBlock2';
 import ResultadoCitaBlock3 from './ResultadoCitaBlock3';
-import { useLocation,useNavigate,useParams } from 'react-router-dom';
-//import { Appointment } from '../../../store/types/Appointment';
+import { useLocation,useNavigate,useParams } from 'react-router-dom'; 
 import { ListCita } from '../../../store/types/ListCita';
+import FormularioDerivacion from './FormularioDerivacion';
 import GoogleForm from './GoogleFormEmbed';
-
 const PageResultadoCitaIndividual: React.FC = () =>{
     const navigate = useNavigate();
     const {state} = useLocation();
@@ -46,7 +45,7 @@ const PageResultadoCitaIndividual: React.FC = () =>{
                 <div className='flex w-full h-[90%] max-h-[90%] gap-4'>
                     <ResultadoCitaBlock2 cita={citaModified} onChangeCita={handleOnChangeCita} className='flex w-[50%] max-h-[90vh] h-full flex-col gap-4'/>
                     <div className='w-[50%] h-[100%] overflow-y-auto'>
-                        <GoogleForm className='flex w-[100%] max-h-[90vh] h-full flex-col gap-4' cita={citaModified}/>
+                    <FormularioDerivacion className='flex w-[100%] max-h-[90vh] h-full flex-col gap-4 border-custom drop-shadow-md p-4 flex-grow overflow-auto' cita={citaModified}/>
                     </div>
                 </div>
                 </>
@@ -57,4 +56,6 @@ const PageResultadoCitaIndividual: React.FC = () =>{
 }
 //<GoogleForm className='flex w-[50%] max-h-[80vh] h-full flex-col gap-4'/>
 export default PageResultadoCitaIndividual
+/*<GoogleForm className='flex w-[100%] max-h-[90vh] h-full flex-col gap-4' cita={citaModified}/> */
 /*<ResultadoCitaBlock3 cita={citaModified} onChange={handleOnChangeCita} className='w-[50%] h-full border-custom drop-shadow-md p-4'/> */
+//<FormularioDerivacion className='flex w-[100%] max-h-[90vh] h-full flex-col gap-4 border-custom drop-shadow-md p-4' cita={citaModified}/>

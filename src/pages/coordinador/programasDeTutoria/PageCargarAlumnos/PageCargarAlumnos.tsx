@@ -3,7 +3,7 @@ import InputFile from './InputFile';
 
 function PageCargarAlumnos() {
   return (
-    <InputFile onFileupload/>
+    <InputFile/>
   )
 }
 

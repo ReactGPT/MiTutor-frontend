@@ -1,3 +1,4 @@
+"use client";
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
@@ -17,13 +18,15 @@ import PageProgramasTutoriaMaestro from './pages/coordinador/programasDeTutoria/
 import PageAgregarDisponibilidadTutor from './pages/tutor/calendario/PageAgregarDisponibilidadTutor.tsx';
 import PageDerivacionesHechas from './pages/tutor/miPerfil/PageDerivacionesHechas.tsx';
 import PagePerfilAlumnoTutor from './pages/tutor/programasDeTutoria/PagePerfilAlumnoTutor.tsx';
-
+import { GoogleOAuthProvider } from '@react-oauth/google';
+import { AuthProvider } from './context';
 import { Provider } from 'react-redux';
 import { store } from './store/store.ts';
 import PageListadoPlanAccion from './pages/tutor/listaDeCitas/PageListadoPlanAccion.tsx';
 import PageDetallePlanAccion from './pages/tutor/listaDeCitas/PageDetallePlanAccion.tsx';
 import PageResultadoCitaIndividual from './pages/tutor/resultadoCita/PageResultadoCitaIndividual.tsx';
 import PageMiPerfilAlumno from './pages/alumno/miPerfil/PageMiPerfilAlumno.tsx';
+import PageSolicitarAlumno from './pages/tutor/solicitarTutor/PageSolicitarAlumno.tsx';
 import PageListadoPlanAccionAlumno from './pages/alumno/PlanDeAccion/PageListadoPlanAccionAlumno.tsx';
 import PageDetallePlanAccionAlumno from './pages/alumno/PlanDeAccion/PageDetallePlanAccionAlumno.tsx';
 
@@ -101,6 +104,10 @@ const router = createBrowserRouter([
         element:<PageResultadoCitaIndividual/>
       },
       {
+        path: '/solicitarTutor',
+        element: <PageSolicitarAlumno/>
+      },
+      {
         path: '/listadoPlanAccionAlumno',
         element:<PageListadoPlanAccionAlumno/>
       },
@@ -115,7 +122,11 @@ const router = createBrowserRouter([
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <Provider store={store}>
-    <RouterProvider router={router} />
+      <AuthProvider>
+        <GoogleOAuthProvider clientId='358728188523-achb1qm8b68uvhr6437hft062u1dmtns.apps.googleusercontent.com'>
+          <RouterProvider router={router} />
+        </GoogleOAuthProvider>
+      </AuthProvider>
     </Provider>
   </React.StrictMode>
   

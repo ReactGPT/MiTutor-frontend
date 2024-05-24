@@ -5,7 +5,7 @@ import TextAreaTutor from '../../../components/Tutor/TextAreaTutor';
 import IconDetails from '../../../assets/svg/IconDetails';
 import TablaDetallePlanAccion from '../../../components/Tutor/TablaDetallePlanAccion';
 import { useState } from "react";
-import { useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { ActionPlan } from '../../../store/types/ActionPlan';
 import ModalNuevoCompromiso from '../../../components/Tutor/ModalNuevoCompromiso';
 import ModalRegistroExitoso from '../../../components/Tutor/ModalRegistroExitoso';
@@ -14,14 +14,19 @@ import { useEffect } from 'react';
 import { FaRegEye, FaSave, FaTimes } from "react-icons/fa";
 import { HiOutlinePencil } from "react-icons/hi";
 import { FaRegEyeSlash } from "react-icons/fa";
-import { useTitle } from '../../../context/TitleContext';
+//import { useTitle } from '../../../context/TitleContext';
 import { FaCheckCircle, FaRegTrashAlt } from "react-icons/fa";
 import { RiErrorWarningLine } from "react-icons/ri";
 import { TrashIcon } from '../../../assets';
 import ModalAdvertencia from '../../../components/Tutor/ModalAdvertencia';
+import { Services as ServicesProperties } from '../../../config';
+
 
 const PageDetallePlanAccion = () => {
-  const { id } = useParams();
+  //const { id } = useParams();
+  const {state} = useLocation();
+  const {id} = state;
+  const navigate = useNavigate();
 
   const [modalOpen, setModalOpen] = useState(false);
   const [actionPlans, setActionPlans] = useState<ActionPlan[]>([]);
@@ -30,21 +35,21 @@ const PageDetallePlanAccion = () => {
   const [editable, setEditable] = useState(false);
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
-  const { setTitle } = useTitle();
+  //const { setTitle } = useTitle();
   const [deleteCommintModalOpen, setdeleteCommintModalOpen] = useState(false);
   const [editCommintModalOpen, seteditCommintModalOpen] = useState(false);
   const [deleteActionPlanModalOpen, setdeleteActionPlanModalOpen] = useState(false);
   const [tablaEditable, setTablaEditable] = useState(false);
 
   useEffect(() => {
-    setTitle("Detalle Plan de Acción");
+    //setTitle("Detalle Plan de Acción");
     fetchData();
   }, []);
 
   // Trae los datos del plan de acción
   const fetchData = async () => {
     try {
-      const response = await axios.get('https://localhost:44369/listarActionPlansPorId?ActionPlanId=' + id);
+      const response = await axios.get(ServicesProperties.BaseUrl + '/listarActionPlansPorId?ActionPlanId=' + id);
       const data = response.data.data;
       if (data.length > 0) {
         const plan = data[0];
@@ -88,7 +93,7 @@ const PageDetallePlanAccion = () => {
         "modificationDate": "2024-05-09T07:35:12.513Z"
       };
       console.log(newData);
-      await axios.put(`https://localhost:44369/actualizarActionPlan`, newData);
+      await axios.put(`${ServicesProperties.BaseUrl}/actualizarActionPlan`, newData);
       seteditionModalOpen(true);
       setEditable(false);
     } catch (error) {
@@ -97,9 +102,9 @@ const PageDetallePlanAccion = () => {
   };
 
   const handleDeleteActionPlan = async () => {
-    await axios.put('https://localhost:44369/eliminarActionPlan?actionPlanId=' + id);
+    await axios.put(ServicesProperties.BaseUrl + '/eliminarActionPlan?actionPlanId=' + id);
     setdeleteActionPlanModalOpen(false);
-    window.location.pathname = 'listadoPlanAccion';
+    navigate(-1);
   }
 
   const handleDisabledActionPlan = async () => {
@@ -114,7 +119,7 @@ const PageDetallePlanAccion = () => {
         "creationDate": "2024-05-10T04:39:19.094Z", //no necesita
         "modificationDate": "2024-05-10T04:39:19.094Z" //no necesita
       }
-      await axios.put('https://localhost:44369/actualizarActionPlan', data3);
+      await axios.put(ServicesProperties.BaseUrl + '/actualizarActionPlan', data3);
       setdeleteActionPlanModalOpen(false);
       window.location.reload();
     } catch (error) {
@@ -134,7 +139,7 @@ const PageDetallePlanAccion = () => {
         "creationDate": "2024-05-10T04:39:19.094Z", //no necesita
         "modificationDate": "2024-05-10T04:39:19.094Z" //no necesita
       }
-      await axios.put('https://localhost:44369/actualizarActionPlan', data3);
+      await axios.put(ServicesProperties.BaseUrl + '/actualizarActionPlan', data3);
       setdeleteActionPlanModalOpen(false);
       window.location.reload();
     } catch (error) {
@@ -165,41 +170,44 @@ const PageDetallePlanAccion = () => {
 
   return (
     <div className='w-full h-full'>
-      <div className="w-full flex bg-[rgba(255,255,255,0.5)] border-custom drop-shadow-md p-5" style={{ display: "flex", width: "100%", flexDirection: "row", marginBottom: "1.5rem" }}>
-        <div className='flex' style={{ flexDirection: "column", width: "40%", marginRight: "2rem" }}>
-          <InputTutor titulo='Nombre' value={name} readOnly={!editable} onChange={(e) => setName(e.target.value)} />
-          <div className='grid grid-cols-2 gap-4' style={{ width: "100%" }}>
-            <InputTutor titulo='Fecha de creación' texto={plan?.creationDate ? new Date(plan.creationDate).toLocaleDateString() : 'No disponible'} enable={false} />
-            <InputTutor titulo='Fecha de Última Modificación' texto={plan?.modificationDate ? new Date(plan.modificationDate).toLocaleDateString() : 'No disponible'} enable={false} />
+      <div className="w-full flex bg-[rgba(255,255,255,0.5)] border-custom drop-shadow-md p-5" style={{ display: "flex", width: "100%", flexDirection: "column", marginBottom: "1.5rem" }}>
+        <h1 className="text-3xl font-bold">Datos del Plan de Acción</h1>
+        <div style={{display: "flex", width: "100%", flexDirection: "row"}}>
+          <div className='flex' style={{ flexDirection: "column", width: "40%", marginRight: "2rem" }}>
+            <InputTutor titulo='Nombre' value={name} readOnly={!editable} onChange={(e) => setName(e.target.value)} />
+            <div className='grid grid-cols-2 gap-4' style={{ width: "100%" }}>
+              <InputTutor titulo='Fecha de creación' texto={plan?.creationDate ? new Date(plan.creationDate).toLocaleDateString() : 'No disponible'} enable={false} />
+              <InputTutor titulo='Fecha de Última Modificación' texto={plan?.modificationDate ? new Date(plan.modificationDate).toLocaleDateString() : 'No disponible'} enable={false} />
+            </div>
           </div>
-        </div>
-        <div className='flex' style={{ flexDirection: "column", width: "40%" }}>
-          <TextAreaTutor titulo='Descripción' value={description} readOnly={!editable} onChange={(e) => setDescription(e.target.value)} />
-        </div>
-        <div className='flex flex-col items-center' style={{ justifyContent: "space-evenly", width: "20%" }}>
-          {plan && plan.isActive === true ? (
-            editable ? (
-              <>
-                <Button text="Guardar Cambios&nbsp;" variant='call-to-action' icon={FaSave} iconSize={20} onClick={handleSaveChanges} />
-                <Button text="Cancelar Cambios" variant='secundario' icon={FaTimes} iconSize={20} onClick={handleCancelEdit} />
-              </>
+          <div className='flex' style={{ flexDirection: "column", width: "40%" }}>
+            <TextAreaTutor titulo='Descripción' value={description} readOnly={!editable} onChange={(e) => setDescription(e.target.value)} />
+          </div>
+          <div className='flex flex-col items-center' style={{ justifyContent: "space-evenly", width: "20%" }}>
+            {plan && plan.isActive === true ? (
+              editable ? (
+                <>
+                  <Button text="Guardar Cambios&nbsp;" variant='call-to-action' icon={FaSave} iconSize={20} onClick={handleSaveChanges} />
+                  <Button text="Cancelar Cambios" variant='secundario' icon={FaTimes} iconSize={20} onClick={handleCancelEdit} />
+                </>
+              ) : (
+                <>
+                  <Button text="Editar Plan&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" variant='primario' icon={HiOutlinePencil} iconSize={20} onClick={handleEditPlan} />
+                  <Button text="Desactivar Plan" variant='warning' icon={FaRegEyeSlash} iconSize={20} onClick={handleDisabledActionPlan} />
+                  <Button text="Eliminar Plan&nbsp;&nbsp;&nbsp;&nbsp;" variant='warning' icon={FaRegTrashAlt} iconSize={20} onClick={handleConfirmDeleteActionPlan} />
+                </>
+              )
             ) : (
-              <>
-                <Button text="Editar Plan&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" variant='primario' icon={HiOutlinePencil} iconSize={20} onClick={handleEditPlan} />
-                <Button text="Desactivar Plan" variant='warning' icon={FaRegEyeSlash} iconSize={20} onClick={handleDisabledActionPlan} />
-                <Button text="Eliminar Plan&nbsp;&nbsp;&nbsp;&nbsp;" variant='warning' icon={FaRegTrashAlt} iconSize={20} onClick={handleConfirmDeleteActionPlan} />
-              </>
-            )
-          ) : (
-            <Button text="Activar Plan" variant='warning' icon={FaRegEye} iconSize={20} onClick={handleEnabledActionPlan} />
-          )}
+              <Button text="Activar Plan" variant='warning' icon={FaRegEye} iconSize={20} onClick={handleEnabledActionPlan} />
+            )}
+          </div>
         </div>
       </div>
       <div className="w-full flex bg-[rgba(255,255,255,0.5)] border-custom drop-shadow-md p-5" style={{ display: "flex", width: "100%", flexDirection: "column" }}>
 
         <div className='flex' style={{ flexDirection: "column", width: "100%" }}>
           <div className='flex items-center justify-between'>
-            <h1 className="font-montserrat text-[35px] font-bold text-primary">Compromisos</h1>
+            <h1 className="text-3xl font-bold">Compromisos</h1>
             <Button text="Nuevo Compromiso" variant='call-to-action' onClick={openModal} />
             <ModalNuevoCompromiso
               isOpen={modalOpen}
@@ -213,7 +221,9 @@ const PageDetallePlanAccion = () => {
                 description="El compromiso se registró con éxito."
                 icon={FaCheckCircle}
                 iconSize={60}
-                onClose={() => window.location.reload()} />
+                onClose={() => {
+                  window.location.reload()
+                }} />
             )}
             {editionModalOpen && ( // Mostrar el modal de edición exitoso si editionModalOpen es true
               <ModalRegistroExitoso //el mismo componente modal, solo le cambio los datos que dalen
@@ -235,7 +245,7 @@ const PageDetallePlanAccion = () => {
             )}
           </div>
           <div>
-            <TablaDetallePlanAccion onclickDelete={handleConfirmDeleteCommit} onclickEdit={close} actionPlanId={id ? parseInt(id) : 0} />
+            <TablaDetallePlanAccion onclickDelete={handleConfirmDeleteCommit} onclickEdit={close} actionPlanId={id ? parseInt(id) : 0} usuario='tutor'/>
           </div>
         </div>
       </div>

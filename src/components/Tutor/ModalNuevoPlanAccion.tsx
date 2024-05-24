@@ -9,13 +9,18 @@ interface ModalNuevoPlanAccionProps {
   isOpen: boolean;
   onClose: () => void;
   updatePage: () => void; // Nueva prop para la función de actualización
+  studentId: number;
+  programId: number;
 }
 
-export default function ModalNuevoPlanAccion({ isOpen, onClose, updatePage }: ModalNuevoPlanAccionProps) {
+export default function ModalNuevoPlanAccion({ isOpen, onClose, updatePage,studentId, programId }: ModalNuevoPlanAccionProps) {
   const [planData, setPlanData] = useState({
     name: '',
     description: ''
   });
+
+  // Estado para el mensaje de error del nombre del plan de acción
+  const [nameError, setNameError] = useState('');
 
   const handleChangeInput = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -27,12 +32,28 @@ export default function ModalNuevoPlanAccion({ isOpen, onClose, updatePage }: Mo
     setPlanData({ ...planData, [name]: value });
   };
 
+  const onBlurName = (e: ChangeEvent<HTMLInputElement>) => {
+    if (!planData.name.trim()) {
+      setNameError('El nombre del plan no puede estar vacío');
+    } else {
+      setNameError('');
+    }
+  }
+
   const guardarDatos = async () => {
+    if (!planData.name.trim()) {
+      setNameError('El nombre del plan no puede estar vacío');
+      return;
+    } else{
+      setNameError('');
+    }
+    
     try {
       const newData = {
         name: planData.name,
         description: planData.description,
-        studentProgramId: 1, // Asigna el valor correspondiente para studentProgramId
+        studentId: studentId, // Asigna el valor correspondiente para studentId
+        programId: programId, // Asigna el valor correspondiente para programId 
         tutorId: 1, // Asigna el valor correspondiente para tutorId
       };
   
@@ -81,7 +102,9 @@ export default function ModalNuevoPlanAccion({ isOpen, onClose, updatePage }: Mo
                     name="name"
                     value={planData.name}
                     onChange={handleChangeInput}
+                    manejarBlur={onBlurName}
                   />
+                  {nameError && <p className="text-red-500 pl-6">{nameError}</p>}
                   <div style={{ height: '12rem' }}>
                     <TextAreaTutor 
                     titulo="Descripción"
@@ -94,7 +117,7 @@ export default function ModalNuevoPlanAccion({ isOpen, onClose, updatePage }: Mo
                 </div>
                 <div className="flex justify-between items-center mx-20">
                   <Button text="Cancelar" onClick={onClose} variant='secundario' />
-                  <Button text="Crear Plan" onClick={guardarDatos} variant='call-to-action' />
+                  <Button text="Crear Plan" onClick={guardarDatos} variant='call-to-action' disabled={!planData.name.trim()}/>
                 </div>
               </div>
             </div>

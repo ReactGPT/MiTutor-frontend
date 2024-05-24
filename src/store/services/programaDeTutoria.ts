@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { ListTutoringProgram } from '../types/ListTutoringProgram';
-
+import {Services as ServicesProperties} from '../../config';
 type ProgramaDeTutoriaResponse = {
     listaDeProgramas: ListTutoringProgram[];
 };
@@ -8,7 +8,7 @@ type ProgramaDeTutoriaResponse = {
 async function getProgramaDeTutoriaByTutorId(tutorId: number): Promise<ProgramaDeTutoriaResponse> {
 
     try {
-        const response = await axios.get(`https://localhost:44369/listarProgramasDeTutoriaPorTutor/${tutorId}`);
+        const response = await axios.get(`${ServicesProperties.BaseUrl}/listarProgramasDeTutoriaPorTutor/${tutorId}`);
         const listaDeProgramas: ListTutoringProgram[] = response.data.data.map((item: any) => {
             return {
                 tutoringProgramId: item.tutoringProgramId,

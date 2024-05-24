@@ -1,41 +1,65 @@
-import { useState } from 'react';
+import { useState,useEffect } from 'react';
 import Button from '../../../components/Button';
 import InputTutor from '../../../components/Tutor/InputTutor';
-import imagenTutor from '/src/assets/Tutor/usuario.jpg';
+import imagenTutor from '../../../assets/Tutor/usuario.jpg';
 import ModalTutor from '../../../components/Tutor/ModalTutor';
 import ModalDesactivar from '../../../components/Tutor/ModalDesactivar';
-
+import { useLocation } from 'react-router-dom';
+import { ListStudent } from '../../../store/types/ListStudent'; 
+import axios from 'axios';
+import image from '../../../assets/Tutor/no-avatar.webp';
+import {Services as ServicesProperties} from '../../../config';
+import { Label } from 'flowbite-react';
 
 const PageMiPerfilAlumno = () => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-
-  const openModal = () => {
-    setIsModalOpen(true);
+  const {state} = useLocation();
+  const {studentId} = state;
+  const [student, setStudent] = useState<ListStudent>();
+   
+  // Trae los datos de estudiante
+  const fetchData = async () => {
+    try {
+      const response = await axios.get(ServicesProperties.BaseUrl+'/seleccionarEstudiantePorId/' + studentId);
+      const data = response.data.data;
+      setStudent(data);  
+    } catch (error) {
+      console.error('Error Datos del estudiante:', error);
+    }
   };
+  
+  useEffect(() => {
+    fetchData();
+  }, []); // Verificar el valor actualizado de student
 
-  const closeModal = () => {
-    setIsModalOpen(false);
-  };
+  useEffect(() => {
+    console.log('Student actualizado:', student);
+  }, [student]);
 
   return (
+    
     <div className="w-full h-full flex">
       <div className="w-1/2 flex flex-col">
         <div className="flex justify-center">
-          <h1 className="font-montserrat text-[50px] font-bold text-primary pt-12">Juanita Chávez</h1>
+          <h1 className="font-montserrat text-[50px] font-bold text-primary pt-12">{student?.name+' '+student?.lastName+' '+student?.secondLastName}</h1>
         </div>
         <div className="flex-1 pt-12">
           <ul className="px-11">
-            <InputTutor texto="Codigo: " />
-            <InputTutor texto="Correo: " />
-            <InputTutor texto="Teléfono: " />
-            <InputTutor texto="Facultad: " />
-            <InputTutor texto="Especialidad: " />
+          <Label value="Codigo:" className="text-primary font-roboto" />
+            <InputTutor texto={student?.pucpCode} enable={false} />
+            <Label value="Correo:" className="text-primary font-roboto" />
+            <InputTutor texto={student?.institutionalEmail} enable={false} />
+            <Label value="Telefono:" className="text-primary font-roboto" />
+            <InputTutor texto={student?.phone} enable={false} />
+            <Label value="Facultad:" className="text-primary font-roboto" />
+            <InputTutor texto={student?.facultyName} enable={false} />
+            <Label value="Especialidad:" className="text-primary font-roboto" />
+            <InputTutor texto={student?.specialtyName} enable={false} />
           </ul>
         </div>
       </div>
       <div className="w-1/2">
         <div className="flex justify-center">
-          <img src={imagenTutor} alt="Imagen Tutor" className="w-[200px] h-[200px] rounded-full mt-16 object-cover" />
+          <img src={image} alt="Imagen Tutor" className="w-[200px] h-[200px] rounded-full mt-16" />
         </div>
         <div>
           <div className="flex justify-center">
@@ -46,20 +70,20 @@ const PageMiPerfilAlumno = () => {
               <ul className="flex flex-col items-center w-full">
                 <li className='mb-4'>
                   {/* Botón que abre el modal */}
-                  <Button onClick={openModal} style={{'width':'200px','justifyContent':'center'}}  variant="primario" text="Plan de Acción" />
+                  <Button onClick={() => null}  variant="primario" text="Plan de Acción" />
                 </li>
                 <li className='mb-4'>
-                  <Button onClick={() => null} style={{'width':'200px','justifyContent':'center'}}  variant="primario" text="Archivos" />
+                  <Button onClick={() => null}  variant="primario" text="Archivos" />
                 </li>
                 <li className='mb-4'>
-                  <Button onClick={() => null} style={{'width':'200px','justifyContent':'center'}}  variant="primario" text="Historico de Citas" />
+                  <Button onClick={() => null}  variant="primario" text="Historico de Citas" />
                 </li>
               </ul>
             </div>
           </div>
         </div>
       </div>
-      {isModalOpen && <ModalDesactivar onClose={closeModal} />}
+       
     </div>
   );
 };

@@ -1,3 +1,5 @@
+import { Dayjs } from 'dayjs';
+
 type Comment = {
   commentId: number;
   message: string;
@@ -9,6 +11,8 @@ type Comment = {
 type AppointmentResult = {
   appointmentResultId: number;
   asistio: boolean;
+  startTime : string;
+  endTime : string;
   isActive: boolean;
   comments: Comment[];
 };

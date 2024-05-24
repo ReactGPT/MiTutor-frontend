@@ -14,6 +14,7 @@ async function getListaDeCitasByTutorId(tutorId : number): Promise<listaResponse
         const listaDeCitas: ListCita[] = response.data.data.map((item: any) => {
             return {
                 appointmentId : item.appointmentId,
+                programId : item.programId,
                 programName : item.programName,
                 appointmentStatus : item.appointmentStatus,
                 groupBased : item.groupBased,

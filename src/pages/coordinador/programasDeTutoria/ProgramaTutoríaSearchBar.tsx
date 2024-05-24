@@ -7,7 +7,14 @@ import { Combobox,InputCell } from '../../../components';
 import { Faculty, Specialty } from '../../../store/types';
 import { RootState } from '../../../store/store';
 import { useAppSelector } from '../../../store/hooks';
-export default function ProgramaTutoríaSearchBar() {
+
+
+type InputProps = {
+    handleOnChangeFilters : (filter:any)=>void;
+}
+
+
+export default function ProgramaTutoríaSearchBar({handleOnChangeFilters}:InputProps) {
     const navigate=useNavigate();
     const {specialityList,facultyList} = useAppSelector((state:RootState)=>state.parameters)
     const handleClickNuevaTutoria = ()=>{
@@ -26,7 +33,7 @@ export default function ProgramaTutoríaSearchBar() {
 
     const [specialitySelected,setSpecialitySelected]= useState<Specialty|null>(null);
     const [facultySelected,setFacultySelected]= useState<Faculty|null>(null);
-    const [searchQuery,setSearchQuery] = useState<string|null>(null);
+    const [searchQuery,setSearchQuery] = useState<string>("");
     
     const specialityOptions = useMemo(()=>{
         if(!facultySelected?.id){
@@ -37,6 +44,8 @@ export default function ProgramaTutoríaSearchBar() {
     },[facultySelected]);
     const handleOnChangeQuery = (value:string|number)=>{
         if(typeof value ==='string'){
+            //console.log("Se cambia query");
+            //console.log(value);
             setSearchQuery(value);
         }
     };
@@ -57,6 +66,10 @@ export default function ProgramaTutoríaSearchBar() {
         }
     },[specialitySelected,facultySelected,searchQuery]);
 
+    useEffect(()=>{
+        handleOnChangeFilters(filters);
+    },[filters])
+
     const handleOnSubmit = (e:React.FormEvent<HTMLFormElement>)=>{
         e.preventDefault();
         //console.log(filters);
@@ -70,10 +83,10 @@ export default function ProgramaTutoríaSearchBar() {
         <div className='flex w-full h-full flex-row py-5'>    
             <form className="w-[70%] max-w-[70%] min-w-[70%] h-full flex flex-row gap-4" onSubmit={handleOnSubmit}>            
             
-                <Combobox boxSize='w-[250px] ' text='Seleccione una Facultad' options={facultyList} onChange={handleOnChangeFaculty} value={facultySelected}/>
-                <Combobox boxSize='w-[300px] ' text='Seleccione una especialidad' options={specialityOptions} onChange={setSpecialitySelected} value={specialitySelected}/>
+                <Combobox className='w-[250px] ' text='Seleccione una Facultad' options={facultyList} onChange={handleOnChangeFaculty} value={facultySelected}/>
+                <Combobox className='w-[300px] ' text='Seleccione una especialidad' options={specialityOptions} onChange={setSpecialitySelected} value={specialitySelected}/>
                 <span className='flex gap-1'>
-                    <InputCell boxSize='w-[250px] h-[37px] mt-1' onChange={{tipo:"simple",onChange : handleOnChangeQuery}} />
+                    <InputCell boxSize='w-[250px] h-[37px] mt-1' text={searchQuery} onChange={{tipo:"simple",onChange : handleOnChangeQuery}} />
                     
                     <Button onClick={()=>console.log(filters)} icon={MagnifyGlass} iconSize={4}/>
                 </span>

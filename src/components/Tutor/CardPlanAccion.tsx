@@ -7,16 +7,22 @@ import { useNavigate } from "react-router-dom";
 
 type CardPlanAccionProps = {
   data: ActionPlan;
+  usuario: string;
 };
 
-const CardPlanAccion: React.FC<CardPlanAccionProps> = ({ data }) => {
+const CardPlanAccion: React.FC<CardPlanAccionProps> = ({ data,  usuario}) => {
   const navigate = useNavigate();
 
 
   // Función para navegar a la página de detalles con el ID dado
   const toDetail = (id: any) => {
-    navigate(`/listadoPlanAccion/${id}`);
-    //console.log('navegando a detalle de plan de acción con id: ', id);
+    console.log(id, 'id')
+    if(usuario === 'tutor'){
+      navigate('/detallePlanAccion', {state: {id: id}});
+    }
+    else{
+      navigate('/detallePlanAccionAlumno', {state: {id: id}});
+    }
   };
 
   //TODO: Agregar redireccionamiento al apretar el boton
@@ -30,11 +36,15 @@ const CardPlanAccion: React.FC<CardPlanAccionProps> = ({ data }) => {
         </div>
 
         <div className="flex gap-6 items-center h-full text-center justify-between">
-          <span className="text-primary w-32">Fecha creación</span>
-          <span className="text-primary w-32">{new Date(data.creationDate).toLocaleDateString()}</span>
+          <div className="flex flex-col items-start">
+            <span className="text-black font-semibold">Fecha creación:</span>
+            <span className="text-primary">{new Date(data.creationDate).toLocaleDateString()}</span>
+          </div>
           <hr className="h-full border-custom" />
-          <span className="text-primary w-32">Fecha de última modificación</span>
-          <span className="text-primary w-36">{new Date(data.modificationDate).toLocaleDateString()}</span>
+          <div className="flex flex-col items-start">
+            <span className="text-black font-semibold">Fecha de última modificación</span>
+            <span className="text-primary">{new Date(data.modificationDate).toLocaleDateString()}</span>
+          </div>
           <hr className="h-full border-custom" />
           <span className={`text-primary w-24 rounded-full ${data.isActive ? 'bg-green-700' : 'bg-red-700'} text-white`}> {data.isActive ? 'Activo' : 'Inactivo'} </span>
 

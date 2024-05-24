@@ -1,15 +1,14 @@
 import Sidebar from "../components/Sidebar";
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import Header from "../components/ui/Header";
 import { DASHBOARD_SIDEBAR_LINKS } from "../data/navigation";
 import { Outlet } from "react-router-dom";
 import { useParameters } from "../store/hooks";
 
 function Layout() {
-  const {fetchEspecialidades,fetchFacultades}=useParameters();
-  const [headerTitle, setHeaderTitle] = useState<string>('');
+  const { fetchEspecialidades, fetchFacultades } = useParameters();
+
   useEffect(() => {
-    setHeaderTitle('Inicio');
     fetchEspecialidades();
     fetchFacultades();
   }, []);

@@ -1,5 +1,6 @@
 import TextBox from "../../../components/TextBox";
 import { Button } from "../../../components";
+import { Navigate, useNavigate } from "react-router-dom";
 
 
 
@@ -8,10 +9,16 @@ const PageDetalleDeCita = () => {
     const debugClick = () => {
         console.log('boton clickeado')
     }
+    const navigate = useNavigate();
+
+     
+    const goToTutorList = () => {
+        navigate('/solicitarTutor', { state: { idProgram: 1 } });
+    }
 
     return (
-        <div className="w-full h-full">
-            <div className="w-full h-1/2 p-2">
+        <div className="w-full h-full container mx-auto max-w-screen-lg">
+            <div className="w-full h-1/2 p-2 container mx-auto max-w-screen-lg" >
                 <div className="w-full h-full p-5 border-custom shadow-custom bg-[rgba(255,_255,_255,_0.50)] font-roboto">
                     <div className="w-full h-1/5">
                         <span className="font-montserrat text-4xl font-bold text-primary">Datos Tutoria</span>
@@ -34,13 +41,13 @@ const PageDetalleDeCita = () => {
                     </div>
                     <div className="w-full h-1/4">
                         <div className="w-full h-full flex items-center justify-center">
-                            <Button onClick={debugClick} variant="primario" text="Solicitar cita"/>
+                            <Button onClick={goToTutorList} variant="primario" text="Solicitar cita"/>
                         </div>
                     </div>
                 </div>
             </div>
-            <div className="w-full h-1/2 flex">
-                <div className="w-1/4 h-full p-2">
+            <div className="w-full h-1/2 flex container mx-auto max-w-screen-lg">
+                <div className="w-1/4 h-full p-2 ">
                     <div className="w-full h-full p-5 border-custom shadow-custom bg-[rgba(255,_255,_255,_0.50)] font-roboto">
                         <div className="w-full h-1/6">
                             <span className="font-montserrat text-3xl font-bold text-primary">Tutor</span>
@@ -53,7 +60,7 @@ const PageDetalleDeCita = () => {
                                 <div className="w-full h-1/6 mb-3">
                                     <span className="font-montserrat flex p-2 text-2xl font-bold text-primary">Martina Rosa Solis Ramos</span>
                                 </div>
-                                <div className="w-full h-1/6">
+                                <div className="w-full h-1/6 ">
                                     <span className="font-montserrat flex p-2 text-1xl font-bold text-terciary">Docente a tiempo completo</span>
                                 </div>
                             </div>

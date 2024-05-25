@@ -74,10 +74,13 @@ export const PageTitles = [
   {
     path: '/calendario/agregarDisponibilidad',
     pageName: "Disponibilidad del Tutor"
-  }
-  ,
+  },
   {
     path: '/solicitarTutor',
     pageName: "Solicitar Tutor"
+  },
+  {
+    path: '/coordinador/gestion-solicitudes',
+    pageName: "Gestión de Solicitudes"
   }
 ];

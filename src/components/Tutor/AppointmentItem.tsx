@@ -7,6 +7,7 @@ import { ListCita } from "../../store/types/ListCita";
 interface AppointmentItemProps {
   appointment: ListCita;
   tipo: "lista" | "historico";
+  user: "alumno" | "tutor";
 }
 
 const textClasses = {
@@ -70,21 +71,26 @@ const controlColor = (color: string, tipo: string) => {
   }
 };
 
-export const AppointmentItem: React.FC<AppointmentItemProps> = ({ appointment, tipo }) => {
+export const AppointmentItem: React.FC<AppointmentItemProps> = ({ appointment, tipo, user }) => {
   
   const navigate = useNavigate();
 
   const goToDetalleCita = () => {
-    navigate("/listaDeCitas/resultadoCitaIndividual", { state: { cita: appointment } });
+    if(user === 'tutor'){
+      navigate("/listaDeCitas/resultadoCitaIndividual", { state: { cita: appointment } });
+    }else if(user === 'alumno'){
+      navigate("/listaDeCitasAlumno/resultadoCitaIndividual", { state: { cita: appointment } });
+    }
+    
   };
 
   return (
-    <div className="w-full h-32 border-custom shadow-custom flex bg-[rgba(235,_236,_250,_1.00)] overflow-hidden font-roboto">
+    <div className="w-full h-22 border-custom shadow-custom flex bg-[rgba(235,_236,_250,_1.00)] overflow-hidden font-roboto">
       <div className={`w-[2%] max-w-6 bg-gradient-to-b ${controlColor(appointment.appointmentStatus, 'from')} ${controlColor(appointment.appointmentStatus, 'to')}`}></div>
 
       <div className="w-full flex p-5 gap-5 justify-between items-center">
         <div className="w-1/3">
-          <span className="text-2xl text-black"> {appointment.programName} </span>
+          <span className="text-xl text-black"> {appointment.programName} </span>
         </div>
 
         <div className="flex gap-6 items-center h-full text-center justify-between">

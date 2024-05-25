@@ -72,7 +72,35 @@ async function getFacultades():Promise<ServiceResponseFacultades>{
     }
   }
 
-
+//   async function getStatuses():Promise<ServiceResponseFacultades>{
+  
+//     try {
+//       const response = await axios({
+//           method: 'get',
+//           url: ServicesProperties.BaseUrl+'/listarStatusCita',
+//           headers : ServicesProperties.Headers
+//       });
+//       if(!response.data.success){
+//           return {data:[]};
+//       }
+//       const statuses: Status[] = response.data.data.map((item: any) => {
+        
+//         //const 
+//         return {
+//             id:item.facultyId,
+//             name:item.name,
+//             acronym:item.acronym,
+//             numberStudents:item.numberOfStudents,
+//             numberTutors:item.numberOfTutors,
+//           };
+//         });
+        
+//       return {data:facultades};;
+      
+//   } catch (err) {
+//     return {data:[]};
+//   }
+// }
 
 
 

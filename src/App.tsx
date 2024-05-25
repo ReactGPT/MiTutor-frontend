@@ -13,14 +13,15 @@ function App() {
   
   const navigate = useNavigate();
 
-  useEffect(()=>{
-    if(!userData.isAuthenticated) navigate("/");
-  },[userData.isAuthenticated])
+  // useEffect(()=>{
+  //   if(!userData.isAuthenticated) navigate("/");
+  // },[userData.isAuthenticated])
   
   return (
     <>
-      {!userData.isAuthenticated&&<Login/>}
-      {userData.isAuthenticated&&<Landing/>}
+      {/* {!userData.isAuthenticated&&<Login/>}
+      {userData.isAuthenticated&&<Landing/>} */}
+      <Landing/>
     </>
   );
 }

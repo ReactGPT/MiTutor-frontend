@@ -87,5 +87,9 @@ export const PageTitles = [
   {
     path: '/solicitarTutor',
     pageName: "Solicitar Tutor"
+  },
+  {
+    path: '/listaDeCitasAlumno',
+    pageName: "Lista de Citas"
   }
 ];

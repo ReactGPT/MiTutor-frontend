@@ -2,12 +2,12 @@ import { useState, useEffect } from 'react';
 import AppointmentItem from "../../../components/Tutor/AppointmentItem";
 import Pagination from "../../../components/Pagination";
 import { SearchInput } from "../../../components";
-import { useCitasPorTutor } from "../../../store/hooks/useCita";
+import { useCitasPorTutorPorAlumno } from "../../../store/hooks/useCita";
 
 
-const PageListaDeCitas = () => {
+const PageListaDeCitasAlumno = () => {
 
-  const { cita, fetchCita } = useCitasPorTutor(1);
+  const { cita, fetchCita } = useCitasPorTutorPorAlumno(1,2);
 
   useEffect(() => {
     fetchCita();
@@ -22,8 +22,13 @@ const PageListaDeCitas = () => {
     setCurrentPage(1);
   };
 
+  // Funcion para eliminar las tildes y caracteres especiales (para que "tutoria" y "tutoría" sean iguales)
+  const normalizeText = (text: string) => {
+    return text.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+  }
+  
   const citasFiltradas = cita?.filter(cita =>
-    cita.programName.toLowerCase().includes(searchText.toLowerCase())
+    normalizeText(cita.programName.toLowerCase()).includes(normalizeText(searchText.toLowerCase()))
   );
 
   const indiceUltimaCita = currentPage * itemsPerPage;
@@ -39,7 +44,7 @@ const PageListaDeCitas = () => {
       {/* Filtro de búsqueda */}
 
       <div className="h-[7%]">
-        <SearchInput placeholder="Cosa a buscar" onSearch={handleSearch} />
+        <SearchInput placeholder="Ingresa el nombre de la cita..." onSearch={handleSearch} />
       </div>
 
       {/* Item de Cita       */}
@@ -50,7 +55,7 @@ const PageListaDeCitas = () => {
             key={`ap-Item-${index}`}
             appointment={cita}
             tipo="lista"
-            user='tutor'
+            user='alumno'
           />
         ))}
       </div>
@@ -66,4 +71,4 @@ const PageListaDeCitas = () => {
   );
 };
 
-export default PageListaDeCitas;
+export default PageListaDeCitasAlumno;

@@ -14,6 +14,8 @@ import PageProgTutoria from './pages/coordinador/programasDeTutoria/PageProgTuto
 import PageProgramasTutoriaMaestro from './pages/coordinador/programasDeTutoria/PageProgramasTutoriaMaestro.tsx';
 import PageResultadoCitaIndividual from './pages/tutor/resultadoCita/PageResultadoCitaIndividual.tsx';
 import PageMiPerfilAlumno from './pages/alumno/miPerfil/PageMiPerfilAlumno.tsx';
+import PageResultadoCitaIndividualAlumno from './pages/alumno/resultadoCita/PageResultadoCitaIndividualAlumno.tsx';
+import PageListaDeCitasAlumno from './pages/alumno/listaDeCitas/PageListaDeCitasAlumno.tsx';
 
 const router = createBrowserRouter([
   {
@@ -64,6 +66,15 @@ const router = createBrowserRouter([
         path: '/PerfilAlumno',
         element:<PageMiPerfilAlumno/>
       },
+      {
+        path: '/detalleCitaAlumno',
+        element:<PageResultadoCitaIndividualAlumno/>
+      },
+      {
+        path: '/listaCitasAlumno',
+        element:<PageListaDeCitasAlumno/>
+      },
+
     ],
   },
 ]);

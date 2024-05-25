@@ -9,6 +9,7 @@ interface AppointmentItemProps {
   fecha: string;
   onClick?: () => void;
   color: string;
+  href: string;
 }
 
 const textClasses = {
@@ -66,7 +67,7 @@ const controlColor = (color: string, tipo: string) => {
   }
 };
 
-export const AppointmentItem: React.FC<AppointmentItemProps> = ({ nombre, codigo, estado, fecha, onClick, color }) => {
+export const AppointmentItem: React.FC<AppointmentItemProps> = ({ nombre, codigo, estado, fecha, onClick, color,href }) => {
   console.log(color);
   return (
     <div className="w-full h-[20%] min-h-[60px]">
@@ -97,7 +98,7 @@ export const AppointmentItem: React.FC<AppointmentItemProps> = ({ nombre, codigo
         <div className="w-[5%]">
         {
           (estado === 'Completado' || estado === 'Pendiente') ? (
-              <NavLink to={'/resultadoCitaIndividual'} state={codigo}>
+              <NavLink to={href} state={codigo}>
                 <Button variant="primario" />
               </NavLink>
           ) : null

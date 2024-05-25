@@ -17,6 +17,17 @@ const PageListaDeCitasAlumno = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 6;
 
+  const [filters, setFilters] = useState<any>({
+    status: null,
+    startDate: null,
+    endDate: null,
+    name: null
+  });
+
+  const handleOnChangeFilters = (filter: any) => {
+    setFilters(filter);
+  }
+
   const handleSearch = (text: string) => {
     setSearchText(text);
     setCurrentPage(1);
@@ -44,7 +55,7 @@ const PageListaDeCitasAlumno = () => {
       {/* Filtro de búsqueda */}
 
       <div className="h-[7%]">
-        <SearchInput placeholder="Ingresa el nombre de la cita..." onSearch={handleSearch} />
+        <SearchInput placeholder="Ingresa el nombre de la cita..." onSearch={handleSearch} handleOnChangeFilters={handleOnChangeFilters} />
       </div>
 
       {/* Item de Cita       */}

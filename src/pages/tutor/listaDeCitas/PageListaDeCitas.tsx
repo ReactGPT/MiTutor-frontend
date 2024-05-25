@@ -17,6 +17,17 @@ const PageListaDeCitas = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 6;
 
+  const [filters, setFilters] = useState<any>({
+    status: null,
+    startDate: null,
+    endDate: null,
+    name: null
+  });
+
+  const handleOnChangeFilters = (filter: any) => {
+    setFilters(filter);
+  }
+
   const handleSearch = (text: string) => {
     setSearchText(text);
     setCurrentPage(1);
@@ -39,7 +50,7 @@ const PageListaDeCitas = () => {
       {/* Filtro de búsqueda */}
 
       <div className="h-[7%]">
-        <SearchInput placeholder="Cosa a buscar" onSearch={handleSearch} />
+        <SearchInput placeholder="Cosa a buscar" onSearch={handleSearch} handleOnChangeFilters={handleOnChangeFilters} />
       </div>
 
       {/* Item de Cita       */}

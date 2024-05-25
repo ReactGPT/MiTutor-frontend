@@ -15,6 +15,7 @@ type FiltersProps = {
   onChange:(value:any)=>void;
   buttonStyle?: string;
   noMt?:boolean;
+  stylesOptions?:string;
 };
 
 export default function Combobox({
@@ -29,7 +30,8 @@ export default function Combobox({
   disabled = false,
   onChange,  
   buttonStyle,
-  noMt
+  noMt,
+  stylesOptions,
 }: FiltersProps) {
   const [selected, setSelected] = useState(value);
   // const displayedText = !value? text: value?.name ? value.name : '';
@@ -75,7 +77,7 @@ export default function Combobox({
             leaveFrom="opacity-100"
             leaveTo="opacity-0"
           >
-            <Listbox.Options className={`${className ? className : 'absolute w-full overflow-auto bg-white text-base  ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm z-50'} shadow-lg mt-3 max-h-60 rounded-lg`}>
+            <Listbox.Options className={`absolute ring-1 z-50 w-full  ${stylesOptions ? stylesOptions : '  bg-white text-base   ring-black ring-opacity-5 focus:outline-none sm:text-sm  overflow-auto '} shadow-lg mt-3 max-h-60 rounded-lg`}>
               {options.map((option) => (
                   <Listbox.Option
                     key={`f-o-${option.id}-${option?.name}`}

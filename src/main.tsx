@@ -31,6 +31,7 @@ import PageDetalleDeCita from './pages/alumno/detalleDeCita/pageDetalleDeCita.ts
 import PageSolicitarAlumno from './pages/tutor/solicitarTutor/PageSolicitarAlumno.tsx';
 import PageListadoPlanAccionAlumno from './pages/alumno/PlanDeAccion/PageListadoPlanAccionAlumno.tsx';
 import PageDetallePlanAccionAlumno from './pages/alumno/PlanDeAccion/PageDetallePlanAccionAlumno.tsx';
+import PageResultadoCitaIndividualAlumno from './pages/alumno/resultadoCita/PageResultadoCitaIndividualAlumno.tsx';
 import PageListaDeCitasAlumno from './pages/alumno/listaDeCitasAlumno/PageListaDeCitasAlumno.tsx';
 
 const router = createBrowserRouter([
@@ -109,6 +110,10 @@ const router = createBrowserRouter([
       {
         path:'/detalleDeCita',
         element:<PageDetalleDeCita/>
+      },
+      {
+        path: '/listaDeCitasAlumno/detalleCitaAlumno',
+        element:<PageResultadoCitaIndividualAlumno/>
       },
       {
         path: '/listaDeCitas/resultadoCitaIndividual',

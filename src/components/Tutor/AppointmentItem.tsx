@@ -79,7 +79,7 @@ export const AppointmentItem: React.FC<AppointmentItemProps> = ({ appointment, t
     if(user === 'tutor'){
       navigate("/listaDeCitas/resultadoCitaIndividual", { state: { cita: appointment } });
     }else if(user === 'alumno'){
-      navigate("/listaDeCitasAlumno/resultadoCitaIndividual", { state: { cita: appointment } });
+      navigate("/listaDeCitasAlumno/detalleCitaAlumno", { state: { cita: appointment } });
     }
     
   };

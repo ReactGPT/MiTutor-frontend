@@ -70,5 +70,9 @@ export const PageTitles = [
   {
     path: '/calendario/agregarDisponibilidad',
     pageName: "Disponibilidad del Tutor"
+  },
+  {
+    path: '/solicitarCita',
+    pageName: "Solicitar Cita"
   }
 ];

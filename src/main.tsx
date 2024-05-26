@@ -24,6 +24,7 @@ import PageListadoPlanAccion from './pages/tutor/listaDeCitas/PageListadoPlanAcc
 import PageDetallePlanAccion from './pages/tutor/listaDeCitas/PageDetallePlanAccion.tsx';
 import PageResultadoCitaIndividual from './pages/tutor/resultadoCita/PageResultadoCitaIndividual.tsx';
 import PageMiPerfilAlumno from './pages/alumno/miPerfil/PageMiPerfilAlumno.tsx';
+import PageSolicitarCita from './pages/alumno/misTutorias/PageSolicitarCita.tsx';
 
 const router = createBrowserRouter([
   {
@@ -76,7 +77,7 @@ const router = createBrowserRouter([
       },
       {
         path: '/PerfilAlumno',
-        element:<PageMiPerfilAlumno/>
+        element: <PageMiPerfilAlumno />
       },
       {
         path: '/programasDeTutoriaMaestro',
@@ -91,12 +92,16 @@ const router = createBrowserRouter([
         element: <PageDerivacionesHechas />
       },
       {
-        path:'/programasDeTutoriaMaestro/editar',
-        element:<PageProgTutoria/>
+        path: '/programasDeTutoriaMaestro/editar',
+        element: <PageProgTutoria />
       },
       {
         path: '/listaDeCitas/resultadoCitaIndividual',
-        element:<PageResultadoCitaIndividual/>
+        element: <PageResultadoCitaIndividual />
+      },
+      {
+        path: '/solicitarCita',
+        element: <PageSolicitarCita />
       }
     ],
   },
@@ -105,8 +110,7 @@ const router = createBrowserRouter([
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <Provider store={store}>
-    <RouterProvider router={router} />
+      <RouterProvider router={router} />
     </Provider>
   </React.StrictMode>
-  
 );

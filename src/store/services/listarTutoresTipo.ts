@@ -24,6 +24,7 @@ interface Tutor {
     name: string;
   };
   tutoringProgram: {
+    tutoringProgramId: number;
     programName: string;
   };
 }
@@ -34,18 +35,13 @@ interface ApiResponse {
   data: Tutor[];
 }
 
-// Función para listar los tutores
-async function listarTutoresTipo(): Promise<Tutor[]> {
+async function listarTutoresTipo(idProgram: number): Promise<Tutor[]> {
   try {
-    // Realiza la solicitud HTTP para obtener la lista de tutores
-    const response = await axios.get<ApiResponse>('https://localhost:44369/listarTutoresTipo');
-    // Devuelve los datos de los tutores desde la respuesta
+    const response = await axios.get<ApiResponse>(`https://localhost:44369/listarTutoresPorPrograma/${idProgram}`);
     return response.data.data;
   } catch (error) {
-    // Si hay un error, lánzalo para que sea manejado en el componente
     throw new Error('Error fetching tutors');
   }
 }
 
-// Exporta la función para ser utilizada en otros archivos
 export { listarTutoresTipo };

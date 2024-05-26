@@ -8,9 +8,10 @@ type InputProps = {
   value?: string;
   readOnly?: boolean;
   onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
+  manejarBlur?: (e: ChangeEvent<HTMLInputElement>) => void;
 }
 
-const InputTutor = ({ titulo = "", texto = "", enable = true, name, value, onChange,readOnly }: InputProps) => {
+const InputTutor = ({ titulo = "", texto = "", enable = true, name, value, onChange,readOnly,manejarBlur }: InputProps) => {
   return (
     <li className="drop-shadow-md p-5 flex items-center  space-x-5 height-100% personalizado"
       style={{ display: "flex", height: "100%", flexDirection: "column", alignItems: "flex-start" }}>
@@ -24,6 +25,7 @@ const InputTutor = ({ titulo = "", texto = "", enable = true, name, value, onCha
         value={value}
         onChange={onChange}
         readOnly={readOnly}
+        onBlur={manejarBlur}
       />
     </li>
   );

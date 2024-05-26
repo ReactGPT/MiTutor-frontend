@@ -1,3 +1,4 @@
+"use client";
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
@@ -17,14 +18,19 @@ import PageProgramasTutoriaMaestro from './pages/coordinador/programasDeTutoria/
 import PageAgregarDisponibilidadTutor from './pages/tutor/calendario/PageAgregarDisponibilidadTutor.tsx';
 import PageDerivacionesHechas from './pages/tutor/miPerfil/PageDerivacionesHechas.tsx';
 import PagePerfilAlumnoTutor from './pages/tutor/programasDeTutoria/PagePerfilAlumnoTutor.tsx';
-
+import { GoogleOAuthProvider } from '@react-oauth/google';
+import { AuthProvider } from './context';
 import { Provider } from 'react-redux';
 import { store } from './store/store.ts';
 import PageListadoPlanAccion from './pages/tutor/listaDeCitas/PageListadoPlanAccion.tsx';
 import PageDetallePlanAccion from './pages/tutor/listaDeCitas/PageDetallePlanAccion.tsx';
 import PageResultadoCitaIndividual from './pages/tutor/resultadoCita/PageResultadoCitaIndividual.tsx';
 import PageMiPerfilAlumno from './pages/alumno/miPerfil/PageMiPerfilAlumno.tsx';
+import PageListaDeTutorias from './pages/alumno/listaDeTutorias/pageListaDeTutorias.tsx';
+import PageDetalleDeCita from './pages/alumno/detalleDeCita/pageDetalleDeCita.tsx';
 import PageSolicitarAlumno from './pages/tutor/solicitarTutor/PageSolicitarAlumno.tsx';
+import PageListadoPlanAccionAlumno from './pages/alumno/PlanDeAccion/PageListadoPlanAccionAlumno.tsx';
+import PageDetallePlanAccionAlumno from './pages/alumno/PlanDeAccion/PageDetallePlanAccionAlumno.tsx';
 
 import PageGestionSolicitudes from './pages/coordinador/gestionSolicitudes/SolicitudGestion.tsx';
 
@@ -98,16 +104,32 @@ const router = createBrowserRouter([
         element:<PageProgTutoria/>
       },
       {
+        path:'/listaTutoriasAlumno',
+        element:<PageListaDeTutorias/>
+      },
+      {
+        path:'/detalleDeCita',
+        element:<PageDetalleDeCita/>
+      },
+      {
         path: '/listaDeCitas/resultadoCitaIndividual',
         element:<PageResultadoCitaIndividual/>
       },
       {
         path: '/solicitarTutor',
-        element: <PageSolicitarAlumno/>
+        element: <PageSolicitarAlumno idProgram={1}/>
       },
       {
         path: '/coordinador/gestion-solicitudes',
         element: <PageGestionSolicitudes />,
+      },
+      {
+        path: '/listadoPlanAccionAlumno',
+        element:<PageListadoPlanAccionAlumno/>
+      },
+      {
+        path: '/detallePlanAccionAlumno',
+        element:<PageDetallePlanAccionAlumno/>
       }
     ],
   },
@@ -116,7 +138,11 @@ const router = createBrowserRouter([
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <Provider store={store}>
-    <RouterProvider router={router} />
+      <AuthProvider>
+        <GoogleOAuthProvider clientId='358728188523-achb1qm8b68uvhr6437hft062u1dmtns.apps.googleusercontent.com'>
+          <RouterProvider router={router} />
+        </GoogleOAuthProvider>
+      </AuthProvider>
     </Provider>
   </React.StrictMode>
   

@@ -1,5 +1,5 @@
 import { Dialog, Transition } from '@headlessui/react';
-import { Fragment, useState, ChangeEvent } from 'react';
+import { Fragment, useState, ChangeEvent, useEffect } from 'react';
 import InputTutor from './InputTutor';
 import Button from '../Button';
 import axios from 'axios';
@@ -13,6 +13,7 @@ interface ModalEditarCompromisoProps {
   onClose: () => void;
   updatePage: () => void; // Nueva prop para la función de actualización
   compromiso: any;
+  usuario: string;
 }
 
 let opciones: CommitmentStatus[] = [
@@ -26,15 +27,16 @@ let opciones: CommitmentStatus[] = [
   },
   {
     CommitmentStatusId: 3,
-    Description: 'Finalizado',
+    Description: 'Hecho',
   },
 ];
 
-export default function ModalEditarCompromiso({ onClose, updatePage, compromiso }: ModalEditarCompromisoProps) {
+export default function ModalEditarCompromiso({ onClose, updatePage, compromiso, usuario}: ModalEditarCompromisoProps) {
   const [commitmentData, setCommitmentData] = useState(compromiso);
-  const [selectedOptionId, setSelectedOptionId] = useState<number | undefined>(undefined); // Nuevo estado para almacenar el CommitmentStatusId seleccionado
-  const [selectedOption, setSelectedOption] = useState<string | undefined>(undefined); // Nuevo estado para almacenar el CommitmentStatus seleccionado
-  const [description, setDescription] = useState<string | undefined>(compromiso.Compromiso); // Nuevo estado para almacenar la descripción del compromiso
+  const [selectedOption, setSelectedOption] = useState<string | undefined>(compromiso.CommitmentStatusId); // Inicializar con el estado del compromiso
+  const [description, setDescription] = useState<string | undefined>(compromiso.Compromiso); // Inicializar con la descripción del compromiso
+
+  console.log('Estado al iniciar el componente:', compromiso)
 
   const handleChangeCompromiso = (e: ChangeEvent<HTMLTextAreaElement>) => {
     setDescription(e.target.value);
@@ -102,7 +104,7 @@ export default function ModalEditarCompromiso({ onClose, updatePage, compromiso 
                     name="description"
                     value={description}
                     onChange={handleChangeCompromiso}
-                    readOnly={false}
+                    readOnly={usuario==="tutor"?false:true}
                     enable={true}
                   />
                   <InputSelectTutor

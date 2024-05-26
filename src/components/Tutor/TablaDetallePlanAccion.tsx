@@ -21,12 +21,14 @@ type TablaDetalleProps = {
   onclickEdit: () => void;
   onclickDelete: () => void;
   actionPlanId: number;
+  usuario: string;
 };
 
 const TablaDetalle: React.FC<TablaDetalleProps> = ({
   onclickEdit,
   onclickDelete,
-  actionPlanId
+  actionPlanId,
+  usuario,
 }) => {
 
   const [rowData, setRowData] = useState<any[]>([]);
@@ -92,7 +94,6 @@ const TablaDetalle: React.FC<TablaDetalleProps> = ({
       headerName: 'Compromiso',
       field: 'Compromiso',
       flex: 1,
-      editable: true,
       cellStyle: {
         textAlign: 'left',
         justifyContent: 'left',
@@ -104,7 +105,6 @@ const TablaDetalle: React.FC<TablaDetalleProps> = ({
       field: 'Estado',
       minWidth: 150,
       maxWidth: 250,
-      editable: true,
       cellEditor: 'agSelectCellEditor',
       cellEditorParams: {
         values: ["Pendiente", "En Proceso", "Hecho"],
@@ -122,6 +122,7 @@ const TablaDetalle: React.FC<TablaDetalleProps> = ({
           data={params.data}
           openModalEdit={openModalEdit}
           handleConfirmDeleteCommit={handleConfirmDeleteCommit}
+          usuario={usuario}
         />
       )
     }
@@ -167,6 +168,7 @@ const TablaDetalle: React.FC<TablaDetalleProps> = ({
           onClose={closeModalEdit}
           updatePage={fetchData}
           compromiso={compromiso}
+          usuario={usuario}
         />
       )}
       <div

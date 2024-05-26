@@ -1,6 +1,4 @@
-import React from 'react';
 import Button from '../../../components/Button';
-import { SearchInput } from "../../../components";
 import { useState } from "react";
 import CardPlanAccion from '../../../components/Tutor/CardPlanAccion';
 import { ActionPlan } from '../../../store/types/ActionPlan';
@@ -8,17 +6,14 @@ import Pagination from "../../../components/Pagination";
 import ModalNuevoPlanAccion from '../../../components/Tutor/ModalNuevoPlanAccion';
 import ModalRegistroExitoso from '../../../components/Tutor/ModalRegistroExitoso';
 import { useEffect } from 'react';
-import axios from 'axios';
-//import { useTitle } from '../../../context/TitleContext';
 import { FaCheckCircle } from "react-icons/fa";
-import {Services as ServicesProperties} from '../../../config';
 import { useLocation } from 'react-router-dom';
+import { useActionPlans } from '../../../store/hooks/useActionPlan';
 
 
 const PageListadoPlanAccion = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [registrationModalOpen, setRegistrationModalOpen] = useState(false);
-  const [actionPlans, setActionPlans] = useState<ActionPlan[]>([]);
   const {state} = useLocation();
   const {studentId} = state;
   const {programId} = state;
@@ -28,18 +23,12 @@ const PageListadoPlanAccion = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5;
 
-  useEffect(() => {
-    fetchData();
-  }, []);
+  //Estados para el uso de la API
+  const { actionPlans, fetchActionPlans } = useActionPlans(studentId, programId, 1); //el id del tutor logueado
 
-  const fetchData = async () => {
-    try {
-      const response = await axios.get(ServicesProperties.BaseUrl+'/listarActionPlans?studentId='+studentId+'&programId='+programId+'&TutorId=1');
-      setActionPlans(response.data.data);
-    } catch (error) {
-      console.error('Error fetching data:', error);
-    }
-  };
+  useEffect(() => {
+    fetchActionPlans();
+  }, []);
 
   const openModal = () => {
     setModalOpen(true);
@@ -50,19 +39,13 @@ const PageListadoPlanAccion = () => {
   };
 
   const updatePlans = async () => {
-    await fetchData();
+    fetchActionPlans();
     setRegistrationModalOpen(true); // Abre el modal de registro exitoso después de actualizar los planes
-  };
-
-  const handleSearch = (text: string) => {
-    setSearchText(text);
-    setCurrentPage(1);
   };
 
   const filteredPlans = Array.isArray(actionPlans) ? actionPlans.filter((plan: ActionPlan) =>
     plan.name.toLowerCase().includes(searchText.toLowerCase())
   ) : [];
-
 
   const handlePageChange = (pageNumber: number) => {
     setCurrentPage(pageNumber);

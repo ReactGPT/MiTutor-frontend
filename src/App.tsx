@@ -20,7 +20,8 @@ function App() {
   return (
     <>
       {!userData.isAuthenticated&&<Login/>}
-      {userData.isAuthenticated&&<Landing/>}
+      {userData.isAuthenticated&&<Landing/>} 
+      
     </>
   );
 }

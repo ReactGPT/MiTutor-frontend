@@ -16,6 +16,7 @@ interface CustomEvent extends Event {
   startTime?: string;
   endTime?: string;
   isActive?: boolean;
+  status?: string;
 }
 
 type Availability = {
@@ -60,12 +61,13 @@ function combineDateAndTime(date: string, time: string): Date {
 }
 
 function transformCitaToEvent(cita: ListCita): CustomEvent {
-  const { programName, creationDate, startTime, endTime } = cita;
+  const { programName, creationDate, startTime, endTime, appointmentStatus } = cita;
 
   return {
-    title: `Cita en ${programName}`,
+    title: `${programName}`,
     start: combineDateAndTime(creationDate, startTime.toString()),
     end: combineDateAndTime(creationDate, endTime.toString()),
+    status: appointmentStatus,
     resource: cita
   };
 }
@@ -146,6 +148,30 @@ const CalendarioDisponibilidad: React.FC<CalendarioDisponibilidadProps> = ({ cit
           opacity: 0.6,
           border: 'none',
           color: 'black',
+        }
+      };
+    };
+    if (event.status === "registrada") {
+      return {
+        style: {
+          backgroundColor: 'rgb(82 208 118)',
+          color: 'white',
+        }
+      };
+    };
+    if (event.status === "pendiente resultado") {
+      return {
+        style: {
+          backgroundColor: 'rgb(208 82 82)',
+          color: 'white',
+        }
+      };
+    };
+    if (event.status === "completada") {
+      return {
+        style: {
+          backgroundColor: 'rgb(32 108 229)',
+          color: 'white',
         }
       };
     };

@@ -17,6 +17,7 @@ interface CustomEvent extends Event {
   startTime?: string;
   endTime?: string;
   isActive?: boolean;
+  status?: string;
 }
 
 type Availability = {
@@ -116,9 +117,17 @@ const CalendarioSolicitud: React.FC<CalendarioSolicitudProps> = ({ programable =
       );
     });
 
+    const isOverlappingWithEvents = events.some(event => {
+      const eventStart = event.start instanceof Date ? event.start : new Date(event.start!);
+      const eventEnd = event.end instanceof Date ? event.end : new Date(event.end!);
+      return (
+        (newStartTime < eventEnd && newEndTime > eventStart)
+      );
+    });
+
     const isAfterCurrentTime = newStartTime > currentDateTime && newEndTime > currentDateTime;
 
-    if (isWithinAvailability && isAfterCurrentTime) {
+    if (isWithinAvailability && isAfterCurrentTime && !isOverlappingWithEvents) {
       setSelectedSlot(slotInfo);
       setShowModal(true);
     }

@@ -10,7 +10,6 @@ async function getProgramaDeTutoriaByAlumnoId(studentId: number): Promise<Progra
 
   try {
     const response = await axios.get(`https://localhost:44369/listarProgramasDeTutoriaPorAlumno/${studentId}`);
-    console.log(response.data);
     const listaDeProgramasAlumno: programaDeTutoriaAlumno[] = response.data.data.map((item: any) => {
       return {
         tutoringProgramId: item.tutoringProgramId,

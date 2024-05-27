@@ -3,7 +3,6 @@ import Button from '../Button';
 import IconDetails from '../../assets/svg/IconDetails';
 import { programaDeTutoriaAlumno } from '../../store/types/ListTutoringProgram';
 import { useNavigate } from 'react-router-dom';
-import IconBell from '../../assets/svg/IconBell';
 
 type TutoringProgramCardProps = {
   data: programaDeTutoriaAlumno;

@@ -83,7 +83,7 @@ function transformAvailabilityToEvent(availability: Availability[]): CustomEvent
   }));
 }
 
-const tutorId = 1;
+const tutorId: number = 1;
 
 const CalendarioSolicitud: React.FC<CalendarioSolicitudProps> = ({ programable = false, onSelectEvent, refresh }) => {
   const { availability, fetchAvailability } = useAvailability(tutorId);
@@ -93,6 +93,7 @@ const CalendarioSolicitud: React.FC<CalendarioSolicitudProps> = ({ programable =
 
   useEffect(() => {
     fetchAvailability();
+    fetchCita();
   }, [refresh, refreshKey]);
 
   const events: CustomEvent[] = cita.map(transformCitaToEvent) ?? [];
@@ -139,6 +140,15 @@ const CalendarioSolicitud: React.FC<CalendarioSolicitudProps> = ({ programable =
         }
       };
     };
+
+    if (event.title === 'Ocupado') {
+      return {
+        style: {
+          backgroundColor: 'rgb(208 82 82)',
+        }
+      };
+    }
+
     return {};
   };
   //

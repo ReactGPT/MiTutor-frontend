@@ -31,6 +31,7 @@ import PageDetalleDeCita from './pages/alumno/detalleDeCita/pageDetalleDeCita.ts
 import PageSolicitarAlumno from './pages/tutor/solicitarTutor/PageSolicitarAlumno.tsx';
 import PageListadoPlanAccionAlumno from './pages/alumno/PlanDeAccion/PageListadoPlanAccionAlumno.tsx';
 import PageDetallePlanAccionAlumno from './pages/alumno/PlanDeAccion/PageDetallePlanAccionAlumno.tsx';
+import PageSolicitarCita from './pages/alumno/misTutorias/PageSolicitarCita.tsx';
 
 const router = createBrowserRouter([
   {
@@ -83,7 +84,7 @@ const router = createBrowserRouter([
       },
       {
         path: '/PerfilAlumno',
-        element:<PageMiPerfilAlumno/>
+        element: <PageMiPerfilAlumno />
       },
       {
         path: '/programasDeTutoriaMaestro',
@@ -98,34 +99,38 @@ const router = createBrowserRouter([
         element: <PageDerivacionesHechas />
       },
       {
-        path:'/programasDeTutoriaMaestro/editar',
-        element:<PageProgTutoria/>
+        path: '/programasDeTutoriaMaestro/editar',
+        element: <PageProgTutoria />
       },
       {
-        path:'/listaTutoriasAlumno',
-        element:<PageListaDeTutorias/>
+        path: '/listaTutoriasAlumno',
+        element: <PageListaDeTutorias />
       },
       {
-        path:'/detalleDeCita',
-        element:<PageDetalleDeCita/>
+        path: '/detalleDeCita',
+        element: <PageDetalleDeCita />
       },
       {
         path: '/listaDeCitas/resultadoCitaIndividual',
-        element:<PageResultadoCitaIndividual/>
+        element: <PageResultadoCitaIndividual />
       },
       {
         path: '/solicitarTutor',
 
-        element: <PageSolicitarAlumno idProgram={1}/>
+        element: <PageSolicitarAlumno idProgram={1} />
 
       },
       {
         path: '/listadoPlanAccionAlumno',
-        element:<PageListadoPlanAccionAlumno/>
+        element: <PageListadoPlanAccionAlumno />
       },
       {
         path: '/detallePlanAccionAlumno',
-        element:<PageDetallePlanAccionAlumno/>
+        element: <PageDetallePlanAccionAlumno />
+      },
+      {
+        path: '/solicitarCita',
+        element: <PageSolicitarCita />
       }
     ],
   },
@@ -141,5 +146,4 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
       </AuthProvider>
     </Provider>
   </React.StrictMode>
-  
 );

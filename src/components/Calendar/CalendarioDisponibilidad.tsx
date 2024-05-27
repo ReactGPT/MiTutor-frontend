@@ -8,7 +8,6 @@ import { Event } from 'react-big-calendar';
 import { useAvailability } from '../../store/hooks/useAvailability';
 import "./index.css";
 import ModalModificarDisponibilidad from '../Tutor/ModalModificarDisponibilidad';
-import ModalProgramarCitaTutor from '../Tutor/ModalProgramarCitaTutor';
 
 interface CustomEvent extends Event {
   isBackgroundEvent?: boolean;
@@ -27,7 +26,7 @@ type Availability = {
   isActive: boolean;
 };
 
-interface CalendarioProps {
+interface CalendarioDisponibilidadProps {
   citas?: ListCita[];
   programable?: boolean;
   onSelectEvent?: (event: CustomEvent) => void;
@@ -84,7 +83,7 @@ function transformAvailabilityToEvent(availability: Availability[]): CustomEvent
   }));
 }
 
-const Calendario: React.FC<CalendarioProps> = ({ citas = null, programable = false, onSelectEvent, refresh }) => {
+const CalendarioDisponibilidad: React.FC<CalendarioDisponibilidadProps> = ({ citas = null, programable = false, onSelectEvent, refresh }) => {
   const { availability, fetchAvailability } = useAvailability(1);
 
   const [refreshKey, setRefreshKey] = useState(0);
@@ -168,7 +167,7 @@ const Calendario: React.FC<CalendarioProps> = ({ citas = null, programable = fal
         messages={messages}
         views={{ week: true }}
         defaultView="week"
-        timeslots={2}
+        timeslots={1}
         step={30}
         min={new Date(0, 0, 0, 8, 0)}
         max={new Date(0, 0, 0, 18, 0)}
@@ -177,9 +176,8 @@ const Calendario: React.FC<CalendarioProps> = ({ citas = null, programable = fal
         selectable={programable}
       />
       <ModalModificarDisponibilidad slotInfo={selectedSlot} isOpen={showModal} onClose={closeModal} refreshCalendar={refreshCalendar} />
-      <ModalProgramarCitaTutor isOpen={false} onClose={() => { }} slotInfo={selectedSlot} />
     </>
   );
 };
 
-export default Calendario;
+export default CalendarioDisponibilidad;

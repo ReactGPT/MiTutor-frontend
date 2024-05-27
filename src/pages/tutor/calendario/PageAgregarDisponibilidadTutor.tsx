@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Button from '../../../components/Button';
-import Calendario from '../../../components/Calendar/Calendario';
+import CalendarioDisponibilidad from '../../../components/Calendar/CalendarioDisponibilidad';
 import { Event } from 'react-big-calendar';
 import ModalEliminarDisponibilidad from '../../../components/Tutor/ModalEliminarDisponibilidad';
 
@@ -74,7 +74,7 @@ const PageAgregarDisponibilidadTutor: React.FC = () => {
           </div>
         </div>
         <div className="flex-1 w-full overflow-auto bg-white rounded-md p-4">
-          <Calendario programable={selectable} onSelectEvent={handleSelectEvent} refresh={refreshCalendar} />
+          <CalendarioDisponibilidad programable={selectable} onSelectEvent={handleSelectEvent} refresh={refreshCalendar} />
         </div>
       </div >
       <ModalEliminarDisponibilidad isOpen={showModal} onClose={closeModal} eventInfo={eventInfo} onAvailabilityRemoved={refreshCalendarHandler} />

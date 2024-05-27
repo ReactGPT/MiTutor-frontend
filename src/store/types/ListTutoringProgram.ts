@@ -8,18 +8,12 @@ export type ListTutoringProgram = {
 };
 
 export type programaDeTutoriaAlumno = {
-    tutoringProgramId : number;
-    programName : string;
-    programDescription : string;
-    facultyId : number;
-    facultyName : string;
-    specialtyId : number;
-    specialtyName : string;
-    tutorTypeId : number;
-    tutorName : string;
-    tutorLastName : string;
-    tutorSecondLastName : string;
-    studentId : number;
-    typeDescription : string;
-    state : string;
-}
+    tutoringProgramId: number;
+    programName: string;
+    programDescription: string;
+    faceToFace: boolean;
+    virtual: boolean;
+    facultyName: string;
+    specialtyName: string;
+    tutorType: string;
+};

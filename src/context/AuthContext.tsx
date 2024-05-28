@@ -40,7 +40,7 @@ type AuthContextType = {
   
   const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     //const navigate=useNavigate();
-    const {setRoute}= useRouter();
+    const {handleSetRoutes}= useRouter();
     const [credential,setCredentials] = useState<any>(null);
     const {fetchUserInfo,userInfo,resetUserInfo}=useUserAccountAuth();
     useEffect(()=>{
@@ -93,7 +93,7 @@ type AuthContextType = {
     useEffect(()=>{
       console.log("USER INFO: ",userData);
       if(userInfo && userInfo.isVerified){
-        
+        handleSetRoutes(userInfo.roles);
       }
     },[userInfo])
     return (

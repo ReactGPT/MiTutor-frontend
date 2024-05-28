@@ -9,6 +9,8 @@ import { useAvailability } from '../../store/hooks/useAvailability';
 import "./index.css";
 import { useCitasPorTutor } from '../../store/hooks/useCita';
 import ModalSolicitarCita from '../Alumno/ModalSolicitarCita';
+import ModalSuccess from '../ModalSuccess';
+import ModalError from '../ModalError';
 
 interface CustomEvent extends Event {
   isBackgroundEvent?: boolean;
@@ -64,7 +66,7 @@ function transformCitaToEvent(cita: ListCita): CustomEvent {
   const { creationDate, startTime, endTime } = cita;
 
   return {
-    title: "Ocupado",
+    title: "",
     start: combineDateAndTime(creationDate, startTime.toString()),
     end: combineDateAndTime(creationDate, endTime.toString()),
     resource: cita
@@ -150,7 +152,7 @@ const CalendarioSolicitud: React.FC<CalendarioSolicitudProps> = ({ programable =
       };
     };
 
-    if (event.title === 'Ocupado') {
+    if (event.title === '') {
       return {
         style: {
           backgroundColor: 'rgb(208 82 82)',
@@ -184,7 +186,6 @@ const CalendarioSolicitud: React.FC<CalendarioSolicitudProps> = ({ programable =
         onSelectSlot={handleSelectSlot}
         selectable={programable}
       />
-
       <ModalSolicitarCita slotInfo={selectedSlot} isOpen={showModal} onClose={closeModal} refreshCalendar={refreshCalendar} />
     </>
   );

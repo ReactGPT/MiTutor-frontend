@@ -4,6 +4,8 @@ import ModalBase from '../Tutor/ModalBase';
 import Button from '../Button';
 import { Datepicker, Label, Select, TextInput } from 'flowbite-react';
 import { useAppointment } from '../../store/hooks/useAppointment';
+import ModalSuccess from '../ModalSuccess';
+import ModalError from '../ModalError';
 
 interface ModalSolicitarCitaProps {
   isOpen: boolean;
@@ -31,6 +33,17 @@ const studentId = 2;
 const ModalSolicitarCita: React.FC<ModalSolicitarCitaProps> = (
   { isOpen, onClose, slotInfo, refreshCalendar }
 ) => {
+  //
+  const [isSuccessModalOpen, setIsSuccessModalOpen] = useState<boolean>(false);
+  const [isErrorModalOpen, setIsErrorModalOpen] = useState<boolean>(false);
+  const handleOpenSuccessModal = () => {
+    setIsSuccessModalOpen(true);
+  };
+  const handleOpenErrorModal = () => {
+    setIsErrorModalOpen(true);
+  };
+  //
+
   const { addNewAppointment, loading, error } = useAppointment();
 
   const [appointment, setAppointment] = useState<MakeAppointment>({
@@ -71,62 +84,75 @@ const ModalSolicitarCita: React.FC<ModalSolicitarCitaProps> = (
       });
       refreshCalendar();
       onClose();
+      handleOpenSuccessModal();
     } catch (error) {
-      console.log("Error");
+      handleOpenErrorModal();
     }
   };
 
   return (
-    <ModalBase isOpen={isOpen} onClose={onClose}>
-      <div className="flex flex-col gap-5 p-5 border-custom bg-[rgba(255,255,255,0.50)]">
-        <h3 className="text-3xl font-semibold font-roboto text-primary pr-5">
-          Reservar Cita
-        </h3>
-        <div>
-          <Label value="Fecha" className='font-roboto text-primary' />
-          <Datepicker value={slotInfo?.start.toLocaleDateString()} disabled />
-        </div>
-        <div className="flex gap-5 items-center justify-between">
+    <>
+      <ModalBase isOpen={isOpen} onClose={onClose}>
+        <div className="flex flex-col gap-5 p-5 border-custom bg-[rgba(255,255,255,0.50)]">
+          <h3 className="text-3xl font-semibold font-roboto text-primary pr-5">
+            Reservar Cita
+          </h3>
           <div>
-            <Label value="Desde" className='font-roboto text-primary' />
-            <TextInput type="time" value={slotInfo?.start.toTimeString().split(' ')[0]} disabled />
+            <Label value="Fecha" className='font-roboto text-primary' />
+            <Datepicker value={slotInfo?.start.toLocaleDateString()} disabled />
+          </div>
+          <div className="flex gap-5 items-center justify-between">
+            <div>
+              <Label value="Desde" className='font-roboto text-primary' />
+              <TextInput type="time" value={slotInfo?.start.toTimeString().split(' ')[0]} disabled />
+            </div>
+            <div>
+              <Label value="Hasta" className='font-roboto text-primary' />
+              <TextInput type="time" value={slotInfo?.end.toTimeString().split(' ')[0]} disabled />
+            </div>
           </div>
           <div>
-            <Label value="Hasta" className='font-roboto text-primary' />
-            <TextInput type="time" value={slotInfo?.end.toTimeString().split(' ')[0]} disabled />
+            <Label value="Modalidad" className='font-roboto text-primary' />
+            {faceToFace && virtual &&
+              <>
+                <Select id="modalidad" onChange={handleModalidadChange} required>
+                  <option value="presencial">Presencial</option>
+                  <option value="virtual">Virtual</option>
+                </Select>
+              </>
+            }
+            {faceToFace && !virtual &&
+              <TextInput value="Presencial" disabled />
+            }
+            {!faceToFace && virtual &&
+              <TextInput value="Virtual" disabled />
+            }
+          </div>
+          <div className="flex gap-5 items-center justify-center">
+            <Button
+              text="Reservar Cita"
+              variant="call-to-action"
+              onClick={handleAddAppointment}
+            />
+            <Button
+              text="Cancelar"
+              variant="warning"
+              onClick={onClose}
+            />
           </div>
         </div>
-        <div>
-          <Label value="Modalidad" className='font-roboto text-primary' />
-          {faceToFace && virtual &&
-            <>
-              <Select id="modalidad" onChange={handleModalidadChange} required>
-                <option value="presencial">Presencial</option>
-                <option value="virtual">Virtual</option>
-              </Select>
-            </>
-          }
-          {faceToFace && !virtual &&
-            <TextInput value="Presencial" disabled />
-          }
-          {!faceToFace && virtual &&
-            <TextInput value="Virtual" disabled />
-          }
-        </div>
-        <div className="flex gap-5 items-center justify-center">
-          <Button
-            text="Reservar Cita"
-            variant="call-to-action"
-            onClick={handleAddAppointment}
-          />
-          <Button
-            text="Cancelar"
-            variant="warning"
-            onClick={onClose}
-          />
-        </div>
-      </div>
-    </ModalBase>
+      </ModalBase>
+      <ModalSuccess
+        isOpen={isSuccessModalOpen}
+        onClose={() => setIsSuccessModalOpen(false)}
+        message="Se registró la cita exitosamente."
+      />
+      <ModalError
+        isOpen={isErrorModalOpen}
+        onClose={() => setIsErrorModalOpen(false)}
+        message="Ha ocurrido un error."
+      />
+    </>
   );
 };
 

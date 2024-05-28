@@ -9,7 +9,7 @@ import ModalResultadoCita from '../../../components/Tutor/ModalResultadoCita';
 import { InitialData } from '../../../store/types/AppointmentResult';
 import { ListCita } from '../../../store/types/ListCita';
 import { TimePicker } from 'antd';
-import dayjs from 'dayjs';
+import dayjs, { Dayjs } from 'dayjs';
 import { useResultadoCita, useUpdateResultadoCita, useUpdateComentario } from "../../../store/hooks/useResultadoCita";
 
 type InputProps = {
@@ -71,7 +71,7 @@ function ResultadoCitaBlock2({className,cita,onChangeCita}:InputProps) {
     const [commentValue2, setCommentValue2] = useState('');
     const [selectOption, setSelectOption] = useState(resultadoCita?.appointmentResult.asistio ?? false);
     const [startTime, setStartTime] = useState( dayjs('00:00:00', 'HH:mm:ss'));
-    const [endTime, setEndTime] = useState(dayjs('00:00:00', 'HH:mm:ss'));
+    const [endTime, setEndTime] = useState<Dayjs>(dayjs('00:00:00', 'HH:mm:ss'));
     
     useEffect(() => {
         if (resultadoCita && resultadoCita.appointmentResult && resultadoCita.appointmentResult.comments.length > 0) {
@@ -84,15 +84,15 @@ function ResultadoCitaBlock2({className,cita,onChangeCita}:InputProps) {
     }, [resultadoCita]);
  
     //Onchange
-    const handleCommentChange = (e) => {
+    const handleCommentChange = (e:any) => {
         const { value } = e.target;
         setCommentValue(value);
     };
-    const handleCommentChange2 = (e) => {
+    const handleCommentChange2 = (e:any) => {
         const { value } = e.target;
         setCommentValue2(value);
     };
-    const handleAsistencia=(e)=>{ 
+    const handleAsistencia=(e:any)=>{ 
         setSelectOption(e.name == 'Asistio'); 
     } 
     const handleGuardar = () => {
@@ -118,11 +118,11 @@ function ResultadoCitaBlock2({className,cita,onChangeCita}:InputProps) {
           setEndTime(dayjs(resultadoCita.appointmentResult.endTime, 'HH:mm:ss')); 
       }
     }; 
-    const handleStartTimeChange = (time) => {
+    const handleStartTimeChange = (time:any) => {
       setStartTime(time);  
-      setEndTime(endTime < time ? null : endTime);
+      setEndTime(endTime < time ? dayjs('00:00:00', 'HH:mm:ss') : endTime);
     }; 
-    const handleEndTimeChange = (time) => {
+    const handleEndTimeChange = (time:any) => {
       setEndTime(time);
     };
  

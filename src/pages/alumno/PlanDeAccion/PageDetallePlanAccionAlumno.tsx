@@ -22,7 +22,7 @@ import ModalAdvertencia from '../../../components/Tutor/ModalAdvertencia';
 import { Services as ServicesProperties } from '../../../config';
 
 
-const PageDetallePlanAccion = () => {
+const PageDetallePlanAccionAlumno = () => {
   //const { id } = useParams();
   const {state} = useLocation();
   const {id} = state;
@@ -173,34 +173,17 @@ const PageDetallePlanAccion = () => {
       <div className="w-full flex bg-[rgba(255,255,255,0.5)] border-custom drop-shadow-md p-5" style={{ display: "flex", width: "100%", flexDirection: "column", marginBottom: "1.5rem" }}>
         <h1 className="text-3xl font-bold">Datos del Plan de Acción</h1>
         <div style={{display: "flex", width: "100%", flexDirection: "row"}}>
-          <div className='flex' style={{ flexDirection: "column", width: "40%", marginRight: "2rem" }}>
+          <div className='flex' style={{ flexDirection: "column", width: "50%", marginRight: "2rem" }}>
             <InputTutor titulo='Nombre' value={name} readOnly={!editable} onChange={(e) => setName(e.target.value)} />
             <div className='grid grid-cols-2 gap-4' style={{ width: "100%" }}>
-              <InputTutor titulo='Fecha de creación' texto={plan?.creationDate ? new Date(plan.creationDate).toLocaleDateString() : 'No disponible'} enable={false} />
+              <InputTutor titulo='Fecha de creación &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' texto={plan?.creationDate ? new Date(plan.creationDate).toLocaleDateString() : 'No disponible'} enable={false} />
               <InputTutor titulo='Fecha de Última Modificación' texto={plan?.modificationDate ? new Date(plan.modificationDate).toLocaleDateString() : 'No disponible'} enable={false} />
             </div>
           </div>
-          <div className='flex' style={{ flexDirection: "column", width: "40%" }}>
+          <div className='flex' style={{ flexDirection: "column", width: "50%" }}>
             <TextAreaTutor titulo='Descripción' value={description} readOnly={!editable} onChange={(e) => setDescription(e.target.value)} />
           </div>
-          <div className='flex flex-col items-center' style={{ justifyContent: "space-evenly", width: "20%" }}>
-            {plan && plan.isActive === true ? (
-              editable ? (
-                <>
-                  <Button text="Guardar Cambios&nbsp;" variant='call-to-action' icon={FaSave} iconSize={20} onClick={handleSaveChanges} />
-                  <Button text="Cancelar Cambios" variant='secundario' icon={FaTimes} iconSize={20} onClick={handleCancelEdit} />
-                </>
-              ) : (
-                <>
-                  <Button text="Editar Plan&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" variant='primario' icon={HiOutlinePencil} iconSize={20} onClick={handleEditPlan} />
-                  <Button text="Desactivar Plan" variant='warning' icon={FaRegEyeSlash} iconSize={20} onClick={handleDisabledActionPlan} />
-                  <Button text="Eliminar Plan&nbsp;&nbsp;&nbsp;&nbsp;" variant='warning' icon={FaRegTrashAlt} iconSize={20} onClick={handleConfirmDeleteActionPlan} />
-                </>
-              )
-            ) : (
-              <Button text="Activar Plan" variant='warning' icon={FaRegEye} iconSize={20} onClick={handleEnabledActionPlan} />
-            )}
-          </div>
+          
         </div>
       </div>
       <div className="w-full flex bg-[rgba(255,255,255,0.5)] border-custom drop-shadow-md p-5" style={{ display: "flex", width: "100%", flexDirection: "column" }}>
@@ -208,44 +191,9 @@ const PageDetallePlanAccion = () => {
         <div className='flex' style={{ flexDirection: "column", width: "100%" }}>
           <div className='flex items-center justify-between'>
             <h1 className="text-3xl font-bold">Compromisos</h1>
-            <Button text="Nuevo Compromiso" variant='call-to-action' onClick={openModal} />
-            <ModalNuevoCompromiso
-              isOpen={modalOpen}
-              onClose={closeModal}
-              updatePage={updateCommitments}
-              actionPlanId={id ? parseInt(id) : 0}
-            />
-            {registrationModalOpen && ( // Mostrar el modal de registro exitoso si registrationModalOpen es true
-              <ModalRegistroExitoso
-                title="¡Registro Exitoso!"
-                description="El compromiso se registró con éxito."
-                icon={FaCheckCircle}
-                iconSize={60}
-                onClose={() => {
-                  window.location.reload()
-                }} />
-            )}
-            {editionModalOpen && ( // Mostrar el modal de edición exitoso si editionModalOpen es true
-              <ModalRegistroExitoso //el mismo componente modal, solo le cambio los datos que dalen
-                title="¡Cambios Guardados!"
-                description="El plan se actualizó con éxito."
-                icon={FaCheckCircle}
-                iconSize={60}
-                onClose={() => seteditionModalOpen(false)} />
-            )}
-            {deleteActionPlanModalOpen && (
-              <ModalAdvertencia
-                title="¿Está seguro de eliminar el plan de acción?"
-                description="Esta acción no puede revertirse."
-                icon={RiErrorWarningLine}
-                iconSize={70}
-                onClose={() => setdeleteActionPlanModalOpen(false)}
-                action={handleDeleteActionPlan}
-              />
-            )}
           </div>
           <div>
-            <TablaDetallePlanAccion onclickDelete={handleConfirmDeleteCommit} onclickEdit={close} actionPlanId={id ? parseInt(id) : 0} usuario='tutor'/>
+            <TablaDetallePlanAccion onclickDelete={handleConfirmDeleteCommit} onclickEdit={close} actionPlanId={id ? parseInt(id) : 0} usuario='alumno'/>
           </div>
         </div>
       </div>
@@ -254,4 +202,4 @@ const PageDetallePlanAccion = () => {
   );
 }
 
-export default PageDetallePlanAccion;
+export default PageDetallePlanAccionAlumno;

@@ -7,8 +7,6 @@ import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 
 function App() {
-  //const [sucessLogin,setSucessLogin] = useState<boolean>(false);
-
   const {userData}=useAuth();
   
   const navigate = useNavigate();

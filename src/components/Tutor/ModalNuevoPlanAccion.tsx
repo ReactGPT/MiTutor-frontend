@@ -19,6 +19,9 @@ export default function ModalNuevoPlanAccion({ isOpen, onClose, updatePage,stude
     description: ''
   });
 
+  // Estado para el mensaje de error del nombre del plan de acción
+  const [nameError, setNameError] = useState('');
+
   const handleChangeInput = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setPlanData({ ...planData, [name]: value });
@@ -29,7 +32,22 @@ export default function ModalNuevoPlanAccion({ isOpen, onClose, updatePage,stude
     setPlanData({ ...planData, [name]: value });
   };
 
+  const onBlurName = (e: ChangeEvent<HTMLInputElement>) => {
+    if (!planData.name.trim()) {
+      setNameError('El nombre del plan no puede estar vacío');
+    } else {
+      setNameError('');
+    }
+  }
+
   const guardarDatos = async () => {
+    if (!planData.name.trim()) {
+      setNameError('El nombre del plan no puede estar vacío');
+      return;
+    } else{
+      setNameError('');
+    }
+    
     try {
       const newData = {
         name: planData.name,
@@ -84,7 +102,9 @@ export default function ModalNuevoPlanAccion({ isOpen, onClose, updatePage,stude
                     name="name"
                     value={planData.name}
                     onChange={handleChangeInput}
+                    manejarBlur={onBlurName}
                   />
+                  {nameError && <p className="text-red-500 pl-6">{nameError}</p>}
                   <div style={{ height: '12rem' }}>
                     <TextAreaTutor 
                     titulo="Descripción"
@@ -97,7 +117,7 @@ export default function ModalNuevoPlanAccion({ isOpen, onClose, updatePage,stude
                 </div>
                 <div className="flex justify-between items-center mx-20">
                   <Button text="Cancelar" onClick={onClose} variant='secundario' />
-                  <Button text="Crear Plan" onClick={guardarDatos} variant='call-to-action' />
+                  <Button text="Crear Plan" onClick={guardarDatos} variant='call-to-action' disabled={!planData.name.trim()}/>
                 </div>
               </div>
             </div>

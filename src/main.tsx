@@ -19,102 +19,119 @@ import PageAgregarDisponibilidadTutor from './pages/tutor/calendario/PageAgregar
 import PageDerivacionesHechas from './pages/tutor/miPerfil/PageDerivacionesHechas.tsx';
 import PagePerfilAlumnoTutor from './pages/tutor/programasDeTutoria/PagePerfilAlumnoTutor.tsx';
 import { GoogleOAuthProvider } from '@react-oauth/google';
-import { AuthProvider } from './context';
+import { AuthProvider,RouterContextProvider,useRouter } from './context';
 import { Provider } from 'react-redux';
 import { store } from './store/store.ts';
 import PageListadoPlanAccion from './pages/tutor/listaDeCitas/PageListadoPlanAccion.tsx';
 import PageDetallePlanAccion from './pages/tutor/listaDeCitas/PageDetallePlanAccion.tsx';
 import PageResultadoCitaIndividual from './pages/tutor/resultadoCita/PageResultadoCitaIndividual.tsx';
 import PageMiPerfilAlumno from './pages/alumno/miPerfil/PageMiPerfilAlumno.tsx';
+import PageSolicitarAlumno from './pages/tutor/solicitarTutor/PageSolicitarAlumno.tsx';
+import PageListadoPlanAccionAlumno from './pages/alumno/PlanDeAccion/PageListadoPlanAccionAlumno.tsx';
+import PageDetallePlanAccionAlumno from './pages/alumno/PlanDeAccion/PageDetallePlanAccionAlumno.tsx';
 
 
+// const router = createBrowserRouter([
+//   {
+//     path: '/',
+//     element: <App />,
+//     children: [
+//       {
+//         path: '/',
+//         element: <PageInicioTutor />,
+//       },
+//       {
+//         path: '/calendario',
+//         element: <PageCalendarioTutor />,
+//       },
+//       {
+//         path: '/programasDeTutoria',
+//         element: <PageProgramasDeTutoriaTutor />,
+//       },
+//       {
+//         path: '/listaDeCitas',
+//         element: <PageListaDeCitas />,
+//       },
+//       {
+//         path: '/miPerfil',
+//         element: <PageMiPerfilTutor />,
+//       },
+//       {
+//         path: '/programasDeTutoria/detalle-programa',
+//         element: <PageDetalleProgramaTutoriaTutor />
+//       },
+//       {
+//         path: '/programasDeTutoria/detalle-programa/alumno',
+//         element: <PagePerfilAlumnoTutor />
+//       },
+//       {
+//         path: '/historicoDeCitas',
+//         element: <PageHistoricoDeCitas />,
+//       },
+//       {
+//         path: '/programasDeTutoriaMaestro/nuevo',
+//         element: <PageProgTutoria />,
+//       },
+//       {
+//         path: '/listadoPlanAccion',
+//         element: <PageListadoPlanAccion />,
+//       },
+//       {
+//         path: '/detallePlanAccion',
+//         element: <PageDetallePlanAccion />,
+//       },
+//       {
+//         path: '/PerfilAlumno',
+//         element:<PageMiPerfilAlumno/>
+//       },
+//       {
+//         path: '/programasDeTutoriaMaestro',
+//         element: <PageProgramasTutoriaMaestro />,
+//       },
+//       {
+//         path: '/calendario/agregarDisponibilidad',
+//         element: <PageAgregarDisponibilidadTutor />,
+//       },
+//       {
+//         path: '/misDerivacionesHechas',
+//         element: <PageDerivacionesHechas />
+//       },
+//       {
+//         path:'/programasDeTutoriaMaestro/editar',
+//         element:<PageProgTutoria/>
+//       },
+//       {
+//         path: '/listaDeCitas/resultadoCitaIndividual',
+//         element:<PageResultadoCitaIndividual/>
+//       },
+//       {
+//         path: '/solicitarTutor',
 
+//         element: <PageSolicitarAlumno idProgram={1}/>
 
+//       },
+//       {
+//         path: '/listadoPlanAccionAlumno',
+//         element:<PageListadoPlanAccionAlumno/>
+//       },
+//       {
+//         path: '/detallePlanAccionAlumno',
+//         element:<PageDetallePlanAccionAlumno/>
 
-const router = createBrowserRouter([
-  {
-    path: '/',
-    element: <App />,
-    children: [
-      {
-        path: '/',
-        element: <PageInicioTutor />,
-      },
-      {
-        path: '/calendario',
-        element: <PageCalendarioTutor />,
-      },
-      {
-        path: '/programasDeTutoria',
-        element: <PageProgramasDeTutoriaTutor />,
-      },
-      {
-        path: '/listaDeCitas',
-        element: <PageListaDeCitas />,
-      },
-      {
-        path: '/miPerfil',
-        element: <PageMiPerfilTutor />,
-      },
-      {
-        path: '/programasDeTutoria/detalle-programa',
-        element: <PageDetalleProgramaTutoriaTutor />
-      },
-      {
-        path: '/programasDeTutoria/detalle-programa/alumno',
-        element: <PagePerfilAlumnoTutor />
-      },
-      {
-        path: '/historicoDeCitas',
-        element: <PageHistoricoDeCitas />,
-      },
-      {
-        path: '/programasDeTutoriaMaestro/nuevo',
-        element: <PageProgTutoria />,
-      },
-      {
-        path: '/listadoPlanAccion',
-        element: <PageListadoPlanAccion />,
-      },
-      {
-        path: '/detallePlanAccion',
-        element: <PageDetallePlanAccion />,
-      },
-      {
-        path: '/PerfilAlumno',
-        element:<PageMiPerfilAlumno/>
-      },
-      {
-        path: '/programasDeTutoriaMaestro',
-        element: <PageProgramasTutoriaMaestro />,
-      },
-      {
-        path: '/calendario/agregarDisponibilidad',
-        element: <PageAgregarDisponibilidadTutor />,
-      },
-      {
-        path: '/misDerivacionesHechas',
-        element: <PageDerivacionesHechas />
-      },
-      {
-        path:'/programasDeTutoriaMaestro/editar',
-        element:<PageProgTutoria/>
-      },
-      {
-        path: '/listaDeCitas/resultadoCitaIndividual',
-        element:<PageResultadoCitaIndividual/>
-      }
-    ],
-  },
-]);
-
+//       }
+//     ],
+//   },
+// ]);
+const {router}=useRouter();
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <Provider store={store}>
       <AuthProvider>
-        <GoogleOAuthProvider clientId='358728188523-achb1qm8b68uvhr6437hft062u1dmtns.apps.googleusercontent.com'>
-          <RouterProvider router={router} />
-        </GoogleOAuthProvider>
+        <RouterContextProvider >
+          <GoogleOAuthProvider clientId='358728188523-achb1qm8b68uvhr6437hft062u1dmtns.apps.googleusercontent.com'>
+            <RouterProvider router={router} />
+          </GoogleOAuthProvider>
+        </RouterContextProvider>
       </AuthProvider>
     </Provider>
   </React.StrictMode>

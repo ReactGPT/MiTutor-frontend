@@ -56,7 +56,7 @@ type AuthContextType = {
             .then(()=>{
               setCredentials(payload);
             });
-            console.log(payload);
+            //console.log(payload);
         }
         //return <Landing/>
     }

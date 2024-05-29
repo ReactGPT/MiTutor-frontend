@@ -1,21 +1,21 @@
 import { useState } from 'react';
-import { getTutoresPorTutoriayAlumno } from '../services/listarTutoresPorAlumno';
+import { getTutoresPorTutoriaVariable, getTutoresPorTutoriayAlumno } from '../services/listarTutoresPorAlumno';
 import { tutorxalumno } from '../types/Tutor';
 
-type TutorPorAlumnoYTutoriaHooksReturn = {
+type TutorPorAlumnoHooksReturn = {
     listaDeTutores: tutorxalumno[];
     loading: boolean;
     error: any;
-    fetchTutoresPorTutoriayAlumno: () => Promise<void>;
+    fetchTutoresPorTutoria: () => Promise<void>;
 };
 
-function useTutoresPorTutoriayAlumno(programId : number, studentId : number): TutorPorAlumnoYTutoriaHooksReturn {
+function useTutoresPorTutoriayAlumno(programId : number, studentId : number): TutorPorAlumnoHooksReturn {
 
     const [listaDeTutores, setlistaDeTutores] = useState<tutorxalumno[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<any>(null);
 
-    const fetchTutoresPorTutoriayAlumno = async () => {
+    const fetchTutoresPorTutoria = async () => {
         try {
             const data = await getTutoresPorTutoriayAlumno(programId,studentId);
             setlistaDeTutores(data.listaDeTutores);
@@ -26,8 +26,29 @@ function useTutoresPorTutoriayAlumno(programId : number, studentId : number): Tu
         }
     };
 
-    return { listaDeTutores, loading, error, fetchTutoresPorTutoriayAlumno };
+    return { listaDeTutores, loading, error, fetchTutoresPorTutoria };
 
 }
 
-export { useTutoresPorTutoriayAlumno };
+function useTutoresPorTutoriaVariable(programId : number): TutorPorAlumnoHooksReturn {
+
+    const [listaDeTutores, setlistaDeTutores] = useState<tutorxalumno[]>([]);
+    const [loading, setLoading] = useState<boolean>(true);
+    const [error, setError] = useState<any>(null);
+
+    const fetchTutoresPorTutoria = async () => {
+        try {
+            const data = await getTutoresPorTutoriaVariable(programId);
+            setlistaDeTutores(data.listaDeTutores);
+            setLoading(false);
+        } catch (error) {
+            setError("Error en useTutoresPorTutoriaVariable");
+            setLoading(false);
+        }
+    };
+
+    return { listaDeTutores, loading, error, fetchTutoresPorTutoria };
+
+}
+
+export { useTutoresPorTutoriayAlumno,useTutoresPorTutoriaVariable };

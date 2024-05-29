@@ -1,9 +1,12 @@
 import { useState, useEffect } from "react";
 import TextBox from "../../../components/TextBox";
+import { Navigate, useNavigate, useLocation } from "react-router-dom";
 import { Button } from "../../../components";
+import { useTutoresPorTutoriaVariable } from "../../../store/hooks/useListarTutoresPorAlumno";
 import Pagination from "../../../components/Pagination";
 import SimpleCard from "../../../components/Tutor/SimpleCard";
 import React from 'react';
+import { Spinner } from "../../../components";
 
 const listaTutores = [
 
@@ -26,20 +29,27 @@ const listaTutores = [
 
 const PageDetalleDeTutoriaAlumno = () => {
 
+    const location = useLocation();
+    const data = location.state.data;
+
+    const { listaDeTutores,fetchTutoresPorTutoria,loading } = useTutoresPorTutoriaVariable(data.tutoringProgramId);
+
+    const navigate = useNavigate();
+
+    useEffect(() => {
+      fetchTutoresPorTutoria();
+    }, []);
+
     const [currentPage, setCurrentPage] = useState(1);
     const itemsPerPage = 5;
 
     const indexOfLastTutor = currentPage * itemsPerPage;
     const indexOfFirstTutor = indexOfLastTutor - itemsPerPage;
-    const currentTutors = listaTutores.slice(indexOfFirstTutor, indexOfLastTutor);
+    const currentTutors = listaDeTutores.slice(indexOfFirstTutor, indexOfLastTutor);
 
     const handlePageChange = (pageNumber: number) => {
         setCurrentPage(pageNumber);
     };
-
-    const debugClick = () => {
-        console.log('boton clickeado')
-    }
 
     return (
         <div className="w-full h-full container mx-auto">
@@ -73,9 +83,14 @@ const PageDetalleDeTutoriaAlumno = () => {
                     </div>
                     <div className="w-full flex h-2/4">
                         {
+                            loading ?
+                            <div className="w-full h-[90%] flex items-center justify-center">
+                                <Spinner size="xl" />
+                            </div>
+                            :
                             <div className="w-full h-full flex gap-5">
                             {currentTutors.map((Tutor) => (
-                                <SimpleCard title={Tutor.title} content={Tutor.content} subContent={Tutor.subcontent} />
+                                <SimpleCard title={`${Tutor.tutorName} ${Tutor.tutorLastName} ${Tutor.tutorSecondLastName}`} content="Docente a tiempo completo" subContent={Tutor.state} />
                             ))}
                             </div>
                         }

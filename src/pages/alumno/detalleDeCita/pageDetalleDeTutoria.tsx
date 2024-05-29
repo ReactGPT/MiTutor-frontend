@@ -7,6 +7,7 @@ import { programaDeTutoriaAlumno } from "../../../store/types/ListTutoringProgra
 import { useTutoresPorTutoriayAlumno } from "../../../store/hooks/useListarTutoresPorAlumno";
 import { useState, useEffect } from "react";
 import React from 'react'
+import { Spinner } from "../../../components";
 
 
 const PageDetalleDeTutoria = () => {
@@ -14,12 +15,12 @@ const PageDetalleDeTutoria = () => {
   const location = useLocation();
   const data = location.state.data;
 
-  const { listaDeTutores,fetchTutoresPorTutoriayAlumno,loading } = useTutoresPorTutoriayAlumno(data.tutoringProgramId,2);
+  const { listaDeTutores,fetchTutoresPorTutoria,loading } = useTutoresPorTutoriayAlumno(data.tutoringProgramId,2);
 
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetchTutoresPorTutoriayAlumno();
+    fetchTutoresPorTutoria();
   }, []);
 
   const goToTutorList = () => {
@@ -57,9 +58,11 @@ const PageDetalleDeTutoria = () => {
           <div className="w-full flex justify-center items-center p-20">
             {
               loading ?
-              <div>cargando</div>
+              <div className="w-full h-[90%] flex items-center justify-center">
+                <Spinner size="xl" />
+              </div>
               :
-              <SimpleCard content="Docente a tiempo completo" title={`${listaDeTutores[0].tutorName}`} subContent="" />
+              <SimpleCard content="Docente a tiempo completo" title={`${listaDeTutores[0].tutorName} ${listaDeTutores[0].tutorLastName} ${listaDeTutores[0].tutorSecondLastName}`} subContent={listaDeTutores[0].state} />
             }
           </div>
         </div>

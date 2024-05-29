@@ -3,6 +3,7 @@ import TextBox from "../../../components/TextBox";
 import { Button } from "../../../components";
 import Pagination from "../../../components/Pagination";
 import SimpleCard from "../../../components/Tutor/SimpleCard";
+import React from 'react';
 
 const listaTutores = [
 

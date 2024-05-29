@@ -6,24 +6,24 @@ import { da } from "date-fns/locale";
 import { programaDeTutoriaAlumno } from "../../../store/types/ListTutoringProgram";
 import { useTutoresPorTutoriayAlumno } from "../../../store/hooks/useListarTutoresPorAlumno";
 import { useState, useEffect } from "react";
+import React from 'react'
+
 
 const PageDetalleDeTutoria = () => {
 
   const location = useLocation();
   const data = location.state.data;
 
-  const navigate = useNavigate();
-
   const { listaDeTutores,fetchTutoresPorTutoriayAlumno,loading } = useTutoresPorTutoriayAlumno(data.tutoringProgramId,2);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchTutoresPorTutoriayAlumno();
   }, []);
 
-  console.log(listaDeTutores);
-
   const goToTutorList = () => {
-    const tutoriaData = {tutoringProgramId: data.tutoringProgramId, studentId: data.studentId};
+    const tutoriaData = {tutoringProgramId: data.tutoringProgramId };
     navigate('/solicitarTutor', { state: { tutoriaData } });
   };
 
@@ -55,7 +55,12 @@ const PageDetalleDeTutoria = () => {
         <div className="flex flex-col w-[30%] h-full p-4 border-custom shadow-custom bg-[rgba(255,_255,_255,_0.50)] font-roboto">
           <span className="font-montserrat text-2xl font-bold text-primary">Tutor</span>
           <div className="w-full flex justify-center items-center p-20">
-            <SimpleCard content="Docente a tiempo completo" title={`${listaDeTutores[0].tutorName} ${listaDeTutores[0].tutorLastName} ${listaDeTutores[0].tutorSecondLastName}`} subContent="Tipo de profesor" />
+            {
+              loading ?
+              <div>cargando</div>
+              :
+              <SimpleCard content="Docente a tiempo completo" title={`${listaDeTutores[0].tutorName}`} subContent="" />
+            }
           </div>
         </div>
 
@@ -89,7 +94,7 @@ const PageDetalleDeTutoria = () => {
           </div>
 
           <div className="w-full flex items-center justify-center">
-            <Button onClick={() => { }} text="Ver compromisos" />
+            <Button onClick={() => {  }} text="Ver plan de accion" />
           </div>
         </div>
 

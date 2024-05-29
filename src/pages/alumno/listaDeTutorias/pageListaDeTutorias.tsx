@@ -34,10 +34,6 @@ const PageListaDeTutorias = () => {
         setCurrentPage(pageNumber);
     };
 
-    const debugClick = () => {
-        console.log('boton clickeado');
-    };
-
     return (
         <div className="flex flex-col gap-5 w-full h-full">
             <div className="w-full h-[5%]">

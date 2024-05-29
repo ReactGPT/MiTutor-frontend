@@ -23,7 +23,7 @@ const listaTutores = [
 
 ];
 
-const PageDetalleDeCitaAlumno = () => {
+const PageDetalleDeTutoriaAlumno = () => {
 
     const [currentPage, setCurrentPage] = useState(1);
     const itemsPerPage = 5;
@@ -94,4 +94,4 @@ const PageDetalleDeCitaAlumno = () => {
 
 }
 
-export default PageDetalleDeCitaAlumno;
+export default PageDetalleDeTutoriaAlumno;

@@ -13,26 +13,15 @@ function App() {
 
   const navigate = useNavigate();
 
-<<<<<<< HEAD
   /* useEffect(() => {
     if (!userData.isAuthenticated) navigate("/");
   }, [userData.isAuthenticated]); */
 
-=======
-  // useEffect(()=>{
-  //   if(!userData.isAuthenticated) navigate("/");
-  // },[userData.isAuthenticated])
-  
->>>>>>> e56a158 (pantalla detalle de citas variable)
   return (
     <>
       {/* {!userData.isAuthenticated&&<Login/>}
       {userData.isAuthenticated&&<Landing/>}  */}
-<<<<<<< HEAD
       <Landing />
-=======
-      <Landing/>
->>>>>>> e56a158 (pantalla detalle de citas variable)
     </>
   );
 }

@@ -122,25 +122,25 @@ export const Routes:RouterConfig={
       navBarLink:[
         {
           key: 'inicio',
-          label: 'Inicio',
+          label: 'Inicio Tut',
           path: '/',
           icon: <BiHome fontSize={32} />,
         },
         {
           key: 'calendario',
-          label: 'Calendario',
+          label: 'Calendario Tut',
           path: '/calendario',
           icon: <BiCalendar fontSize={32} />,
         },
         {
           key: 'programasDeTutoria',
-          label: 'Programas de Tutoria',
+          label: 'Programas de Tutoria Tut',
           path: '/programasDeTutoria',
           icon: <BiCabinet fontSize={32} />,
         },
         {
           key: 'listaDeCitas',
-          label: 'Lista de Citas',
+          label: 'Lista de Citas Tut',
           path: '/listaDeCitas',
           icon: <BiListUl fontSize={32} />,
         },
@@ -180,7 +180,7 @@ export const Routes:RouterConfig={
         },
         {
           key: 'calendario',
-          label: 'Calendario',
+          label: 'Calendario Coordi',
           path: '/calendario',
           icon: <BiCalendar fontSize={32} />,
         },
@@ -233,14 +233,14 @@ export const Routes:RouterConfig={
       navBarLink:[
         {
           key: 'inicio',
-          label: 'Inicio',
+          label: 'Inicio Alumn',
           path: '/',
           icon: <BiHome fontSize={32} />,
         },
         {
           key: 'calendario',
-          label: 'Calendario',
-          path: '/calendario',
+          label: 'Calendario Alumn',
+          path: '/solicitarTutor',
           icon: <BiCalendar fontSize={32} />,
         },
         {

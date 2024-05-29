@@ -3,7 +3,7 @@ import Landing from "./components/Landing";
 
 import Login from "./login/Login";
 import { useAuth } from "./context";
-import { useNavigate } from "react-router-dom";
+import { RouterProvider, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 
 function App() {
@@ -17,8 +17,10 @@ function App() {
   
   return (
     <>
+    {/* <RouterProvider router={router}/> */}
       {!userData.isAuthenticated&&<Login/>}
       {userData.isAuthenticated&&<Landing/>}
+    {/* <RouterProvider /> */}
     </>
   );
 }

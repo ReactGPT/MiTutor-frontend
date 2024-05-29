@@ -51,12 +51,12 @@ type AuthContextType = {
         //console.log(credentialResponse);
         if(credentialResponse.credential){
             const {payload} = googleCredentialDecode(credentialResponse.credential);
-            
-            fetchUserInfo("tutortest@pucp.edu.pe")
+            fetchUserInfo("alumnotest@pucp.edu.pe")//
+            //fetchUserInfo("tutortest@pucp.edu.pe")//Usar el que necesites
             .then(()=>{
               setCredentials(payload);
             });
-            //console.log(payload);
+            console.log(payload);
         }
         //return <Landing/>
     }
@@ -90,12 +90,12 @@ type AuthContextType = {
     //       });
     //     }
     // },[userData]);
-    useEffect(()=>{
-      console.log("USER INFO: ",userData);
-      if(userInfo && userInfo.isVerified){
-        handleSetRoutes(userInfo.roles);
-      }
-    },[userInfo])
+    // useEffect(()=>{
+    //   console.log("USER INFO: ",userData);
+    //   if(userInfo && userInfo.isVerified){
+    //     handleSetRoutes(userInfo.roles);
+    //   }
+    // },[userInfo])
     return (
       <AuthContext.Provider value={{userData:userData, handleSuccessLogin:handleSuccess,handleError:handleError,handleLogout:handleLogout }}>
         {children}

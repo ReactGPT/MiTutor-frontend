@@ -122,16 +122,14 @@ import PageDetallePlanAccionAlumno from './pages/alumno/PlanDeAccion/PageDetalle
 //     ],
 //   },
 // ]);
-const {router}=useRouter();
+//const {router}=useRouter();
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <Provider store={store}>
       <AuthProvider>
-        <RouterContextProvider >
           <GoogleOAuthProvider clientId='358728188523-achb1qm8b68uvhr6437hft062u1dmtns.apps.googleusercontent.com'>
-            <RouterProvider router={router} />
+            <RouterContextProvider/>
           </GoogleOAuthProvider>
-        </RouterContextProvider>
       </AuthProvider>
     </Provider>
   </React.StrictMode>

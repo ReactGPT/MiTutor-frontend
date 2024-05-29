@@ -1,9 +1,9 @@
-import React, { ReactElement, ReactNode, createContext, useContext, useEffect, useMemo, useState } from "react";
+import React, { ReactElement, ReactNode, createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { RouteObject, RouterProvider, createBrowserRouter,Router, NonIndexRouteObject } from "react-router-dom";
 import App from "../App";
 import { Role, SidebarLink } from "../store/types";
 import { Routes } from "../data/routes";
-
+import { useAuth } from "./AuthContext";
 
 
 type RouterChildren={
@@ -16,7 +16,7 @@ type RouterContextType = {
     //setRoute:(routes:RouteObject[])=>void;
     //routes:RouteObject[];
     handleSetRoutes:(roles:Role[])=>void;
-    router: any;
+    router: ReturnType<typeof createBrowserRouter>;
     sideBarOption:SidebarLink[];
 }
 
@@ -29,21 +29,17 @@ const useRouter = ()=>{
       }
       return context;
 };
-// const initialRoutes: RouteObject[] = [
-//     {
-//       path: '/',
-//       element: <App/>,
-//       children: []
-//     },
-//   ];
+
 type RouterProviderProps={
     children:ReactNode;
+    
 };
 
-const RouterContextProvider:React.FC<RouterProviderProps> = ({ children }) => {
+const RouterContextProvider = () => {
     //const [routes,setRoutes] = useState<RouteObject[]>(initialRoutes);
     const [childrenArray,setChildrenArray] = useState<RouteObject[]>([]);
     const [sideBarOption,setSideBarOptions]= useState<SidebarLink[]>([]);
+    const {userData}=useAuth();
     const routes:RouteObject[]=useMemo(()=>{
         return [{
             path:'/',
@@ -51,22 +47,29 @@ const RouterContextProvider:React.FC<RouterProviderProps> = ({ children }) => {
             children:[...childrenArray]
         }]
     },[childrenArray])
-    const router = useMemo(()=>{
-        createBrowserRouter(routes);
-    },[routes]);
-    const handleSetRoutes=(roles:Role[])=>{
-        roles.map((rol)=>{
+    const router = useMemo(()=>createBrowserRouter(routes),[routes]);
+    useEffect(()=>{
+        console.log(routes);
+    },[router])
+    const handleSetRoutes=useCallback((roles:Role[])=>{
+        roles.forEach(rol=>{
             const childrenArrayFound:RouteObject[] = rol.type==="TUTOR"?Routes.tutor.pages:rol.type==="MANAGER"?Routes.coordinador.pages:Routes.alumno.pages;
             const sideOptionsFound:SidebarLink[] = rol.type==="TUTOR"?Routes.tutor.navBarLink:rol.type==="MANAGER"?Routes.coordinador.navBarLink:Routes.alumno.navBarLink
             //const mergedChildren:RouteObject[]=[...(routes[0].children||[]),...(childrenArray||[])]
             setChildrenArray(prevArray=>[...prevArray,...childrenArrayFound]);
             setSideBarOptions(prevArray=>[...prevArray,...sideOptionsFound]);
         });
-    }
-    
+    },[]);
+    useEffect(()=>{
+        //console.log("USER INFO: ",userData);
+        if(userData.userInfo && userData.userInfo.isVerified){
+          //console.log("Se alteran rutas");
+            handleSetRoutes(userData.userInfo.roles);
+        }
+      },[userData.userInfo])
     return (
-        <RouterContext.Provider value={{handleSetRoutes:handleSetRoutes,router:router,sideBarOption:sideBarOption}}>
-            {children}
+        <RouterContext.Provider value={{handleSetRoutes,router,sideBarOption}}>
+            <RouterProvider router={router}/>
         </RouterContext.Provider>
       );
 }

@@ -87,7 +87,7 @@ type AuthContextType = {
             token:'',
             userInfo:userInfo
         }
-    },[credential]);
+    },[credential,userInfo]);
 
     // useEffect(()=>{
     //     //console.log(userData);

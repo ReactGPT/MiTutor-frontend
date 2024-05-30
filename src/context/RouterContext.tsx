@@ -66,6 +66,10 @@ const RouterContextProvider = () => {
           //console.log("Se alteran rutas");
             handleSetRoutes(userData.userInfo.roles);
         }
+        else{
+            setChildrenArray([]);
+            setSideBarOptions([]);
+        }
       },[userData.userInfo])
     return (
         <RouterContext.Provider value={{handleSetRoutes,router,sideBarOption}}>

@@ -1,5 +1,5 @@
 import { getUserInfo } from '../services';
-import {useState} from 'react';
+import {useEffect, useState} from 'react';
 import { UserAccount } from "../types";
 
 
@@ -15,6 +15,7 @@ function useUserAccountAuth(): ProgramaTutoriaHookReturnType{
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [error, setError] = useState<Error | null>(null);
     const [userInfo,setUserInfo] = useState<UserAccount|null>(null);
+    
     const fetchUserInfo = async (email:string='',codigoPUCP:string='') => {
         setIsLoading(true);
         try {
@@ -33,7 +34,9 @@ function useUserAccountAuth(): ProgramaTutoriaHookReturnType{
         }
     };
     const resetUserInfo=()=>{setUserInfo(null)}
-    
+    useEffect(()=>{
+        resetUserInfo();
+    },[]);
     
     return { fetchUserInfo,resetUserInfo,userInfo,isLoading, error };
 

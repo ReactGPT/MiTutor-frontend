@@ -98,7 +98,7 @@ const PageDetalleDeTutoriaAlumno = () => {
                     <div className="w-full h-1/4">
                         <Pagination
                             currentPage={currentPage}
-                            totalItems={listaTutores.length}
+                            totalItems={listaDeTutores.length}
                             itemsPerPage={itemsPerPage}
                             onPageChange={handlePageChange}
                         />

@@ -8,25 +8,6 @@ import SimpleCard from "../../../components/Tutor/SimpleCard";
 import React from 'react';
 import { Spinner } from "../../../components";
 
-const listaTutores = [
-
-  { title: 'Fernando Antonio Hererra Cruz', content: 'Facultad/Programa', subcontent:'Tipo de profesor' },
-  { title: 'Fernando Antonio Hererra Cruz', content: 'Facultad/Programa', subcontent:'Tipo de profesor' },
-  { title: 'Fernando Antonio Hererra Cruz', content: 'Facultad/Programa', subcontent:'Tipo de profesor' },
-  { title: 'Fernando Antonio Hererra Cruz', content: 'Facultad/Programa', subcontent:'Tipo de profesor' },
-  { title: 'Fernando Antonio Hererra Cruz', content: 'Facultad/Programa', subcontent:'Tipo de profesor' },
-  { title: 'Fernando Antonio Hererra Cruz', content: 'Facultad/Programa', subcontent:'Tipo de profesor' },
-  { title: 'Fernando Antonio Hererra Cruz', content: 'Facultad/Programa', subcontent:'Tipo de profesor' },
-  { title: 'Fernando Antonio Hererra Cruz', content: 'Facultad/Programa', subcontent:'Tipo de profesor' },
-  { title: 'Fernando Antonio Hererra Cruz', content: 'Facultad/Programa', subcontent:'Tipo de profesor' },
-  { title: 'Fernando Antonio Hererra Cruz', content: 'Facultad/Programa', subcontent:'Tipo de profesor' },
-  { title: 'Fernando Antonio Hererra Cruz', content: 'Facultad/Programa', subcontent:'Tipo de profesor' },
-  { title: 'Fernando Antonio Hererra Cruz', content: 'Facultad/Programa', subcontent:'Tipo de profesor' },
-  { title: 'Fernando Antonio Hererra Cruz', content: 'Facultad/Programa', subcontent:'Tipo de profesor' },
-  { title: 'Fernando Antonio Hererra Cruz', content: 'Facultad/Programa', subcontent:'Tipo de profesor' }
-
-];
-
 const PageDetalleDeTutoriaAlumno = () => {
 
     const location = useLocation();

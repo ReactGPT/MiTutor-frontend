@@ -28,6 +28,7 @@ import PageResultadoCitaIndividual from './pages/tutor/resultadoCita/PageResulta
 import PageMiPerfilAlumno from './pages/alumno/miPerfil/PageMiPerfilAlumno.tsx';
 import PageListaDeTutorias from './pages/alumno/listaDeTutorias/pageListaDeTutorias.tsx';
 import PageDetalleDeTutoria from './pages/alumno/detalleDeCita/pageDetalleDeTutoria.tsx';
+import PageDetalleDeTutoriaSolicitado from './pages/alumno/detalleDeCita/pageDetalleDeTutoriaSolicitado.tsx';
 import PageDetalleDeTutoriaVariable from './pages/alumno/detalleDeCita/pageDetalleDeCitaVariable.tsx';
 import PageSolicitarAlumno from './pages/tutor/solicitarTutor/PageSolicitarAlumno.tsx';
 import PageListadoPlanAccionAlumno from './pages/alumno/PlanDeAccion/PageListadoPlanAccionAlumno.tsx';
@@ -110,6 +111,9 @@ const router = createBrowserRouter([
       {
         path: '/detalleDeTutoria',
         element: <PageDetalleDeTutoria />
+      },      {
+        path: '/detalleDeTutoriaSolicitado',
+        element: <PageDetalleDeTutoriaSolicitado />
       },
       {
         path:'/detalleDeTutoriaVariable',

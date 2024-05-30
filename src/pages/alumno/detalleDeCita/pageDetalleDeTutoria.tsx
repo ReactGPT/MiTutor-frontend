@@ -8,7 +8,7 @@ import { useTutoresPorTutoriayAlumno } from "../../../store/hooks/useListarTutor
 import { useState, useEffect } from "react";
 import React from 'react'
 import { Spinner } from "../../../components";
-
+const studentId = 2
 
 const PageDetalleDeTutoria = () => {
 
@@ -24,7 +24,7 @@ const PageDetalleDeTutoria = () => {
   }, []);
 
   const goToTutorList = () => {
-    const tutoriaData = {tutoringProgramId: data.tutoringProgramId };
+    const tutoriaData = {tutoringProgramId: data.tutoringProgramId,studentId: studentId };
     navigate('/solicitarTutor', { state: { tutoriaData } });
   };
 

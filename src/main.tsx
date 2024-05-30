@@ -126,7 +126,7 @@ const router = createBrowserRouter([
       {
         path: '/solicitarTutor',
 
-        element: <PageSolicitarAlumno idProgram={1} />
+        element: <PageSolicitarAlumno/>
 
       },
       {

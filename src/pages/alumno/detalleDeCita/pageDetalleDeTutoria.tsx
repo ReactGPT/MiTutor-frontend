@@ -8,7 +8,7 @@ import { useTutoresPorTutoriayAlumno } from "../../../store/hooks/useListarTutor
 import { useState, useEffect } from "react";
 import React from 'react'
 import { Spinner } from "../../../components";
-
+const studentId = 2
 
 const PageDetalleDeTutoria = () => {
 
@@ -22,6 +22,7 @@ const PageDetalleDeTutoria = () => {
   useEffect(() => {
     fetchTutoresPorTutoria();
   }, []);
+
 
   const goToTutorPlan = () => {
     const tutorData = {tutoringProgramId: data.tutoringProgramId, tutorId: listaDeTutores[0].tutorId };

@@ -26,103 +26,12 @@ import PageListadoPlanAccion from './pages/tutor/listaDeCitas/PageListadoPlanAcc
 import PageDetallePlanAccion from './pages/tutor/listaDeCitas/PageDetallePlanAccion.tsx';
 import PageResultadoCitaIndividual from './pages/tutor/resultadoCita/PageResultadoCitaIndividual.tsx';
 import PageMiPerfilAlumno from './pages/alumno/miPerfil/PageMiPerfilAlumno.tsx';
+
 import PageSolicitarAlumno from './pages/tutor/solicitarTutor/PageSolicitarAlumno.tsx';
 import PageListadoPlanAccionAlumno from './pages/alumno/PlanDeAccion/PageListadoPlanAccionAlumno.tsx';
 import PageDetallePlanAccionAlumno from './pages/alumno/PlanDeAccion/PageDetallePlanAccionAlumno.tsx';
 
 
-// const router = createBrowserRouter([
-//   {
-//     path: '/',
-//     element: <App />,
-//     children: [
-//       {
-//         path: '/',
-//         element: <PageInicioTutor />,
-//       },
-//       {
-//         path: '/calendario',
-//         element: <PageCalendarioTutor />,
-//       },
-//       {
-//         path: '/programasDeTutoria',
-//         element: <PageProgramasDeTutoriaTutor />,
-//       },
-//       {
-//         path: '/listaDeCitas',
-//         element: <PageListaDeCitas />,
-//       },
-//       {
-//         path: '/miPerfil',
-//         element: <PageMiPerfilTutor />,
-//       },
-//       {
-//         path: '/programasDeTutoria/detalle-programa',
-//         element: <PageDetalleProgramaTutoriaTutor />
-//       },
-//       {
-//         path: '/programasDeTutoria/detalle-programa/alumno',
-//         element: <PagePerfilAlumnoTutor />
-//       },
-//       {
-//         path: '/historicoDeCitas',
-//         element: <PageHistoricoDeCitas />,
-//       },
-//       {
-//         path: '/programasDeTutoriaMaestro/nuevo',
-//         element: <PageProgTutoria />,
-//       },
-//       {
-//         path: '/listadoPlanAccion',
-//         element: <PageListadoPlanAccion />,
-//       },
-//       {
-//         path: '/detallePlanAccion',
-//         element: <PageDetallePlanAccion />,
-//       },
-//       {
-//         path: '/PerfilAlumno',
-//         element:<PageMiPerfilAlumno/>
-//       },
-//       {
-//         path: '/programasDeTutoriaMaestro',
-//         element: <PageProgramasTutoriaMaestro />,
-//       },
-//       {
-//         path: '/calendario/agregarDisponibilidad',
-//         element: <PageAgregarDisponibilidadTutor />,
-//       },
-//       {
-//         path: '/misDerivacionesHechas',
-//         element: <PageDerivacionesHechas />
-//       },
-//       {
-//         path:'/programasDeTutoriaMaestro/editar',
-//         element:<PageProgTutoria/>
-//       },
-//       {
-//         path: '/listaDeCitas/resultadoCitaIndividual',
-//         element:<PageResultadoCitaIndividual/>
-//       },
-//       {
-//         path: '/solicitarTutor',
-
-//         element: <PageSolicitarAlumno idProgram={1}/>
-
-//       },
-//       {
-//         path: '/listadoPlanAccionAlumno',
-//         element:<PageListadoPlanAccionAlumno/>
-//       },
-//       {
-//         path: '/detallePlanAccionAlumno',
-//         element:<PageDetallePlanAccionAlumno/>
-
-//       }
-//     ],
-//   },
-// ]);
-//const {router}=useRouter();
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <Provider store={store}>
@@ -133,5 +42,4 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
       </AuthProvider>
     </Provider>
   </React.StrictMode>
-  
 );

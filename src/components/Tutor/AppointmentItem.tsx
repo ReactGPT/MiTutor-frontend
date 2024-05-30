@@ -73,8 +73,10 @@ const controlColor = (color: string, tipo: string) => {
 export const AppointmentItem: React.FC<AppointmentItemProps> = ({ appointment, tipo }) => {
   
   const navigate = useNavigate();
+  const currentDate = new Date();
 
   const goToDetalleCita = () => {
+    if(new Date(appointment.creationDate) < currentDate)
     navigate("/listaDeCitas/resultadoCitaIndividual", { state: { cita: appointment } });
   };
 

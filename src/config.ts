@@ -1,5 +1,6 @@
 export const Services={
     BaseUrl:"https://localhost:44369",
+    //BaseUrl:"http://54.235.188.31",
     Headers:{
         'Content-Type': 'application/json'
     },

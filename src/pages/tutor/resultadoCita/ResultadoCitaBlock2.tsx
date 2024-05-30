@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, ChangeEvent} from 'react'
 
 import { Appointment } from '../../../store/types/Appointment';
 import { Button, Combobox } from '../../../components';
@@ -9,8 +9,9 @@ import ModalResultadoCita from '../../../components/Tutor/ModalResultadoCita';
 import { InitialData } from '../../../store/types/AppointmentResult';
 import { ListCita } from '../../../store/types/ListCita';
 import { TimePicker } from 'antd';
-import dayjs from 'dayjs';
+import dayjs, { Dayjs } from 'dayjs';
 import { useResultadoCita, useUpdateResultadoCita, useUpdateComentario } from "../../../store/hooks/useResultadoCita";
+import { ComboboxOptionProps } from '@headlessui/react';
 
 type InputProps = {
     className:string;
@@ -38,6 +39,9 @@ function ResultadoCitaBlock2({className,cita,onChangeCita}:InputProps) {
     /*Habilitar comentarios,asistencia,duracion*/    
     const [enableAttendance,setEnableAttendance] = useState<boolean>(false);
 
+    type AssistanceOption = {
+      name: string;
+    }; 
     const assistanceState = [
         { name: 'Asistio' },
         { name: 'Falto' },
@@ -84,15 +88,15 @@ function ResultadoCitaBlock2({className,cita,onChangeCita}:InputProps) {
     }, [resultadoCita]);
  
     //Onchange
-    const handleCommentChange = (e) => {
+    const handleCommentChange = (e:ChangeEvent<HTMLTextAreaElement>) => {
         const { value } = e.target;
         setCommentValue(value);
     };
-    const handleCommentChange2 = (e) => {
+    const handleCommentChange2 = (e:ChangeEvent<HTMLTextAreaElement>) => {
         const { value } = e.target;
         setCommentValue2(value);
     };
-    const handleAsistencia=(e)=>{ 
+    const handleAsistencia=(e:AssistanceOption)=>{ 
         setSelectOption(e.name == 'Asistio'); 
     } 
     const handleGuardar = () => {
@@ -118,12 +122,19 @@ function ResultadoCitaBlock2({className,cita,onChangeCita}:InputProps) {
           setEndTime(dayjs(resultadoCita.appointmentResult.endTime, 'HH:mm:ss')); 
       }
     }; 
-    const handleStartTimeChange = (time) => {
-      setStartTime(time);  
-      setEndTime(endTime < time ? null : endTime);
-    }; 
-    const handleEndTimeChange = (time) => {
-      setEndTime(time);
+    const handleStartTimeChange = (time: Dayjs | null) => {
+      if (time) {
+        setStartTime(time);
+        if (endTime.isBefore(time)) {
+          setEndTime(time);
+        }
+      }
+    };
+  
+    const handleEndTimeChange = (time: Dayjs | null) => {
+      if (time) {
+        setEndTime(time);
+      }
     };
  
     return (

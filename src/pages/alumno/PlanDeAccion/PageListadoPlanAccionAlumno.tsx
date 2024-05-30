@@ -1,77 +1,26 @@
-import React from 'react';
-import Button from '../../../components/Button';
-import { SearchInput } from "../../../components";
 import { useState } from "react";
 import CardPlanAccion from '../../../components/Tutor/CardPlanAccion';
 import { ActionPlan } from '../../../store/types/ActionPlan';
 import Pagination from "../../../components/Pagination";
-import ModalNuevoPlanAccion from '../../../components/Tutor/ModalNuevoPlanAccion';
-import ModalRegistroExitoso from '../../../components/Tutor/ModalRegistroExitoso';
 import { useEffect } from 'react';
-import axios from 'axios';
-//import { useTitle } from '../../../context/TitleContext';
-import { FaCheckCircle } from "react-icons/fa";
-import {Services as ServicesProperties} from '../../../config';
 import { useLocation } from 'react-router-dom';
+import { useActionPlansStudent } from '../../../store/hooks/useActionPlan';
 
 
 const PageListadoPlanAccionAlumno = () => {
-  const [modalOpen, setModalOpen] = useState(false);
-  const [registrationModalOpen, setRegistrationModalOpen] = useState(false);
-  const [actionPlans, setActionPlans] = useState<ActionPlan[]>([]);
-
   const { state } = useLocation() || {};
   const { studentId: studentId = 2, programId: programId = 4, tutorId: tutorId = 1 } = state || {};
 
-
-  /*const {state} = useLocation() || {};
-  const {student_Id} = state?.studentId || 2;
-  const {program_Id} = state?.programId || 4;
-  const {tutor_Id} = state?.tutorId || 1;
-
-  console.log('state:', state?.studentId || 2); //imprime state: 2
-  console.log('student_id:', student_Id); // imprime student_id: undefined
-  //const { setTitle } = useTitle(); */
-
+  //Estados para el uso de la API
+  const { actionPlans, fetchActionPlans } = useActionPlansStudent(2, 4, 1); //el id del alumno logueado
 
   useEffect(() => {
-    //setTitle("Listado Planes de Acción del Alumno");
-    fetchData();
+    fetchActionPlans();
   }, []);
-
-  const fetchData = async () => {
-    try {
-      const response = await axios.get(ServicesProperties.BaseUrl+'/listarActionPlans?studentId='+studentId+'&programId='+programId+'&TutorId='+tutorId);
-      
-      setActionPlans(response.data.data);
-      //console.log('planes:', response.data.data.length);
-    } catch (error) {
-      console.error('Error fetching data:', error);
-    }
-  };
-
-  const openModal = () => {
-    setModalOpen(true);
-  };
-
-  const closeModal = () => {
-    setModalOpen(false);
-  };
-
-  const updatePlans = async () => {
-    await fetchData();
-    setRegistrationModalOpen(true); // Abre el modal de registro exitoso después de actualizar los planes
-  };
-
 
   const [searchText, setSearchText] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5;
-
-  const handleSearch = (text: string) => {
-    setSearchText(text);
-    setCurrentPage(1);
-  };
 
   const filteredPlans = Array.isArray(actionPlans) ? actionPlans.filter((plan: ActionPlan) =>
     plan.name.toLowerCase().includes(searchText.toLowerCase())

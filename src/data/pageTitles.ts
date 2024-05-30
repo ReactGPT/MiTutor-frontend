@@ -86,9 +86,13 @@ export const PageTitles = [
   ,{
     path: '/solicitarTutor',
     pageName: "Solicitar Tutor"
-  },
-  {
-    path: '/coordinador/gestion-solicitudes',
+  }
+  ,{
+    path: '/gestionSolicitudes',
     pageName: "Gestión de Solicitudes"
+  }
+  ,{
+    path: '/solicitarCita',
+    pageName: "Solicitar Cita"
   }
 ];

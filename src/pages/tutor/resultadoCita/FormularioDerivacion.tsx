@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';  
+import React, { useState, useEffect, ChangeEvent } from 'react';  
 import axios from 'axios';
 import ModalDerivacion from '../../../components/Tutor/ModalDerivacion';
 import { ListCita } from '../../../store/types/ListCita';
@@ -143,7 +143,7 @@ const { formData, updateForm,validateForm,errors} = useForm({
     }
   })
 
-const handleunidadDerivada = (e) => {
+const handleunidadDerivada = (e:ChangeEvent<HTMLSelectElement>) => {
   const unidadDerivadaValue = parseInt(e.target.value); 
   updateForm({ unidadDerivada: unidadDerivadaValue });
 };

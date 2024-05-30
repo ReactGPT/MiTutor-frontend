@@ -2,7 +2,6 @@ import { Dialog, Transition } from '@headlessui/react';
 import { Fragment, useState } from 'react';
 import Button from '../Button';
 import ModalConfirmacion from './ModalConfirmacion';
- 
 
 interface ModalSolicitudProps {
   onClose: () => void;

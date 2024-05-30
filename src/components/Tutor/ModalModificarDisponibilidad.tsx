@@ -12,11 +12,13 @@ interface ModalModificarDisponibilidadProps {
   refreshCalendar: () => void;
 }
 
-const tutorId = 1;
+const tutorId = 3;
 
-const ModalModificarDisponibilidad: React.FC<ModalModificarDisponibilidadProps> = ({ isOpen, onClose, slotInfo, refreshCalendar }) => {
+const ModalModificarDisponibilidad: React.FC<ModalModificarDisponibilidadProps> = (
+  { isOpen, onClose, slotInfo, refreshCalendar }
+) => {
 
-  const { availability, loading, error, addAvailability } = useAvailability(tutorId);
+  const { addAvailability } = useAvailability(tutorId);
 
   const [startTime, setStartTime] = useState<string>(slotInfo?.start.toTimeString().split(' ')[0] || '');
   const [endTime, setEndTime] = useState<string>(slotInfo?.end.toTimeString().split(' ')[0] || '');

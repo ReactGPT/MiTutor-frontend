@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import Pagination from '../../../components/Pagination';
 import Spinner from '../../../components/Spinner';
 import SimpleCard from '../../../components/Tutor/SimpleCard';
@@ -53,7 +54,12 @@ export interface ApiResponse {
   data: Tutor[];
 }
 
-const PageSolicitarAlumno: React.FC<{ idProgram: number }> = ({ idProgram }) => {
+const studentId = 2;
+
+const PageSolicitarAlumno: React.FC = () => {
+  const location = useLocation();
+  const { tutoriaData } = location.state;
+  const { tutoringProgramId } = tutoriaData;
   const [tutors, setTutors] = useState<Tutor[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>('');
@@ -67,7 +73,7 @@ const PageSolicitarAlumno: React.FC<{ idProgram: number }> = ({ idProgram }) => 
     const fetchTutors = async () => {
       setLoading(true);
       try {
-        const tutorsData = await listarTutoresTipo(idProgram);
+        const tutorsData = await listarTutoresTipo(tutoringProgramId);
         setTutors(tutorsData);
         setLoading(false);
       } catch (err) {
@@ -77,15 +83,15 @@ const PageSolicitarAlumno: React.FC<{ idProgram: number }> = ({ idProgram }) => 
     };
 
     fetchTutors();
-  }, [idProgram]);
+  }, [tutoringProgramId]);
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchText(event.target.value);
-    setCurrentPage(1);  
+    setCurrentPage(1);
   };
 
   const handleSearch = () => {
-     
+    // Implement search functionality if needed
   };
 
   const filteredTutors = tutors.filter((tutor) =>
@@ -115,8 +121,8 @@ const PageSolicitarAlumno: React.FC<{ idProgram: number }> = ({ idProgram }) => 
   const handleSolicitarTutor = async () => {
     if (selectedTutor) {
       const requestData: TutorStudentProgramData = {
-        studentId: 2,
-        programId: 4,
+        studentId,
+        programId: tutoringProgramId,
         tutorStudentProgram: {
           motivo,
           tutorId: selectedTutor.tutorId,
@@ -125,11 +131,9 @@ const PageSolicitarAlumno: React.FC<{ idProgram: number }> = ({ idProgram }) => 
 
       try {
         await insertarSolicitudTutoria(requestData); // Utilizamos el servicio para insertar la solicitud de tutoría
-        //alert('Solicitud enviada con éxito');
         closeModal();
       } catch (error) {
         console.error('Error creando el tutor-student program', error);
-        //alert('Error al enviar la solicitud');
       }
     }
   };

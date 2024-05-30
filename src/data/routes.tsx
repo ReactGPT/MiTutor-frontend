@@ -30,6 +30,7 @@ import {
   BiListUl,
   BiUser
 } from "react-icons/bi";
+import PageSolicitarCita from "../pages/alumno/misTutorias/PageSolicitarCita.tsx";
 
 
 
@@ -228,7 +229,12 @@ export const Routes:RouterConfig={
           path: '/detallePlanAccionAlumno',
           element:<PageDetallePlanAccionAlumno/>
   
+        },
+        {
+          path: '/solicitarCita',
+          element: <PageSolicitarCita />
         }
+        
       ],
       navBarLink:[
         {

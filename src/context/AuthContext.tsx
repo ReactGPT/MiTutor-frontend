@@ -61,7 +61,15 @@ type AuthContextType = {
         //return <Landing/>
     }
     const handleError = ()=>{
-
+      try{
+        
+        googleLogout();
+      }
+      catch{
+        
+      }
+        setCredentials(null);
+        resetUserInfo();
     }
     const handleLogout=()=>{
         setCredentials(null);

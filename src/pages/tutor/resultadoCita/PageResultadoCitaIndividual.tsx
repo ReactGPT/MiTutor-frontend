@@ -1,12 +1,11 @@
 import React from 'react'; 
 import { useEffect, useState } from 'react'
 import ResultadoCitaBlockAlumno from './ResultadoCitaBlockAlumno';
-import ResultadoCitaBlock2 from './ResultadoCitaBlock2';
-//import ResultadoCitaBlock3 from './ResultadoCitaBlock3';
+import ResultadoCitaBlock2 from './ResultadoCitaBlock2'; 
 import { useLocation,useNavigate,useParams } from 'react-router-dom'; 
 import { ListCita } from '../../../store/types/ListCita';
-import FormularioDerivacion from './FormularioDerivacion';
-//import GoogleForm from './GoogleFormEmbed';
+import FormularioDerivacion from './FormularioDerivacion'; 
+
 const PageResultadoCitaIndividual: React.FC = () =>{
     const navigate = useNavigate();
     const {state} = useLocation();
@@ -31,7 +30,7 @@ const PageResultadoCitaIndividual: React.FC = () =>{
         navigate("/listadoPlanAccion", {state: {studentId: citaModified?.personId, programId: citaModified?.programId}});
     }
 
-  return (
+   return (
     <div className='w-full overflow-hidden'>
         <div className='max-h-[80vh] overflow-auto'>
             {citaModified && (

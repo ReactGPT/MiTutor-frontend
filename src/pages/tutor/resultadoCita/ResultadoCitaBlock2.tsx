@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, ChangeEvent} from 'react'
 
 import { Appointment } from '../../../store/types/Appointment';
 import { Button, Combobox } from '../../../components';
@@ -11,6 +11,7 @@ import { ListCita } from '../../../store/types/ListCita';
 import { TimePicker } from 'antd';
 import dayjs, { Dayjs } from 'dayjs';
 import { useResultadoCita, useUpdateResultadoCita, useUpdateComentario } from "../../../store/hooks/useResultadoCita";
+import { ComboboxOptionProps } from '@headlessui/react';
 
 type InputProps = {
     className:string;
@@ -38,6 +39,9 @@ function ResultadoCitaBlock2({className,cita,onChangeCita}:InputProps) {
     /*Habilitar comentarios,asistencia,duracion*/    
     const [enableAttendance,setEnableAttendance] = useState<boolean>(false);
 
+    type AssistanceOption = {
+      name: string;
+    }; 
     const assistanceState = [
         { name: 'Asistio' },
         { name: 'Falto' },
@@ -71,7 +75,7 @@ function ResultadoCitaBlock2({className,cita,onChangeCita}:InputProps) {
     const [commentValue2, setCommentValue2] = useState('');
     const [selectOption, setSelectOption] = useState(resultadoCita?.appointmentResult.asistio ?? false);
     const [startTime, setStartTime] = useState( dayjs('00:00:00', 'HH:mm:ss'));
-    const [endTime, setEndTime] = useState<Dayjs>(dayjs('00:00:00', 'HH:mm:ss'));
+    const [endTime, setEndTime] = useState(dayjs('00:00:00', 'HH:mm:ss'));
     
     useEffect(() => {
         if (resultadoCita && resultadoCita.appointmentResult && resultadoCita.appointmentResult.comments.length > 0) {
@@ -84,15 +88,15 @@ function ResultadoCitaBlock2({className,cita,onChangeCita}:InputProps) {
     }, [resultadoCita]);
  
     //Onchange
-    const handleCommentChange = (e:any) => {
+    const handleCommentChange = (e:ChangeEvent<HTMLTextAreaElement>) => {
         const { value } = e.target;
         setCommentValue(value);
     };
-    const handleCommentChange2 = (e:any) => {
+    const handleCommentChange2 = (e:ChangeEvent<HTMLTextAreaElement>) => {
         const { value } = e.target;
         setCommentValue2(value);
     };
-    const handleAsistencia=(e:any)=>{ 
+    const handleAsistencia=(e:AssistanceOption)=>{ 
         setSelectOption(e.name == 'Asistio'); 
     } 
     const handleGuardar = () => {
@@ -118,12 +122,19 @@ function ResultadoCitaBlock2({className,cita,onChangeCita}:InputProps) {
           setEndTime(dayjs(resultadoCita.appointmentResult.endTime, 'HH:mm:ss')); 
       }
     }; 
-    const handleStartTimeChange = (time:any) => {
-      setStartTime(time);  
-      setEndTime(endTime < time ? dayjs('00:00:00', 'HH:mm:ss') : endTime);
-    }; 
-    const handleEndTimeChange = (time:any) => {
-      setEndTime(time);
+    const handleStartTimeChange = (time: Dayjs | null) => {
+      if (time) {
+        setStartTime(time);
+        if (endTime.isBefore(time)) {
+          setEndTime(time);
+        }
+      }
+    };
+  
+    const handleEndTimeChange = (time: Dayjs | null) => {
+      if (time) {
+        setEndTime(time);
+      }
     };
  
     return (

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';  
+import React, { useState, useEffect, ChangeEvent } from 'react';  
 import axios from 'axios';
 import ModalDerivacion from '../../../components/Tutor/ModalDerivacion';
 import { ListCita } from '../../../store/types/ListCita';
@@ -108,42 +108,42 @@ const { formData, updateForm,validateForm,errors} = useForm({
       unidadDerivada:0 
     },
     validations: { 
-      nombreAlumno: (value:any) => {
+      nombreAlumno: (value) => {
         if (!value) return 'Ingrese nombre correcto'
       },
-      codigo: (value:any) => {
+      codigo: (value) => {
         if (!value) return 'Ingrese nombre correcto'
       },
-      correoAlumno: (value:any) => {
+      correoAlumno: (value) => {
         if (!value) return 'Please enter an email'
         if (!/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(value)) return 'Please enter a valid email'
       },
-      derivadoPor: (value:any) => {
+      derivadoPor: (value) => {
         if (!value) return 'Ingrese nombre correcto'
       },
-      cargo: (value:any) => {
+      cargo: (value) => {
         if (!value) return 'Ingrese nombre correcto'
       },
-      correoTutor: (value:any) => {
+      correoTutor: (value) => {
         if (!value) return 'Ingrese nombre correcto'
         if (!/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(value)) return 'Please enter a valid email'
       },
-      unidadAlumno: (value:any) => {
+      unidadAlumno: (value) => {
         if (!value) return 'Ingrese nombre correcto'
       },
-      fecha: (value:any) => {
+      fecha: (value) => {
         if (!value) return 'Ingrese nombre correcto'
       },
-      motivo: (value:any) => {
+      motivo: (value) => {
         if (!value) return 'Ingrese un motivo'
       },
-      unidadDerivada: (value:any) => {
+      unidadDerivada: (value) => {
         if (!value) return 'Seleccione una unidad de derivación'
       }
     }
   })
 
-const handleunidadDerivada = (e:any) => {
+const handleunidadDerivada = (e:ChangeEvent<HTMLSelectElement>) => {
   const unidadDerivadaValue = parseInt(e.target.value); 
   updateForm({ unidadDerivada: unidadDerivadaValue });
 };

@@ -5,11 +5,12 @@ import { ListStudent } from '../types/ListStudent';
 import { ListUnitDerivation }from '../types/ListUnitDerivation';
 import { Services as ServicesProperties} from '../../config'; 
 import { Tutor } from '../types/Tutor';
+import { Derivation } from '../types/Derivation';
 
 async function getResultadoCita(cita : ListCita): Promise<InitialData> { 
   try{
       const response = await axios.get(ServicesProperties.BaseUrl+`/consultarResultadoCita?appointmentId=${cita.appointmentId}&studentId=${cita.personId}&tutoringProgramId=${cita.programId}`);  
- 
+      console.log("resultado cira", response.data)
       return response.data;
   }catch(error){
       throw new Error("Error en getListaDeCitasByTutorId");
@@ -65,6 +66,13 @@ async function getTutorDatos(idTutor:number): Promise<Tutor> {
 
 } 
 //unidades de derivacion
+const transformToListUnitDerivation = (data: { name: string; unitDerivationId: number }[]): ListUnitDerivation[] => {
+  return data.map(item => ({
+      unitId: item.unitDerivationId,
+      unitName: item.name
+  }));
+};
+  
 type UnidadesDerivacionResponse = {
   listaDeUnidades: ListUnitDerivation[];
 };
@@ -73,6 +81,19 @@ async function getUnidadesDerivacion(): Promise<ListUnitDerivation[]> {
 
   try {
       const response = await axios.get(`${ServicesProperties.BaseUrl}/listarUnidadesDerivacion`); 
+      const transformedData = transformToListUnitDerivation(response.data.data);
+      return transformedData;
+  }
+  catch (error) {
+      throw new Error("Error en getUnidadesDerivacion");
+  }
+
+}
+//derivacion
+async function getDerivacion(id_appointment: number): Promise<Derivation> {
+
+  try {
+      const response = await axios.get(`${ServicesProperties.BaseUrl}/seleccionarDerivacionByIdAppointment/`+id_appointment); 
       return response.data.data;
   }
   catch (error) {
@@ -81,4 +102,5 @@ async function getUnidadesDerivacion(): Promise<ListUnitDerivation[]> {
 
 }
 
-export { getResultadoCita, updateResultadoCita, updateComentario, getEstudianteDatos, getTutorDatos, getUnidadesDerivacion};
+export { getResultadoCita, updateResultadoCita, updateComentario, 
+  getEstudianteDatos, getTutorDatos, getUnidadesDerivacion, getDerivacion};

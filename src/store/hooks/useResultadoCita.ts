@@ -1,10 +1,12 @@
 import { useState } from 'react';
-import { getResultadoCita,updateResultadoCita,updateComentario, getEstudianteDatos, getTutorDatos, getUnidadesDerivacion } from '../services/resultadoCita';
+import { getResultadoCita,updateResultadoCita,updateComentario,
+   getEstudianteDatos, getTutorDatos, getUnidadesDerivacion, getDerivacion } from '../services/resultadoCita';
 import { ListCita } from '../types/ListCita';
 import { InitialData } from '../types/AppointmentResult';
 import { ListStudent } from '../types/ListStudent';
 import { Tutor } from '../types/Tutor';
 import { ListUnitDerivation }from '../types/ListUnitDerivation';
+import { Derivation } from '../types/Derivation';
 
 type ResultadoCitaHooksReturn = {
     resultadoCita: InitialData|null;
@@ -52,6 +54,42 @@ function useUpdateComentario(cita: InitialData) {
 }
 
 //DERIVACION
+type DerivacionHooksReturn = {
+  derivation: Derivation|null;
+  loading: boolean;
+  error: any;
+  fetchDerivation: () => Promise<void>;
+  setDerivacion: (derivation: Derivation | null) => void;
+  setDerivacionId: (id: number) => void;
+};
+
+function useDerivacion(id_appointment:number): DerivacionHooksReturn { 
+  const [derivation, setDerivacion] = useState<Derivation | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<any>(null); 
+
+  const fetchDerivation = async () => {
+      try{
+          const data = await getDerivacion(id_appointment);
+          setDerivacion(data);
+          setLoading(false);
+      }catch(error){
+          setError("Error en useDerivacion");
+          setLoading(false);
+      }
+  }
+
+  const setDerivacionId = (id: number) => {
+    if (derivation) {
+      // Crear una nueva instancia de Derivation con el ID actualizado
+      const updatedDerivation: Derivation = { ...derivation, derivationId: id };
+      setDerivacion(updatedDerivation);
+    }
+  };
+
+  return { derivation, loading, error, setDerivacion, fetchDerivation,setDerivacionId };
+
+}
 
 //ALUMNO DATOS
 type EstudianteHooksReturn = {
@@ -137,4 +175,6 @@ function useUnidadesDerivacion(): UnidadesDerivacionHookReturnType{
 
 }
 
-export {useResultadoCita,useUpdateResultadoCita,useUpdateComentario,useEstudianteResultadoCita,useTutorResultadoCita,useUnidadesDerivacion};
+export {useResultadoCita,useUpdateResultadoCita,useUpdateComentario,
+  useEstudianteResultadoCita,useTutorResultadoCita,useUnidadesDerivacion,
+  useDerivacion};

@@ -53,6 +53,7 @@ const PageResultadoCitaIndividual: React.FC = () =>{
     </div>
   )
 }
+//<div className='w-full flex items-center mb-5 '>
 //<GoogleForm className='flex w-[50%] max-h-[80vh] h-full flex-col gap-4'/>
 export default PageResultadoCitaIndividual
 /*<GoogleForm className='flex w-[100%] max-h-[90vh] h-full flex-col gap-4' cita={citaModified}/> */

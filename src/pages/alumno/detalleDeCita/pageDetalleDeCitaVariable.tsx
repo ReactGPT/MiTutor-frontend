@@ -8,25 +8,6 @@ import SimpleCard from "../../../components/Tutor/SimpleCard";
 import React from 'react';
 import { Spinner } from "../../../components";
 
-const listaTutores = [
-
-  { title: 'Fernando Antonio Hererra Cruz', content: 'Facultad/Programa', subcontent:'Tipo de profesor' },
-  { title: 'Fernando Antonio Hererra Cruz', content: 'Facultad/Programa', subcontent:'Tipo de profesor' },
-  { title: 'Fernando Antonio Hererra Cruz', content: 'Facultad/Programa', subcontent:'Tipo de profesor' },
-  { title: 'Fernando Antonio Hererra Cruz', content: 'Facultad/Programa', subcontent:'Tipo de profesor' },
-  { title: 'Fernando Antonio Hererra Cruz', content: 'Facultad/Programa', subcontent:'Tipo de profesor' },
-  { title: 'Fernando Antonio Hererra Cruz', content: 'Facultad/Programa', subcontent:'Tipo de profesor' },
-  { title: 'Fernando Antonio Hererra Cruz', content: 'Facultad/Programa', subcontent:'Tipo de profesor' },
-  { title: 'Fernando Antonio Hererra Cruz', content: 'Facultad/Programa', subcontent:'Tipo de profesor' },
-  { title: 'Fernando Antonio Hererra Cruz', content: 'Facultad/Programa', subcontent:'Tipo de profesor' },
-  { title: 'Fernando Antonio Hererra Cruz', content: 'Facultad/Programa', subcontent:'Tipo de profesor' },
-  { title: 'Fernando Antonio Hererra Cruz', content: 'Facultad/Programa', subcontent:'Tipo de profesor' },
-  { title: 'Fernando Antonio Hererra Cruz', content: 'Facultad/Programa', subcontent:'Tipo de profesor' },
-  { title: 'Fernando Antonio Hererra Cruz', content: 'Facultad/Programa', subcontent:'Tipo de profesor' },
-  { title: 'Fernando Antonio Hererra Cruz', content: 'Facultad/Programa', subcontent:'Tipo de profesor' }
-
-];
-
 const PageDetalleDeTutoriaAlumno = () => {
 
     const location = useLocation();
@@ -98,7 +79,7 @@ const PageDetalleDeTutoriaAlumno = () => {
                     <div className="w-full h-1/4">
                         <Pagination
                             currentPage={currentPage}
-                            totalItems={listaTutores.length}
+                            totalItems={listaDeTutores.length}
                             itemsPerPage={itemsPerPage}
                             onPageChange={handlePageChange}
                         />

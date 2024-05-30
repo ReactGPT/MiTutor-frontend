@@ -34,3 +34,10 @@ export type tutorxalumno = {
   state : string;
 
 }
+
+export type TutorEstadoSolicitud = {
+
+  estado : string;
+  tutores : tutorxalumno[];
+
+}

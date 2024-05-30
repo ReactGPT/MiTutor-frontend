@@ -12,8 +12,10 @@ const TutoringProgramCardAlumno: React.FC<TutoringProgramCardProps> = ({ data })
   const navigate = useNavigate();
 
   const goToProgramDetails = () => {
-    if(data.tutorType == "TUTOR FIJO ASIGNADO" || data.tutorType == "TUTOR FIJO SOLICITADO")
+    if(data.tutorType == "TUTOR FIJO ASIGNADO")
       navigate("/DetalleDeTutoria/", { state: { data } });
+    else if( data.tutorType == "TUTOR FIJO SOLICITADO")
+      navigate("/DetalleDeTutoriaSolicitado/", { state: { data } });
     else
       navigate("/DetalleDeTutoriaVariable/", { state: { data } });
   };

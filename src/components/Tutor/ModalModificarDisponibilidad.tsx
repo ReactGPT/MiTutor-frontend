@@ -12,7 +12,7 @@ interface ModalModificarDisponibilidadProps {
   refreshCalendar: () => void;
 }
 
-const tutorId = 1;
+const tutorId = 3;
 
 const ModalModificarDisponibilidad: React.FC<ModalModificarDisponibilidadProps> = (
   { isOpen, onClose, slotInfo, refreshCalendar }

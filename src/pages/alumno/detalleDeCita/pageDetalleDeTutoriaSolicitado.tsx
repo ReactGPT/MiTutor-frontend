@@ -6,13 +6,13 @@ import { da } from "date-fns/locale";
 import { programaDeTutoriaAlumno } from "../../../store/types/ListTutoringProgram";
 import { useTutoresPorTutoriayAlumno } from "../../../store/hooks/useListarTutoresPorAlumno";
 import { useState, useEffect } from "react";
-import React from 'react'
+import React from 'react';
 import { Spinner } from "../../../components";
 
-enum Estado{
-    SIN_TUTOR = "SIN_TUTOR",
-    SOLICITUD_PENDIENTE = "SOLICITUD_PENDIENTE",
-    TUTOR_ASIGNADO = "TUTOR_ASIGNADO" 
+enum Estado {
+  SIN_TUTOR = "SIN_TUTOR",
+  SOLICITUD_PENDIENTE = "SOLICITUD_PENDIENTE",
+  TUTOR_ASIGNADO = "TUTOR_ASIGNADO"
 }
 
 const PageDetalleDeTutoriaSolicitado = () => {
@@ -20,7 +20,7 @@ const PageDetalleDeTutoriaSolicitado = () => {
   const location = useLocation();
   const data = location.state.data;
 
-  const { listaDeTutores,estado,fetchTutoresPorTutoria,loading } = useTutoresPorTutoriayAlumno(data.tutoringProgramId,2);
+  const { listaDeTutores, estado, fetchTutoresPorTutoria, loading } = useTutoresPorTutoriayAlumno(data.tutoringProgramId, 2);
 
   const navigate = useNavigate();
 
@@ -29,13 +29,18 @@ const PageDetalleDeTutoriaSolicitado = () => {
   }, []);
 
   const goToTutorPlan = () => {
-    const tutorData = {tutoringProgramId: data.tutoringProgramId, tutorId: listaDeTutores[0].tutorId };
+    const tutorData = { tutoringProgramId: data.tutoringProgramId, tutorId: listaDeTutores[0].tutorId };
     navigate('/', { state: { tutorData } });
   };
 
   const goToTutorList = () => {
-    const tutoriaData = {tutoringProgramId: data.tutoringProgramId };
+    const tutoriaData = { tutoringProgramId: data.tutoringProgramId };
     navigate('/solicitarTutor', { state: { tutoriaData } });
+  };
+
+  const goToSolicitarCita = () => {
+    const datos = { tutoringProgram: data, tutor: listaDeTutores[0] };
+    navigate('/solicitarCita', { state: { datos } });
   };
 
   let componenteActual: JSX.Element;
@@ -76,7 +81,7 @@ const PageDetalleDeTutoriaSolicitado = () => {
         </div>
 
         <div className="w-full flex items-center justify-center p-2">
-          <Button onClick={ () => {} } variant="primario" text="Solicitar cita" disabled={estado != Estado.TUTOR_ASIGNADO} />
+          <Button onClick={goToSolicitarCita} variant="primario" text="Solicitar cita" disabled={estado != Estado.TUTOR_ASIGNADO} />
         </div>
 
       </div>
@@ -87,17 +92,17 @@ const PageDetalleDeTutoriaSolicitado = () => {
           <div className="flex">
             <span className="font-montserrat text-2xl font-bold text-primary">Tutor</span>
             <div className="w-full h-full flex justify-end">
-                <Button onClick={goToTutorList} variant="primario" text="Solicitar tutor" disabled={estado == Estado.TUTOR_ASIGNADO || estado == Estado.SOLICITUD_PENDIENTE}/>
+              <Button onClick={goToTutorList} variant="primario" text="Solicitar tutor" disabled={estado == Estado.TUTOR_ASIGNADO || estado == Estado.SOLICITUD_PENDIENTE} />
             </div>
           </div>
-          <div className="w-full flex justify-center items-center p-20">
+          <div className="w-full h-full flex justify-center items-center">
             {
               loading ?
-              <div className="w-full h-[90%] flex items-center justify-center">
-                <Spinner size="xl" />
-              </div>
-              :
-              componenteActual
+                <div className="w-full h-[90%] flex items-center justify-center">
+                  <Spinner size="xl" />
+                </div>
+                :
+                componenteActual
             }
           </div>
         </div>

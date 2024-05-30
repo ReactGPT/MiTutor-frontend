@@ -9,8 +9,6 @@ import { useAvailability } from '../../store/hooks/useAvailability';
 import "./index.css";
 import { useCitasPorTutor } from '../../store/hooks/useCita';
 import ModalSolicitarCita from '../Alumno/ModalSolicitarCita';
-import ModalSuccess from '../ModalSuccess';
-import ModalError from '../ModalError';
 
 interface CustomEvent extends Event {
   isBackgroundEvent?: boolean;
@@ -34,6 +32,8 @@ interface CalendarioSolicitudProps {
   programable?: boolean;
   onSelectEvent?: (event: CustomEvent) => void;
   refresh?: boolean;
+  tutorId: number;
+  tutoringProgram: any;
 }
 
 dayjs.locale("es");
@@ -86,9 +86,9 @@ function transformAvailabilityToEvent(availability: Availability[]): CustomEvent
   }));
 }
 
-const tutorId: number = 1;
-
-const CalendarioSolicitud: React.FC<CalendarioSolicitudProps> = ({ programable = false, onSelectEvent, refresh }) => {
+const CalendarioSolicitud: React.FC<CalendarioSolicitudProps> = (
+  { programable = false, onSelectEvent, refresh, tutorId, tutoringProgram }
+) => {
   const { availability, fetchAvailability } = useAvailability(tutorId);
   const { cita, fetchCita } = useCitasPorTutor(tutorId);
 
@@ -186,7 +186,7 @@ const CalendarioSolicitud: React.FC<CalendarioSolicitudProps> = ({ programable =
         onSelectSlot={handleSelectSlot}
         selectable={programable}
       />
-      <ModalSolicitarCita slotInfo={selectedSlot} isOpen={showModal} onClose={closeModal} refreshCalendar={refreshCalendar} />
+      <ModalSolicitarCita tutoringProgram={tutoringProgram} tutorId={tutorId} slotInfo={selectedSlot} isOpen={showModal} onClose={closeModal} refreshCalendar={refreshCalendar} />
     </>
   );
 };

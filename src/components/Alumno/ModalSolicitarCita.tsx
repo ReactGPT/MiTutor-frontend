@@ -7,13 +7,6 @@ import { useAppointment } from '../../store/hooks/useAppointment';
 import ModalSuccess from '../ModalSuccess';
 import ModalError from '../ModalError';
 
-interface ModalSolicitarCitaProps {
-  isOpen: boolean;
-  onClose: () => void;
-  slotInfo: SlotInfo | null;
-  refreshCalendar: () => void;
-}
-
 type MakeAppointment = {
   startTime: string;
   endTime: string;
@@ -23,16 +16,24 @@ type MakeAppointment = {
   classroom: string;
 };
 
-const faceToFace: boolean = true;
-const virtual: boolean = true;
-const tutorId = 1;
-const tutoringProgramId = 1;
+interface ModalSolicitarCitaProps {
+  isOpen: boolean;
+  onClose: () => void;
+  slotInfo: SlotInfo | null;
+  refreshCalendar: () => void;
+  tutorId: number;
+  tutoringProgram: any;
+}
+
 const studentId = 2;
 
-
 const ModalSolicitarCita: React.FC<ModalSolicitarCitaProps> = (
-  { isOpen, onClose, slotInfo, refreshCalendar }
+  { isOpen, onClose, slotInfo, refreshCalendar, tutorId, tutoringProgram }
 ) => {
+  //
+  const faceToFace: boolean = tutoringProgram.faceToFace;
+  const virtual: boolean = tutoringProgram.virtual;
+  const tutoringProgramId = tutoringProgram.tutoringProgramId;
   //
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState<boolean>(false);
   const [isErrorModalOpen, setIsErrorModalOpen] = useState<boolean>(false);

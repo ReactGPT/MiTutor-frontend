@@ -40,7 +40,7 @@ type AuthContextType = {
   
   const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     //const navigate=useNavigate();
-    const {handleSetRoutes}= useRouter();
+    //const {handleSetRoutes}= useRouter();
     const [credential,setCredentials] = useState<any>(null);
     const {fetchUserInfo,userInfo,resetUserInfo}=useUserAccountAuth();
     useEffect(()=>{
@@ -51,7 +51,7 @@ type AuthContextType = {
         //console.log(credentialResponse);
         if(credentialResponse.credential){
             const {payload} = googleCredentialDecode(credentialResponse.credential);
-            fetchUserInfo("alumnotest@pucp.edu.pe")//
+            fetchUserInfo(payload.email.toString())//
             //fetchUserInfo("tutortest@pucp.edu.pe")//Usar el que necesites
             .then(()=>{
               setCredentials(payload);

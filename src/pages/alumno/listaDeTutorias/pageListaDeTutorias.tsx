@@ -4,6 +4,7 @@ import { useProgramaDeTutoriaAlumno } from "../../../store/hooks/useProgramaDeTu
 import Pagination from "../../../components/Pagination";
 import TutoringProgramCardAlumno from "../../../components/Tutor/TutoringProgramCardAlumno";
 import IconAdd from "../../../assets/svg/IconAdd";
+import React from 'react'
 
 const PageListaDeTutorias = () => {
 
@@ -32,10 +33,6 @@ const PageListaDeTutorias = () => {
 
     const handlePageChange = (pageNumber: number) => {
         setCurrentPage(pageNumber);
-    };
-
-    const debugClick = () => {
-        console.log('boton clickeado');
     };
 
     return (

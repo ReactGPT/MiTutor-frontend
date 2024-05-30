@@ -1,15 +1,31 @@
 import TextBox from "../../../components/TextBox";
 import { Button } from "../../../components";
-import { Navigate, useNavigate } from "react-router-dom";
+import { Navigate, useNavigate, useLocation } from "react-router-dom";
+import SimpleCard from "../../../components/Tutor/SimpleCard";
+import { da } from "date-fns/locale";
+import { programaDeTutoriaAlumno } from "../../../store/types/ListTutoringProgram";
+import { useTutoresPorTutoriayAlumno } from "../../../store/hooks/useListarTutoresPorAlumno";
+import { useState, useEffect } from "react";
+import React from 'react'
+import { Spinner } from "../../../components";
 
 
+const PageDetalleDeTutoria = () => {
 
-const PageDetalleDeCita = () => {
+  const location = useLocation();
+  const data = location.state.data;
+
+  const { listaDeTutores,fetchTutoresPorTutoria,loading } = useTutoresPorTutoriayAlumno(data.tutoringProgramId,2);
+
   const navigate = useNavigate();
 
+  useEffect(() => {
+    fetchTutoresPorTutoria();
+  }, []);
 
   const goToTutorList = () => {
-    navigate('/solicitarTutor', { state: { idProgram: 1 } });
+    const tutoriaData = {tutoringProgramId: data.tutoringProgramId };
+    navigate('/solicitarTutor', { state: { tutoriaData } });
   };
 
   return (
@@ -20,13 +36,13 @@ const PageDetalleDeCita = () => {
         <span className="font-montserrat text-2xl font-bold text-primary">Datos Tutoria</span>
 
         <div className="w-full flex gap-5">
-          <TextBox className="w-full" nombre='Nombre' contenido='Tutoria con Martina Solis' />
-          <TextBox className="w-full" nombre='Facultad' contenido='Ciencias e ingenieria' />
-          <TextBox className="w-full" nombre='Especialidad' contenido='Ingenieria Informatica' />
+          <TextBox className="w-full" nombre='Nombre' contenido={data.programName} />
+          <TextBox className="w-full" nombre='Facultad' contenido={data.facultyName} />
+          <TextBox className="w-full" nombre='Especialidad' contenido={data.specialtyName} />
         </div>
 
         <div className="w-full flex">
-          <TextBox className="w-1/2" nombre='Descripcion' contenido='Descripcion de la tutoria' />
+          <TextBox className="w-1/2" nombre='Descripcion' contenido={data.programDescription} />
         </div>
 
         <div className="w-full flex items-center justify-center p-2">
@@ -39,18 +55,16 @@ const PageDetalleDeCita = () => {
         {/*tutor*/}
         <div className="flex flex-col w-[30%] h-full p-4 border-custom shadow-custom bg-[rgba(255,_255,_255,_0.50)] font-roboto">
           <span className="font-montserrat text-2xl font-bold text-primary">Tutor</span>
-          {/*Tutor Card */}
-          {/* <div className="w-full h-full border-custom shadow-custom bg-[rgba(255,_255,_255,_0.50)] font-roboto">
-            <div className="w-full h-4/6 bg-[rgba(_0,_0,_255,_0.50)] rounded-t-xl">
-
-            </div>
-            <div className="w-full h-1/6 mb-3">
-              <span className="font-montserrat flex p-2 text-2xl font-bold text-primary">Martina Rosa Solis Ramos</span>
-            </div>
-            <div className="w-full h-1/6 ">
-              <span className="font-montserrat flex p-2 text-1xl font-bold text-terciary">Docente a tiempo completo</span>
-            </div>
-          </div> */}
+          <div className="w-full flex justify-center items-center p-20">
+            {
+              loading ?
+              <div className="w-full h-[90%] flex items-center justify-center">
+                <Spinner size="xl" />
+              </div>
+              :
+              <SimpleCard content="Docente a tiempo completo" title={`${listaDeTutores[0].tutorName} ${listaDeTutores[0].tutorLastName} ${listaDeTutores[0].tutorSecondLastName}`} subContent={listaDeTutores[0].state} />
+            }
+          </div>
         </div>
 
         {/*Plan de Accion*/}
@@ -83,7 +97,7 @@ const PageDetalleDeCita = () => {
           </div>
 
           <div className="w-full flex items-center justify-center">
-            <Button onClick={() => { }} text="Ver compromisos" />
+            <Button onClick={() => {  }} text="Ver plan de accion" />
           </div>
         </div>
 
@@ -93,4 +107,4 @@ const PageDetalleDeCita = () => {
   );
 };
 
-export default PageDetalleDeCita;
+export default PageDetalleDeTutoria;

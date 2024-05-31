@@ -55,15 +55,15 @@ type AuthContextType = {
           //console.log(payload);
           fetchUserInfo(payload.email.toString())
           //fetchUserInfo("tutortest@pucp.edu.pe")//Usar el que necesites
-          .then(()=>{
+          .then((response)=>{
             //setCredentials(payload);
-            if(userInfo?.isVerified){
+            if(userInfo?.isVerified&&response.success){
               const newUser = {
                 email:payload.email,
                 imageUrl:payload.picture,
                 token:'',
                 isLogged:true,
-                userInfo:userInfo,
+                userInfo:response.data,
                 username:payload.username
               };
               setUser(newUser);

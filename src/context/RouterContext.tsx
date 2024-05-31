@@ -42,6 +42,7 @@ const RouterContextProvider = () => {
         let childrenArrayFound:RouteObject[]=[];
         let sideBarOptionsFound:SidebarLink[]=[];
         //console.log("Rol",userData.userInfo)
+        console.log(userData?.userInfo);
         !!userData&&userData.userInfo?.roles.map((rol:Role)=>{
             switch(rol.type){
                 case "TUTOR":

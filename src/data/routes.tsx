@@ -263,7 +263,7 @@ export const Routes: RouterConfig = {
       },
       {
         key: 'misTutorias',
-        label: 'Mis TutorÃ­as',
+        label: 'Mis Tutorías',
         path: '/listaTutoriasAlumno',
         icon: <BiCabinet fontSize={32} />,
       },

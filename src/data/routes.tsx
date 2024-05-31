@@ -1,4 +1,4 @@
-import { RouteObject } from "react-router-dom"
+import { RouteObject } from "react-router-dom";
 //import PageInicioTutor from "../pages/tutor/inicio/PageInicioTutor"
 import PageListadoPlanAccion from '../pages/tutor/listaDeCitas/PageListadoPlanAccion.tsx';
 import PageDetallePlanAccion from '../pages/tutor/listaDeCitas/PageDetallePlanAccion.tsx';
@@ -31,244 +31,263 @@ import {
   BiUser
 } from "react-icons/bi";
 import PageSolicitarCita from "../pages/alumno/misTutorias/PageSolicitarCita.tsx";
+import PageListaDeTutorias from "../pages/alumno/listaDeTutorias/pageListaDeTutorias.tsx";
+import PageDetalleDeTutoria from "../pages/alumno/detalleDeCita/pageDetalleDeTutoria.tsx";
+import PageDetalleDeTutoriaSolicitado from "../pages/alumno/detalleDeCita/pageDetalleDeTutoriaSolicitado.tsx";
+import PageDetalleDeTutoriaAlumno from "../pages/alumno/detalleDeCita/pageDetalleDeCitaVariable.tsx";
 
 
 
-type RouterDetail={
-  pages:RouteObject[];
-  navBarLink:SidebarLink[];
-}
+type RouterDetail = {
+  pages: RouteObject[];
+  navBarLink: SidebarLink[];
+};
 
-type RouterConfig={
-    tutor:RouterDetail;
-    coordinador:RouterDetail;
-    alumno:RouterDetail;
-}
+type RouterConfig = {
+  tutor: RouterDetail;
+  coordinador: RouterDetail;
+  alumno: RouterDetail;
+};
 
-export const Routes:RouterConfig={
-    tutor:{
-      pages:[
-        {
-          path: '/',
-          element: <PageInicioTutor />,
-        },
-        {
-          path: '/calendario',
-          element: <PageCalendarioTutor />,
-        },
-        {
-          path: '/programasDeTutoria',
-          element: <PageProgramasDeTutoriaTutor />,
-        },
-        {
-          path: '/listaDeCitas',
-          element: <PageListaDeCitas />,
-        },
-        {
-          path: '/miPerfil',
-          element: <PageMiPerfilTutor />,
-        },
-        {
-          path: '/programasDeTutoria/detalle-programa',
-          element: <PageDetalleProgramaTutoriaTutor />
-        },
-        {
-          path: '/programasDeTutoria/detalle-programa/alumno',
-          element: <PagePerfilAlumnoTutor />
-        },
-        {
-          path: '/historicoDeCitas',
-          element: <PageHistoricoDeCitas />,
-        },
-        {
-          path: '/listadoPlanAccion',
-          element: <PageListadoPlanAccion />,
-        },
-        {
-          path: '/detallePlanAccion',
-          element: <PageDetallePlanAccion />,
-        },
-        {
-          path: '/PerfilAlumno',
-          element:<PageMiPerfilAlumno/>
-        },
-        {
-          path: '/calendario/agregarDisponibilidad',
-          element: <PageAgregarDisponibilidadTutor />,
-        },
-        {
-          path: '/misDerivacionesHechas',
-          element: <PageDerivacionesHechas />
-        },
-        {
-          path: '/listaDeCitas/resultadoCitaIndividual',
-          element:<PageResultadoCitaIndividual/>
-        },
-        {
-          path: '/solicitarTutor',
-  
-          element: <PageSolicitarAlumno idProgram={1}/>
-  
-        },
-        {
-          path: '/listadoPlanAccionAlumno',
-          element:<PageListadoPlanAccionAlumno/>
-        },
-        {
-          path: '/detallePlanAccionAlumno',
-          element:<PageDetallePlanAccionAlumno/>
-  
-        }
-      ],
-      navBarLink:[
-        {
-          key: 'inicio',
-          label: 'Inicio Tut',
-          path: '/',
-          icon: <BiHome fontSize={32} />,
-        },
-        {
-          key: 'calendario',
-          label: 'Calendario Tut',
-          path: '/calendario',
-          icon: <BiCalendar fontSize={32} />,
-        },
-        {
-          key: 'programasDeTutoria',
-          label: 'Programas de Tutoria Tut',
-          path: '/programasDeTutoria',
-          icon: <BiCabinet fontSize={32} />,
-        },
-        {
-          key: 'listaDeCitas',
-          label: 'Lista de Citas Tut',
-          path: '/listaDeCitas',
-          icon: <BiListUl fontSize={32} />,
-        },
-        {
-          key: 'miPerfil',
-          label: 'Mi Perfil',
-          path: '/miPerfil',
-          icon: <BiUser fontSize={32} />,
-        },
-      ]
-    },
-    coordinador:{
-      pages:[
-        {
-          path: '/',
-          element: <PageInicioTutor />,
-        },
-        {
-          path: '/programasDeTutoriaMaestro',
-          element: <PageProgramasTutoriaMaestro />,
-        },
-        {
-          path:'/programasDeTutoriaMaestro/editar',
-          element:<PageProgTutoria/>
-        },
-        {
-          path: '/programasDeTutoriaMaestro/nuevo',
-          element: <PageProgTutoria />,
-        }
-      ],
-      navBarLink:[
-        {
-          key: 'inicio',
-          label: 'Inicio',
-          path: '/',
-          icon: <BiHome fontSize={32} />,
-        },
-        {
-          key: 'calendario',
-          label: 'Calendario Coordi',
-          path: '/calendario',
-          icon: <BiCalendar fontSize={32} />,
-        },
-        {
-          key: 'programasDeTutoria',
-          label: 'Programas de Tutoria',
-          path: '/programasDeTutoria',
-          icon: <BiCabinet fontSize={32} />,
-        },
-        {
-          key: 'listaDeCitas',
-          label: 'Lista de Citas',
-          path: '/listaDeCitas',
-          icon: <BiListUl fontSize={32} />,
-        },
-        {
-          key: 'miPerfil',
-          label: 'Mi Perfil',
-          path: '/miPerfil',
-          icon: <BiUser fontSize={32} />,
-        },
-      ]
-    },
-    alumno:{
-      pages:[
-        {
-          path: '/',
-          element: <PageInicioTutor />,
-        },
-        {
-          path: '/PerfilAlumno',
-          element:<PageMiPerfilAlumno/>
-        },
-        {
-          path: '/solicitarTutor',
-  
-          element: <PageSolicitarAlumno idProgram={1}/>
-  
-        },
-        {
-          path: '/listadoPlanAccionAlumno',
-          element:<PageListadoPlanAccionAlumno/>
-        },
-        {
-          path: '/detallePlanAccionAlumno',
-          element:<PageDetallePlanAccionAlumno/>
-  
-        },
-        {
-          path: '/solicitarCita',
-          element: <PageSolicitarCita />
-        }
-        
-      ],
-      navBarLink:[
-        {
-          key: 'inicio',
-          label: 'Inicio Alumn',
-          path: '/',
-          icon: <BiHome fontSize={32} />,
-        },
-        {
-          key: 'calendario',
-          label: 'Calendario Alumn',
-          path: '/solicitarTutor',
-          icon: <BiCalendar fontSize={32} />,
-        },
-        {
-          key: 'programasDeTutoria',
-          label: 'Programas de Tutoria',
-          path: '/programasDeTutoria',
-          icon: <BiCabinet fontSize={32} />,
-        },
-        {
-          key: 'listaDeCitas',
-          label: 'Lista de Citas',
-          path: '/listaDeCitas',
-          icon: <BiListUl fontSize={32} />,
-        },
-        {
-          key: 'miPerfil',
-          label: 'Mi Perfil',
-          path: '/miPerfil',
-          icon: <BiUser fontSize={32} />,
-        },
-      ]
-    }
-}
+export const Routes: RouterConfig = {
+  tutor: {
+    pages: [
+      {
+        path: '/',
+        element: <PageInicioTutor />,
+      },
+      {
+        path: '/calendario',
+        element: <PageCalendarioTutor />,
+      },
+      {
+        path: '/programasDeTutoria',
+        element: <PageProgramasDeTutoriaTutor />,
+      },
+      {
+        path: '/listaDeCitas',
+        element: <PageListaDeCitas />,
+      },
+      {
+        path: '/miPerfil',
+        element: <PageMiPerfilTutor />,
+      },
+      {
+        path: '/programasDeTutoria/detalle-programa',
+        element: <PageDetalleProgramaTutoriaTutor />
+      },
+      {
+        path: '/programasDeTutoria/detalle-programa/alumno',
+        element: <PagePerfilAlumnoTutor />
+      },
+      {
+        path: '/historicoDeCitas',
+        element: <PageHistoricoDeCitas />,
+      },
+      {
+        path: '/listadoPlanAccion',
+        element: <PageListadoPlanAccion />,
+      },
+      {
+        path: '/detallePlanAccion',
+        element: <PageDetallePlanAccion />,
+      },
+      {
+        path: '/PerfilAlumno',
+        element: <PageMiPerfilAlumno />
+      },
+      {
+        path: '/calendario/agregarDisponibilidad',
+        element: <PageAgregarDisponibilidadTutor />,
+      },
+      {
+        path: '/misDerivacionesHechas',
+        element: <PageDerivacionesHechas />
+      },
+      {
+        path: '/listaDeCitas/resultadoCitaIndividual',
+        element: <PageResultadoCitaIndividual />
+      },
+      {
+        path: '/solicitarTutor',
+
+        element: <PageSolicitarAlumno />
+
+      },
+      {
+        path: '/listadoPlanAccionAlumno',
+        element: <PageListadoPlanAccionAlumno />
+      },
+      {
+        path: '/detallePlanAccionAlumno',
+        element: <PageDetallePlanAccionAlumno />
+
+      }
+    ],
+    navBarLink: [
+      {
+        key: 'inicio',
+        label: 'Inicio Tut',
+        path: '/',
+        icon: <BiHome fontSize={32} />,
+      },
+      {
+        key: 'calendario',
+        label: 'Calendario Tut',
+        path: '/calendario',
+        icon: <BiCalendar fontSize={32} />,
+      },
+      {
+        key: 'programasDeTutoria',
+        label: 'Programas de Tutoria Tut',
+        path: '/programasDeTutoria',
+        icon: <BiCabinet fontSize={32} />,
+      },
+      {
+        key: 'listaDeCitas',
+        label: 'Lista de Citas Tut',
+        path: '/listaDeCitas',
+        icon: <BiListUl fontSize={32} />,
+      },
+      {
+        key: 'miPerfil',
+        label: 'Mi Perfil',
+        path: '/miPerfil',
+        icon: <BiUser fontSize={32} />,
+      },
+    ]
+  },
+  coordinador: {
+    pages: [
+      {
+        path: '/',
+        element: <PageInicioTutor />,
+      },
+      {
+        path: '/programasDeTutoriaMaestro',
+        element: <PageProgramasTutoriaMaestro />,
+      },
+      {
+        path: '/programasDeTutoriaMaestro/editar',
+        element: <PageProgTutoria />
+      },
+      {
+        path: '/programasDeTutoriaMaestro/nuevo',
+        element: <PageProgTutoria />,
+      }
+    ],
+    navBarLink: [
+      {
+        key: 'inicio',
+        label: 'Inicio',
+        path: '/',
+        icon: <BiHome fontSize={32} />,
+      },
+      {
+        key: 'calendario',
+        label: 'Calendario Coordi',
+        path: '/calendario',
+        icon: <BiCalendar fontSize={32} />,
+      },
+      {
+        key: 'programasDeTutoria',
+        label: 'Programas de Tutoria',
+        path: '/programasDeTutoria',
+        icon: <BiCabinet fontSize={32} />,
+      },
+      {
+        key: 'listaDeCitas',
+        label: 'Lista de Citas',
+        path: '/listaDeCitas',
+        icon: <BiListUl fontSize={32} />,
+      },
+      {
+        key: 'miPerfil',
+        label: 'Mi Perfil',
+        path: '/miPerfil',
+        icon: <BiUser fontSize={32} />,
+      },
+    ]
+  },
+  alumno: {
+    pages: [
+      {
+        path: '/',
+        element: <PageInicioTutor />,
+      },
+      {
+        path: "/listaTutoriasAlumno",
+        element: <PageListaDeTutorias />
+      },
+      {
+        path: "/DetalleDeTutoria",
+        element: < PageDetalleDeTutoria />
+      },
+      {
+        path: "/DetalleDeTutoriaSolicitado",
+        element: < PageDetalleDeTutoriaSolicitado />
+      },
+      {
+        path: "/DetalleDeTutoriaVariable",
+        element: < PageDetalleDeTutoriaAlumno />
+      },
+      {
+        path: '/PerfilAlumno',
+        element: <PageMiPerfilAlumno />
+      },
+      {
+        path: '/solicitarTutor',
+        element: <PageSolicitarAlumno />
+
+      },
+      {
+        path: '/listadoPlanAccionAlumno',
+        element: <PageListadoPlanAccionAlumno />
+      },
+      {
+        path: '/detallePlanAccionAlumno',
+        element: <PageDetallePlanAccionAlumno />
+
+      },
+      {
+        path: '/solicitarCita',
+        element: <PageSolicitarCita />
+      }
+
+    ],
+    navBarLink: [
+      {
+        key: 'inicio',
+        label: 'Inicio Alumn',
+        path: '/',
+        icon: <BiHome fontSize={32} />,
+      },
+      {
+        key: 'calendario',
+        label: 'Calendario Alumn',
+        path: '/solicitarTutor',
+        icon: <BiCalendar fontSize={32} />,
+      },
+      {
+        key: 'programasDeTutoria',
+        label: 'Programas de Tutoria',
+        path: '/listaTutoriasAlumno',
+        icon: <BiCabinet fontSize={32} />,
+      },
+      {
+        key: 'listaDeCitas',
+        label: 'Lista de Citas',
+        path: '/listaDeCitas',
+        icon: <BiListUl fontSize={32} />,
+      },
+      {
+        key: 'miPerfil',
+        label: 'Mi Perfil',
+        path: '/miPerfil',
+        icon: <BiUser fontSize={32} />,
+      },
+    ]
+  }
+};
 
 //const router = createBrowserRouter();

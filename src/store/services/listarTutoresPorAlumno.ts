@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { tutorxalumno,TutorEstadoSolicitud } from '../types/Tutor';
+import { Services as ServicesProperties } from '../../config';
 
 type TutorPorAlumnoResponse = {
   listaDeTutores: tutorxalumno[];
@@ -8,7 +9,7 @@ type TutorPorAlumnoResponse = {
 async function getTutoresPorTutoriayAlumno(programId : number, studentId : number): Promise<TutorEstadoSolicitud> {
 
     try {
-        const response = await axios.get(`https://localhost:44369/listarTutoresPorProgramaPorAlumno/${programId}/${studentId}`);
+        const response = await axios.get(`${ServicesProperties.BaseUrl}/listarTutoresPorProgramaPorAlumno/${programId}/${studentId}`);
         const data = response.data;
 
         const tutores: tutorxalumno[] = data.data.tutores.map((item: any) => ({
@@ -33,7 +34,7 @@ async function getTutoresPorTutoriayAlumno(programId : number, studentId : numbe
 async function getTutoresPorTutoriaVariable(programId : number): Promise<TutorPorAlumnoResponse> {
 
   try {
-      const response = await axios.get(`https://localhost:44369/listarTutoresPorProgramaVariable/${programId}`);
+      const response = await axios.get(`${ServicesProperties.BaseUrl}/listarTutoresPorProgramaVariable/${programId}`);
       const listaDeTutores: tutorxalumno[] = response.data.data.map((item: any) => {
         return {
           tutorId : item.tutorId,

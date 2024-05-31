@@ -1,24 +1,25 @@
-import { getListaProgramaTutorias,crearEditarProgramaTutoria } from '../services';
+import { getListaProgramaTutorias,crearEditarProgramaTutoria,getTutoresByTutoringProgramId } from '../services';
 import {useState} from 'react';
-import { ProgramaTutoria } from "../types";
+import { ProgramaTutoria, Tutor } from "../types";
 
 
 type ProgramaTutoriaHookReturnType =  {
     fetchProgramaTutorias: ()=>Promise<void>;
+    fetchTutoresByProgramaTutoria:(tutoringProgramId:number)=>Promise<Tutor[]>;
     postProgramaTutoria:(programa:ProgramaTutoria)=>Promise<void>;
     programaTutoriaData: ProgramaTutoria[];    
     isLoading: boolean;
     error: Error | null;
+    tutorListByProgramId:Tutor[];
   };
     
 function useProgramaTutoria(): ProgramaTutoriaHookReturnType{
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [error, setError] = useState<Error | null>(null);
     const [programaTutoriaData,setProgramaTutoriaData] = useState<ProgramaTutoria[]>([]);
-    //const dispatch=useAppDispatch();
-    //const {setFinances} = financeSlice.actions;
-    //const{updateProductByField}=productSlice.actions
+    const [tutorListByProgramId,setTutorListByProgramId] = useState<Tutor[]>([]);
     const fetchProgramaTutorias = async () => {
+        setTutorListByProgramId([]);
         setIsLoading(true);
         try {
             const response = await getListaProgramaTutorias();
@@ -52,7 +53,29 @@ function useProgramaTutoria(): ProgramaTutoriaHookReturnType{
             setIsLoading(false);
         }
     };
-    return { fetchProgramaTutorias,postProgramaTutoria,programaTutoriaData,isLoading, error };
+    const fetchTutoresByProgramaTutoria = async (tutoringProgramId:number) => {
+        setIsLoading(true);
+        let tutores:Tutor[]=[]
+        try {
+            const response = await getTutoresByTutoringProgramId(tutoringProgramId);
+            setTutorListByProgramId(response.data);
+            tutores=response.data;
+            return response.data;
+            //console.log(financeData);
+            //return financeList;
+            
+        } catch (err:any) {
+            setError(err);
+            setTutorListByProgramId([]);
+            return []
+        //return [];
+        } finally {
+            setIsLoading(false);
+            //return tutores;
+        }
+    };
+
+    return { fetchProgramaTutorias,fetchTutoresByProgramaTutoria,postProgramaTutoria,programaTutoriaData,isLoading, error,tutorListByProgramId };
 
 }
 

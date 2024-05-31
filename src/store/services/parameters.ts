@@ -12,7 +12,7 @@ async function getEspecialidades():Promise<ServiceResponseEspecialidades>{
   try {
       const response = await axios({
           method: 'get',
-          url: ServicesProperties.BaseUrl+'/listarEspecialidad',
+          url: ServicesProperties.BaseUrl+'/api/Specialty/listarEspecialidad',
           headers : ServicesProperties.Headers
       });
       if(!response.data.success){
@@ -30,7 +30,7 @@ async function getEspecialidades():Promise<ServiceResponseEspecialidades>{
           };
         });
        
-      return {data:especialidades};;
+      return {data:especialidades};
       
   } catch (err) {
     return {data:[]};
@@ -47,7 +47,7 @@ async function getFacultades():Promise<ServiceResponseFacultades>{
     try {
         const response = await axios({
             method: 'get',
-            url: ServicesProperties.BaseUrl+'/listarFacultades',
+            url: ServicesProperties.BaseUrl+'/api/Faculty/listarFacultades',
             headers : ServicesProperties.Headers
         });
         if(!response.data.success){

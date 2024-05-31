@@ -1,10 +1,12 @@
-import { useState } from 'react';
-import { getResultadoCita,updateResultadoCita,updateComentario, getEstudianteDatos, getTutorDatos, getUnidadesDerivacion } from '../services/resultadoCita';
+import { useState, useEffect } from 'react';
+import { getResultadoCita,updateResultadoCita,updateComentario,
+   getEstudianteDatos, getTutorDatos, getUnidadesDerivacion, getDerivacion } from '../services/resultadoCita';
 import { ListCita } from '../types/ListCita';
 import { InitialData } from '../types/AppointmentResult';
 import { ListStudent } from '../types/ListStudent';
 import { Tutor } from '../types/Tutor';
 import { ListUnitDerivation }from '../types/ListUnitDerivation';
+import { Derivation } from '../types/Derivation';
 
 type ResultadoCitaHooksReturn = {
     resultadoCita: InitialData|null;
@@ -52,6 +54,67 @@ function useUpdateComentario(cita: InitialData) {
 }
 
 //DERIVACION
+type DerivacionHooksReturn = {
+  derivation: Derivation|null;
+  loading: boolean;
+  error: any;
+  fetchDerivation: () => Promise<void>;
+  setDerivacion: (derivation: Derivation) => void;
+  setDerivacionId: (id: number) => void;
+};
+
+function useDerivacion(id_appointment:number): DerivacionHooksReturn { 
+  const [derivation, setDerivacion] = useState<Derivation | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<any>(null); 
+
+  // Obtener la fecha actual en el formato YYYY-MM-DD
+  const getCurrentDate = () => {
+    const date = new Date(); const year = date.getFullYear(); 
+    const month = String(date.getMonth() + 1).padStart(2, '0'); const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  };
+
+  useEffect(() => {
+    if (!derivation) {
+      // Inicializar la derivación con valores predeterminados si es null
+      setDerivacion({
+        derivationId: 0,
+        reason: '',
+        comment: '',
+        status: 'Pendiente',
+        creationDate: getCurrentDate(),
+        unitDerivationId: 0,
+        userAccountId: 1,
+        appointmentId: 0,
+        isActive: true
+      });
+    }
+  }, [derivation]);
+
+  const fetchDerivation = async () => {
+      try{
+          const data = await getDerivacion(id_appointment);
+          setDerivacion(data);
+          setLoading(false);
+          console.log("la derivacion:",derivation)
+      }catch(error){
+          setError("Error en useDerivacion");
+          setLoading(false);
+      }
+  }
+
+  const setDerivacionId = (id: number) => {
+    if (derivation) {
+      // Crear una nueva instancia de Derivation con el ID actualizado
+      const updatedDerivation: Derivation = { ...derivation, derivationId: id };
+      setDerivacion(updatedDerivation);
+    }
+  };
+
+  return { derivation, loading, error, setDerivacion, fetchDerivation,setDerivacionId };
+
+}
 
 //ALUMNO DATOS
 type EstudianteHooksReturn = {
@@ -137,4 +200,6 @@ function useUnidadesDerivacion(): UnidadesDerivacionHookReturnType{
 
 }
 
-export {useResultadoCita,useUpdateResultadoCita,useUpdateComentario,useEstudianteResultadoCita,useTutorResultadoCita,useUnidadesDerivacion};
+export {useResultadoCita,useUpdateResultadoCita,useUpdateComentario,
+  useEstudianteResultadoCita,useTutorResultadoCita,useUnidadesDerivacion,
+  useDerivacion};

@@ -12,7 +12,7 @@ import PageHistoricoDeCitas from './pages/tutor/listaDeCitas/PageHistoricoDeCita
 import PageListaDeCitas from './pages/tutor/listaDeCitas/PageListaDeCitas.tsx';
 import PageProgTutoria from './pages/coordinador/programasDeTutoria/PageProgTutoria.tsx';
 import PageProgramasTutoriaMaestro from './pages/coordinador/programasDeTutoria/PageProgramasTutoriaMaestro.tsx';
-import PageCargarAlumnos from './pages/coordinador/programasDeTutoria/PageCargarAlumnos/PageCargarAlumnos.tsx';
+//import PageCargarAlumnos from './pages/coordinador/programasDeTutoria/PageCargarAlumnos/PageCargarAlumnos.tsx';
 import PageAlumnosSeleccionados from './pages/coordinador/programasDeTutoria/PageCargarAlumnos/PageAlumnosSeleccionados.tsx';
 
 const router = createBrowserRouter([
@@ -55,10 +55,6 @@ const router = createBrowserRouter([
       {
         path: '/programasDeTutoriaMaestro',
         element: <PageProgramasTutoriaMaestro />,
-      },
-      {
-        path: '/alumnosSeleccionados/cargarAlumnos',
-        element: <PageCargarAlumnos />,
       },
       {
         path: '/alumnosSeleccionados',

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { getResultadoCita,updateResultadoCita,updateComentario,
    getEstudianteDatos, getTutorDatos, getUnidadesDerivacion, getDerivacion } from '../services/resultadoCita';
 import { ListCita } from '../types/ListCita';
@@ -59,7 +59,7 @@ type DerivacionHooksReturn = {
   loading: boolean;
   error: any;
   fetchDerivation: () => Promise<void>;
-  setDerivacion: (derivation: Derivation | null) => void;
+  setDerivacion: (derivation: Derivation) => void;
   setDerivacionId: (id: number) => void;
 };
 
@@ -68,11 +68,36 @@ function useDerivacion(id_appointment:number): DerivacionHooksReturn {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<any>(null); 
 
+  // Obtener la fecha actual en el formato YYYY-MM-DD
+  const getCurrentDate = () => {
+    const date = new Date(); const year = date.getFullYear(); 
+    const month = String(date.getMonth() + 1).padStart(2, '0'); const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  };
+
+  useEffect(() => {
+    if (!derivation) {
+      // Inicializar la derivación con valores predeterminados si es null
+      setDerivacion({
+        derivationId: 0,
+        reason: '',
+        comment: '',
+        status: 'Pendiente',
+        creationDate: getCurrentDate(),
+        unitDerivationId: 0,
+        userAccountId: 1,
+        appointmentId: 0,
+        isActive: true
+      });
+    }
+  }, [derivation]);
+
   const fetchDerivation = async () => {
       try{
           const data = await getDerivacion(id_appointment);
           setDerivacion(data);
           setLoading(false);
+          console.log("la derivacion:",derivation)
       }catch(error){
           setError("Error en useDerivacion");
           setLoading(false);

@@ -22,17 +22,19 @@ import { FaExpand } from 'react-icons/fa';
 
 type InputProps = {
     className:string;
-    cita:ListCita;
-    onChangeCita:(name:string,value:any)=>void;
+    cita:ListCita; 
 } 
  
-function ResultadoCitaBlock2({className,cita,onChangeCita}:InputProps) {
+function ResultadoCitaBlock2({className,cita}:InputProps) {
     const { resultadoCita, fetchResultadoCita } = useResultadoCita(cita);
     //Enviar archivos
     const { enviarArchivoServidor } = useArchivos();
     const { enviarArchivoBd, fetchArchivosBD, archivosBD, setArchivosBD } = useArchivosDB();  
+    const [ archivosBDCopia, setArchivosBDCopia] = useState<ExtendedFile[]>([]);
+
     const { enviarArchivoOtros, fetchArchivosOtros, archivosOtros, setArchivosOtros } = useArchivosOtros();  
-  
+    const [ archivosOtrosCopia, setArchivosOtrosCopia] = useState<ExtendedFile[]>([]);
+
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isModalComentario, setIsModalComentario] = useState(false);  
     const [isModalComentario2, setIsModalComentario2] = useState(false);  
@@ -105,6 +107,10 @@ function ResultadoCitaBlock2({className,cita,onChangeCita}:InputProps) {
     useEffect(() => {
       fetchResultadoCita();
     }, []);
+
+    useEffect(() => {
+      console.log("copia",archivosBDCopia);
+    }, [archivosBDCopia]);
   
     useEffect(() => { 
       if (resultadoCita && resultadoCita.appointmentResult && resultadoCita.appointmentResult.appointmentResultId !== 0) {
@@ -117,7 +123,85 @@ function ResultadoCitaBlock2({className,cita,onChangeCita}:InputProps) {
           setEndTime(dayjs(resultadoCita.appointmentResult.endTime, 'HH:mm:ss'));
       }
     }, [resultadoCita]);
+
+    useEffect(() => { 
+      if (archivosBD) {
+        const archivosBDCopia2: ExtendedFile[] = archivosBD.map(file => {
+          const copiedFile: ExtendedFile = new File([file], file.name, {
+            type: file.type,
+            lastModified: file.lastModified
+          }) as ExtendedFile;
+         
+          copiedFile.nuevo = file.nuevo;
+          copiedFile.eliminado = file.eliminado;
+          copiedFile.id_archivo = file.id_archivo; 
+          return copiedFile;
+        }); 
+        setArchivosBDCopia([...archivosBDCopia2]);
+        
+      }  
+    }, [archivosBD]);
+
+    useEffect(() => { 
+      if (archivosOtros) {
+        const archivosBDCopia2: ExtendedFile[] = archivosOtros.map(file => {
+          const copiedFile: ExtendedFile = new File([file], file.name, {
+            type: file.type,
+            lastModified: file.lastModified
+          }) as ExtendedFile;
+         
+          copiedFile.nuevo = file.nuevo;
+          copiedFile.eliminado = file.eliminado;
+          copiedFile.id_archivo = file.id_archivo; 
+          return copiedFile;
+        }); 
+        setArchivosOtrosCopia([...archivosBDCopia2]);
+        
+      }  
+    }, [archivosOtros]);
     
+    const handleCancelar = () => {
+      setEnableAttendance(!enableAttendance); 
+      const archivosBDCopia2: ExtendedFile[] = archivosBD.map(file => {
+        // Crear una copia profunda de cada objeto ExtendedFile
+        const copiedFile: ExtendedFile = new File([file], file.name, {
+          type: file.type,
+          lastModified: file.lastModified
+        }) as ExtendedFile;
+      
+        // Copiar las propiedades adicionales
+        copiedFile.nuevo = file.nuevo;
+        copiedFile.eliminado = file.eliminado;
+        copiedFile.id_archivo = file.id_archivo;
+        return copiedFile;
+      });
+      setArchivosBDCopia([...archivosBDCopia2]); 
+
+      const archivosOtrosCopia2: ExtendedFile[] = archivosOtros.map(file => {
+        // Crear una copia profunda de cada objeto ExtendedFile
+        const copiedFile: ExtendedFile = new File([file], file.name, {
+          type: file.type,
+          lastModified: file.lastModified
+        }) as ExtendedFile;
+      
+        // Copiar las propiedades adicionales
+        copiedFile.nuevo = file.nuevo;
+        copiedFile.eliminado = file.eliminado;
+        copiedFile.id_archivo = file.id_archivo;
+        return copiedFile;
+      });
+      setArchivosOtrosCopia([...archivosOtrosCopia2]); 
+
+      if (resultadoCita && resultadoCita.appointmentResult) {  
+        setCommentValue2(resultadoCita.appointmentResult.comments[1].message);
+        setCommentValue(resultadoCita.appointmentResult.comments[0].message); 
+        setSelectOption(resultadoCita.appointmentResult.asistio);
+        setStartTime(dayjs(resultadoCita.appointmentResult.startTime, 'HH:mm:ss')); 
+        setEndTime(dayjs(resultadoCita.appointmentResult.endTime, 'HH:mm:ss'));  
+      }   
+    }; 
+
+
     //Onchange
     const handleCommentChange = (e:ChangeEvent<HTMLTextAreaElement>) => {
         const { value } = e.target;
@@ -143,14 +227,14 @@ function ResultadoCitaBlock2({className,cita,onChangeCita}:InputProps) {
             useUpdateComentario(resultadoCita); 
             useUpdateResultadoCita(resultadoCita);
             // Enviar archivos si hay archivos seleccionados
-            if (archivosBD.length > 0) {
+            if (archivosBDCopia.length > 0) {
               try {
                 // Seleccionar archivos a guardar
-                const filesToSend = archivosBD.filter(file => file.nuevo === 1 && file.eliminado === 0);
+                const filesToSend = archivosBDCopia.filter(file => file.nuevo === 1 && file.eliminado === 0);
                 // Seleccionar archivos a eliminar
-                const filesToDelete = archivosBD.filter(file => file.nuevo === 0 && file.eliminado === 1);
+                const filesToDelete = archivosBDCopia.filter(file => file.nuevo === 0 && file.eliminado === 1);
                 // Seleccionar archivos a reactivar
-                const filesToActive = archivosBD.filter(file => file.nuevo === 0 && file.eliminado === 0);
+                const filesToActive = archivosBDCopia.filter(file => file.nuevo === 0 && file.eliminado === 0);
 
                 //INSERTAR ARCHIVOS ALUMNOS
                 for (const file of filesToSend) {
@@ -165,16 +249,25 @@ function ResultadoCitaBlock2({className,cita,onChangeCita}:InputProps) {
                   // Enviar archivo al servidor
                   await enviarArchivoServidor(file, idArchivo.toString(), 'archivosCita').then(() => {
                     // Actualizar el estado del archivo en archivosBD
-                    file.id_archivo=idArchivo;
-                    const updatedArchivosBD = archivosBD.map(archivo => {
-                        if (archivo.id_archivo === file.id_archivo) {
-                            archivo.nuevo = 0;
-                        }
-                        return archivo;
+                    file.id_archivo=idArchivo; 
+
+                    const updatedArchivosBD: ExtendedFile[] = archivosBDCopia.map(file => {
+                      const copiedFile: ExtendedFile = new File([file], file.name, {
+                        type: file.type,
+                        lastModified: file.lastModified
+                      }) as ExtendedFile;
+                    
+                      // Copiar las propiedades adicionales
+                      copiedFile.nuevo = 0;
+                      copiedFile.eliminado = file.eliminado;
+                      copiedFile.id_archivo = file.id_archivo;
+                      copiedFile.nombre = file.nombre;  // Asegúrate de copiar esta propiedad también
+                    
+                      return copiedFile;
                     });
-            
-                        // Actualizar el estado de archivosBD
-                        setArchivosBD(updatedArchivosBD);
+          
+                      // Actualizar el estado de archivosBD
+                      setArchivosBD([...updatedArchivosBD]); 
                     }).catch(error => {
                         console.error('Error al enviar archivo al servidor:', error);
                     });
@@ -197,7 +290,7 @@ function ResultadoCitaBlock2({className,cita,onChangeCita}:InputProps) {
                     console.error(`Error al eliminar el archivo ${file.name}:`, error);
                   }
                 }
-
+                setArchivosBD([...archivosBDCopia]);
                 console.log('Archivos enviados correctamente');  
               } catch (error) {
                 console.error('Error al enviar archivos:', error);
@@ -227,16 +320,24 @@ function ResultadoCitaBlock2({className,cita,onChangeCita}:InputProps) {
                 // Enviar archivo al servidor
                 await enviarArchivoServidor(file, idArchivo.toString(), 'archivosCita').then(() => {
                   // Actualizar el estado del archivo en archivosBD
-                  file.id_archivo=idArchivo;
-                  const updatedArchivosOtros = archivosOtros.map(archivo => {
-                      if (archivo.id_archivo === file.id_archivo) {
-                          archivo.nuevo = 0;
-                      }
-                      return archivo;
+                  file.id_archivo=idArchivo; 
+                  const updatedArchivosBD: ExtendedFile[] = archivosOtrosCopia.map(file => {
+                    const copiedFile: ExtendedFile = new File([file], file.name, {
+                      type: file.type,
+                      lastModified: file.lastModified
+                    }) as ExtendedFile;
+                  
+                    // Copiar las propiedades adicionales
+                    copiedFile.nuevo = 0;
+                    copiedFile.eliminado = file.eliminado;
+                    copiedFile.id_archivo = file.id_archivo;
+                    copiedFile.nombre = file.nombre;  // Asegúrate de copiar esta propiedad también
+                  
+                    return copiedFile;
                   });
-          
-                      // Actualizar el estado de archivosBD
-                      setArchivosBD(updatedArchivosOtros);
+        
+                    // Actualizar el estado de archivosBD
+                    setArchivosOtros([...updatedArchivosBD]);
                   }).catch(error => {
                       console.error('Error al enviar archivo al servidor:', error);
                   });
@@ -289,18 +390,6 @@ function ResultadoCitaBlock2({className,cita,onChangeCita}:InputProps) {
       }
     }
 
-    const handleCancelar = () => {
-      setEnableAttendance(!enableAttendance); 
-      if (resultadoCita && resultadoCita.appointmentResult) { 
-        fetchArchivosBD(resultadoCita.appointmentResult.appointmentResultId, 1);// 3 call
-        fetchArchivosOtros(resultadoCita.appointmentResult.appointmentResultId, 2);// 3 call
-        setCommentValue2(resultadoCita.appointmentResult.comments[1].message);
-        setCommentValue(resultadoCita.appointmentResult.comments[0].message); 
-        setSelectOption(resultadoCita.appointmentResult.asistio);
-        setStartTime(dayjs(resultadoCita.appointmentResult.startTime, 'HH:mm:ss')); 
-        setEndTime(dayjs(resultadoCita.appointmentResult.endTime, 'HH:mm:ss'));  
-      }   
-    }; 
     const handleStartTimeChange = (time: Dayjs | null) => {
       if (time) {
         setStartTime(time);
@@ -338,10 +427,20 @@ function ResultadoCitaBlock2({className,cita,onChangeCita}:InputProps) {
                         value={selectOption} name={selectOption?'Asistio':'Falto'} options= {assistanceState}
                         onChange={handleAsistencia} className='w-[150px]'/>
                         
-                        <Button variant='primario' onClick={handleCancelar} text={enableAttendance ? 'Cancelar' : 'Editar'}/> 
+                        {/*<Button variant='primario' onClick={handleCancelar} text={enableAttendance ? 'Cancelar' : 'Editar'}/> 
                           <div style={{ display: enableAttendance ? 'inline-block' : 'none' }}>
                             <Button variant='secundario' onClick={handleGuardar} text='Guardar' />
-                          </div>
+                          </div>*/}
+                          {!enableAttendance ? (
+                            <Button variant="primario" onClick={()=>setEnableAttendance(true)} text="Editar" />
+                          ) : (
+                            <>
+                              <Button variant="secundario" onClick={handleCancelar} text="Cancelar" />
+                              <Button variant="primario" onClick={handleGuardar} text="Guardar" />
+                            </>
+                          )}
+
+
                       </div>
                 </div>
                 <div className='w-full flex items-center mb-5 '>
@@ -400,8 +499,8 @@ function ResultadoCitaBlock2({className,cita,onChangeCita}:InputProps) {
                             commentValue={commentValue}
                             commentChange={handleCommentChange}
                             updatePage={()=>{}}
-                            selectedFiles={archivosBD}
-                            setSelectedFiles={setArchivosBD}
+                            selectedFiles={archivosBDCopia}
+                            setSelectedFiles={setArchivosBDCopia}
                         />
                     </div>
                   </div>

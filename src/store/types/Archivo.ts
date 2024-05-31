@@ -7,7 +7,7 @@ export type Archivo = {
 
 export interface ExtendedFile extends File {
   nuevo: number;  
-  eliminado: number;
+  eliminado: number; 
   id_archivo: number; 
   nombre: string;
 }

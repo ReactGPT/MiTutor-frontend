@@ -5,7 +5,7 @@ import Button from '../Button';
 import axios from 'axios';  
 import { IconDelete,SaveIcon } from '../../assets';
 import { ExtendedFile } from '../../store/types/Archivo';
-
+import { FaDownload } from 'react-icons/fa';
 interface ModalComentarioProps {
   isOpen: boolean;
   onClose: () => void;
@@ -18,21 +18,6 @@ interface ModalComentarioProps {
 
 export default function ModalComentario({ isOpen, onClose,  updatePage, commentValue,commentChange,
   selectedFiles, setSelectedFiles}: ModalComentarioProps) {
-  
-  /*const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
-    //ver que no haya sido eliminado, si es eliminado solo actualizas el nuevo a 1
-    if (e.target.files) {
-      const files = Array.from(e.target.files).map(file => {
-        // Clonamos los archivos y agregamos la propiedad 'nuevo'
-        const extendedFile: ExtendedFile = Object.assign(file, {
-          nuevo: 1
-        });
-        return extendedFile;
-      });
-      setSelectedFiles(prevFiles => [...prevFiles, ...files]);
-      console.log('Files added:', files);
-    }
-  };*/
 
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
@@ -102,12 +87,10 @@ export default function ModalComentario({ isOpen, onClose,  updatePage, commentV
     } catch (error) {
       console.error('Error al descargar el archivo:', error);
     }
-  };
-
-  useEffect(() => {
-    console.log('selectedFiles updated:', selectedFiles);
-  }, [selectedFiles]);
-
+  };  
+  function closeModal() {
+    onClose(); // Llamar a la función onClose para comunicar que se cerró el modal
+  }
   return (
     <Transition show={isOpen} as={Fragment}>
       <Dialog as="div" className="fixed inset-0 z-10 overflow-y-auto" onClose={onClose}>
@@ -133,9 +116,37 @@ export default function ModalComentario({ isOpen, onClose,  updatePage, commentV
             leaveFrom="opacity-100 scale-100"
             leaveTo="opacity-0 scale-95"
           >
-            <div className="border-custom shadow-custom bg-[rgba(235,_236,_250,_1.00)] relative bg-white rounded-lg p-4 max-w-auto mx-auto">
-              <div className="p-4">
-                <p className="font-montserrat text-[35px] font-bold text-primary">Comentario y Archivos</p>
+            <div className="inline-block w-full max-w-md p-6 my-8 overflow-hidden text-left align-middle transition-all transform bg-white shadow-xl rounded-2xl relative">
+            <Dialog.Title as="h3" className="text-lg font-medium leading-6 text-gray-900">
+                  <div className=''>
+
+                    <div className="absolute right-7 top-7">
+                      <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          strokeWidth={1.5}
+                          stroke="currentColor"
+                          style={{ width: '40px', height: '49px', cursor: 'pointer' }}
+                          className="absolute top-0 right-0 transform translate-x-1/2 -translate-y-1/2 hover:stroke-red-500
+                                                  bg-[rgba(255,_255,_255,_0.50)] border-custom drop-shadow-md"
+                          onClick={closeModal}
+                        >
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" />
+                        </svg>
+                    </div> 
+  
+                  <div className='flex items-center justify-center px-7 py-7 relative'> 
+                    <p className="font-montserrat text-[28px] font-bold text-primary">
+                      Comentario y Archivos
+                    </p>
+                  </div>
+                </div>
+              </Dialog.Title>
+              
+              
+              <div>
+                {/*<p className="font-montserrat text-[35px] font-bold text-primary">Comentario y Archivos</p>*/}
                 <div className='´w-4'>
                   <textarea
                     name='studentAnnotations'
@@ -147,18 +158,7 @@ export default function ModalComentario({ isOpen, onClose,  updatePage, commentV
                       border-custom drop-shadow-md font-bold'
                   />  
                 </div>
-                 
-                <div className="flex justify-end">
-                  <Button onClick={triggerFileInput} text='Subir Archivos'/> 
-                  <input
-                    type='file'
-                    id='fileInput'
-                    style={{ display: 'none' }}
-                    multiple
-                    onChange={handleFileChange}
-                    />
-                </div>
-                
+                  
                 <div className='w-full rounded-md resize-none outline-none px-3 py-2 mt-1 font-montserrat text-[90%] border-custom drop-shadow-md'>
                 <h3 className='font-montserrat text-lg mr-2 font-bold'>Archivos seleccionados:</h3>
                   {selectedFiles.length > 0 && (
@@ -170,12 +170,23 @@ export default function ModalComentario({ isOpen, onClose,  updatePage, commentV
                           <li key={index} className="flex justify-between items-center p-2 bg-gray-100 rounded-md shadow-md mb-2" style={{ maxHeight: '300px' }}> 
                             <span className="flex-1">{file.name}</span>  
                             <Button icon={IconDelete} iconSize={4} onClick={()=> handleFileDelete(file)}/> 
-                            <Button icon={SaveIcon} iconSize={4} onClick={() => handleFileDownload(file)}/> 
+                            <Button icon={FaDownload} iconSize={15} onClick={() => handleFileDownload(file)}/> 
                           </li>
                         ))}
                       </ul>
                     </div>
                   )}
+                </div>
+ 
+                <div className="flex justify-end pt-3">
+                  <Button onClick={triggerFileInput} text='Seleccionar Archivo'/> 
+                  <input
+                    type='file'
+                    id='fileInput'
+                    style={{ display: 'none' }}
+                    multiple
+                    onChange={handleFileChange}
+                    />
                 </div>
               </div>
             </div>

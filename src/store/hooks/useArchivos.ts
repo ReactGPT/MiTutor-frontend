@@ -88,7 +88,7 @@ function useArchivosDB(): ArchivosBDHooksReturn {
           
 
           setArchivosBD(archivosConContenido);
-          //console.log("archivos seteados",archivosBD)  
+          console.log("archivos seteados ALUMNO",archivosBD)  
         } catch (error) {
           setError("Error en listarArchivosBD");
           setLoading(false);
@@ -146,6 +146,7 @@ function useArchivosOtros(): ArchivosOtrosHooksReturn {
         );
         
         setArchivosOtros(archivosConContenido);
+        console.log("archivos seteados prfoe",archivosConContenido);
       } catch (error) {
         setError("Error en listarArchivosOtros");
         setLoading(false);

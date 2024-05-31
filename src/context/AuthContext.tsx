@@ -44,7 +44,12 @@ type AuthContextType = {
     const [credential,setCredentials] = useState<any>(null);
     const {fetchUserInfo,userInfo,resetUserInfo}=useUserAccountAuth();
     useEffect(()=>{
-        setCredentials(null);
+        const storedCredential = localStorage.getItem("authCredential");
+        if (storedCredential) {
+          const parsedCredential = JSON.parse(storedCredential);
+          setCredentials(parsedCredential);
+          fetchUserInfo(parsedCredential.email.toString());
+        }
     },[])
     
     const handleSuccess= (credentialResponse: CredentialResponse)=>{
@@ -55,6 +60,7 @@ type AuthContextType = {
             //fetchUserInfo("tutortest@pucp.edu.pe")//Usar el que necesites
             .then(()=>{
               setCredentials(payload);
+                localStorage.setItem("authCredential", JSON.stringify(payload));
             });
             //console.log(payload);
         }
@@ -70,11 +76,13 @@ type AuthContextType = {
       }
         setCredentials(null);
         resetUserInfo();
+        localStorage.removeItem("authCredential");
     }
     const handleLogout=()=>{
         setCredentials(null);
         resetUserInfo();
         googleLogout();
+        localStorage.removeItem("authCredential");
     }
     
     const userData:UserData = useMemo(()=>{

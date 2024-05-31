@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { Services as ServicesProperties } from '../../config';
 
 // Define la interfaz para los datos de tutor
 interface Tutor {
@@ -37,7 +38,7 @@ interface ApiResponse {
 
 async function listarTutoresTipo(idProgram: number): Promise<Tutor[]> {
   try {
-    const response = await axios.get<ApiResponse>(`https://localhost:44369/listarTutoresPorPrograma/${idProgram}`);
+    const response = await axios.get<ApiResponse>(`${ServicesProperties.BaseUrl}/listarTutoresPorPrograma/${idProgram}`);
     return response.data.data;
   } catch (error) {
     throw new Error('Error fetching tutors');

@@ -3,6 +3,7 @@ import { Fragment, useState, ChangeEvent } from 'react';
 import InputTutor from './InputTutor';
 import Button from '../Button';
 import axios from 'axios';
+import { Services as ServicesProperties } from '../../config';
 
 interface ModalNuevoCompromisoProps {
   isOpen: boolean;
@@ -44,7 +45,7 @@ export default function ModalNuevoCompromiso({ isOpen, onClose,  updatePage, act
         commitmentStatusDescription: '',
       };
   
-      const response = await axios.post('https://localhost:44369/crearCommitment', newData);
+      const response = await axios.post(ServicesProperties.BaseUrl+'/crearCommitment', newData);
       console.log('Commitment creado:', response.data);
       onClose(); // Cierra el modal después de guardar los datos exitosamente
       updatePage(); // Actualiza la página

@@ -4,6 +4,7 @@ import InputTutor from './InputTutor';
 import TextAreaTutor from './TextAreaTutor';
 import Button from '../Button';
 import axios from 'axios';
+import { Services as ServicesProperties } from '../../config';
 
 interface ModalNuevoPlanAccionProps {
   isOpen: boolean;
@@ -57,7 +58,7 @@ export default function ModalNuevoPlanAccion({ isOpen, onClose, updatePage,stude
         tutorId: 1, // Asigna el valor correspondiente para tutorId
       };
   
-      const response = await axios.post('https://localhost:44369/crearActionPlan', newData);
+      const response = await axios.post(ServicesProperties.BaseUrl+'/crearActionPlan', newData);
       console.log('Plan de acción creado:', response.data);
       onClose(); // Cierra el modal después de guardar los datos exitosamente
       updatePage(); // Actualiza la página

@@ -8,6 +8,7 @@ import InputSelectTutor from './InputSelectTutor';
 import { CommitmentStatus } from '../../store/types/CommitmentStatus';
 import TextAreaTutor from './TextAreaTutor';
 import Combobox from '../Combobox';
+import { Services as ServicesProperties } from '../../config';
 
 interface ModalEditarCompromisoProps {
   onClose: () => void;
@@ -70,7 +71,7 @@ export default function ModalEditarCompromiso({ onClose, updatePage, compromiso,
         "commitmentStatusDescription": "string" //no lo usa
       };
       console.log('newData para update:', newData);
-      const response = await axios.put('https://localhost:44369/actualizarCommitment', newData);
+      const response = await axios.put(ServicesProperties.BaseUrl+'/actualizarCommitment', newData);
       console.log('Commitment actualizado:', response.data);
       onClose(); // Cierra el modal después de guardar los datos exitosamente
       updatePage();

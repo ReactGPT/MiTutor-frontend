@@ -32,12 +32,14 @@ import {
   BiUser
 } from "react-icons/bi";
 import PageSolicitarCita from "../pages/alumno/misTutorias/PageSolicitarCita.tsx";
-import PageListaDeTutorias from "../pages/alumno/listaDeTutorias/pageListaDeTutorias.tsx";
-import PageDetalleDeTutoria from "../pages/alumno/detalleDeCita/pageDetalleDeTutoria.tsx";
-import PageDetalleDeTutoriaSolicitado from "../pages/alumno/detalleDeCita/pageDetalleDeTutoriaSolicitado.tsx";
-import PageDetalleDeTutoriaAlumno from "../pages/alumno/detalleDeCita/pageDetalleDeCitaVariable.tsx";
+import PageListaDeTutorias from "../pages/alumno/misTutorias/PageListaDeTutorias.tsx";
+import PageDetalleDeTutoriaAsignado from "../pages/alumno/misTutorias/PageDetalleDeTutoriaAsignado.tsx";
+import PageDetalleDeTutoriaSolicitado from "../pages/alumno/misTutorias/PageDetalleDeTutoriaSolicitado.tsx";
+import PageDetalleDeTutoriaVariable from "../pages/alumno/misTutorias/PageDetalleDeTutoriaVariable.tsx";
 
 import PageSolicitudGestion from "../pages/coordinador/gestionSolicitudes/PageSolicitudGestion.tsx";
+import PageCalendarioAlumno from "../pages/alumno/calendario/PageCalendarioAlumno.tsx";
+import PageDetalleDeTutoria from "../pages/alumno/misTutorias/PageDetalleDeTutoria.tsx";
 
 type RouterDetail = {
   pages: RouteObject[];
@@ -82,8 +84,8 @@ export const Routes: RouterConfig = {
         element: <PagePerfilAlumnoTutor />
       },
       {
-        path: '/historicoDeCitas',
-        element: <PageHistoricoDeCitas />,//<<-- PENDIENTE
+        path: "/programasDeTutoria/detalle-programa/alumno/historicoCitas",
+        element: <PageHistoricoDeCitas />
       },
       {
         path: '/listadoPlanAccion',
@@ -214,20 +216,16 @@ export const Routes: RouterConfig = {
         element: <PageInicioTutor />,
       },
       {
-        path: "/listaTutoriasAlumno",
+        path: "/calendario",
+        element: <PageCalendarioAlumno />
+      },
+      {
+        path: "/misTutorias",
         element: <PageListaDeTutorias />
       },
       {
-        path: "/DetalleDeTutoria",
-        element: < PageDetalleDeTutoria />
-      },
-      {
-        path: "/DetalleDeTutoriaSolicitado",
-        element: < PageDetalleDeTutoriaSolicitado />
-      },
-      {
-        path: "/DetalleDeTutoriaVariable",
-        element: < PageDetalleDeTutoriaAlumno />
+        path: "/misTutorias/detalle",
+        element: <PageDetalleDeTutoria />
       },
       {
         path: "/miPerfil",
@@ -248,7 +246,7 @@ export const Routes: RouterConfig = {
 
       },
       {
-        path: '/solicitarCita',
+        path: '/misTutorias/detalle/solicitarCita',
         element: <PageSolicitarCita />
       },
       {
@@ -267,13 +265,13 @@ export const Routes: RouterConfig = {
       {
         key: 'calendario',
         label: 'Calendario',
-        path: '/',
+        path: '/calendario',
         icon: <BiCalendar fontSize={32} />,
       },
       {
         key: 'misTutorias',
         label: 'Mis Tutorías',
-        path: '/listaTutoriasAlumno',
+        path: '/misTutorias',
         icon: <BiCabinet fontSize={32} />,
       },
       {

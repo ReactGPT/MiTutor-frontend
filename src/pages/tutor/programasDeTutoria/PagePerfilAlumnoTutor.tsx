@@ -4,13 +4,15 @@ import InputTutor from '../../../components/Tutor/InputTutor';
 import image from '../../../assets/Tutor/no-avatar.webp';
 import ModalDesactivar from '../../../components/Tutor/ModalDesactivar';
 import { Label } from 'flowbite-react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { ListStudent } from '../../../store/types/ListStudent';
 
 
 const PagePerfilAlumnoTutor = () => {
   const location = useLocation();
   const data: ListStudent = location.state?.data;
+
+  //console.log(data);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -20,6 +22,12 @@ const PagePerfilAlumnoTutor = () => {
 
   const closeModal = () => {
     setIsModalOpen(false);
+  };
+
+  const navigate = useNavigate();
+
+  const goToHistoricoCitas = () => {
+    navigate('/programasDeTutoria/detalle-programa/alumno/historicoCitas', { state: { data } });
   };
 
   return (
@@ -62,7 +70,7 @@ const PagePerfilAlumnoTutor = () => {
                   <Button onClick={() => null} variant="call-to-action" text="Archivos" />
                 </li>
                 <li className='mb-4'>
-                  <Button onClick={() => null} variant="call-to-action" text="Historico de Citas" />
+                  <Button onClick={goToHistoricoCitas} variant="call-to-action" text="Historico de Citas" />
                 </li>
               </ul>
             </div>

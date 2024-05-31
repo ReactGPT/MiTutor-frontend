@@ -8,6 +8,7 @@ import { Event } from 'react-big-calendar';
 import { useAvailability } from '../../store/hooks/useAvailability';
 import "./index.css";
 import ModalModificarDisponibilidad from '../Tutor/ModalModificarDisponibilidad';
+import { useAuth } from '../../context';
 
 interface CustomEvent extends Event {
   isBackgroundEvent?: boolean;
@@ -85,9 +86,10 @@ function transformAvailabilityToEvent(availability: Availability[]): CustomEvent
   }));
 }
 
-const tutorId = 3;
-
 const CalendarioDisponibilidad: React.FC<CalendarioDisponibilidadProps> = ({ citas = null, programable = false, onSelectEvent, refresh }) => {
+  const { userData } = useAuth();
+  const tutorId = userData?.userInfo?.roles[0].details.tutorId;
+
   const { availability, fetchAvailability } = useAvailability(tutorId);
 
   const [refreshKey, setRefreshKey] = useState(0);

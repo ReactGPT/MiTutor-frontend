@@ -3,11 +3,14 @@ import AppointmentItem from "../../../components/Tutor/AppointmentItem";
 import Pagination from "../../../components/Pagination";
 import { SearchInput } from "../../../components";
 import { useCitasPorTutor } from "../../../store/hooks/useCita";
+import { useAuth } from '../../../context';
 
 
 const PageListaDeCitas = () => {
+  const { userData } = useAuth();
+  const tutorId = userData?.userInfo?.roles[0].details.tutorId;
 
-  const { cita, fetchCita } = useCitasPorTutor(1);
+  const { cita, fetchCita } = useCitasPorTutor(tutorId);
 
   useEffect(() => {
     fetchCita();

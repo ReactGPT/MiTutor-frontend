@@ -25,8 +25,7 @@ const PageDetalleDeTutoria = () => {
   }, []);
 
   const goToTutorPlan = () => {
-    const tutorData = { tutoringProgramId: data.tutoringProgramId, tutorId: listaDeTutores[0].tutorId };
-    navigate('/', { state: { tutorData } });
+    navigate('/listadoPlanAccionAlumno', { state: { programId: data.tutoringProgramId, tutorId: listaDeTutores[0].tutorId } });
   };
 
   const goToSolicitarCita = () => {

@@ -36,14 +36,10 @@ import PageListaDeTutorias from "../pages/alumno/listaDeTutorias/pageListaDeTuto
 import PageDetalleDeTutoria from "../pages/alumno/detalleDeCita/pageDetalleDeTutoria.tsx";
 import PageDetalleDeTutoriaSolicitado from "../pages/alumno/detalleDeCita/pageDetalleDeTutoriaSolicitado.tsx";
 import PageDetalleDeTutoriaAlumno from "../pages/alumno/detalleDeCita/pageDetalleDeCitaVariable.tsx";
-<<<<<<< HEAD
 import PageListaDeCitasAlumno from '../pages/alumno/listaDeCitasAlumno/PageListaDeCitasAlumno.tsx';
 import PageResultadoCitaIndividualAlumno from '../pages/alumno/resultadoCita/PageResultadoCitaIndividualAlumno.tsx';
 ///listaDeCitasAlumno/detalleCitaAlumno
-=======
-
 import PageSolicitudGestion from "../pages/coordinador/gestionSolicitudes/PageSolicitudGestion.tsx";
->>>>>>> 0651077eaa70f12791c43d9c26ce3c8afa06f281
 
 type RouterDetail = {
   pages: RouteObject[];

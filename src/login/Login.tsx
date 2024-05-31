@@ -1,8 +1,11 @@
 import { GoogleLogin } from "@react-oauth/google";
 import { useAuth } from "../context";
 import logo from '../assets/logo.png';
+import { Spinner } from "../components";
+import { useUserAccountAuth } from "../store/hooks";
 function Login() {
   const { handleSuccessLogin: handleSuccess, handleError } = useAuth();
+  const {isLoading}=useUserAccountAuth();
   return (
     <div className="w-screen bg-gradient-to-br from-white to-blue-300 h-screen flex justify-center">
 
@@ -14,7 +17,8 @@ function Login() {
           </div>
           <div className="flex flex-col gap-8 items-center justify-center">
             <h6 className="font-montserrat text-xl font-semibold text-primary">Ingresar</h6>
-            <GoogleLogin useOneTap onSuccess={handleSuccess} onError={handleError} />
+            {isLoading?<Spinner color="primary" size='md'/>:
+              <GoogleLogin useOneTap onSuccess={handleSuccess} onError={handleError} />}
           </div>
         </div>
 

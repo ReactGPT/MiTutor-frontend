@@ -1,4 +1,4 @@
-import { RouteObject } from "react-router-dom";
+import { Navigate, RouteObject } from "react-router-dom";
 //import PageInicioTutor from "../pages/tutor/inicio/PageInicioTutor"
 import PageListadoPlanAccion from '../pages/tutor/listaDeCitas/PageListadoPlanAccion.tsx';
 import PageDetallePlanAccion from '../pages/tutor/listaDeCitas/PageDetallePlanAccion.tsx';
@@ -111,7 +111,7 @@ export const Routes: RouterConfig = {
       },
       {
         path: '*',
-        element: <PageInicioTutor />
+        element: <Navigate to="/" />
       }
     ],
     navBarLink: [
@@ -171,7 +171,7 @@ export const Routes: RouterConfig = {
       },
       {
         path: '*',
-        element: <PageInicioTutor />
+        element: <Navigate to="/" />
       }
     ],
     navBarLink: [
@@ -210,7 +210,7 @@ export const Routes: RouterConfig = {
   alumno: {
     pages: [
       {
-        path: '/',
+        path: "/",
         element: <PageInicioTutor />,
       },
       {
@@ -230,26 +230,30 @@ export const Routes: RouterConfig = {
         element: < PageDetalleDeTutoriaAlumno />
       },
       {
-        path: '/miPerfil',
+        path: "/miPerfil",
         element: <PageMiPerfilAlumno />
       },
       {
-        path: '/solicitarTutor',
+        path: "/solicitarTutor",
         element: <PageSolicitarAlumno />
 
       },
       {
-        path: '/listadoPlanAccionAlumno',
+        path: "/listadoPlanAccionAlumno",
         element: <PageListadoPlanAccionAlumno />
       },
       {
-        path: '/detallePlanAccionAlumno',
+        path: "/detallePlanAccionAlumno",
         element: <PageDetallePlanAccionAlumno />
 
       },
       {
         path: '/solicitarCita',
         element: <PageSolicitarCita />
+      },
+      {
+        path: '*',
+        element: <Navigate to="/" />
       }
 
     ],
@@ -283,7 +287,7 @@ export const Routes: RouterConfig = {
         label: 'Mi Perfil',
         path: '/miPerfil',
         icon: <BiUser fontSize={32} />,
-      },
+      }
     ]
   }
 };

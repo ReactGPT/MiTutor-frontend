@@ -35,7 +35,7 @@ function useUserAccountAuth(): ProgramaTutoriaHookReturnType{
     };
     const resetUserInfo=()=>{setUserInfo(null)}
     useEffect(()=>{
-        resetUserInfo();
+        //resetUserInfo();
     },[]);
     
     return { fetchUserInfo,resetUserInfo,userInfo,isLoading, error };

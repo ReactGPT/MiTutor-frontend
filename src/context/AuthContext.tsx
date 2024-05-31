@@ -10,14 +10,14 @@ type UserData= {
     username:string;
     email:string;
     imageUrl:string;
-    domainEmail:string;
-    isAuthenticated:boolean;
+    //domainEmail:string;
+    isLogged:boolean;
     token:string;
     userInfo:UserAccount|null;
 };
 
 type AuthContextType = {
-    userData:UserData;
+    userData:UserData|null;
     handleSuccessLogin: (credentialResponse: CredentialResponse) => void;
     handleError:()=>void;
     handleLogout:()=>void;
@@ -39,33 +39,73 @@ type AuthContextType = {
   };
   
   const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
-    //const navigate=useNavigate();
-    //const {handleSetRoutes}= useRouter();
-    const [credential,setCredentials] = useState<any>(null);
-    const {fetchUserInfo,userInfo,resetUserInfo}=useUserAccountAuth();
-    useEffect(()=>{
-        const storedCredential = localStorage.getItem("authCredential");
-        if (storedCredential) {
-          const parsedCredential = JSON.parse(storedCredential);
-          setCredentials(parsedCredential);
-          fetchUserInfo(parsedCredential.email.toString());
-        }
-    },[])
     
+    
+    //const [credential,setCredentials] = useState<any>(null);
+    const {fetchUserInfo,userInfo,resetUserInfo}=useUserAccountAuth();
+    const [user,setUser] = useState<UserData|null>(()=>{
+      const storedUser = localStorage.getItem("authCredential");
+      return storedUser? JSON.parse(storedUser):null;
+    });
+
     const handleSuccess= (credentialResponse: CredentialResponse)=>{
-        //console.log(credentialResponse);
-        if(credentialResponse.credential){
-            const {payload} = googleCredentialDecode(credentialResponse.credential);
-            fetchUserInfo(payload.email.toString())//
-            //fetchUserInfo("tutortest@pucp.edu.pe")//Usar el que necesites
-            .then(()=>{
-              setCredentials(payload);
-                localStorage.setItem("authCredential", JSON.stringify(payload));
-            });
-            //console.log(payload);
-        }
-        //return <Landing/>
+      //console.log(credentialResponse);
+      if(credentialResponse.credential){
+          const {payload} = googleCredentialDecode(credentialResponse.credential);
+          //console.log(payload);
+          fetchUserInfo(payload.email.toString())
+          //fetchUserInfo("tutortest@pucp.edu.pe")//Usar el que necesites
+          .then(()=>{
+            //setCredentials(payload);
+            if(userInfo?.isVerified){
+              const newUser = {
+                email:payload.email,
+                imageUrl:payload.picture,
+                token:'',
+                isLogged:true,
+                userInfo:userInfo,
+                username:payload.username
+              };
+              setUser(newUser);
+              localStorage.setItem("authCredential",JSON.stringify(newUser));
+            }
+            else{
+              setUser(null);
+            }
+          });
+          //console.log(payload);
+      }
+      //return <Landing/>
+  };
+    
+    
+    const handleLogout=()=>{
+      //setCredentials(null);
+      setUser(null);
+      //resetUserInfo();
+      googleLogout();
+      localStorage.removeItem("authCredential");
     }
+    
+    // const storedCredential = useMemo(()=>{
+    //   return localStorage.getItem("authCredential");
+    // },[]);
+    
+    // useEffect(()=>{
+      
+    //   if (storedCredential) {
+    //       const parsedCredential = JSON.parse(storedCredential);
+    //       setCredentials(parsedCredential);
+    //       console.log("Paso 1 Fetch User");  
+    //       fetchUserInfo(parsedCredential.email.toString());
+    //     }
+    //     else{
+    //       setCredentials(null);
+    //       resetUserInfo();
+    //     }
+    // },[]);
+    
+    
     const handleError = ()=>{
       try{
         
@@ -74,29 +114,32 @@ type AuthContextType = {
       catch{
         
       }
-        setCredentials(null);
+        //setCredentials(null);
         resetUserInfo();
         localStorage.removeItem("authCredential");
-    }
-    const handleLogout=()=>{
-        setCredentials(null);
-        resetUserInfo();
-        googleLogout();
-        localStorage.removeItem("authCredential");
-    }
+    };
     
-    const userData:UserData = useMemo(()=>{
-        return {
-            username: credential? credential.name:'',
-            email:credential?credential.email:'',
-            imageUrl:credential?credential.picture:'',
-            domainEmail:credential?credential.hd:'',
-            isAuthenticated:credential?true:false,
-            token:'',
-            userInfo:userInfo
-        }
-    },[credential,userInfo]);
-
+    
+    // const userData:UserData = useMemo(()=>{
+    //   console.log("Actualiza user data");  
+    //   return {
+    //         username: credential? credential.name:'',
+    //         email:credential?credential.email:'',
+    //         imageUrl:credential?credential.picture:'',
+    //         //domainEmail:storedCredential?JSON.parse(storedCredential).hd:'',
+    //         isLogged:credential?true:false,
+    //         token:'',
+    //         userInfo:userInfo
+    //     }
+    // },[userInfo]);
+    // useEffect(()=>{
+    //   if(userData.isLogged){
+    //     localStorage.setItem("authCredential", JSON.stringify(userData));
+    //   }
+    //   else{
+    //     localStorage.removeItem("authCredential");
+    //   }
+    // },[userData.userInfo])
     // useEffect(()=>{
     //     //console.log(userData);
     //     if(userData.isAuthenticated){
@@ -112,8 +155,14 @@ type AuthContextType = {
     //     handleSetRoutes(userInfo.roles);
     //   }
     // },[userInfo])
+    useEffect(()=>{
+      const storedUser = localStorage.getItem("authCredential");
+      if(storedUser){
+        setUser(JSON.parse(storedUser));
+      }
+    },[]);
     return (
-      <AuthContext.Provider value={{userData:userData, handleSuccessLogin:handleSuccess,handleError:handleError,handleLogout:handleLogout }}>
+      <AuthContext.Provider value={{userData:user, handleSuccessLogin:handleSuccess,handleError:handleError,handleLogout:handleLogout }}>
         {children}
       </AuthContext.Provider>
     );

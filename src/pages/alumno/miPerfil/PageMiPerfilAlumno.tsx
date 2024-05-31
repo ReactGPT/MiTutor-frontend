@@ -10,10 +10,13 @@ import axios from 'axios';
 import image from '../../../assets/Tutor/no-avatar.webp';
 import {Services as ServicesProperties} from '../../../config';
 import { Label } from 'flowbite-react';
+import { useAuth } from '../../../context';
 
 const PageMiPerfilAlumno = () => {
   const {state} = useLocation();
-  const {studentId} = state;
+  const {userData}= useAuth();
+  //const {studentId} = state;
+  const studentId = !!state?state.studentId:userData?.userInfo?.id.toString();
   const [student, setStudent] = useState<ListStudent>();
    
   // Trae los datos de estudiante

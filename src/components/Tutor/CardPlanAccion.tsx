@@ -10,18 +10,18 @@ type CardPlanAccionProps = {
   usuario: string;
 };
 
-const CardPlanAccion: React.FC<CardPlanAccionProps> = ({ data,  usuario}) => {
+const CardPlanAccion: React.FC<CardPlanAccionProps> = ({ data, usuario }) => {
   const navigate = useNavigate();
 
 
   // Función para navegar a la página de detalles con el ID dado
   const toDetail = (id: any) => {
-    console.log(id, 'id')
-    if(usuario === 'tutor'){
-      navigate('/detallePlanAccion', {state: {id: id}});
+    console.log(id, 'id');
+    if (usuario === 'tutor') {
+      navigate('/detallePlanAccion', { state: { id: id } });
     }
-    else{
-      navigate('/detallePlanAccionAlumno', {state: {id: id}});
+    else {
+      navigate('/misTutorias/detalle/listadoPlanAccionAlumno/detalle', { state: { id: id } });
     }
   };
 
@@ -49,7 +49,7 @@ const CardPlanAccion: React.FC<CardPlanAccionProps> = ({ data,  usuario}) => {
           <span className={`text-primary w-24 rounded-full ${data.isActive ? 'bg-green-700' : 'bg-red-700'} text-white`}> {data.isActive ? 'Activo' : 'Inactivo'} </span>
 
 
-          <Button variant='primario' onClick={() => { toDetail(data.actionPlanId) }} icon={IconDetails} />
+          <Button variant='primario' onClick={() => { toDetail(data.actionPlanId); }} icon={IconDetails} />
         </div>
       </div>
     </div>

@@ -240,11 +240,11 @@ export const Routes: RouterConfig = {
 
       },
       {
-        path: "/listadoPlanAccionAlumno",
+        path: "/misTutorias/detalle/planesDeAccion",
         element: <PageListadoPlanAccionAlumno />
       },
       {
-        path: "/detallePlanAccionAlumno",
+        path: "/misTutorias/detalle/listadoPlanAccionAlumno/detalle",
         element: <PageDetallePlanAccionAlumno />
 
       },

@@ -7,6 +7,7 @@ import { ListCita } from "../../store/types/ListCita";
 interface AppointmentItemProps {
   appointment: ListCita;
   tipo: "lista" | "historico";
+  user: "alumno" | "tutor";
 }
 
 const textClasses = {
@@ -70,23 +71,27 @@ const controlColor = (color: string, tipo: string) => {
   }
 };
 
-export const AppointmentItem: React.FC<AppointmentItemProps> = ({ appointment, tipo }) => {
+export const AppointmentItem: React.FC<AppointmentItemProps> = ({ appointment, tipo, user }) => {
   
   const navigate = useNavigate();
   const currentDate = new Date();
 
   const goToDetalleCita = () => {
-    if(new Date(appointment.creationDate) < currentDate)
-    navigate("/listaDeCitas/resultadoCitaIndividual", { state: { cita: appointment } });
+    if(user === 'tutor'){
+      if(new Date(appointment.creationDate) < currentDate)
+        navigate("/listaDeCitas/resultadoCitaIndividual", { state: { cita: appointment } });
+    }else if(user === 'alumno'){
+      navigate("/listaDeCitasAlumno/detalleCitaAlumno", { state: { cita: appointment } });
+    }
   };
 
   return (
-    <div className="w-full h-32 border-custom shadow-custom flex bg-[rgba(235,_236,_250,_1.00)] overflow-hidden font-roboto">
+    <div className="w-full h-22 border-custom shadow-custom flex bg-[rgba(235,_236,_250,_1.00)] overflow-hidden font-roboto">
       <div className={`w-[2%] max-w-6 bg-gradient-to-b ${controlColor(appointment.appointmentStatus, 'from')} ${controlColor(appointment.appointmentStatus, 'to')}`}></div>
 
       <div className="w-full flex p-5 gap-5 justify-between items-center">
         <div className="w-1/3">
-          <span className="text-2xl text-black"> {appointment.programName} </span>
+          <span className="text-xl text-black"> {appointment.programName} </span>
         </div>
 
         <div className="flex gap-6 items-center h-full text-center justify-between">
@@ -99,8 +104,22 @@ export const AppointmentItem: React.FC<AppointmentItemProps> = ({ appointment, t
             tipo == "lista" && (
               <>
                 <div className="flex flex-col items-start min-w-40">
-                  <span className="text-black font-semibold">Participante:</span>
-                  <span className="text-primary">{`${appointment.name} ${appointment.lastName} ${appointment.secondLastName}`}</span>
+                  {
+                    user === "tutor" && (
+                      <>
+                        <span className="text-black font-semibold">Participante:</span>
+                        <span className="text-primary">{`${appointment.name} ${appointment.lastName} ${appointment.secondLastName}`}</span>    
+                      </>
+                    )
+                  }
+                  {
+                    user === "alumno" && (
+                      <>
+                        <span className="text-black font-semibold">Tutor:</span>
+                        <span className="text-primary">{`${appointment.tutorName} ${appointment.tutorLastName} ${appointment.tutorSecondLastName}`}</span>    
+                      </>
+                    )
+                  }
                 </div>
                 <hr className="h-full border-custom" />
               </>

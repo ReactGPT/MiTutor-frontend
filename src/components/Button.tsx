@@ -7,6 +7,7 @@ type ButtonProps = {
   iconSize?: number;
   disabled?: boolean;
   text?: string;
+  className?: string;
 };
 
 const Button: React.FC<ButtonProps> = ({
@@ -15,7 +16,8 @@ const Button: React.FC<ButtonProps> = ({
   icon,
   iconSize = 6,
   disabled = false,
-  text
+  text,
+  className = '',
 }) => {
   let buttonClass = 'flex items-center justify-between h-[42px] gap-2 px-3 py-2 shadow-custom rounded-xl font-roboto text-sm font-medium transition-all duration-200 ease-linear';
   let iconClass = 'text-2xl';
@@ -51,7 +53,7 @@ const Button: React.FC<ButtonProps> = ({
   }
 
   return (
-    <button className={buttonClass} onClick={onClick} disabled={disabled}>
+    <button className={`${buttonClass} ${className}`} onClick={onClick} disabled={disabled}>
       {//icon && <span className={iconClass}>{icon}</span>
       }
       {icon && <Icon className={iconClass} size={iconSize}></Icon>}

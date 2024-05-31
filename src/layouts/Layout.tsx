@@ -12,6 +12,7 @@ function Layout() {
   useEffect(() => {
     fetchEspecialidades();
     fetchFacultades();
+
   }, []);
 
   return (

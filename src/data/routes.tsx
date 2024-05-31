@@ -36,7 +36,9 @@ import PageListaDeTutorias from "../pages/alumno/listaDeTutorias/pageListaDeTuto
 import PageDetalleDeTutoria from "../pages/alumno/detalleDeCita/pageDetalleDeTutoria.tsx";
 import PageDetalleDeTutoriaSolicitado from "../pages/alumno/detalleDeCita/pageDetalleDeTutoriaSolicitado.tsx";
 import PageDetalleDeTutoriaAlumno from "../pages/alumno/detalleDeCita/pageDetalleDeCitaVariable.tsx";
-
+import PageListaDeCitasAlumno from '../pages/alumno/listaDeCitasAlumno/PageListaDeCitasAlumno.tsx';
+import PageResultadoCitaIndividualAlumno from '../pages/alumno/resultadoCita/PageResultadoCitaIndividualAlumno.tsx';
+///listaDeCitasAlumno/detalleCitaAlumno
 import PageSolicitudGestion from "../pages/coordinador/gestionSolicitudes/PageSolicitudGestion.tsx";
 
 type RouterDetail = {
@@ -252,6 +254,13 @@ export const Routes: RouterConfig = {
         element: <PageSolicitarCita />
       },
       {
+        path: '/listaDeCitasAlumno',
+        element: <PageListaDeCitasAlumno/>
+      },
+      {
+        path: '/listaDeCitasAlumno/detalleCitaAlumno',
+        element: <PageResultadoCitaIndividualAlumno/>
+      },{ 
         path: '*',
         element: <Navigate to="/" />
       }

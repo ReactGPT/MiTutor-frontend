@@ -12,5 +12,13 @@ export type ListCita = {
     isInPerson : boolean,
     startTime : Date,
     endTime : Date,
-    reason : string
+    reason : string,
+    tutorId : number,
+    meetingRoom : string,
+    tutorName : string,
+    tutorLastName : string,
+    tutorSecondLastName : string,
+    tutorEmail : string,
+    commentId : number,
+    message : string
 }

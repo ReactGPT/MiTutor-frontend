@@ -2,12 +2,12 @@ import { useState, useEffect } from 'react';
 import AppointmentItem from "../../../components/Tutor/AppointmentItem";
 import Pagination from "../../../components/Pagination";
 import { SearchInput } from "../../../components";
-import { useCitasPorTutor } from "../../../store/hooks/useCita";
+import { useCitasPorAlumno } from "../../../store/hooks/useCita";
 
 
-const PageListaDeCitas = () => {
+const PageListaDeCitasAlumno = () => {
 
-  const { cita, fetchCita } = useCitasPorTutor(1);
+  const { cita, fetchCita } = useCitasPorAlumno(2);
 
   useEffect(() => {
     fetchCita();
@@ -15,6 +15,7 @@ const PageListaDeCitas = () => {
 
   const [searchText, setSearchText] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
+  // const [selectedStatus, setSelectedStatus] = useState('Cualquiera');
   const itemsPerPage = 6;
 
   const [filters, setFilters] = useState<any>({
@@ -30,11 +31,18 @@ const PageListaDeCitas = () => {
 
   const handleSearch = (text: string) => {
     setSearchText(text);
+    // setSelectedStatus(newStatus);
     setCurrentPage(1);
   };
 
+  // Funcion para eliminar las tildes y caracteres especiales (para que "tutoria" y "tutoría" sean iguales)
+  const normalizeText = (text: string) => {
+    return text.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+  }
+  
   const citasFiltradas = cita?.filter(cita =>
-    cita.programName.toLowerCase().includes(searchText.toLowerCase())
+    normalizeText(cita.programName.toLowerCase()).includes(normalizeText(searchText.toLowerCase())) 
+    // && (selectedStatus === 'Cualquiera' || cita.appointmentStatus.toLowerCase() === selectedStatus.toLowerCase())
   );
 
   const indiceUltimaCita = currentPage * itemsPerPage;
@@ -50,7 +58,7 @@ const PageListaDeCitas = () => {
       {/* Filtro de búsqueda */}
 
       <div className="h-[7%]">
-        <SearchInput placeholder="Cosa a buscar" onSearch={handleSearch} handleOnChangeFilters={handleOnChangeFilters} />
+        <SearchInput placeholder="Ingresa el nombre de la cita..." onSearch={handleSearch} handleOnChangeFilters={handleOnChangeFilters} />
       </div>
 
       {/* Item de Cita       */}
@@ -61,7 +69,7 @@ const PageListaDeCitas = () => {
             key={`ap-Item-${index}`}
             appointment={cita}
             tipo="lista"
-            user='tutor'
+            user='alumno'
           />
         ))}
       </div>
@@ -77,4 +85,4 @@ const PageListaDeCitas = () => {
   );
 };
 
-export default PageListaDeCitas;
+export default PageListaDeCitasAlumno;

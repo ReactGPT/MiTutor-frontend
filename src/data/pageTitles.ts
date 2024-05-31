@@ -86,7 +86,15 @@ export const PageTitles = [
   ,{
     path: '/solicitarTutor',
     pageName: "Solicitar Tutor"
-  }
+  },
+  {
+    path: '/listaDeCitasAlumno',
+    pageName: "Lista de Citas"
+  },
+  {
+    path: '/listaDeCitasAlumno/detalleCitaAlumno',
+    pageName: "Detalle de Cita"
+  } 
   ,{
     path: '/gestionSolicitudes',
     pageName: "Gestión de Solicitudes"
@@ -94,5 +102,7 @@ export const PageTitles = [
   ,{
     path: '/solicitarCita',
     pageName: "Solicitar Cita"
+  },
+  {
   }
 ];

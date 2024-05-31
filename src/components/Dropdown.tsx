@@ -4,9 +4,10 @@ interface DropdownProps {
   options: string[];
   defaultOption?: string; // Nueva prop para la opción por defecto
   onSelect: (value: string) => void;
+  icon?: React.ComponentType<{ className?: string, size?: number }>; // Nueva prop para el icono
 }
 
-const Dropdown: React.FC<DropdownProps> = ({ options, defaultOption, onSelect }) => {
+const Dropdown: React.FC<DropdownProps> = ({ options, defaultOption, onSelect, icon: Icon }) => {
   const [selectedOption, setSelectedOption] = useState<string | null>(defaultOption || null); // Inicializar con la opción por defecto
   const [isOpen, setIsOpen] = useState(false);
 
@@ -22,6 +23,7 @@ const Dropdown: React.FC<DropdownProps> = ({ options, defaultOption, onSelect })
         onClick={() => setIsOpen(!isOpen)}
         className="inline-flex justify-center items-center w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
       >
+        {Icon && <Icon className="mr-2" size={5} />} {/* Renderizar el icono si está presente */}
         {selectedOption || defaultOption || 'Select an option'} {/* Mostrar la opción por defecto si no hay ninguna seleccionada */}
         <svg
           className="-mr-1 ml-2 h-5 w-5"

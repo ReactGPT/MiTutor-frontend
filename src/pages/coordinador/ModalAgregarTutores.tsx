@@ -102,7 +102,7 @@ const columnDefs: ColDef[] = [
                   </Dialog.Title> 
                   <div className="flex flex-col w-full min-h-[450px] ml-2 mr-2 mt-4 flex flex-col gap-4">
                     <div className="flex w-full h-[30%]">
-                      <SearchInput selectDisabled={true} placeholder="Escriba nombre o correo" onSearch={handleOnChangeSearch}/>
+                      <SearchInput selectDisabled={true} placeholder="Escriba nombre o correo" handleOnChangeFilters={()=>{}} onSearch={handleOnChangeSearch}/>
                     </div>
                       {/* <div className="flex flex-col w-full h-[70%] ag-theme-alpine items-center justify-center">
                         <div className='flex w-full h-full'>

@@ -1,4 +1,3 @@
-"use client";
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
@@ -32,7 +31,9 @@ import PageListadoPlanAccionAlumno from './pages/alumno/PlanDeAccion/PageListado
 import PageDetallePlanAccionAlumno from './pages/alumno/PlanDeAccion/PageDetallePlanAccionAlumno.tsx';
 
 
-ReactDOM.createRoot(document.getElementById('root')!).render(
+const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
+
+root.render(
   <React.StrictMode>
     <Provider store={store}>
       <AuthProvider>

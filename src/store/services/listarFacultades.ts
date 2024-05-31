@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { Services as ServicesProperties } from '../../config';
 
 // Define la interfaz para los datos de la facultad
 export interface Faculty {
@@ -21,9 +22,8 @@ interface ApiResponse {
 
 // Configura Axios para usar la URL base del backend
 const api = axios.create({
-  baseURL: 'https://localhost:7286/api', // Asegúrate de que esta URL es correcta
+  baseURL: ServicesProperties.BaseUrl+'/api', // Asegúrate de que esta URL es correcta
 });
-
 // Función para listar las facultades
 async function listarFacultades(): Promise<Faculty[]> {
   try {

@@ -71,7 +71,7 @@ const SearchInput: React.FC<SearchInputProps> = ({
     <div className="flex w-full max-h-[40px] rounded-2xl">
 
       <input className={`w-full p-3 rounded-l-2xl focus:outline-none ${className}`}onChange={handleInputChange} type="search" placeholder={placeholder} />
-        {!selectDisabled&&(<Combobox 
+        {!selectDisabled&&<Combobox 
         className={`${className}`}
         stylesOptions={`${className}`}
         text='Seleccione un Estado'
@@ -81,28 +81,26 @@ const SearchInput: React.FC<SearchInputProps> = ({
         value={selectedStatus}
         buttonStyle='rounded-r-2xl'
         noMt={true}
-         />
-      {/* <Select style={customStyles} placeholder="Estado" className="h-full font-roboto border border-solid border-[rgba(116,170,255,0.70)] shadow-custom bg-[rgba(235,236,250,1)]" values={[]} options={[]} onChange={() => { }} /> */}
-      {/* <Select style={customStyles} placeholder="📆 Todas las fechas" className="h-full font-roboto border border-solid 
-      border-[rgba(116,170,255,0.70)] shadow-custom bg-[rgba(235,236,250,1)]" values={[]} options={[]} onChange={() => { }} /> */}
-      <p 
+         />}
+      
+      {!selectDisabled&&<p 
         className={`text-center flex items-center justify-center w-36 ${className} 
           border-r-0`}>
         Inicio: 
-      </p>
-      <input 
+      </p>}
+      {!selectDisabled&&<input 
         type="date" 
         className={`${className} border-l-0`}
-        name="Fecha Inicio" id="" />
-      <p 
+        name="Fecha Inicio" id="" />}
+      {!selectDisabled&&<p 
         className={`text-center flex items-center justify-center w-28 ${className} 
           border-r-0`}>
         Fin: 
-      </p>
-      <input 
+      </p>}
+      {!selectDisabled&&<input 
         type="date" 
         className={`${className} border-l-0`} 
-        name="Fecha Fin" id="" />)}
+        name="Fecha Fin" id="" />}
       
       <button className=" bg-primary cursor-default rounded-r-2xl text-white px-5 shadow-custom border border-solid border-[rgba(116,170,255,0.70)] active:bg-black hover:cursor-pointer" onClick={handleSearch}><IconSearch /></button>
     </div>

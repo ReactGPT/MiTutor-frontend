@@ -69,6 +69,7 @@ async function getFacultades():Promise<ServiceResponseFacultades>{
         
     } catch (err) {
       return {data:[]};
+      
+}}
 
-
-export { getEspecialidades, getFacultades };
+export { getEspecialidades, getFacultades }

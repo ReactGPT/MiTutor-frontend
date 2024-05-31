@@ -18,6 +18,7 @@ const className = 'font-roboto bg-[rgba(235,236,250,1)] shadow-custom border bor
 
 type SearchInputProps = {
   placeholder?: string;
+  selectDisabled?:boolean;
   onSearch: (query: string) => void;
   handleOnChangeFilters: (filters: any) => void;
 };
@@ -30,8 +31,10 @@ type AppointmentStatus = {
 const SearchInput: React.FC<SearchInputProps> = ({
   placeholder,
   onSearch,
+  selectDisabled=false,
   handleOnChangeFilters,
 }:SearchInputProps) => {
+
   const [query, setQuery] = useState('');
   const [selectedStatus, setSelectedStatus] = useState<AppointmentStatus |  null>(null);
   const [startDateSelected, setStartDateSelected] = useState<Date | null>(null);
@@ -66,8 +69,9 @@ const SearchInput: React.FC<SearchInputProps> = ({
 
   return (
     <div className="flex w-full max-h-[40px] rounded-2xl">
+
       <input className={`w-full p-3 rounded-l-2xl focus:outline-none ${className}`}onChange={handleInputChange} type="search" placeholder={placeholder} />
-      <Combobox 
+        {!selectDisabled&&(<Combobox 
         className={`${className}`}
         stylesOptions={`${className}`}
         text='Seleccione un Estado'
@@ -98,7 +102,7 @@ const SearchInput: React.FC<SearchInputProps> = ({
       <input 
         type="date" 
         className={`${className} border-l-0`} 
-        name="Fecha Fin" id="" />
+        name="Fecha Fin" id="" />)}
       
       <button className=" bg-primary cursor-default rounded-r-2xl text-white px-5 shadow-custom border border-solid border-[rgba(116,170,255,0.70)] active:bg-black hover:cursor-pointer" onClick={handleSearch}><IconSearch /></button>
     </div>

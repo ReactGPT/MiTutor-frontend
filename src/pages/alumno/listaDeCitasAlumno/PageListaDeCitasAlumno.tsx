@@ -2,12 +2,12 @@ import { useState, useEffect } from 'react';
 import AppointmentItem from "../../../components/Tutor/AppointmentItem";
 import Pagination from "../../../components/Pagination";
 import { SearchInput } from "../../../components";
-import { useCitasPorTutorPorAlumno } from "../../../store/hooks/useCita";
+import { useCitasPorAlumno } from "../../../store/hooks/useCita";
 
 
 const PageListaDeCitasAlumno = () => {
 
-  const { cita, fetchCita } = useCitasPorTutorPorAlumno(1,2);
+  const { cita, fetchCita } = useCitasPorAlumno(2);
 
   useEffect(() => {
     fetchCita();
@@ -15,6 +15,7 @@ const PageListaDeCitasAlumno = () => {
 
   const [searchText, setSearchText] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
+  // const [selectedStatus, setSelectedStatus] = useState('Cualquiera');
   const itemsPerPage = 6;
 
   const [filters, setFilters] = useState<any>({
@@ -30,6 +31,7 @@ const PageListaDeCitasAlumno = () => {
 
   const handleSearch = (text: string) => {
     setSearchText(text);
+    // setSelectedStatus(newStatus);
     setCurrentPage(1);
   };
 
@@ -39,7 +41,8 @@ const PageListaDeCitasAlumno = () => {
   }
   
   const citasFiltradas = cita?.filter(cita =>
-    normalizeText(cita.programName.toLowerCase()).includes(normalizeText(searchText.toLowerCase()))
+    normalizeText(cita.programName.toLowerCase()).includes(normalizeText(searchText.toLowerCase())) 
+    // && (selectedStatus === 'Cualquiera' || cita.appointmentStatus.toLowerCase() === selectedStatus.toLowerCase())
   );
 
   const indiceUltimaCita = currentPage * itemsPerPage;

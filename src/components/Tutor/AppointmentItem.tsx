@@ -104,8 +104,22 @@ export const AppointmentItem: React.FC<AppointmentItemProps> = ({ appointment, t
             tipo == "lista" && (
               <>
                 <div className="flex flex-col items-start min-w-40">
-                  <span className="text-black font-semibold">Participante:</span>
-                  <span className="text-primary">{`${appointment.name} ${appointment.lastName} ${appointment.secondLastName}`}</span>
+                  {
+                    user === "tutor" && (
+                      <>
+                        <span className="text-black font-semibold">Participante:</span>
+                        <span className="text-primary">{`${appointment.name} ${appointment.lastName} ${appointment.secondLastName}`}</span>    
+                      </>
+                    )
+                  }
+                  {
+                    user === "alumno" && (
+                      <>
+                        <span className="text-black font-semibold">Tutor:</span>
+                        <span className="text-primary">{`${appointment.tutorName} ${appointment.tutorLastName} ${appointment.tutorSecondLastName}`}</span>    
+                      </>
+                    )
+                  }
                 </div>
                 <hr className="h-full border-custom" />
               </>

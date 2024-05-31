@@ -33,7 +33,7 @@ const SearchInput: React.FC<SearchInputProps> = ({
   handleOnChangeFilters,
 }:SearchInputProps) => {
   const [query, setQuery] = useState('');
-  const [selectedStatus, setSelectedStatus] = useState<AppointmentStatus | null>(null);
+  const [selectedStatus, setSelectedStatus] = useState<AppointmentStatus |  null>(null);
   const [startDateSelected, setStartDateSelected] = useState<Date | null>(null);
   const [endDateSelected, setEndDateSelected] = useState<Date | null>(null);
 

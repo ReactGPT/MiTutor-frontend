@@ -3,6 +3,7 @@ import InputTutor from '../../../components/Tutor/InputTutor';
 import TablaDetalle from '../../../components/Tutor/TablaDetalle';
 import { useLocation, useNavigate } from "react-router-dom";
 import { ListTutoringProgram } from '../../../store/types/ListTutoringProgram';
+import TextAreaTutor from '../../../components/Tutor/TextAreaTutor';
 
 const PageDetalleProgramaTutoriaTutor: React.FC = () => {
   const location = useLocation();
@@ -24,7 +25,7 @@ const PageDetalleProgramaTutoriaTutor: React.FC = () => {
             <InputTutor titulo="Unidad Académica" texto={data.specialtyName ? data.specialtyName : data.facultyName} enable={false} />
           </div>
           <div className="flex-grow">
-            <InputTutor titulo="Descripcion" texto={data.description} enable={false} />
+            <TextAreaTutor titulo="Descripcion" texto={data.description} enable={false} />
           </div>
         </div>
       </div>

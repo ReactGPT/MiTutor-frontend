@@ -12,17 +12,36 @@ import { ListUnitDerivation } from '../../../store/types/ListUnitDerivation';
 import { Derivation } from '../../../store/types/Derivation';
 import { useRef } from 'react'; 
 import jsPDF from 'jspdf';
+import { UserAccount } from '../../../store/types';
 
 type InputProps = {
   className:string; 
   cita:ListCita;
+  tutorR: UserAccount | null;
 } 
  
-function FormularioDerivacion({className,cita}:InputProps){  
+function FormularioDerivacion({className,cita,tutorR}:InputProps){  
   //Traer datos del estudiante
   const { estudiante, fetchEstudiante } = useEstudianteResultadoCita(cita); 
   //Traer datos del profesor
-  const { tutor, fetchTutor } = useTutorResultadoCita(1); 
+  const [tutorRId, setTutorRId] = useState(0);
+  const { tutor, fetchTutor } = useTutorResultadoCita(1);
+
+  useEffect(() => {
+      // Verifica si tutorR tiene un valor y establece tutorRId con su ID
+      if (tutorR?.id) {
+          setTutorRId(tutorR.id);
+      }
+  }, [tutorR]);
+
+  // Llama fetchTutor si tutorRId cambia
+  useEffect(() => {
+      if (tutorRId) {
+          fetchTutor();
+          console.log("id tutor",tutorRId);
+      }
+  }, [tutorRId]);
+
   //Traer datos de Unidades Derivacion
   const { unidadesDerivacion,fetchUnidadesDerivacion} = useUnidadesDerivacion();
   //Traer datos de la derivacion por id_appointment
@@ -32,8 +51,7 @@ function FormularioDerivacion({className,cita}:InputProps){
   const carpeta="derivaciones";
 
   useEffect(() => {
-    fetchEstudiante() 
-    fetchTutor() 
+    fetchEstudiante()  
     fetchDerivation()
     fetchUnidadesDerivacion() 
   }, []);
@@ -285,7 +303,7 @@ function FormularioDerivacion({className,cita}:InputProps){
 
     try { 
       // Enviar el PDF al servidor 
-      const response = await axios.post(`https://localhost:44369/api/Archivos/uploadAutomatic?fileName=${fileName}&carpeta=${carpeta}`, formData2, {
+      const response = await axios.post(ServicesProperties.BaseUrl+`/api/Archivos/uploadAutomatic?fileName=${fileName}&carpeta=${carpeta}`, formData2, {
       headers: {
           'Content-Type': 'multipart/form-data',
           'Accept': '*/*'
@@ -300,7 +318,7 @@ function FormularioDerivacion({className,cita}:InputProps){
 
   async function descargarArchivo() {
     try {
-      const response = await axios.get(`https://localhost:44369/api/Archivos/download/${fileName}?carpeta=${carpeta}`, {
+      const response = await axios.get(ServicesProperties.BaseUrl+`/api/Archivos/download/${fileName}?carpeta=${carpeta}`, {
         responseType: 'blob', // Para recibir la respuesta como un blob (archivo binario)
       });
   

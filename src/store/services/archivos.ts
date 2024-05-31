@@ -9,7 +9,7 @@ async function enviarArchivo(file:File,nombre:string,carpeta:string) {
     formData.append('file', file, nombre);
 
     // Enviar el archivo al servidor
-    const response = await axios.post(`https://localhost:44369/api/Archivos/uploadAutomatic?fileName=${nombre}&carpeta=${carpeta}`, formData, {
+    const response = await axios.post(ServicesProperties.BaseUrl+`/api/Archivos/uploadAutomatic?fileName=${nombre}&carpeta=${carpeta}`, formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
         'Accept': '*/*'

@@ -5,17 +5,14 @@ import ResultadoCitaBlock2 from './ResultadoCitaBlock2';
 import { useLocation,useNavigate,useParams } from 'react-router-dom'; 
 import { ListCita } from '../../../store/types/ListCita';
 import FormularioDerivacion from './FormularioDerivacion'; 
+import { useAuth } from '../../../context';
 
 const PageResultadoCitaIndividual: React.FC = () =>{
     const navigate = useNavigate();
     const {state} = useLocation();
     const {cita} = state;
-    /*const [citaModified,setCitaModified] = useState<ListCita>(cita);
-   
-    useEffect(()=>{
-        console.log(citaModified);
-    },[citaModified])*/
-    
+    const {userData}=useAuth();
+     
     const handleClickVerPerfil= ()=>{
         navigate("/PerfilAlumno",{state: {studentId: cita?.personId}});
     };
@@ -37,7 +34,7 @@ const PageResultadoCitaIndividual: React.FC = () =>{
                 <div className='flex w-full h-[90%] max-h-[90%] gap-4'>
                     <ResultadoCitaBlock2 cita={cita} className='flex w-[50%] max-h-[90vh] h-full flex-col gap-4'/>
                     <div className='w-[50%] h-[100%] overflow-y-auto'>
-                    <FormularioDerivacion className='flex w-[100%] max-h-[90vh] h-full flex-col gap-4 border-custom drop-shadow-md p-4 flex-grow overflow-auto' cita={cita}/>
+                    <FormularioDerivacion className='flex w-[100%] max-h-[90vh] h-full flex-col gap-4 border-custom drop-shadow-md p-4 flex-grow overflow-auto' cita={cita} tutorR={userData.userInfo}/>
                     </div>
                 </div>
                 </>

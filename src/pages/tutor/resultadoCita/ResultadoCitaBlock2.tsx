@@ -109,7 +109,7 @@ function ResultadoCitaBlock2({className,cita}:InputProps) {
     }, []);
 
     useEffect(() => {
-      console.log("copia",archivosBDCopia);
+      //console.log("copia",archivosBDCopia);
     }, [archivosBDCopia]);
   
     useEffect(() => { 

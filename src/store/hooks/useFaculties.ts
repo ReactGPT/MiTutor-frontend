@@ -17,7 +17,6 @@ function useFaculties(): UseFacultiesReturnType {
     setIsLoading(true);
     try {
       const response = await listarFacultades();
-      console.log('Fetched faculties:', response); // Añadir console.log
       setFaculties(response);
     } catch (err: any) {
       setError(err);
@@ -26,7 +25,7 @@ function useFaculties(): UseFacultiesReturnType {
       setIsLoading(false);
     }
   };
-
+  
   return { fetchFaculties, faculties, isLoading, error };
 }
 

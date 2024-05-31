@@ -22,6 +22,7 @@ import PageProgramasTutoriaMaestro from '../pages/coordinador/programasDeTutoria
 import PageAgregarDisponibilidadTutor from '../pages/tutor/calendario/PageAgregarDisponibilidadTutor.tsx';
 import PageDerivacionesHechas from '../pages/tutor/miPerfil/PageDerivacionesHechas.tsx';
 import PagePerfilAlumnoTutor from '../pages/tutor/programasDeTutoria/PagePerfilAlumnoTutor.tsx';
+
 import { SidebarLink } from "../store/types/SidebarLink.ts";
 import {
   BiCabinet,
@@ -32,7 +33,7 @@ import {
 } from "react-icons/bi";
 import PageSolicitarCita from "../pages/alumno/misTutorias/PageSolicitarCita.tsx";
 
-
+import PageSolicitudGestion from "../pages/coordinador/gestionSolicitudes/PageSolicitudGestion.tsx";
 
 type RouterDetail={
   pages:RouteObject[];
@@ -105,10 +106,8 @@ export const Routes:RouterConfig={
           element:<PageResultadoCitaIndividual/>
         },
         {
-          path: '/solicitarTutor',
-  
-          element: <PageSolicitarAlumno idProgram={1}/>
-  
+          path: '/solicitarTutor',  
+          element: <PageSolicitarAlumno/>  
         },
         {
           path: '/listadoPlanAccionAlumno',
@@ -170,6 +169,10 @@ export const Routes:RouterConfig={
         {
           path: '/programasDeTutoriaMaestro/nuevo',
           element: <PageProgTutoria />,
+        },
+        {
+          path: '/gestionSolicitudes',
+          element: <PageSolicitudGestion />,
         }
       ],
       navBarLink:[
@@ -203,6 +206,12 @@ export const Routes:RouterConfig={
           path: '/miPerfil',
           icon: <BiUser fontSize={32} />,
         },
+        {
+          key: 'gestionSolicitudes',
+          label: 'Gestión de Solicitudes',
+          path: '/gestionSolicitudes',
+          icon: <BiListUl fontSize={32} />,
+        }
       ]
     },
     alumno:{
@@ -216,9 +225,8 @@ export const Routes:RouterConfig={
           element:<PageMiPerfilAlumno/>
         },
         {
-          path: '/solicitarTutor',
-  
-          element: <PageSolicitarAlumno idProgram={1}/>
+          path: '/solicitarTutor',  
+          element: <PageSolicitarAlumno/>
   
         },
         {

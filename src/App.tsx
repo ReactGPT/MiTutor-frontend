@@ -1,4 +1,3 @@
-
 import Landing from "./components/Landing";
 
 import Login from "./login/Login";
@@ -9,7 +8,7 @@ import { useEffect } from "react";
 function App() {
 
   const {userData}=useAuth();
-  
+    
 
   const navigate = useNavigate();
 
@@ -19,10 +18,9 @@ function App() {
 
   return (
     <>
-
     {/* <RouterProvider router={router}/> */}
-      {!userData.isAuthenticated&&<Login/>}
-      {userData.isAuthenticated&&<Landing/>}
+    {!userData.isAuthenticated&&<Login/>}
+    {userData.isAuthenticated&&<Landing/>}
     {/* <RouterProvider /> */}
     </>
   );

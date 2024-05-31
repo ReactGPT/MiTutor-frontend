@@ -54,11 +54,12 @@ export interface ApiResponse {
   data: Tutor[];
 }
 
+const studentId = 2;
+
 const PageSolicitarAlumno: React.FC = () => {
   const location = useLocation();
   const { tutoriaData } = location.state;
-  const { tutoringProgramId, studentId } = tutoriaData;
-
+  const { tutoringProgramId } = tutoriaData;
   const [tutors, setTutors] = useState<Tutor[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>('');
@@ -86,7 +87,7 @@ const PageSolicitarAlumno: React.FC = () => {
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchText(event.target.value);
-    setCurrentPage(1);  
+    setCurrentPage(1);
   };
 
   const handleSearch = () => {

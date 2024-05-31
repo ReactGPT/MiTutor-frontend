@@ -4,10 +4,10 @@ import Header from "../components/ui/Header";
 import { DASHBOARD_SIDEBAR_LINKS } from "../data/navigation";
 import { Outlet } from "react-router-dom";
 import { useParameters } from "../store/hooks";
-
+import { useRouter } from "../context";
 function Layout() {
   const { fetchEspecialidades, fetchFacultades } = useParameters();
-
+  const {sideBarOption}=useRouter();
   useEffect(() => {
     fetchEspecialidades();
     fetchFacultades();
@@ -16,7 +16,7 @@ function Layout() {
   return (
     <div className="flex flex-row bg-gradient-to-br from-white to-blue-300 h-screen w-screen min-w-[1080px] min-h-[720px]">
       <div className="h-full w-[20%] min-w-[255px] max-w-[300px]">
-        <Sidebar sidebarLinks={DASHBOARD_SIDEBAR_LINKS} />
+        <Sidebar sidebarLinks={sideBarOption} />
       </div>
       <div className="w-full h-full p-5 flex flex-col gap-5">
         <div className="w-full flex h-[6.5%] min-h-[60px]">

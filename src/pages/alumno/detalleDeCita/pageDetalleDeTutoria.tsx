@@ -6,16 +6,18 @@ import { da } from "date-fns/locale";
 import { programaDeTutoriaAlumno } from "../../../store/types/ListTutoringProgram";
 import { useTutoresPorTutoriayAlumno } from "../../../store/hooks/useListarTutoresPorAlumno";
 import { useState, useEffect } from "react";
-import React from 'react'
+import React from 'react';
 import { Spinner } from "../../../components";
-const studentId = 2
+
+const studentId = 2;
 
 const PageDetalleDeTutoria = () => {
 
   const location = useLocation();
   const data = location.state.data;
+  console.log(data);
 
-  const { listaDeTutores,fetchTutoresPorTutoria,loading } = useTutoresPorTutoriayAlumno(data.tutoringProgramId,2);
+  const { listaDeTutores, fetchTutoresPorTutoria, loading } = useTutoresPorTutoriayAlumno(data.tutoringProgramId, studentId);
 
   const navigate = useNavigate();
 
@@ -23,10 +25,13 @@ const PageDetalleDeTutoria = () => {
     fetchTutoresPorTutoria();
   }, []);
 
-
   const goToTutorPlan = () => {
-    const tutorData = {tutoringProgramId: data.tutoringProgramId, tutorId: listaDeTutores[0].tutorId };
-    navigate('/', { state: { tutorData } });
+    navigate('/listadoPlanAccionAlumno', { state: { programId: data.tutoringProgramId, tutorId: listaDeTutores[0].tutorId } });
+  };
+
+  const goToSolicitarCita = () => {
+    const datos = { tutoringProgram: data, tutor: listaDeTutores[0] };
+    navigate('/solicitarCita', { state: { datos } });
   };
 
   return (
@@ -47,7 +52,7 @@ const PageDetalleDeTutoria = () => {
         </div>
 
         <div className="w-full flex items-center justify-center p-2">
-          <Button onClick={ () => {} } variant="primario" text="Solicitar cita" />
+          <Button onClick={goToSolicitarCita} variant="primario" text="Solicitar cita" />
         </div>
 
       </div>
@@ -56,14 +61,14 @@ const PageDetalleDeTutoria = () => {
         {/*tutor*/}
         <div className="flex flex-col w-[30%] h-full p-4 border-custom shadow-custom bg-[rgba(255,_255,_255,_0.50)] font-roboto">
           <span className="font-montserrat text-2xl font-bold text-primary">Tutor</span>
-          <div className="w-full flex justify-center items-center p-20">
+          <div className="w-full h-full flex justify-center items-center">
             {
               loading ?
-              <div className="w-full h-[90%] flex items-center justify-center">
-                <Spinner size="xl" />
-              </div>
-              :
-              <SimpleCard content="Docente a tiempo completo" title={`${listaDeTutores[0]?.tutorName} ${listaDeTutores[0]?.tutorLastName} ${listaDeTutores[0]?.tutorSecondLastName}`} subContent={listaDeTutores[0]?.state} />
+                <div className="w-full h-[90%] flex items-center justify-center">
+                  <Spinner size="xl" />
+                </div>
+                :
+                <SimpleCard content="Docente a tiempo completo" title={`${listaDeTutores[0]?.tutorName} ${listaDeTutores[0]?.tutorLastName} ${listaDeTutores[0]?.tutorSecondLastName}`} subContent="" />
             }
           </div>
         </div>

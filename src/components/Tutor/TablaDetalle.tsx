@@ -11,6 +11,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { ListStudent } from '../../store/types/ListStudent';
 import { useNavigate } from "react-router-dom";
+import { Services as ServicesProperties } from '../../config';
 
 type TablaDetalleProps = {
   tutoringProgramId: number;
@@ -26,7 +27,7 @@ const TablaDetalle: React.FC<TablaDetalleProps> = ({
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`https://localhost:44369/listarEstudiantesPorProgramaDeTutoria/${tutoringProgramId}`);
+        const response = await axios.get(`${ServicesProperties.BaseUrl}/listarEstudiantesPorProgramaDeTutoria/${tutoringProgramId}`);
         setEstudiantes(response.data.data);
       } catch (error) {
         console.error('Error al obtener datos:', error);

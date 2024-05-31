@@ -4,7 +4,7 @@ import { UserAccount } from "../types";
 
 
 type ProgramaTutoriaHookReturnType =  {
-    fetchUserInfo: (email?:string,codigoPUCP?:string)=>Promise<void>;
+    fetchUserInfo: (email?:string,codigoPUCP?:string)=>Promise<any>;
     resetUserInfo: ()=>void;
     userInfo: UserAccount|null;    
     isLoading: boolean;
@@ -18,8 +18,9 @@ function useUserAccountAuth(): ProgramaTutoriaHookReturnType{
     
     const fetchUserInfo = async (email:string='',codigoPUCP:string='') => {
         setIsLoading(true);
+        let response=null;
         try {
-            const response = await getUserInfo(email,codigoPUCP);
+            response = await getUserInfo(email,codigoPUCP);
             if(response.success){
                 setUserInfo(response.data);
             }
@@ -32,10 +33,11 @@ function useUserAccountAuth(): ProgramaTutoriaHookReturnType{
         } finally {
             setIsLoading(false);
         }
+        return response;
     };
     const resetUserInfo=()=>{setUserInfo(null)}
     useEffect(()=>{
-        resetUserInfo();
+        //resetUserInfo();
     },[]);
     
     return { fetchUserInfo,resetUserInfo,userInfo,isLoading, error };

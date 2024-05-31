@@ -1,4 +1,4 @@
-import { RouteObject } from "react-router-dom";
+import { Navigate, RouteObject } from "react-router-dom";
 //import PageInicioTutor from "../pages/tutor/inicio/PageInicioTutor"
 import PageListadoPlanAccion from '../pages/tutor/listaDeCitas/PageListadoPlanAccion.tsx';
 import PageDetallePlanAccion from '../pages/tutor/listaDeCitas/PageDetallePlanAccion.tsx';
@@ -22,6 +22,7 @@ import PageProgramasTutoriaMaestro from '../pages/coordinador/programasDeTutoria
 import PageAgregarDisponibilidadTutor from '../pages/tutor/calendario/PageAgregarDisponibilidadTutor.tsx';
 import PageDerivacionesHechas from '../pages/tutor/miPerfil/PageDerivacionesHechas.tsx';
 import PagePerfilAlumnoTutor from '../pages/tutor/programasDeTutoria/PagePerfilAlumnoTutor.tsx';
+
 import { SidebarLink } from "../store/types/SidebarLink.ts";
 import {
   BiCabinet,
@@ -35,9 +36,14 @@ import PageListaDeTutorias from "../pages/alumno/listaDeTutorias/pageListaDeTuto
 import PageDetalleDeTutoria from "../pages/alumno/detalleDeCita/pageDetalleDeTutoria.tsx";
 import PageDetalleDeTutoriaSolicitado from "../pages/alumno/detalleDeCita/pageDetalleDeTutoriaSolicitado.tsx";
 import PageDetalleDeTutoriaAlumno from "../pages/alumno/detalleDeCita/pageDetalleDeCitaVariable.tsx";
+<<<<<<< HEAD
 import PageListaDeCitasAlumno from '../pages/alumno/listaDeCitasAlumno/PageListaDeCitasAlumno.tsx';
 import PageResultadoCitaIndividualAlumno from '../pages/alumno/resultadoCita/PageResultadoCitaIndividualAlumno.tsx';
 ///listaDeCitasAlumno/detalleCitaAlumno
+=======
+
+import PageSolicitudGestion from "../pages/coordinador/gestionSolicitudes/PageSolicitudGestion.tsx";
+>>>>>>> 0651077eaa70f12791c43d9c26ce3c8afa06f281
 
 type RouterDetail = {
   pages: RouteObject[];
@@ -111,7 +117,7 @@ export const Routes: RouterConfig = {
       },
       {
         path: '*',
-        element: <PageInicioTutor />
+        element: <Navigate to="/" />
       }
     ],
     navBarLink: [
@@ -166,8 +172,12 @@ export const Routes: RouterConfig = {
         element: <PageProgTutoria />,
       },
       {
+        path: '/gestionSolicitudes',
+        element: <PageSolicitudGestion />,
+      },
+      {
         path: '*',
-        element: <PageInicioTutor />
+        element: <Navigate to="/" />
       }
     ],
     navBarLink: [
@@ -186,7 +196,7 @@ export const Routes: RouterConfig = {
       {
         key: 'gestionDeSolicitudes',
         label: 'Gestion de Solicitudes',
-        path: '/',//Pendiente agregar
+        path: '/gestionSolicitudes',
         icon: <BiListUl fontSize={32} />,
       },
       {
@@ -206,7 +216,7 @@ export const Routes: RouterConfig = {
   alumno: {
     pages: [
       {
-        path: '/',
+        path: "/",
         element: <PageInicioTutor />,
       },
       {
@@ -226,20 +236,20 @@ export const Routes: RouterConfig = {
         element: < PageDetalleDeTutoriaAlumno />
       },
       {
-        path: '/miPerfil',
+        path: "/miPerfil",
         element: <PageMiPerfilAlumno />
       },
       {
-        path: '/solicitarTutor',
+        path: "/solicitarTutor",
         element: <PageSolicitarAlumno />
 
       },
       {
-        path: '/listadoPlanAccionAlumno',
+        path: "/listadoPlanAccionAlumno",
         element: <PageListadoPlanAccionAlumno />
       },
       {
-        path: '/detallePlanAccionAlumno',
+        path: "/detallePlanAccionAlumno",
         element: <PageDetallePlanAccionAlumno />
 
       },
@@ -254,7 +264,10 @@ export const Routes: RouterConfig = {
       {
         path: '/listaDeCitasAlumno/detalleCitaAlumno',
         element: <PageResultadoCitaIndividualAlumno/>
-      } 
+      },{ 
+        path: '*',
+        element: <Navigate to="/" />
+      }
 
     ],
     navBarLink: [
@@ -287,7 +300,7 @@ export const Routes: RouterConfig = {
         label: 'Mi Perfil',
         path: '/miPerfil',
         icon: <BiUser fontSize={32} />,
-      },
+      }
     ]
   }
 };

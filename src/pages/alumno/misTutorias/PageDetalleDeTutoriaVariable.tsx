@@ -8,7 +8,9 @@ import SimpleCard from "../../../components/Tutor/SimpleCard";
 import React from 'react';
 import { Spinner } from "../../../components";
 
-const PageDetalleDeTutoriaAlumno = () => {
+const PageDetalleDeTutoriaVariable = () => {
+  //const { userData } = useAuth();
+  //const studentId = userData?.userInfo?.id;
 
   const location = useLocation();
   const data = location.state.data;
@@ -91,4 +93,4 @@ const PageDetalleDeTutoriaAlumno = () => {
 
 };
 
-export default PageDetalleDeTutoriaAlumno;
+export default PageDetalleDeTutoriaVariable;

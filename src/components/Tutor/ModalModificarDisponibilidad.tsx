@@ -4,6 +4,7 @@ import { SlotInfo } from 'react-big-calendar';
 import Button from '../Button';
 import { Datepicker, Label, TextInput } from 'flowbite-react';
 import { useAvailability } from '../../store/hooks/useAvailability';
+import { useAuth } from '../../context';
 
 interface ModalModificarDisponibilidadProps {
   isOpen: boolean;
@@ -12,11 +13,12 @@ interface ModalModificarDisponibilidadProps {
   refreshCalendar: () => void;
 }
 
-const tutorId = 3;
-
 const ModalModificarDisponibilidad: React.FC<ModalModificarDisponibilidadProps> = (
   { isOpen, onClose, slotInfo, refreshCalendar }
 ) => {
+
+  const { userData } = useAuth();
+  const tutorId = userData?.userInfo?.roles[0].details.tutorId;
 
   const { addAvailability } = useAvailability(tutorId);
 

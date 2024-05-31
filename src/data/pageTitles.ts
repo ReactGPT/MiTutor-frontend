@@ -9,7 +9,7 @@ export const PageTitles = [
   },
   {
     path: '/programasDeTutoria',
-    pageName: "Programas de tutoría",
+    pageName: "Tipos de tutoría",
   },
   {
     path: '/listaDeCitas',
@@ -53,7 +53,7 @@ export const PageTitles = [
   },
   {
     path: '/programasDeTutoriaMaestro',
-    pageName: "Programas de Tutoría"
+    pageName: "Tipos de Tutoría"
   },
   {
     path: '/agregarDisponibilidad',

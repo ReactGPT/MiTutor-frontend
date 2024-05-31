@@ -134,7 +134,7 @@ export const Routes: RouterConfig = {
       },
       {
         key: 'programasDeTutoria',
-        label: 'Programas de Tutoria',
+        label: 'Tipos de Tutoria',
         path: '/programasDeTutoria',
         icon: <BiCabinet fontSize={32} />,
       },
@@ -188,7 +188,7 @@ export const Routes: RouterConfig = {
       },
       {
         key: 'programasDeTutoria',
-        label: 'Programas de Tutoria',
+        label: 'Tipos de Tutoria',
         path: '/programasDeTutoria',
         icon: <BiCabinet fontSize={32} />,
       },

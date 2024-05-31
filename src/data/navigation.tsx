@@ -23,7 +23,7 @@ export const DASHBOARD_SIDEBAR_LINKS: SidebarLink[] = [
   },
   {
     key: 'programasDeTutoria',
-    label: 'Programas de Tutoria',
+    label: 'Tipos de Tutoria',
     path: '/programasDeTutoria',
     icon: <BiCabinet fontSize={32} />,
   },

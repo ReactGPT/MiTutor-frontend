@@ -22,6 +22,7 @@ import PageProgramasTutoriaMaestro from '../pages/coordinador/programasDeTutoria
 import PageAgregarDisponibilidadTutor from '../pages/tutor/calendario/PageAgregarDisponibilidadTutor.tsx';
 import PageDerivacionesHechas from '../pages/tutor/miPerfil/PageDerivacionesHechas.tsx';
 import PagePerfilAlumnoTutor from '../pages/tutor/programasDeTutoria/PagePerfilAlumnoTutor.tsx';
+
 import { SidebarLink } from "../store/types/SidebarLink.ts";
 import {
   BiCabinet,
@@ -36,7 +37,7 @@ import PageDetalleDeTutoria from "../pages/alumno/detalleDeCita/pageDetalleDeTut
 import PageDetalleDeTutoriaSolicitado from "../pages/alumno/detalleDeCita/pageDetalleDeTutoriaSolicitado.tsx";
 import PageDetalleDeTutoriaAlumno from "../pages/alumno/detalleDeCita/pageDetalleDeCitaVariable.tsx";
 
-
+import PageSolicitudGestion from "../pages/coordinador/gestionSolicitudes/PageSolicitudGestion.tsx";
 
 type RouterDetail = {
   pages: RouteObject[];
@@ -165,6 +166,10 @@ export const Routes: RouterConfig = {
         element: <PageProgTutoria />,
       },
       {
+        path: '/gestionSolicitudes',
+        element: <PageSolicitudGestion />,
+      },
+      {
         path: '*',
         element: <Navigate to="/" />
       }
@@ -185,7 +190,7 @@ export const Routes: RouterConfig = {
       {
         key: 'gestionDeSolicitudes',
         label: 'Gestion de Solicitudes',
-        path: '/',//Pendiente agregar
+        path: '/gestionSolicitudes',
         icon: <BiListUl fontSize={32} />,
       },
       {

@@ -23,13 +23,14 @@ export default function PageProgramasTutoriaMaestro() {
     const {isLoading,programaTutoriaData,fetchProgramaTutorias} = useProgramaTutoria();
     //const [programaTutoriaFiltered,setProgramaTutoriaFiltered] = useState<ProgramaTutoria[]|null>(null)
     useEffect(()=>{
+        //console.log("llamada fetch prog tutoria");
         fetchProgramaTutorias();
-    },[])
+    },[]);
     
     const handleNavigation=(data:ProgramaTutoria)=>{
         //console.log(data);
-        navigate('editar',{state:{programaTutoria:data}});
-    }
+        navigate("/programasDeTutoriaMaestro/editar",{state:{programaTutoria:data}});
+    };
 
     const [filters,setFilters]=useState<any>({
         idSpeciality:null,
@@ -38,12 +39,12 @@ export default function PageProgramasTutoriaMaestro() {
     });
     const handleOnChangeFilters = (filter:any)=>{
         setFilters(filter);
-    }
+    };
     const programaTutoriaFiltered : ProgramaTutoria[]=  useMemo(()=>{
         return [...(programaTutoriaData).filter((item)=>
             item.nombre.toLowerCase().includes(filters.name?filters.name:"")&&(filters.idSpeciality?filters.idSpeciality===item.especialidadId:true)&&(filters.idFaculty?filters.idFaculty===item.facultadId:true)
     )]
-    },[programaTutoriaData,filters])
+    },[programaTutoriaData,filters]);
     
     
     const defaultColDef = {

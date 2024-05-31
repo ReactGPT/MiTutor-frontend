@@ -2,7 +2,7 @@ import { Button } from '../../../components';
 import { EyeIcon, MagnifyGlass } from '../../../assets';
 //import imagenTutor from "../../../../../../../../src/assets/Tutor/usuario.jpg";
 import { NavLink } from 'react-router-dom';
-
+import { useAuth } from '../../../context';
 type InputProps = {
     className:string;
     nombreAlumno:string;
@@ -11,6 +11,7 @@ type InputProps = {
 }
 
 function ResultadoCitaBlockAlumno({className,nombreAlumno,onClickVerPerfil,onClickPlanAccion}:InputProps) {
+  
   return (
     <div className={className}>  
           <div className="flex w-[50%] bg-[rgba(255,255,255,0.5)] border-custom drop-shadow-md p-5 justify-between" style={{ height: '15%' }}> 

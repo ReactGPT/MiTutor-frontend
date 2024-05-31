@@ -4,8 +4,6 @@ import googleCredentialDecode from "../utils/googleCredentialDecode";
 //import { useNavigate } from "react-router-dom";
 import { useUserAccountAuth } from "../store/hooks";
 import { UserAccount } from "../store/types";
-import { useRouter } from "./RouterContext";
-import { Routes } from "../data/routes";
 type UserData= {
     username:string;
     email:string;

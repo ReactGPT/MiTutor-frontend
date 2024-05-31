@@ -17,9 +17,7 @@ function Login() {
               <GoogleLogin useOneTap onSuccess={handleSuccess} onError={handleError} />
             </div>
           </div>
-            
         </div>
-        
     </div>
   )
 }

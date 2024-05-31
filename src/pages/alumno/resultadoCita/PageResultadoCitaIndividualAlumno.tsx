@@ -2,15 +2,13 @@ import { useEffect, useState } from 'react'
 
 import { useLocation,useNavigate,useParams } from 'react-router-dom';
 import { Appointment } from '../../../store/types';
-import ResultadoCitaBlockAlumno from '../../tutor/resultadoCita/ResultadoCitaBlockAlumno';
-import ResultadoCitaBlock2 from '../../tutor/resultadoCita/ResultadoCitaBlock2';
 import { Button, InputCell } from '../../../components';
 import ResultadoCardInformacionAlumno from './ResultadoCardInformacionAlumno.tsx';
-import InputTutor from '../../../components/Tutor/InputTutor';
 import InputAlumno from '../InputAlumno.tsx';
-import { ListCita } from '../../../store/types/ListCita.ts';
-import { useResultadoCita, useUpdateResultadoCita, useUpdateComentario } from "../../../store/hooks/useResultadoCita";
-
+import { useResultadoCita} from "../../../store/hooks/useResultadoCita";
+import { useArchivosDB} from '../../../store/hooks/useArchivos';
+import { ExtendedFile } from '../../../store/types/Archivo.ts';
+import { FaDownload } from 'react-icons/fa';
 type Student = {
     id:number;
     nombre:string;
@@ -72,6 +70,8 @@ function PageResultadoCitaIndividualAlumno() {
     const {cita}= state;
     const [commentValue, setCommentValue] = useState('');
     const { resultadoCita, fetchResultadoCita } = useResultadoCita(cita);
+    const { archivosBD, fetchArchivosBD} = useArchivosDB(); 
+
     const handleClickVerPerfil= ()=>{
         navigate("/PerfilAlumno");
     };
@@ -84,11 +84,25 @@ function PageResultadoCitaIndividualAlumno() {
 
     useEffect(() => { 
       if (resultadoCita && resultadoCita.appointmentResult && resultadoCita.appointmentResult.appointmentResultId !== 0) {
-          //fetchArchivosBD(resultadoCita.appointmentResult.appointmentResultId, 1); 
+          fetchArchivosBD(resultadoCita.appointmentResult.appointmentResultId, 1); 
           setCommentValue(resultadoCita.appointmentResult.comments[1]?.message || ''); 
           console.log("comentario",commentValue)
       }
     }, [resultadoCita]);  
+
+    const handleFileDownload = (file: ExtendedFile) => {
+        try {
+          const url = URL.createObjectURL(file); // Crear URL del archivo
+          const link = document.createElement('a');
+          link.href = url;
+          link.setAttribute('download', file.name);
+          document.body.appendChild(link);
+          link.click(); // Iniciar descarga
+          document.body.removeChild(link); // Limpiar después de la descarga
+        } catch (error) {
+          console.error('Error al descargar el archivo:', error);
+        }
+      };  
 
     return (
         <div className='w-full overflow-hidden '>
@@ -132,19 +146,35 @@ function PageResultadoCitaIndividualAlumno() {
                             <div className='gap-2'>
                                 <label className="text-xl font-medium text-primary">Sesión</label>
                                 <InputAlumno className='flex-1'disabled={true} value={cita.isInPerson ? 'Oficina del Profesor' : 'Link de Zoom'}/>
-                            </div>
-                            
-                        <div className=' row-start-2 col-start-3 row-span-2 mt-auto '>
-                            <Button text='Ver perfil' variant='primario' className='w-full flex justify-center font-bold text-blue-600' onClick={handleClickVerPerfil}/>
-                        </div>
+                            </div> 
                         </div>
                     </div>
                     <div className='gap-10 grid ma grid-cols-[repeat(auto-fit,minmax(min(15rem,100%),1fr))] mx-auto w-full '>
                     
-                    <ResultadoCardInformacionAlumno cardTitle='Tutor' emptyMessage={`${cita.tutorName}\n${cita.tutorLastName} ${cita.tutorSecondLastName}\n${cita.tutorEmail}`}/>
-                    <ResultadoCardInformacionAlumno cardTitle='Comentario del Tutor'emptyMessage={commentValue ? `${commentValue}` : 'Por el momento, no hay comentarios del docente. Regresa más tarde.'}/>
-                    <ResultadoCardInformacionAlumno cardTitle='Documentos'  emptyMessage='Por el momento no hay documentos. Regresa más tarde.' />
-                    
+                        <ResultadoCardInformacionAlumno cardTitle='Tutor' emptyMessage={`${cita.tutorName}\n${cita.tutorLastName} ${cita.tutorSecondLastName}\n${cita.tutorEmail}`}/>
+                        <ResultadoCardInformacionAlumno cardTitle='Comentario'emptyMessage={commentValue ? `${commentValue}` : 'Por el momento, no hay comentarios del docente. Regresa más tarde.'}/>
+                        <ResultadoCardInformacionAlumno
+                            cardTitle="Documentos"
+                            className="additional-classes"
+                            emptyMessage="No hay archivos seleccionados"
+                        > 
+                                {archivosBD.length > 0 && (
+                                    <div className='w-full max-h-48 overflow-y-auto'>
+                                        <ul>
+                                            {archivosBD
+                                                .filter(file => file.eliminado != 1)
+                                                .map((file, index) => (
+                                                    <li key={index} className="flex justify-between items-center p-2 bg-gray-100 rounded-md shadow-md mb-2" style={{ maxHeight: '300px' }}>
+                                                        <span className="flex-1">{file.name}</span>
+                                                        <button onClick={() => handleFileDownload(file)}>
+                                                            <FaDownload size={15} />
+                                                        </button>
+                                                    </li>
+                                                ))}
+                                        </ul>
+                                    </div>
+                                )} 
+                        </ResultadoCardInformacionAlumno>
                         
                     </div>
                     </>

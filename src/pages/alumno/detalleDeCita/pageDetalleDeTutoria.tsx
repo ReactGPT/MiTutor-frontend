@@ -15,6 +15,7 @@ const PageDetalleDeTutoria = () => {
 
   const location = useLocation();
   const data = location.state.data;
+  console.log(data);
 
   const { listaDeTutores, fetchTutoresPorTutoria, loading } = useTutoresPorTutoriayAlumno(data.tutoringProgramId, studentId);
 
@@ -29,7 +30,7 @@ const PageDetalleDeTutoria = () => {
   };
 
   const goToSolicitarCita = () => {
-    const datos = { tutoringProgramId: data.tutoringProgramId, tutor: listaDeTutores[0] };
+    const datos = { tutoringProgram: data, tutor: listaDeTutores[0] };
     navigate('/solicitarCita', { state: { datos } });
   };
 

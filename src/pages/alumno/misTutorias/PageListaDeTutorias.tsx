@@ -26,6 +26,17 @@ const PageListaDeTutorias = () => {
     setCurrentPage(1);
   };
 
+  const [filters, setFilters] = useState<any>({
+    status: null,
+    startDate: null,
+    endDate: null,
+    name: null
+  });
+
+  const handleOnChangeFilters = (filter: any) => {
+    setFilters(filter);
+  };
+
   const filteredPrograms = programaTutoriaAlumno?.filter(program =>
     program.programName.toLowerCase().includes(searchText.toLowerCase())
   );
@@ -41,7 +52,7 @@ const PageListaDeTutorias = () => {
   return (
     <div className="flex flex-col gap-5 w-full h-full">
       <div className="w-full h-[5%]">
-        <SearchInput placeholder="Programa de Tutoria" onSearch={handleSearch} />
+        <SearchInput placeholder="Programa de Tutoria" onSearch={handleSearch} handleOnChangeFilters={handleOnChangeFilters} />
       </div>
 
       {

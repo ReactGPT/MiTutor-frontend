@@ -76,11 +76,11 @@ export const PageTitles = [
     pageName: "Disponibilidad del Tutor"
   },
   {
-    path: '/listadoPlanAccionAlumno',
+    path: '/misTutorias/detalle/planesDeAccion',
     pageName: "Mis Planes de Acción"
   },
   {
-    path: '/detallePlanAccionAlumno',
+    path: '/misTutorias/detalle/planesDeAccion/detalle',
     pageName: "Detalle Plan de Acción"
   },
   {

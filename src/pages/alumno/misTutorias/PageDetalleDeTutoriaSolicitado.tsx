@@ -32,7 +32,7 @@ const PageDetalleDeTutoriaSolicitado = () => {
   }, []);
 
   const goToTutorPlan = () => {
-    navigate('/listadoPlanAccionAlumno', { state: { programId: data.tutoringProgramId, tutorId: listaDeTutores[0].tutorId } });
+    navigate('/misTutorias/detalle/planesDeAccion', { state: { programId: data.tutoringProgramId, tutorId: listaDeTutores[0].tutorId } });
   };
 
   const goToTutorList = () => {

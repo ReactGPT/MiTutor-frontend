@@ -24,7 +24,7 @@ function FormularioDerivacion({className,cita}:InputProps){
   const { estudiante, fetchEstudiante } = useEstudianteResultadoCita(cita); 
   //Traer datos del profesor
   /*const [tutorRId, setTutorRId] = useState(0);*/
-  const { tutor, fetchTutor } = useTutorResultadoCita(1);
+  const { tutor, fetchTutor } = useTutorResultadoCita(2);
 
   /*useEffect(() => {
       // Verifica si tutorR tiene un valor y establece tutorRId con su ID
@@ -52,6 +52,7 @@ function FormularioDerivacion({className,cita}:InputProps){
   useEffect(() => {
     fetchEstudiante()  
     fetchDerivation()
+    fetchTutor()
     fetchUnidadesDerivacion() 
   }, []);
   

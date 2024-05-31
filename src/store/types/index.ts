@@ -5,3 +5,4 @@ export * from './Faculty';
 export * from './Appointment';
 export * from './ProgramaTutoria';
 export * from './store';
+export * from './UserAccount';

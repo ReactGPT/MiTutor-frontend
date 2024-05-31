@@ -1,6 +1,6 @@
 import Button from '../../../components/Button';
 import { useNavigate } from 'react-router-dom';
-import Calendario from '../../../components/Calendar/Calendario';
+import CalendarioDisponibilidad from '../../../components/Calendar/CalendarioDisponibilidad';
 import { useEffect } from 'react';
 import { useCitasPorTutor } from '../../../store/hooks/useCita';
 
@@ -46,7 +46,7 @@ const PageCalendarioTutor: React.FC = () => {
         </div>
       </div>
       <div className="flex-1 w-full overflow-auto bg-white rounded-md p-4">
-        <Calendario citas={cita} />
+        <CalendarioDisponibilidad citas={cita} />
       </div>
     </div >
   );

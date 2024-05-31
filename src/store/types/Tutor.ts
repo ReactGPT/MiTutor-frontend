@@ -24,3 +24,20 @@ export type Tutor={
   faculty: string | null;
   tutoringProgram: string | null;
 }
+
+export type tutorxalumno = {
+
+  tutorId : number;
+  tutorName : string;
+  tutorLastName : string;
+  tutorSecondLastName : string;
+  state : string;
+
+}
+
+export type TutorEstadoSolicitud = {
+
+  estado : string;
+  tutores : tutorxalumno[];
+
+}

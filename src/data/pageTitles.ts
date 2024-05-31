@@ -95,5 +95,9 @@ export const PageTitles = [
   {
     path: '/listaDeCitasAlumno/detalleCitaAlumno',
     pageName: "Detalle de Cita"
+  },
+  {
+    path: '/solicitarCita',
+    pageName: "Solicitar Cita"
   }
 ];

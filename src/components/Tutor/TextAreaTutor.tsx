@@ -8,9 +8,10 @@ type TextAreaProps = {
   value?: string;
   readOnly?: boolean;
   onChange?: (e: ChangeEvent<HTMLTextAreaElement>) => void;
+  manejarBlur?: (e: ChangeEvent<HTMLTextAreaElement>) => void;
 }
 
-const TextAreaTutor = ({ titulo = "", texto = "", enable = true, name, value, readOnly, onChange }: TextAreaProps) => {
+const TextAreaTutor = ({ titulo = "", texto = "", enable = true, name, value, readOnly, onChange, manejarBlur }: TextAreaProps) => {
   return (
     <li className="drop-shadow-md p-5 flex items-center  space-x-5 height-100% personalizado"
       style={{ display: "flex", height: "100%", flexDirection: "column", alignItems: "flex-start" }}>
@@ -24,6 +25,7 @@ const TextAreaTutor = ({ titulo = "", texto = "", enable = true, name, value, re
         value={value}
         onChange={onChange}
         readOnly={readOnly}
+        onBlur={manejarBlur}
         ></textarea>
     </li>
   );

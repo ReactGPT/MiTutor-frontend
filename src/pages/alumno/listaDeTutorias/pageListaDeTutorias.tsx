@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react";
-import { Button, SearchInput,Spinner } from "../../../components";
+import { Button, SearchInput, Spinner } from "../../../components";
 import { useProgramaDeTutoriaAlumno } from "../../../store/hooks/useProgramaDeTutoriaAlumno";
 import Pagination from "../../../components/Pagination";
 import TutoringProgramCardAlumno from "../../../components/Tutor/TutoringProgramCardAlumno";
 import IconAdd from "../../../assets/svg/IconAdd";
+import React from 'react'
 
 const PageListaDeTutorias = () => {
 
@@ -20,7 +21,7 @@ const PageListaDeTutorias = () => {
     const handleSearch = (text: string) => {
         setSearchText(text);
         setCurrentPage(1);
-    };    
+    };
 
     const [filters, setFilters] = useState<any>({
         status: null,
@@ -45,32 +46,24 @@ const PageListaDeTutorias = () => {
         setCurrentPage(pageNumber);
     };
 
-    const debugClick = () => {
-        console.log('boton clickeado')
-    };
-
-    return(
+    return (
         <div className="flex flex-col gap-5 w-full h-full">
             <div className="w-full h-[5%]">
                 <SearchInput placeholder="Programa de Tutoria" onSearch={handleSearch} handleOnChangeFilters={handleOnChangeFilters}/>
             </div>
 
-            { 
+            {
                 loading ?
-                <div className="w-full h-[90%] flex items-center justify-center">
-                <Spinner size="xl" />
-                </div>
-                :
-                <div className="w-full h-[90%] flex flex-col gap-5">
-                {currentPrograms.map((program, index) => (
-                    <TutoringProgramCardAlumno key={`dpt${index}`} data={program} />
-                ))}
-                </div>
+                    <div className="w-full h-[90%] flex items-center justify-center">
+                        <Spinner size="xl" />
+                    </div>
+                    :
+                    <div className="w-full h-[90%] flex flex-col gap-5">
+                        {currentPrograms.map((program, index) => (
+                            <TutoringProgramCardAlumno key={`dpt${index}`} data={program} />
+                        ))}
+                    </div>
             }
-            
-            <div className="w-full h-full flex items-center justify-end p-5">
-                <Button onClick={debugClick} icon={IconAdd} iconSize={8}/>
-            </div>
 
             <Pagination
                 currentPage={currentPage}
@@ -81,6 +74,6 @@ const PageListaDeTutorias = () => {
         </div>
     );
 
-}
+};
 
 export default PageListaDeTutorias;

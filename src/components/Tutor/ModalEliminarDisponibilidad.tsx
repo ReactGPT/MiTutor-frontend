@@ -11,6 +11,7 @@ interface CustomEvent extends Event {
   startTime?: string;
   endTime?: string;
   isActive?: boolean;
+  status?: string;
 }
 
 interface ModalEliminarDisponibilidadProps {

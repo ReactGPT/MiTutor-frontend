@@ -8,7 +8,6 @@ import { Event } from 'react-big-calendar';
 import { useAvailability } from '../../store/hooks/useAvailability';
 import "./index.css";
 import ModalModificarDisponibilidad from '../Tutor/ModalModificarDisponibilidad';
-import ModalProgramarCitaTutor from '../Tutor/ModalProgramarCitaTutor';
 
 interface CustomEvent extends Event {
   isBackgroundEvent?: boolean;
@@ -17,6 +16,7 @@ interface CustomEvent extends Event {
   startTime?: string;
   endTime?: string;
   isActive?: boolean;
+  status?: string;
 }
 
 type Availability = {
@@ -27,7 +27,7 @@ type Availability = {
   isActive: boolean;
 };
 
-interface CalendarioProps {
+interface CalendarioDisponibilidadProps {
   citas?: ListCita[];
   programable?: boolean;
   onSelectEvent?: (event: CustomEvent) => void;
@@ -61,12 +61,13 @@ function combineDateAndTime(date: string, time: string): Date {
 }
 
 function transformCitaToEvent(cita: ListCita): CustomEvent {
-  const { programName, creationDate, startTime, endTime } = cita;
+  const { programName, creationDate, startTime, endTime, appointmentStatus } = cita;
 
   return {
-    title: `Cita en ${programName}`,
+    title: `${programName}`,
     start: combineDateAndTime(creationDate, startTime.toString()),
     end: combineDateAndTime(creationDate, endTime.toString()),
+    status: appointmentStatus,
     resource: cita
   };
 }
@@ -84,8 +85,10 @@ function transformAvailabilityToEvent(availability: Availability[]): CustomEvent
   }));
 }
 
-const Calendario: React.FC<CalendarioProps> = ({ citas = null, programable = false, onSelectEvent, refresh }) => {
-  const { availability, fetchAvailability } = useAvailability(1);
+const tutorId = 3;
+
+const CalendarioDisponibilidad: React.FC<CalendarioDisponibilidadProps> = ({ citas = null, programable = false, onSelectEvent, refresh }) => {
+  const { availability, fetchAvailability } = useAvailability(tutorId);
 
   const [refreshKey, setRefreshKey] = useState(0);
 
@@ -150,6 +153,30 @@ const Calendario: React.FC<CalendarioProps> = ({ citas = null, programable = fal
         }
       };
     };
+    if (event.status === "registrada") {
+      return {
+        style: {
+          backgroundColor: 'rgb(82 208 118)',
+          color: 'white',
+        }
+      };
+    };
+    if (event.status === "pendiente resultado") {
+      return {
+        style: {
+          backgroundColor: 'rgb(208 82 82)',
+          color: 'white',
+        }
+      };
+    };
+    if (event.status === "completada") {
+      return {
+        style: {
+          backgroundColor: 'rgb(32 108 229)',
+          color: 'white',
+        }
+      };
+    };
     return {};
   };
   //
@@ -168,7 +195,7 @@ const Calendario: React.FC<CalendarioProps> = ({ citas = null, programable = fal
         messages={messages}
         views={{ week: true }}
         defaultView="week"
-        timeslots={2}
+        timeslots={1}
         step={30}
         min={new Date(0, 0, 0, 8, 0)}
         max={new Date(0, 0, 0, 18, 0)}
@@ -177,9 +204,8 @@ const Calendario: React.FC<CalendarioProps> = ({ citas = null, programable = fal
         selectable={programable}
       />
       <ModalModificarDisponibilidad slotInfo={selectedSlot} isOpen={showModal} onClose={closeModal} refreshCalendar={refreshCalendar} />
-      <ModalProgramarCitaTutor isOpen={false} onClose={() => { }} slotInfo={selectedSlot} />
     </>
   );
 };
 
-export default Calendario;
+export default CalendarioDisponibilidad;

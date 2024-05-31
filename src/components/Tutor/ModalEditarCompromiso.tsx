@@ -8,6 +8,7 @@ import InputSelectTutor from './InputSelectTutor';
 import { CommitmentStatus } from '../../store/types/CommitmentStatus';
 import TextAreaTutor from './TextAreaTutor';
 import Combobox from '../Combobox';
+import { Services as ServicesProperties } from '../../config';
 
 interface ModalEditarCompromisoProps {
   onClose: () => void;
@@ -34,9 +35,10 @@ let opciones: CommitmentStatus[] = [
 export default function ModalEditarCompromiso({ onClose, updatePage, compromiso, usuario}: ModalEditarCompromisoProps) {
   const [commitmentData, setCommitmentData] = useState(compromiso);
   const [selectedOption, setSelectedOption] = useState<string | undefined>(compromiso.CommitmentStatusId); // Inicializar con el estado del compromiso
-  const [description, setDescription] = useState<string | undefined>(compromiso.Compromiso); // Inicializar con la descripción del compromiso
+  const [description, setDescription] = useState<string>(compromiso.Compromiso); // Inicializar con la descripción del compromiso
 
-  console.log('Estado al iniciar el componente:', compromiso)
+  // Estado para el mensaje de error del nombre del plan de acción
+  const [nameError, setNameError] = useState('');
 
   const handleChangeCompromiso = (e: ChangeEvent<HTMLTextAreaElement>) => {
     setDescription(e.target.value);
@@ -47,6 +49,14 @@ export default function ModalEditarCompromiso({ onClose, updatePage, compromiso,
     const selectedOption = e.target.value; // Valor seleccionado en el select
     console.log('selectedOptionnnnnnnnnnnn:', selectedOption);
   };
+
+  const onBlurName = (e: ChangeEvent<HTMLTextAreaElement>) => {
+    if (!description.trim()) {
+      setNameError('El compromiso no puede estar vacío');
+    } else {
+      setNameError('');
+    }
+  }
 
   const guardarDatos = async () => {
     try {
@@ -61,7 +71,7 @@ export default function ModalEditarCompromiso({ onClose, updatePage, compromiso,
         "commitmentStatusDescription": "string" //no lo usa
       };
       console.log('newData para update:', newData);
-      const response = await axios.put('https://localhost:44369/actualizarCommitment', newData);
+      const response = await axios.put(ServicesProperties.BaseUrl+'/actualizarCommitment', newData);
       console.log('Commitment actualizado:', response.data);
       onClose(); // Cierra el modal después de guardar los datos exitosamente
       updatePage();
@@ -106,7 +116,9 @@ export default function ModalEditarCompromiso({ onClose, updatePage, compromiso,
                     onChange={handleChangeCompromiso}
                     readOnly={usuario==="tutor"?false:true}
                     enable={true}
+                    manejarBlur={onBlurName}
                   />
+                  {nameError && <p className="text-red-500 pl-6">{nameError}</p>}
                   <InputSelectTutor
                     titulo='Estado del Compromiso *'
                     name='commitmentStatusDescription'
@@ -117,7 +129,7 @@ export default function ModalEditarCompromiso({ onClose, updatePage, compromiso,
                 </div>
                 <div className="flex justify-between items-center mx-25 my-3">
                   <Button text="Cancelar" onClick={onClose} variant='secundario' />
-                  <Button text="Guardar Cambios" onClick={guardarDatos} variant='call-to-action' />
+                  <Button text="Guardar Cambios" onClick={guardarDatos} variant='call-to-action' disabled={!description.trim()}/>
                 </div>
               </div>
             </div>

@@ -16,7 +16,7 @@ function DatosTipoTutor({className}:InputProps) {
     <div className={className}>
         <h2 className='text-xl font-bold text-primary'>Tipo de Tutor</h2>
         <div className='w-full flex h-full py-8'>
-          <Combobox name='tutorTypeId' boxSize='w-full max-w-[150px]' onChange={(value:any)=>{
+          <Combobox name='tutorTypeId' className='w-full max-w-[150px]' onChange={(value:any)=>{
             onChangeTutoringProgramObject({...tutoringProgram,
               "tutorTypeId":value.id,
               "tutorTypeDescription":value.name

@@ -83,10 +83,10 @@ export default function ModalDerivacion({ onClose }: ModalDerivacionProps) {
 
                 </Dialog.Title>
                 <div className="mt-2">
-                  <p className='font-montserrat text-[15px] text-primary pt-3 text-center'>La ficha de derivación se ha creado con éxito. Puede observar su ficha en sus archivos</p>
+                  <p className='font-montserrat text-[15px] text-primary pt-3 text-center'>La ficha de derivación se ha creado con éxito. Puede descargarla.</p>
                 </div>
                 <div className="mt-4 flex justify-center space-x-16">
-                  <Button onClick={() => null} variant="call-to-action" text="Ver Ficha" />
+                  {/*<Button onClick={() => null} variant="call-to-action" text="Ver Ficha" />*/}
                 </div>
               </div>
             </Transition.Child>

@@ -107,7 +107,7 @@ export const Routes:RouterConfig={
         {
           path: '/solicitarTutor',
   
-          element: <PageSolicitarAlumno idProgram={1}/>
+          element: <PageSolicitarAlumno/>
   
         },
         {
@@ -118,6 +118,10 @@ export const Routes:RouterConfig={
           path: '/detallePlanAccionAlumno',
           element:<PageDetallePlanAccionAlumno/>
   
+        },
+        {
+          path: '*',
+          element:<PageInicioTutor/>
         }
       ],
       navBarLink:[
@@ -170,6 +174,10 @@ export const Routes:RouterConfig={
         {
           path: '/programasDeTutoriaMaestro/nuevo',
           element: <PageProgTutoria />,
+        },
+        {
+          path: '*',
+          element:<PageInicioTutor/>
         }
       ],
       navBarLink:[
@@ -218,7 +226,7 @@ export const Routes:RouterConfig={
         {
           path: '/solicitarTutor',
   
-          element: <PageSolicitarAlumno idProgram={1}/>
+          element: <PageSolicitarAlumno/>
   
         },
         {
@@ -233,6 +241,10 @@ export const Routes:RouterConfig={
         {
           path: '/solicitarCita',
           element: <PageSolicitarCita />
+        },
+        {
+          path: '*',
+          element:<PageInicioTutor/>
         }
         
       ],

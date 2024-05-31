@@ -30,7 +30,7 @@ const TutoringProgramCard: React.FC<TutoringProgramCardProps> = ({ data }) => {
           <hr className="h-full border-custom" />
           <span className="text-primary w-36"> {data.specialtyName} </span>
           <hr className="h-full border-custom" />
-          <span className="text-primary w-24"> Tutor {data.tutorType} </span>
+          <span className="text-primary w-24"> {data.tutorType} </span>
 
           <Button variant='primario' onClick={goToProgramDetails} icon={IconDetails} />
         </div>

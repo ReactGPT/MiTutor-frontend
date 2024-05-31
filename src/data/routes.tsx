@@ -134,7 +134,7 @@ export const Routes: RouterConfig = {
       },
       {
         key: 'programasDeTutoria',
-        label: 'Programas de Tutoria',
+        label: 'Tipos de Tutoria',
         path: '/programasDeTutoria',
         icon: <BiCabinet fontSize={32} />,
       },
@@ -159,7 +159,7 @@ export const Routes: RouterConfig = {
         element: <PageInicioTutor />,
       },
       {
-        path: '/programasDeTutoriaMaestro',
+        path: '/programasDeTutoria',
         element: <PageProgramasTutoriaMaestro />,
       },
       {
@@ -188,7 +188,7 @@ export const Routes: RouterConfig = {
       },
       {
         key: 'programasDeTutoria',
-        label: 'Programas de Tutoria',
+        label: 'Tipos de Tutoria',
         path: '/programasDeTutoria',
         icon: <BiCabinet fontSize={32} />,
       },
@@ -200,8 +200,8 @@ export const Routes: RouterConfig = {
       },
       {
         key: 'especialidades',
-        label: 'Gestion de Solicitudes',
-        path: '/',//Pendiente agregar
+        label: 'Especialidades',
+        path: '/especialidades',//Pendiente agregar
         icon: <BiListUl fontSize={32} />,
       },
       {
@@ -209,7 +209,7 @@ export const Routes: RouterConfig = {
         label: 'Indicadores',
         path: '/indicadores',
         icon: <BiUser fontSize={32} />,
-      },
+      }
     ]
   },
   alumno: {

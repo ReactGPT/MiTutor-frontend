@@ -1,8 +1,14 @@
-type Tutor={
+export type Tutor={
     idTutor:number;
     nombre:string;
-    id_tipo:number;
-    descripcion_tipo:string;
+    apellido_paterno:string;
+    apellido_materno:string;
+    //id_tipo:number;
+    //descripcion_tipo:string;
+    meetingRoom:string;
+    email:string;
+    fullname:string;
+    toAdd?:boolean;
 }
 type Alumno={
     codigo:number;

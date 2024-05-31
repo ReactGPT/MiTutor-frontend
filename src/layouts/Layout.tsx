@@ -5,12 +5,14 @@ import { DASHBOARD_SIDEBAR_LINKS } from "../data/navigation";
 import { Outlet } from "react-router-dom";
 import { useParameters } from "../store/hooks";
 import { useRouter } from "../context";
+
 function Layout() {
   const { fetchEspecialidades, fetchFacultades } = useParameters();
   const {sideBarOption}=useRouter();
   useEffect(() => {
     fetchEspecialidades();
     fetchFacultades();
+
   }, []);
 
   return (

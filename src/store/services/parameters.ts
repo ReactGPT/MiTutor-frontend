@@ -1,15 +1,14 @@
 import axios from 'axios';
-import {Services as ServicesProperties} from '../../config';
+import { Services as ServicesProperties } from '../../config';
 import { Faculty, Specialty } from '../types';
 
+type ServiceResponseEspecialidades = {
+  data: Specialty[];
+};
 
-type ServiceResponseEspecialidades={
-  data:Specialty[];
-}
-
-async function getEspecialidades():Promise<ServiceResponseEspecialidades>{
-  
+async function getEspecialidades(): Promise<ServiceResponseEspecialidades> {
   try {
+
       const response = await axios({
           method: 'get',
           url: ServicesProperties.BaseUrl+'/api/Specialty/listarEspecialidad',
@@ -32,15 +31,16 @@ async function getEspecialidades():Promise<ServiceResponseEspecialidades>{
        
       return {data:especialidades};
       
+
   } catch (err) {
-    return {data:[]};
+    return { data: [] };
   }
 }
 
-type ServiceResponseFacultades={
-    data:Faculty[];
-  }
-  
+type ServiceResponseFacultades = {
+  data: Faculty[];
+};
+
 
 async function getFacultades():Promise<ServiceResponseFacultades>{
   
@@ -69,19 +69,6 @@ async function getFacultades():Promise<ServiceResponseFacultades>{
         
     } catch (err) {
       return {data:[]};
-    }
-  }
 
 
-
-
-
-
-
-
-
-
-
-
-
-export {getEspecialidades,getFacultades}
+export { getEspecialidades, getFacultades };

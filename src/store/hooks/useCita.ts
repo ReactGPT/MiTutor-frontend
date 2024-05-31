@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { getListaDeCitasByTutorId,getListaDeCitasByTutorIdByStudentId } from '../services/cita';
+import { getListaDeCitasByTutorId,getListaDeCitasByTutorIdByStudentId, getListaDeCitasByStudentId } from '../services/cita';
 import { ListCita } from '../types/ListCita';
 
 type CitaHooksReturn = {
@@ -51,4 +51,25 @@ function useCitasPorTutorPorAlumno(tutorId: number, studentId: number): CitaHook
 
 }
 
-export { useCitasPorTutor,useCitasPorTutorPorAlumno };
+function useCitasPorAlumno(studentId: number): CitaHooksReturn {
+
+    const [cita, setCita] = useState<ListCita[]>([]);
+    const [loading, setLoading] = useState<boolean>(true);
+    const [error, setError] = useState<any>(null);
+
+    const fetchCita = async () => {
+        try{
+            const data = await getListaDeCitasByStudentId(studentId);
+            setCita(data.listaDeCitas);
+            setLoading(false);
+        }catch(error){
+            setError("Error en useCita");
+            setLoading(false);
+        }
+    }
+
+    return { cita, loading, error, fetchCita };
+
+}
+
+export { useCitasPorTutor,useCitasPorTutorPorAlumno, useCitasPorAlumno};

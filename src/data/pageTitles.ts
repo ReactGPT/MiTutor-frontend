@@ -76,20 +76,40 @@ export const PageTitles = [
     pageName: "Disponibilidad del Tutor"
   },
   {
-    path: '/listadoPlanAccionAlumno',
+    path: '/misTutorias/detalle/planesDeAccion',
     pageName: "Mis Planes de Acción"
   },
   {
-    path: '/detallePlanAccionAlumno',
+    path: '/misTutorias/detalle/planesDeAccion/detalle',
     pageName: "Detalle Plan de Acción"
-  }
-  ,
+  },
   {
     path: '/solicitarTutor',
     pageName: "Solicitar Tutor"
   },
   {
-    path: '/solicitarCita',
+    path: '/listaDeCitasAlumno',
+    pageName: "Lista de Citas"
+  },
+  {
+    path: '/listaDeCitasAlumno/detalleCitaAlumno',
+    pageName: "Detalle de Cita"
+  },
+  {
+
+    path: '/gestionSolicitudes',
+    pageName: "Gestión de Solicitudes"
+  },
+  {
+    path: "/misTutorias",
+    pageName: "Mis Tutorías"
+  },
+  {
+    path: "/misTutorias/detalle",
+    pageName: "Detalle de Tutoría"
+  },
+  {
+    path: "/misTutorias/detalle/solicitarCita",
     pageName: "Solicitar Cita"
   }
 ];

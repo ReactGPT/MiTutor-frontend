@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { ListCita } from '../types/ListCita';
 import { Services as ServicesProperties } from '../../config';
+import { message } from 'antd';
 
 
 type listaResponse = {
@@ -69,6 +70,46 @@ async function getListaDeCitasByTutorIdByStudentId(tutorId: number, studentId: n
 
 }
 
+async function getListaDeCitasByStudentId(studentId: number): Promise<listaResponse> {
+
+    try {
+        const response = await axios.get(`${ServicesProperties.BaseUrl}/listarCitasPorAlumnoId/${studentId}`);
+        const listaDeCitas: ListCita[] = response.data.data.map((item: any) => {
+            return {
+                appointmentId: item.appointmentId,
+                programId: item.programId,
+                programName: item.programName,
+                appointmentStatus: item.appointmentStatus,
+                groupBased: item.groupBased,
+                creationDate: item.creationDate,
+                personId: item.personId,
+                name: item.name,
+                lastName: item.lastName,
+                secondLastName: item.secondLastName,
+                isInPerson: item.isInPerson,
+                startTime: item.startTime,
+                endTime: item.endTime,
+                reason: item.reason,
+                tutorId : item.tutorId,
+                meetingRoom : item.meetingRoom,
+                tutorName : item.tutorName,
+                tutorLastName : item.tutorLastName,
+                tutorSecondLastName : item.tutorSecondLastName,
+                tutorEmail : item.tutorEmail,
+                commentId: item.commentId,
+                message: item.message
+            };
+        });
+
+        console.log(response.data);
+
+        return { listaDeCitas: listaDeCitas };
+    } catch (error) {
+        throw new Error("Error en getListaDeCitasByStudentId");
+    }
+
+}
+
 type Appointment = {
     startTime: string;
     endTime: string;
@@ -97,4 +138,4 @@ async function addAppointment(appointmentData: AddAppointmentRequest): Promise<v
     }
 }
 
-export { getListaDeCitasByTutorId, getListaDeCitasByTutorIdByStudentId, addAppointment };
+export { getListaDeCitasByTutorId, getListaDeCitasByTutorIdByStudentId, addAppointment, getListaDeCitasByStudentId };

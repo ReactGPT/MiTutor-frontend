@@ -7,6 +7,7 @@ import { parametersSlice } from '../slices';
 type ProgramaTutoriaHookReturnType =  {
     fetchEspecialidades: ()=>Promise<void>;
     fetchFacultades:()=>Promise<void>;
+    // fetchStatuses:()=>Promise<void>;
     especialidadesData: Specialty[];
     facultadesData:Faculty[];    
     isLoading: boolean;
@@ -59,6 +60,28 @@ function useParameters(): ProgramaTutoriaHookReturnType{
             setIsLoading(false);
         }
     };
+    // const fetchStatuses = async () => {
+    //     setIsLoading(true);
+    //     try {
+    //         // const response = await getStatusClassNames();
+    //         setFacultadesData(response.data);
+    //         if(response.data.length!==0){
+    //             dispatch(setFaculties(response.data));
+    //         }
+    //         //console.log(financeData);
+    //         //return financeList;
+            
+    //     } catch (err:any) {
+    //         setError(err);
+    //         setFacultadesData([]);
+    //     //return [];
+    //     } finally {
+    //         setIsLoading(false);
+    //     }
+    // };
+
+    
+
     
     return { fetchEspecialidades,fetchFacultades,especialidadesData,facultadesData,isLoading, error };
 }

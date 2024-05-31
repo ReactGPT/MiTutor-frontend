@@ -16,18 +16,17 @@ import { UserAccount } from '../../../store/types';
 
 type InputProps = {
   className:string; 
-  cita:ListCita;
-  tutorR: UserAccount | null;
+  cita:ListCita; 
 } 
  
-function FormularioDerivacion({className,cita,tutorR}:InputProps){  
+function FormularioDerivacion({className,cita}:InputProps){  
   //Traer datos del estudiante
   const { estudiante, fetchEstudiante } = useEstudianteResultadoCita(cita); 
   //Traer datos del profesor
-  const [tutorRId, setTutorRId] = useState(0);
-  const { tutor, fetchTutor } = useTutorResultadoCita(1);
+  /*const [tutorRId, setTutorRId] = useState(0);*/
+  const { tutor, fetchTutor } = useTutorResultadoCita(2);
 
-  useEffect(() => {
+  /*useEffect(() => {
       // Verifica si tutorR tiene un valor y establece tutorRId con su ID
       if (tutorR?.id) {
           setTutorRId(tutorR.id);
@@ -40,7 +39,7 @@ function FormularioDerivacion({className,cita,tutorR}:InputProps){
           fetchTutor();
           console.log("id tutor",tutorRId);
       }
-  }, [tutorRId]);
+  }, [tutorRId]);*/
 
   //Traer datos de Unidades Derivacion
   const { unidadesDerivacion,fetchUnidadesDerivacion} = useUnidadesDerivacion();
@@ -53,6 +52,7 @@ function FormularioDerivacion({className,cita,tutorR}:InputProps){
   useEffect(() => {
     fetchEstudiante()  
     fetchDerivation()
+    fetchTutor()
     fetchUnidadesDerivacion() 
   }, []);
   

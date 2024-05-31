@@ -8,16 +8,22 @@ import { useTutoresPorTutoriayAlumno } from "../../../store/hooks/useListarTutor
 import { useState, useEffect } from "react";
 import React from 'react';
 import { Spinner } from "../../../components";
+import { useAuth } from "../../../context";
 
-const studentId = 2;
+enum Estado {
+  SIN_TUTOR = "SIN_TUTOR",
+  SOLICITUD_PENDIENTE = "SOLICITUD_PENDIENTE",
+  TUTOR_ASIGNADO = "TUTOR_ASIGNADO"
+}
 
-const PageDetalleDeTutoria = () => {
+const PageDetalleDeTutoriaSolicitado = () => {
+  const { userData } = useAuth();
+  const studentId = userData?.userInfo?.id;
 
   const location = useLocation();
   const data = location.state.data;
-  console.log(data);
 
-  const { listaDeTutores, fetchTutoresPorTutoria, loading } = useTutoresPorTutoriayAlumno(data.tutoringProgramId, studentId);
+  const { listaDeTutores, estado, fetchTutoresPorTutoria, loading } = useTutoresPorTutoriayAlumno(data.tutoringProgramId, studentId);
 
   const navigate = useNavigate();
 
@@ -26,13 +32,38 @@ const PageDetalleDeTutoria = () => {
   }, []);
 
   const goToTutorPlan = () => {
-    navigate('/listadoPlanAccionAlumno', { state: { programId: data.tutoringProgramId, tutorId: listaDeTutores[0].tutorId } });
+    navigate('/misTutorias/detalle/planesDeAccion', { state: { programId: data.tutoringProgramId, tutorId: listaDeTutores[0].tutorId } });
+  };
+
+  const goToTutorList = () => {
+    const tutoriaData = { tutoringProgramId: data.tutoringProgramId };
+    navigate('/solicitarTutor', { state: { tutoriaData } });
   };
 
   const goToSolicitarCita = () => {
     const datos = { tutoringProgram: data, tutor: listaDeTutores[0] };
-    navigate('/solicitarCita', { state: { datos } });
+    navigate('/misTutorias/detalle/solicitarCita', { state: { datos } });
   };
+
+  let componenteActual: JSX.Element;
+
+  useEffect(() => {
+    fetchTutoresPorTutoria();
+  }, []);
+
+  switch (estado) {
+    case Estado.SIN_TUTOR:
+      componenteActual = <SimpleCard content="" title="Sin Tutor Asignado" subContent="" />;
+      break;
+    case Estado.SOLICITUD_PENDIENTE:
+      componenteActual = <SimpleCard content="Docente a tiempo completo" title={`${listaDeTutores[0].tutorName} ${listaDeTutores[0].tutorLastName} ${listaDeTutores[0].tutorSecondLastName}`} subContent="PENDIENTE" />;
+      break;
+    case Estado.TUTOR_ASIGNADO:
+      componenteActual = <SimpleCard content="Docente a tiempo completo" title={`${listaDeTutores[0].tutorName} ${listaDeTutores[0].tutorLastName} ${listaDeTutores[0].tutorSecondLastName}`} subContent="" />;
+      break;
+    default:
+      componenteActual = <div className="w-full h-[90%] flex items-center justify-center"> <Spinner size="xl" /> </div>;
+  }
 
   return (
     <div className="w-full h-full flex flex-col gap-5">
@@ -52,7 +83,7 @@ const PageDetalleDeTutoria = () => {
         </div>
 
         <div className="w-full flex items-center justify-center p-2">
-          <Button onClick={goToSolicitarCita} variant="primario" text="Solicitar cita" />
+          <Button onClick={goToSolicitarCita} variant="primario" text="Solicitar cita" disabled={estado != Estado.TUTOR_ASIGNADO} />
         </div>
 
       </div>
@@ -60,7 +91,12 @@ const PageDetalleDeTutoria = () => {
       <div className="w-full flex h-[56%] gap-5">
         {/*tutor*/}
         <div className="flex flex-col w-[30%] h-full p-4 border-custom shadow-custom bg-[rgba(255,_255,_255,_0.50)] font-roboto">
-          <span className="font-montserrat text-2xl font-bold text-primary">Tutor</span>
+          <div className="flex">
+            <span className="font-montserrat text-2xl font-bold text-primary">Tutor</span>
+            <div className="w-full h-full flex justify-end">
+              <Button onClick={goToTutorList} variant="primario" text="Solicitar tutor" disabled={estado == Estado.TUTOR_ASIGNADO || estado == Estado.SOLICITUD_PENDIENTE} />
+            </div>
+          </div>
           <div className="w-full h-full flex justify-center items-center">
             {
               loading ?
@@ -68,7 +104,7 @@ const PageDetalleDeTutoria = () => {
                   <Spinner size="xl" />
                 </div>
                 :
-                <SimpleCard content="Docente a tiempo completo" title={`${listaDeTutores[0]?.tutorName} ${listaDeTutores[0]?.tutorLastName} ${listaDeTutores[0]?.tutorSecondLastName}`} subContent="" />
+                componenteActual
             }
           </div>
         </div>
@@ -76,11 +112,9 @@ const PageDetalleDeTutoria = () => {
         {/*Plan de Accion*/}
         <div className="flex flex-col w-[70%] h-full p-4 border-custom shadow-custom bg-[rgba(255,_255,_255,_0.50)] font-roboto">
           <span className="font-montserrat text-2xl font-bold text-primary">Plan de Acción</span>
-
           <div className="w-full h-full"></div>
-
           <div className="w-full flex items-center justify-center">
-            <Button onClick={goToTutorPlan} text="Ver plan de accion" />
+            <Button onClick={goToTutorPlan} text="Ver plan de accion" disabled={estado != Estado.TUTOR_ASIGNADO} />
           </div>
         </div>
 
@@ -90,4 +124,4 @@ const PageDetalleDeTutoria = () => {
   );
 };
 
-export default PageDetalleDeTutoria;
+export default PageDetalleDeTutoriaSolicitado;

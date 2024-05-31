@@ -1,4 +1,3 @@
-
 import Landing from "./components/Landing";
 
 import Login from "./login/Login";
@@ -10,8 +9,7 @@ import { useUserAccountAuth } from "./store/hooks";
 function App() {
 
   const {userData}=useAuth();
-  
-  //console.log(userData);
+
 
   const navigate = useNavigate();
 
@@ -21,10 +19,10 @@ function App() {
 
   return (
     <>
-
     {/* <RouterProvider router={router}/> */}
       {!userData&&<Login/>}
       {userData&&<Landing/>}
+
     {/* <RouterProvider /> */}
     </>
   );

@@ -88,15 +88,23 @@ const initialState:ParametersState={
     appointmentStatusList:[
         {
             id:1,
-            name:"Registrada"
+            name:"Cualquiera"
         },
         {
             id:2,
-            name:"Pendiente Resultado"
+            name:"Pendiente"
         },
         {
             id:3,
-            name:"Completada"
+            name:"Registrada"
+        },
+        {
+            id:4,
+            name:"Solicitado"
+        },
+        {
+            id:5,
+            name:"Completado"
         },
     ],
     unitDerivationList:[{
@@ -160,7 +168,7 @@ export const parametersSlice = createSlice({
             if(payload.length!==0){
                 state.tutorTypeList = payload;
             }
-        }
+        },
         /*updateFinance : (state,action:{payload:{updatedPrice:Finance}})=>{
             const {payload} = action;
             state.financeList[state.financeList.findIndex(finance=>finance.id===payload.updatedPrice.id)] = payload.updatedPrice;

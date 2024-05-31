@@ -82,7 +82,7 @@ export const Routes: RouterConfig = {
       },
       {
         path: '/historicoDeCitas',
-        element: <PageHistoricoDeCitas />,
+        element: <PageHistoricoDeCitas />,//<<-- PENDIENTE
       },
       {
         path: '/listadoPlanAccion',
@@ -109,43 +109,32 @@ export const Routes: RouterConfig = {
         element: <PageResultadoCitaIndividual />
       },
       {
-        path: '/solicitarTutor',
-
-        element: <PageSolicitarAlumno />
-
-      },
-      {
-        path: '/listadoPlanAccionAlumno',
-        element: <PageListadoPlanAccionAlumno />
-      },
-      {
-        path: '/detallePlanAccionAlumno',
-        element: <PageDetallePlanAccionAlumno />
-
+        path: '*',
+        element: <PageInicioTutor />
       }
     ],
     navBarLink: [
       {
         key: 'inicio',
-        label: 'Inicio Tut',
+        label: 'Inicio',
         path: '/',
         icon: <BiHome fontSize={32} />,
       },
       {
         key: 'calendario',
-        label: 'Calendario Tut',
+        label: 'Calendario',//Pendiente
         path: '/calendario',
         icon: <BiCalendar fontSize={32} />,
       },
       {
         key: 'programasDeTutoria',
-        label: 'Programas de Tutoria Tut',
+        label: 'Programas de Tutoria',
         path: '/programasDeTutoria',
         icon: <BiCabinet fontSize={32} />,
       },
       {
         key: 'listaDeCitas',
-        label: 'Lista de Citas Tut',
+        label: 'Lista de Citas',
         path: '/listaDeCitas',
         icon: <BiListUl fontSize={32} />,
       },
@@ -174,6 +163,10 @@ export const Routes: RouterConfig = {
       {
         path: '/programasDeTutoriaMaestro/nuevo',
         element: <PageProgTutoria />,
+      },
+      {
+        path: '*',
+        element: <PageInicioTutor />
       }
     ],
     navBarLink: [
@@ -184,27 +177,27 @@ export const Routes: RouterConfig = {
         icon: <BiHome fontSize={32} />,
       },
       {
-        key: 'calendario',
-        label: 'Calendario Coordi',
-        path: '/calendario',
-        icon: <BiCalendar fontSize={32} />,
-      },
-      {
         key: 'programasDeTutoria',
         label: 'Programas de Tutoria',
         path: '/programasDeTutoria',
         icon: <BiCabinet fontSize={32} />,
       },
       {
-        key: 'listaDeCitas',
-        label: 'Lista de Citas',
-        path: '/listaDeCitas',
+        key: 'gestionDeSolicitudes',
+        label: 'Gestion de Solicitudes',
+        path: '/',//Pendiente agregar
         icon: <BiListUl fontSize={32} />,
       },
       {
-        key: 'miPerfil',
-        label: 'Mi Perfil',
-        path: '/miPerfil',
+        key: 'especialidades',
+        label: 'Gestion de Solicitudes',
+        path: '/',//Pendiente agregar
+        icon: <BiListUl fontSize={32} />,
+      },
+      {
+        key: 'indicadores',
+        label: 'Indicadores',
+        path: '/indicadores',
         icon: <BiUser fontSize={32} />,
       },
     ]
@@ -232,7 +225,7 @@ export const Routes: RouterConfig = {
         element: < PageDetalleDeTutoriaAlumno />
       },
       {
-        path: '/PerfilAlumno',
+        path: '/miPerfil',
         element: <PageMiPerfilAlumno />
       },
       {
@@ -258,26 +251,26 @@ export const Routes: RouterConfig = {
     navBarLink: [
       {
         key: 'inicio',
-        label: 'Inicio Alumn',
+        label: 'Inicio',
         path: '/',
         icon: <BiHome fontSize={32} />,
       },
       {
         key: 'calendario',
-        label: 'Calendario Alumn',
-        path: '/solicitarTutor',
+        label: 'Calendario',
+        path: '/',
         icon: <BiCalendar fontSize={32} />,
       },
       {
-        key: 'programasDeTutoria',
-        label: 'Programas de Tutoria',
+        key: 'misTutorias',
+        label: 'Mis TutorÃ­as',
         path: '/listaTutoriasAlumno',
         icon: <BiCabinet fontSize={32} />,
       },
       {
-        key: 'listaDeCitas',
-        label: 'Lista de Citas',
-        path: '/listaDeCitas',
+        key: 'citas',
+        label: 'Citas',
+        path: '/listaDeCitasAlumno',
         icon: <BiListUl fontSize={32} />,
       },
       {
@@ -289,6 +282,5 @@ export const Routes: RouterConfig = {
     ]
   }
 };
-
 
 //const router = createBrowserRouter();

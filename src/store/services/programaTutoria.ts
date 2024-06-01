@@ -12,7 +12,7 @@ async function getListaProgramaTutorias():Promise<ServiceResponseProgramaTutoria
   try {
       const response = await axios({
           method: 'get',
-          url: ServicesProperties.BaseUrl+'/listarProgramasDeTutoria',
+          url: ServicesProperties.BaseUrl+'/api/TutoringProgram/listarProgramasDeTutoria',
           headers : ServicesProperties.Headers
       });
       if(!response.data.success){

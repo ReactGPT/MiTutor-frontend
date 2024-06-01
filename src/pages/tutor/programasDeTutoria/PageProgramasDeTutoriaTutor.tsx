@@ -26,7 +26,7 @@ const PageProgramasDeTutoriaTutor: React.FC = () => {
 
   const handleOnChangeFilters = (filter: any) => {
     setFilters(filter);
-  }
+  };
 
   const handleSearch = (text: string) => {
     setSearchText(text);

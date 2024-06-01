@@ -12,7 +12,7 @@ import { useAuth } from "../../../context";
 
 const PageDetalleDeTutoriaAsignado = () => {
   const { userData } = useAuth();
-  const studentId = userData?.userInfo?.id;
+  const studentId = userData?.userInfo?.id || 0;
 
   const location = useLocation();
   const data = location.state.data;

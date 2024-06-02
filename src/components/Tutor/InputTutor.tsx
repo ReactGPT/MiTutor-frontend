@@ -15,7 +15,7 @@ const InputTutor = ({ titulo = "", texto = "", enable = true, name, value, onCha
   return (
     <li className="drop-shadow-md p-3 flex items-center space-x-5 height-100% personalizado"
       style={{ display: "flex", height: "100%", flexDirection: "column", alignItems: "flex-start" }}>
-      <label className="font-roboto text-base text-primary" htmlFor="">{titulo}</label>
+      <label className="font-roboto text-base text-primary">{titulo}</label>
       <input type="text"
         className={`w-full h-full px-3 py-2 mt-1 font-roboto text-base bg-[rgba(255,_255,_255,_0.50)] border-custom drop-shadow-md font-normal ${readOnly ? 'text-gray-500' : ''}`}
         style={{ marginLeft: "0" }}

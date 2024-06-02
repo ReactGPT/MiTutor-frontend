@@ -2,8 +2,6 @@ import logo from '../assets/logo.png';
 import { BiLogOut } from 'react-icons/bi';
 import { SidebarLink } from '../store/types/SidebarLink';
 import { NavLink } from 'react-router-dom';
-import { useTitle } from '../context/TitleContext';
-//import { googleLogout } from '@react-oauth/google';
 import { useAuth } from '../context';
 
 type SidebarProps = {
@@ -27,20 +25,17 @@ const Sidebar = ({ sidebarLinks }: SidebarProps) => {
                 : 'text-stone-700 flex flex-start items-center gap-6 font-roboto text-base px-4 py-2 hover:text-primary'
             }
             to={link.path}
-            key={index} onClick={() => {
-              //setTitle(link.label);
-            }}>
+            key={index}
+          >
             <span className="text-xl">{link.icon}</span>
             <span className="leading-5">{link.label}</span>
           </NavLink>
         ))}
       </div>
-      <a className='text-stone-700 flex flex-start items-center gap-6 font-roboto text-base px-4 py-2 hover:text-primary'>
-        <button onClick={()=>handleLogout()}>
+      <button className='text-stone-700 flex flex-start items-center gap-6 font-roboto text-base px-4 py-2 hover:text-primary' onClick={() => handleLogout()}>
         <span className="text-xl"><BiLogOut fontSize={32} /></span>
         <span className='leading-4'>Cerrar Sesión</span>
-        </button>
-      </a>
+      </button>
     </nav>
   );
 };

@@ -89,7 +89,6 @@ function transformAvailabilityToEvent(availability: Availability[]): CustomEvent
 
 const CalendarioDisponibilidad: React.FC<CalendarioDisponibilidadProps> = ({ citas = null, programable = false, onSelectEvent, refresh }) => {
   const { userData } = useAuth();
-  //const tutorId = userData?.userInfo?.roles[0].details.tutorId;
   const tutorId = (userData?.userInfo?.roles[0].details as TutorRoleDetails).tutorId;
 
   const { availability, fetchAvailability } = useAvailability(tutorId);

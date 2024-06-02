@@ -18,7 +18,7 @@ import { useArchivos, useArchivosDB, useArchivosOtros} from '../../../store/hook
 import { Archivo, ExtendedFile } from '../../../store/types/Archivo';
 //import { Archivo, ExtendedFile } from '../../../store/types/Archivo';
 import { Services as ServicesProperties } from '../../../config';
-import { FaExpand } from 'react-icons/fa';
+import { FaExpand } from 'react-icons/fa'; 
 
 type InputProps = {
     className:string;
@@ -28,11 +28,11 @@ type InputProps = {
 function ResultadoCitaBlock2({className,cita}:InputProps) {
     const { resultadoCita, fetchResultadoCita } = useResultadoCita(cita);
     //Enviar archivos
-    const { enviarArchivoServidor } = useArchivos();
-    const { enviarArchivoBd, fetchArchivosBD, archivosBD, setArchivosBD } = useArchivosDB();  
+    const { enviarArchivoServidor,loadingServidor } = useArchivos();
+    const { enviarArchivoBd, fetchArchivosBD, archivosBD, setArchivosBD,loading } = useArchivosDB();  
     const [ archivosBDCopia, setArchivosBDCopia] = useState<ExtendedFile[]>([]);
 
-    const { enviarArchivoOtros, fetchArchivosOtros, archivosOtros, setArchivosOtros } = useArchivosOtros();  
+    const { enviarArchivoOtros, fetchArchivosOtros, archivosOtros, setArchivosOtros,loading2 } = useArchivosOtros();  
     const [ archivosOtrosCopia, setArchivosOtrosCopia] = useState<ExtendedFile[]>([]);
 
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -518,6 +518,7 @@ function ResultadoCitaBlock2({className,cita}:InputProps) {
                             updatePage={()=>{}}
                             selectedFiles={archivosBDCopia}
                             setSelectedFiles={setArchivosBDCopia}
+                            loading={loading}
                         />
                     </div>
                   </div>
@@ -552,12 +553,13 @@ function ResultadoCitaBlock2({className,cita}:InputProps) {
                           updatePage={()=>{}}
                           selectedFiles={archivosOtrosCopia}
                           setSelectedFiles={setArchivosOtrosCopia}
+                          loading={loading2}
                       />
                     </div>
                   </div>
                 </div>
             </div> 
-            <div>{isModalOpen && <ModalResultadoCita onClose={closeModal} />}</div>
+            <div>{isModalOpen && <ModalResultadoCita onClose={closeModal} loading={loadingServidor}/>}</div>
         </div>
   )
 }

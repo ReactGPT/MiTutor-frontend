@@ -52,10 +52,6 @@ export const PageTitles = [
     pageName: "Tipos de Tutoría"
   },
   {
-    path: '/agregarDisponibilidad',
-    pageName: "Disponibilidad"
-  },
-  {
     path: '/misDerivacionesHechas',
     pageName: "Derivaciones"
   },
@@ -69,7 +65,7 @@ export const PageTitles = [
   },
   {
     path: '/calendario/agregarDisponibilidad',
-    pageName: "Disponibilidad del Tutor"
+    pageName: "Mi Disponibilidad"
   },
   {
     path: '/misTutorias/detalle/planesDeAccion',

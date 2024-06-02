@@ -3,9 +3,14 @@ import { useNavigate } from 'react-router-dom';
 import CalendarioDisponibilidad from '../../../components/Calendar/CalendarioDisponibilidad';
 import { useEffect } from 'react';
 import { useCitasPorTutor } from '../../../store/hooks/useCita';
+import { useAuth } from '../../../context';
+import { TutorRoleDetails } from '../../../store/types';
 
 const PageCalendarioTutor: React.FC = () => {
-  const { cita, fetchCita } = useCitasPorTutor(1);
+  const { userData } = useAuth();
+  const tutorId = (userData?.userInfo?.roles[0].details as TutorRoleDetails).tutorId;
+
+  const { cita, fetchCita } = useCitasPorTutor(tutorId);
 
   useEffect(() => {
     fetchCita();
@@ -29,15 +34,15 @@ const PageCalendarioTutor: React.FC = () => {
             </div>
             <div className='flex bg-white p-1 items-center gap-3 rounded px-2'>
               <div className='bg-[#52D076] w-2.5 h-2.5'></div>
-              <label>Registrado</label>
+              <label>Registrada</label>
             </div>
             <div className='flex bg-white p-1 items-center gap-3 rounded px-2'>
               <div className='bg-[#D05252] w-2.5 h-2.5'></div>
-              <label>Pendiente Resultados</label>
+              <label>Pendiente de resultados</label>
             </div>
             <div className='flex bg-white p-1 items-center gap-3 rounded px-2'>
               <div className='bg-[#206CE5] w-2.5 h-2.5'></div>
-              <label>Cita completada</label>
+              <label>Completada</label>
             </div>
           </div>
         </div>

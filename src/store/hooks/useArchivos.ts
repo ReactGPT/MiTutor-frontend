@@ -3,14 +3,14 @@ import { enviarArchivo, enviarArchivoBD, listarArchivosBD, descargarArchivo } fr
 import { Archivo, ExtendedFile, FileBD } from '../types/Archivo';
 
 type ArchivosHooksReturn = { 
-  loading: boolean;
+  loadingServidor: boolean;
   error: any;
   enviarArchivoServidor: (file: File, nombre: string, carpeta: string) => Promise<void>;
   descargarArchivoServidor: (nombreFalso: string, nombreReal: string, carpeta: string) => Promise<void>;
 };
 
 function useArchivos(): ArchivosHooksReturn { 
-    const [loading, setLoading] = useState<boolean>(false);
+    const [loadingServidor, setLoading] = useState<boolean>(false);
     const [error, setError] = useState<any>(null);
 
     const enviarArchivoServidor = async (file: File, nombre: string, carpeta: string) => {
@@ -24,6 +24,7 @@ function useArchivos(): ArchivosHooksReturn {
             setLoading(false);
         }
     }
+ 
 
     const descargarArchivoServidor = async (nombreFalso: string, nombreReal: string, carpeta: string) => {
         try {
@@ -36,7 +37,7 @@ function useArchivos(): ArchivosHooksReturn {
         }
       }
 
-    return { loading, error, enviarArchivoServidor, descargarArchivoServidor};
+    return { loadingServidor, error, enviarArchivoServidor, descargarArchivoServidor};
 }
 
 type ArchivosBDHooksReturn = { 
@@ -89,6 +90,7 @@ function useArchivosDB(): ArchivosBDHooksReturn {
 
           setArchivosBD(archivosConContenido);
           console.log("archivos seteados ALUMNO",archivosBD)  
+          setLoading(false);
         } catch (error) {
           setError("Error en listarArchivosBD");
           setLoading(false);
@@ -100,7 +102,7 @@ function useArchivosDB(): ArchivosBDHooksReturn {
 }
 
 type ArchivosOtrosHooksReturn = { 
-  loading: boolean;
+  loading2: boolean;
   error: any;
   enviarArchivoOtros: (file: Archivo) => Promise<number>;
   archivosOtros: ExtendedFile[]; 
@@ -110,7 +112,7 @@ type ArchivosOtrosHooksReturn = {
 
 function useArchivosOtros(): ArchivosOtrosHooksReturn { 
   const [archivosOtros, setArchivosOtros] = useState<ExtendedFile[]>([]); 
-  const [loading, setLoading] = useState<boolean>(false);
+  const [loading2, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<any>(null);
 
   async function enviarArchivoOtros(file: Archivo) {
@@ -147,6 +149,7 @@ function useArchivosOtros(): ArchivosOtrosHooksReturn {
         
         setArchivosOtros(archivosConContenido);
         console.log("archivos seteados prfoe",archivosConContenido);
+        setLoading(false);
       } catch (error) {
         setError("Error en listarArchivosOtros");
         setLoading(false);
@@ -154,7 +157,7 @@ function useArchivosOtros(): ArchivosOtrosHooksReturn {
       }
     }
 
-  return { archivosOtros, loading, error, enviarArchivoOtros, fetchArchivosOtros, setArchivosOtros };
+  return { archivosOtros, loading2, error, enviarArchivoOtros, fetchArchivosOtros, setArchivosOtros };
 }
 
 export {useArchivos, useArchivosDB, useArchivosOtros};

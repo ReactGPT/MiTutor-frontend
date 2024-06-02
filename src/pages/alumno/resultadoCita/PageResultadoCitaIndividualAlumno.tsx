@@ -85,7 +85,7 @@ function PageResultadoCitaIndividualAlumno() {
     useEffect(() => { 
       if (resultadoCita && resultadoCita.appointmentResult && resultadoCita.appointmentResult.appointmentResultId !== 0) {
           fetchArchivosBD(resultadoCita.appointmentResult.appointmentResultId, 1); 
-          setCommentValue(resultadoCita.appointmentResult.comments[1]?.message || ''); 
+          setCommentValue(resultadoCita.appointmentResult.comments[0]?.message || ''); 
           console.log("comentario",commentValue)
       }
     }, [resultadoCita]);  

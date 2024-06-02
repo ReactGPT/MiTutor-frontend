@@ -48,10 +48,6 @@ export const PageTitles = [
     pageName: "Resulta de Cita"
   },
   {
-    path: '/PerfilAlumno',
-    pageName: "Perfil"
-  },
-  {
     path: '/programasDeTutoriaMaestro',
     pageName: "Tipos de Tutoría"
   },

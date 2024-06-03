@@ -21,7 +21,7 @@ export const PageTitles = [
   },
   {
     path: '/programasDeTutoria/detalle-programa',
-    pageName: "Detalle de programa"
+    pageName: "Detalle de tutoría"
   },
   {
     path: '/programasDeTutoria/detalle-programa/alumno',

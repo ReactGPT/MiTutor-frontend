@@ -98,7 +98,7 @@ export const Routes: RouterConfig = {
         element: <PageAgregarDisponibilidadTutor />,
       },
       {
-        path: '/misDerivacionesHechas',
+        path: '/derivaciones',
         element: <PageDerivacionesHechas />
       },
       {

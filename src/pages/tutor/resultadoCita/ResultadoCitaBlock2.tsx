@@ -436,7 +436,7 @@ function ResultadoCitaBlock2({className,cita}:InputProps) {
                 </div>
             </div>
 
-            <div className='flex flex-col h-[80%] border-custom drop-shadow-md p-4 flex-grow overflow-auto'>
+            <div className='flex w-full flex-col h-[80%] border-custom drop-shadow-md p-4 flex-grow overflow-auto'>
                 <div className='w-full flex items-center mb-5 '>
                     <h3 className='font-montserrat text-lg font-bold text-primary w-full'>Asistencia</h3>
                     <div className='flex items-center gap-4'>
@@ -523,7 +523,7 @@ function ResultadoCitaBlock2({className,cita}:InputProps) {
                     </div>
                   </div>
                 </div>
-                <div className='flex flex-col w-full pb-5'>
+                <div className='flex flex-col w-full'>
                     <h3 className='font-montserrat text-lg font-bold text-primary w-full mb-2'>Comentario Privado</h3>
                     <div className='w-full'>
                     <div className='relative w-full h-full'>

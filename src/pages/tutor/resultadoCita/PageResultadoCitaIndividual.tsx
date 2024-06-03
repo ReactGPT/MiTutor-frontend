@@ -32,9 +32,9 @@ const PageResultadoCitaIndividual: React.FC = () =>{
                     onClickPlanAccion={handleClickPlanAccion}
                 />  
                 <div className='flex w-full h-[90%] max-h-[90%] gap-4'>
-                    <ResultadoCitaBlock2 cita={cita} className='flex w-[50%] max-h-[90vh] h-full flex-col gap-4 flex-grow' />
-                    <div className='w-[50%] border-custom drop-shadow-md pb-10'> 
-                        <FormularioDerivacion cita={cita} className='flex max-h-[90vh] h-full flex-col gap-4 flex-grow p-4 ' />{/*border-custom drop-shadow-md p-4  */}
+                    <ResultadoCitaBlock2 cita={cita} className='flex w-[50%] max-h-[90vh] h-full flex-col gap-4 flex-grow pb-4' />
+                    <div className='flex w-[50%] h-full border-custom drop-shadow-md p-4 pb4'>
+                        <FormularioDerivacion cita={cita} className='flex max-h-[90vh] h-full flex-col gap-4 flex-grow'/>
                     </div>
                 </div>
                 </>

@@ -22,7 +22,6 @@ type InputProps = {
  
 function FormularioDerivacion({className,cita}:InputProps){  
   const { userData } = useAuth();
-  //const tutorId = userData?.userInfo?.roles[0].details.tutorId;
   const tutorId = (userData?.userInfo?.roles[0].details as TutorRoleDetails).tutorId;
   //Traer datos del estudiante
   const { estudiante, fetchEstudiante } = useEstudianteResultadoCita(cita); 

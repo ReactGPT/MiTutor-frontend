@@ -1,9 +1,16 @@
 import InputTutor from '../../../components/Tutor/InputTutor';
 import image from '/src/assets/Tutor/no-avatar.webp';
+import Button from '../../../components/Button';
 import { useAuth } from '../../../context';
+import { useNavigate } from "react-router-dom";
 
 const PageMiPerfilTutor: React.FC = () => {
   const { userData } = useAuth();
+  const navigate = useNavigate();
+  const goToDerivaciones = () => {
+    navigate("/derivaciones");
+  };
+
   return (
     <div className="flex w-full h-full justify-center items-center">
 
@@ -16,7 +23,7 @@ const PageMiPerfilTutor: React.FC = () => {
         </div>
       </div>
 
-      <div className="flex w-1/3 h-full justify-center items-center">
+      {/*<div className="flex w-1/3 h-full flex-col justify-center items-center">
         <div className="flex w-full">
           {userData ?
             <img src={userData?.imageUrl} alt="Imagen Tutor" className="w-[200px] h-[200px] rounded-full" />
@@ -24,9 +31,31 @@ const PageMiPerfilTutor: React.FC = () => {
             <img src={image} alt="Imagen Tutor" className="w-[200px] h-[200px] rounded-full" />
           }
         </div>
-      </div>
-
-    </div>
+        <div className="flex w-full mt-4 ml-20">
+          <Button onClick={goToDerivaciones} variant="primario" text="Derivaciones" />
+        </div>
+        </div>*/}
+        <div className="w-1/2">
+        <div className="flex justify-center">
+          {userData ?
+            <img src={userData?.imageUrl} alt="Imagen Tutor" className="w-[200px] h-[200px] rounded-full" />
+            :
+            <img src={image} alt="Imagen Tutor" className="w-[200px] h-[200px] rounded-full" />
+          }
+        </div>
+        <div>
+          <div className="flex justify-center">
+            <div className="space-x-4 pt-5">
+              <ul className="flex flex-col items-center w-full"> 
+                <li className='mb-4'>
+                  <Button onClick={goToDerivaciones} variant="call-to-action" text="Derivaciones" />
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div> 
+        </div> 
+        </div> 
   );
 };
 

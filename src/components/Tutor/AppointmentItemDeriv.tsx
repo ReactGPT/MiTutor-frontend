@@ -1,15 +1,20 @@
 import React from "react";
 import Button from "../Button";
-import IconDetails from '../../assets/svg/IconDetails';
-
+import IconDetails from '../../assets/svg/IconDetails'; 
+import { useNavigate } from "react-router-dom";  
+import { ListDerivation } from "../../store/types/Derivation";
+import { useEffect, useState, ChangeEvent} from 'react';
+import DerivationModalDetalle from "./DerivationModalDetalle";
 interface AppointmentItemDerivProps {
   nombre: string;
   codigo: string;
   unidad: string;
   programa: string;
   fecha: string;
+  status:string;
   onClick: () => void;
   color: string;
+  derivation: ListDerivation
 }
 
 const textClasses = {
@@ -73,46 +78,54 @@ const controlColor = (color: string, tipo: string) => {
   }
 };
 
-export const AppointmentItemDeriv: React.FC<AppointmentItemDerivProps> = ({ nombre, codigo, unidad, programa, fecha, onClick, color }) => {
-  console.log(color);
+export const AppointmentItemDeriv: React.FC<AppointmentItemDerivProps> = ({ derivation, nombre, codigo, unidad, programa, fecha, status,onClick, color }) => {
+ 
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+  
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
+  const handleGuardar = async () => {
+      setIsModalOpen(!isModalOpen);  
+  }
   return (
-    <div className="w-full h-[20%]">
-      <div className="w-full h-[90%] flex flex-row justify-right items-center bg-[rgba(235,_236,_250,_1.00)] border-custom drop-shadow-md">
-        
-        <div className="w-[5%] h-full">
-          <div className={`w-[50%] h-full bg-gradient-to-b ${controlColor(color, 'from')} ${controlColor(color, 'to')} rounded-l-xl`}></div>
+    <div className="w-full h-22 border-custom shadow-custom flex bg-[rgba(235,_236,_250,_1.00)] overflow-hidden font-roboto">
+      <div className={`w-[2%] max-w-6 bg-gradient-to-b ${controlColor(status, 'from')} ${controlColor(status, 'to')}`}></div>
+
+      <div className="w-full flex p-5 gap-5 items-center">
+        <div className="w-1/3 flex flex-col">
+          <span className="text-xl text-black">{nombre}</span>
+          <span className={`font-semibold ${controlColor(status, 'text')}`}>{codigo}</span>
         </div>
 
-        <div className="w-[50%] my-5">
-          <div className="w-full h-[50%] ">
-            <span className="font-montserrat text-2xl text-black"> {nombre} </span>
+        <div className="flex flex-grow items-center">
+          <div className="flex items-center gap-6">
+            <div className="flex flex-col items-start max-w-[200px] w-[200px] truncate">
+              <span className="text-black font-semibold">Unidad:</span>
+              <span className={`font-semibold ${controlColor(status, 'text')} truncate`}>{unidad}</span>
+            </div>
+            <hr className="h-6 border-custom mx-2" />
+            <div className="flex flex-col items-start max-w-[200px] w-[200px] truncate">
+              <span className="text-black font-semibold">Programa de Tutoría:</span>
+              <span className="text-primary truncate">{`${programa}`}</span>
+            </div>
+            <hr className="h-6 border-custom mx-2" />
+            <div className="flex flex-col items-start max-w-[150px] w-[150px] truncate">
+              <span className="text-black font-semibold">Fecha:</span>
+              <span className="text-primary truncate">{`${fecha}`}</span>
+            </div>
           </div>
-          <div className="w-full h-[50%]">
-            <span className="font-montserrat text-xl text-gray-600"> Codigo: {codigo} </span>
-          </div>
-        </div>
-
-        <div className="w-[50%] flex">
-          <pre className="font-montserrat text-2xl text-black">Unidad:  </pre>
-          <span className="font-montserrat text-2xl text-primary">{unidad}</span>
-        </div>
-
-        <div className="w-[50%] flex">
-          <pre className="font-montserrat text-2xl text-black">Programa de tutoría:  </pre>
-          <span className="font-montserrat text-2xl">{programa}</span>
-        </div>
-
-        <div className="w-[50%]">
-          <span className="font-montserrat text-2xl text-black"> Fecha Derivación: {fecha} </span>
-        </div>
-
-        <div className="m-5">
-          <Button variant="primario" onClick={onClick} icon={IconDetails}/>
-        </div>
-
+        </div> 
+          <Button variant='primario' onClick={handleGuardar} icon={IconDetails} />
+          <div>{isModalOpen && <DerivationModalDetalle onClose={closeModal} derivation={derivation}/>}</div>
       </div>
     </div>
-  );
+  )
 };
 
 

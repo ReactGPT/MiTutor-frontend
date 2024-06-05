@@ -43,6 +43,9 @@ import PageDetalleDeTutoriaVariable from "../pages/alumno/misTutorias/PageDetall
 import PageSolicitudGestion from "../pages/coordinador/gestionSolicitudes/PageSolicitudGestion.tsx";
 import PageCalendarioAlumno from "../pages/alumno/calendario/PageCalendarioAlumno.tsx";
 import PageDetalleDeTutoria from "../pages/alumno/misTutorias/PageDetalleDeTutoria.tsx";
+import PageIndicadorTutor from "../pages/tutor/indicadorTutores/PageIndicadorTutor.tsx";
+ 
+ 
 
 type RouterDetail = {
   pages: RouteObject[];
@@ -115,9 +118,15 @@ export const Routes: RouterConfig = {
         element: <PageResultadoCitaIndividual />
       },
       {
+        path: '/indicadorTutor',
+        element: <PageIndicadorTutor/>
+      },
+
+      {
         path: '*',
         element: <Navigate to="/" />
-      }
+      } 
+      
     ],
     navBarLink: [
       {

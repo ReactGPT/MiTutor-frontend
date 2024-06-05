@@ -111,5 +111,9 @@ export const PageTitles = [
   {
     path: "/misTutorias/detalle/solicitarCita",
     pageName: "Solicitar Cita"
+  },
+  {
+    path: "/indicadorTutor",
+    pageName: "Indicador Tutor"
   }
 ];

@@ -10,7 +10,7 @@ import noPlansImg from "../../../assets/Tutor/no-planes.png";
 
 const PageListadoPlanAccionAlumno = () => {
   const { userData } = useAuth();
-  const studentId = userData?.userInfo?.id;
+  const studentId = userData?.userInfo?.id || 0;
 
   const { state } = useLocation() || {};
   //const { studentId: studentId = 2, programId: programId = 4, tutorId: tutorId = 1 } = state || {};

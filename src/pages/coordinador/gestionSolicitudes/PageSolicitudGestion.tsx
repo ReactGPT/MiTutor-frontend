@@ -235,6 +235,7 @@ const PageSolicitudGestion: React.FC = () => {
                         <SearchInput
                             placeholder="Nombre o apellido del tutor"
                             onSearch={handleTutorSearch}
+                            handleOnChangeFilters={()=>{}}
                         />
                     </div>
                 </div>
@@ -246,6 +247,7 @@ const PageSolicitudGestion: React.FC = () => {
                         <SearchInput
                             placeholder="Nombre, apellido, o código de alumno"
                             onSearch={handleAlumnoSearch}
+                            handleOnChangeFilters={()=>{}}
                         />
                     </div>
                 </div>

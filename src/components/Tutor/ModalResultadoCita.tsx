@@ -1,11 +1,13 @@
 import { Dialog, Transition } from '@headlessui/react';
 import { Fragment, useState } from 'react';
+import ClipLoader from 'react-spinners/ClipLoader';
 
 interface ModalResultadoCitaProps {
   onClose: () => void; // Tipo de onClose
+  loading:boolean;
 }
 
-export default function ModalResultadoCita({ onClose }: ModalResultadoCitaProps) {
+export default function ModalResultadoCita({ onClose,loading }: ModalResultadoCitaProps) {
   // Solo necesitas el estado isOpen dentro de ModalTutor
   const [isOpen, setIsOpen] = useState(true); // Inicializar el estado como true para abrir el modal por defecto
 
@@ -76,13 +78,16 @@ export default function ModalResultadoCita({ onClose }: ModalResultadoCitaProps)
                       </p>
                     </div>
                   </div>
-
-
-
                 </Dialog.Title>
                 <div className="mt-2">
-                  <p className='font-montserrat text-[15px] text-primary pt-3 text-center'>Los cambios se registraron con éxito</p>
-                </div> 
+                  {loading ? (
+                    <div className='w-full flex justify-center items-center'>
+                      <ClipLoader color="#3498db" loading={loading} size={60} />
+                    </div>
+                  ) : (
+                    <p className='font-montserrat text-[15px] text-primary pt-3 text-center'>Los cambios se registraron con éxito</p>
+                  )}
+                </div>
               </div>
             </Transition.Child>
           </div>

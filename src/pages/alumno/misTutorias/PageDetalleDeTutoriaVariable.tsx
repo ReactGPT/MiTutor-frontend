@@ -9,9 +9,6 @@ import React from 'react';
 import { Spinner } from "../../../components";
 
 const PageDetalleDeTutoriaVariable = () => {
-  //const { userData } = useAuth();
-  //const studentId = userData?.userInfo?.id;
-
   const location = useLocation();
   const data = location.state.data;
 

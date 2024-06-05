@@ -1,6 +1,6 @@
 import axios from 'axios';
 import {Services as ServicesProperties} from '../../config';
-import { ProgramaTutoria } from '../types';
+import { ProgramaTutoria, Tutor } from '../types';
 import { tutoringProgramSlice } from '../slices';
 
 type ServiceResponseProgramaTutoria={
@@ -12,7 +12,7 @@ async function getListaProgramaTutorias():Promise<ServiceResponseProgramaTutoria
   try {
       const response = await axios({
           method: 'get',
-          url: ServicesProperties.BaseUrl+'/listarProgramasDeTutoria',
+          url: ServicesProperties.BaseUrl+'/api/TutoringProgram/listarProgramasDeTutoria',
           headers : ServicesProperties.Headers
       });
       if(!response.data.success){
@@ -126,5 +126,38 @@ type ServiceResponse={
       };
     }
   }
+  
+  async function getTutoresByTutoringProgramId(tutoringProgramId:number):Promise<ServiceResponse>{
+    try {
+      const response = await axios({
+          method: 'get',
+          url: ServicesProperties.BaseUrl+`/listarTutores?idProgramaTutoria=${tutoringProgramId}`,
+          headers : ServicesProperties.Headers
+      });
+      if(!response.data.success){
+          return {sucess:false,message:response.data.message};
+      }
+      if(response.data.data.lenght===0){
+        return {sucess:true,data:[]}
+      }
+      const tutorList: Tutor[] = response.data.data.map((item: any) => {
+        
+        return {
+            idTutor:item.tutorId,
+            nombre:item.userAccount.persona.name,
+            apellido_paterno:item.userAccount.persona.lastName,
+            apellido_materno:item.userAccount.persona.secondLastName,
+            meetingRoom:item.meetingRoom,
+            email:item.userAccount.institutionalEmail,
+            fullname:`${item.userAccount.persona.name} ${item.userAccount.persona.lastName} ${item.userAccount.persona.secondLastName}`
+          };
+        });
+       
+      return {sucess:true,data:tutorList};
+        
+    } catch (err:any) {
+      throw new Error(err.message);
+    }
+  }
 
-export {getListaProgramaTutorias,crearEditarProgramaTutoria}
+export {getListaProgramaTutorias,crearEditarProgramaTutoria,getTutoresByTutoringProgramId}

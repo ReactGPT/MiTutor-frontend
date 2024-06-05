@@ -18,7 +18,7 @@ enum Estado {
 
 const PageDetalleDeTutoriaSolicitado = () => {
   const { userData } = useAuth();
-  const studentId = userData?.userInfo?.id;
+  const studentId = userData?.userInfo?.id || 0;
 
   const location = useLocation();
   const data = location.state.data;

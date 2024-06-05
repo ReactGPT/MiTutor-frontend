@@ -1,83 +1,20 @@
 import { useEffect, useState } from 'react'
-
-import { useLocation,useNavigate,useParams } from 'react-router-dom';
-import { Appointment } from '../../../store/types';
-import { Button, InputCell } from '../../../components';
+import { useLocation,useNavigate,useParams} from 'react-router-dom';
 import ResultadoCardInformacionAlumno from './ResultadoCardInformacionAlumno.tsx';
 import InputAlumno from '../InputAlumno.tsx';
 import { useResultadoCita} from "../../../store/hooks/useResultadoCita";
 import { useArchivosDB} from '../../../store/hooks/useArchivos';
 import { ExtendedFile } from '../../../store/types/Archivo.ts';
 import { FaDownload } from 'react-icons/fa';
-type Student = {
-    id:number;
-    nombre:string;
-}
+import ClipLoader from 'react-spinners/ClipLoader';
 
-
-type Derivation= {
-    id?:number;
-    reason:string;
-    comment:string;
-}
-
-
-const AppointmentAttendanceOptions=[
-    {
-        id:1,
-        nombre:"Falta"
-    },
-    {
-        id:2,
-        nombre:"Asistido"
-    },
-    {
-        id:3,
-        nombre:"Estado3"
-    },
-    {
-        id:4,
-        nombre:"Estado4"
-    }
-]
-
-const mock_appointment:Appointment= {
-    "id": 1,
-    "date": "2024-05-23",
-    "startTime": "09:00",
-    "endTime": "10:30",
-    "reason": "Math Tutoring Session",
-    "studentProgramId": 101,
-    "studentProgramName": "Advanced Math Program",
-    "isInPerson": true,
-    "attendanceId": 2024,
-    "studentAnnotations": "Student needs extra help with calculus.",
-    "privateAnnotation": "Consider additional resources for improvement.",
-    "student": {
-        "id": 1001,
-        "nombre": "Jane"
-    },
-    "derivation": {
-        "id": 5631,
-        "comment": "",
-        reason: ""
-    }
-}
-
-function PageResultadoCitaIndividualAlumno() {
-    const navigate = useNavigate();
+function PageResultadoCitaIndividualAlumno() { 
     const {state} = useLocation();
     const {cita}= state;
     const [commentValue, setCommentValue] = useState('');
     const { resultadoCita, fetchResultadoCita } = useResultadoCita(cita);
-    const { archivosBD, fetchArchivosBD} = useArchivosDB(); 
+    const { archivosBD, fetchArchivosBD, loading} = useArchivosDB(); 
 
-    const handleClickVerPerfil= ()=>{
-        navigate("/PerfilAlumno");
-    };
-    const handleClickPlanAccion=()=>{
-        //navigate("/");
-    }
     useEffect(() => {
         fetchResultadoCita();
       }, []);
@@ -85,7 +22,7 @@ function PageResultadoCitaIndividualAlumno() {
     useEffect(() => { 
       if (resultadoCita && resultadoCita.appointmentResult && resultadoCita.appointmentResult.appointmentResultId !== 0) {
           fetchArchivosBD(resultadoCita.appointmentResult.appointmentResultId, 1); 
-          setCommentValue(resultadoCita.appointmentResult.comments[1]?.message || ''); 
+          setCommentValue(resultadoCita.appointmentResult.comments[0]?.message || ''); 
           console.log("comentario",commentValue)
       }
     }, [resultadoCita]);  
@@ -158,7 +95,12 @@ function PageResultadoCitaIndividualAlumno() {
                             className="additional-classes"
                             emptyMessage="No hay archivos seleccionados"
                         > 
-                                {archivosBD.length > 0 && (
+                            {loading ? (
+                                <div className='w-full flex justify-center items-center'>
+                                    <ClipLoader color="#3498db" loading={loading} size={60} />
+                                </div>
+                            ) : (
+                                archivosBD.length > 0 && (
                                     <div className='w-full max-h-48 overflow-y-auto'>
                                         <ul>
                                             {archivosBD
@@ -173,7 +115,8 @@ function PageResultadoCitaIndividualAlumno() {
                                                 ))}
                                         </ul>
                                     </div>
-                                )} 
+                                )     
+                            )}
                         </ResultadoCardInformacionAlumno>
                         
                     </div>

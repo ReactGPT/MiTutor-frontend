@@ -189,6 +189,7 @@ const PageIndicadorTutor: React.FC = () => {
                         className={`${className} border-l-0`}
                         name="Fecha Fin"
                         id=""
+                        onChange={(e)=>console.log(e.target.value)}
                     />
                     <button className="bg-primary cursor-default rounded-r-2xl text-white px-5 shadow-custom border border-solid border-[rgba(116,170,255,0.70)] active:bg-black hover:cursor-pointer">
                         <IconSearch />

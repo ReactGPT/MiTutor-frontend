@@ -108,10 +108,6 @@ export const Routes: RouterConfig = {
         path: '/listaDeCitas/resultadoCitaIndividual',
         element: <PageResultadoCitaIndividual />
       },
-      {
-        path: '/indicadorTutor',
-        element: <PageIndicadorTutor/>
-      },
 
       {
         path: '*',
@@ -150,6 +146,7 @@ export const Routes: RouterConfig = {
         path: '/miPerfil',
         icon: <BiUser fontSize={32} />,
       },
+      
     ]
   },
   coordinador: {
@@ -173,6 +170,10 @@ export const Routes: RouterConfig = {
       {
         path: '/gestionSolicitudes',
         element: <PageSolicitudGestion />,
+      },
+      {
+        path: '/indicadorTutor',
+        element: <PageIndicadorTutor/>
       },
       {
         path: '*',
@@ -208,6 +209,12 @@ export const Routes: RouterConfig = {
         key: 'indicadores',
         label: 'Indicadores',
         path: '/indicadores',
+        icon: <BiUser fontSize={32} />,
+      },
+      {
+        key: 'indicadorTutor',
+        label: 'IndicadorTutor',
+        path: '/indicadorTutor',
         icon: <BiUser fontSize={32} />,
       }
     ]

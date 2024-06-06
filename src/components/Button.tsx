@@ -1,22 +1,24 @@
 import React from 'react';
 
 type ButtonProps = {
-  variant?: 'call-to-action' | 'primario' | 'secundario' | 'terciario' | 'warning';
+  variant?: 'call-to-action' | 'primario' | 'secundario' | 'terciario' | 'warning' | 'accept' | 'reject';
   onClick: () => void;
   icon?: any;
   iconSize?: number;
   disabled?: boolean;
   text?: string;
+  className?: string;
 };
 
-const Button = ({
+const Button: React.FC<ButtonProps> = ({
   variant = 'call-to-action',
   onClick,
   icon,
   iconSize = 6,
   disabled = false,
-  text
-}: ButtonProps) => {
+  text,
+  className = '',
+}) => {
   let buttonClass = 'flex items-center justify-between h-[42px] gap-2 px-3 py-2 shadow-custom rounded-xl font-roboto text-sm font-medium transition-all duration-200 ease-linear';
   let iconClass = 'text-2xl';
   const Icon = icon;
@@ -36,6 +38,12 @@ const Button = ({
     case 'warning':
       buttonClass += ' bg-warning text-black hover:bg-red-700 hover:text-white';
       break;
+    case 'accept':
+      buttonClass += ' border-custom bg-primary text-white hover:bg-blue-700 hover:text-white';
+      break;
+    case 'reject':
+      buttonClass += ' bg-red-700 text-white hover:bg-red-550 hover:text-white';
+      break;
     default:
       buttonClass += ' bg-blue-500 text-white hover:bg-blue-600';
   }
@@ -45,7 +53,7 @@ const Button = ({
   }
 
   return (
-    <button className={buttonClass} onClick={onClick} disabled={disabled}>
+    <button className={`${buttonClass} ${className}`} onClick={onClick} disabled={disabled}>
       {//icon && <span className={iconClass}>{icon}</span>
       }
       {icon && <Icon className={iconClass} size={iconSize}></Icon>}

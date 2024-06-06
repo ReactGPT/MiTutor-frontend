@@ -11,6 +11,7 @@ import { useStudent } from '../../../../store/hooks/useStudent';
 //import { useNavigate } from 'react-router-dom';
 import { Student } from '../../../../store/types/Student';
 import PageCargarMasivamente from './PageCargarMasivamente';
+import { useTitle } from '../../../../context';
 
 const profesores = [
   //{ id: 1, nombre: 'Pedro García'},
@@ -26,7 +27,8 @@ const profesores = [
 ]
 const PageAlumnosSeleccionados = () => {
   //const navigate=useNavigate();
-
+  const {handleSetTitle} = useTitle();
+  handleSetTitle("Alumnos Seleccionados");
   const [popoutIsOpen,setPopoutIsOpen]=useState(false);
   //const [rowData, setRowData] = useState<Student[]>([]);
   const [studentDataModified, setStudentDataModified] = useState<Student[]>([]);
@@ -35,7 +37,7 @@ const PageAlumnosSeleccionados = () => {
 
   useEffect(()=>{fetchStudentData(1)},[])
   useEffect(()=>{setStudentDataModified(studentData)},[studentData])
-
+  
   console.log(studentDataModified)
   const handleClickSubirMasivamente = ()=>{
     setPopoutIsOpen(true);
@@ -93,7 +95,7 @@ const PageAlumnosSeleccionados = () => {
         const student = params.data;
         const tutorExistsInProfessors = profesores.some(profesor => profesor.id === student.tutorId);
         return (
-          <select
+          <select className='w-full h-full bg-white border border-gray-300 rounded-md px-2 py-1'
             defaultValue={student.tutorId || ''}
             onChange={(e) => handleTutorChange(student.studentId, parseInt(e.target.value))}
           >
@@ -117,10 +119,10 @@ const PageAlumnosSeleccionados = () => {
   }
 
   return (
-    <div className='w-full'>
+    <div className='w-[full] h-full'>
         <div className='flex w-full gap-5'>
             <div className='w-[65%]'>
-                <SearchInput onSearch={handleSearch} placeholder=''/>
+                <SearchInput onSearch={handleSearch} handleOnChangeFilters={()=>{}} placeholder=''/>
             </div>
             <div className='w-[35%] flex justify-end gap-4'>
                 <Button onClick={handleClickSubirMasivamente} icon={AddSquareIcon} text='Cargar Masivamente' iconSize={25}/>
@@ -128,7 +130,7 @@ const PageAlumnosSeleccionados = () => {
             </div>
         </div>
 
-        <div className='h-full mt-10'>
+        <div className='flex w-full h-full flex-col space-y-10 mt-10'>
           <div className='flex w-full h-[75%] ag-theme-alpine ag-theme-alpine2 '>
               <div className='w-full h-full'>
                   <AgGridReact

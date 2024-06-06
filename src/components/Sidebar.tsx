@@ -2,13 +2,16 @@ import logo from '../assets/logo.png';
 import { BiLogOut } from 'react-icons/bi';
 import { SidebarLink } from '../store/types/SidebarLink';
 import { NavLink } from 'react-router-dom';
+import { useTitle } from '../context/TitleContext';
+//import { googleLogout } from '@react-oauth/google';
+import { useAuth } from '../context';
 
 type SidebarProps = {
-  setTitle: (title: string) => void;
   sidebarLinks: SidebarLink[];
 };
 
-const Sidebar = ({ setTitle, sidebarLinks }: SidebarProps) => {
+const Sidebar = ({ sidebarLinks }: SidebarProps) => {
+  const { handleLogout } = useAuth();
   return (
     <nav className='h-full w-full bg-[rgba(255,_255,_255,_0.50)] flex flex-col text-black sidebar-shaddow gap-6 px-3 py-7 select-none'>
       <div className='flex items-center justify-center gap-3 px-4 py-3 font-montserrat min-h-[60px]'>
@@ -25,7 +28,7 @@ const Sidebar = ({ setTitle, sidebarLinks }: SidebarProps) => {
             }
             to={link.path}
             key={index} onClick={() => {
-              setTitle(link.label);
+              //setTitle(link.label);
             }}>
             <span className="text-xl">{link.icon}</span>
             <span className="leading-5">{link.label}</span>
@@ -33,8 +36,10 @@ const Sidebar = ({ setTitle, sidebarLinks }: SidebarProps) => {
         ))}
       </div>
       <a className='text-stone-700 flex flex-start items-center gap-6 font-roboto text-base px-4 py-2 hover:text-primary'>
+        <button onClick={()=>handleLogout()}>
         <span className="text-xl"><BiLogOut fontSize={32} /></span>
         <span className='leading-4'>Cerrar Sesión</span>
+        </button>
       </a>
     </nav>
   );

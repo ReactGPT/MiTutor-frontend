@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Student } from "./../types/Student";
+import { Student } from '../types/Student';
 import { getStudentInfo, getStudentIdInfo } from "../services/student";
 
 interface StudentHookReturnType {

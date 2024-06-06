@@ -158,20 +158,3 @@
     -webkit-appearance: none;
     margin: 0;
   }
-
-  .bg-file-normal{
-    border: 1px solid #042354;
-    background: linear-gradient(0deg, var(--Transparencia, rgba(255, 255, 255, 0.5)), var(--Transparencia, rgba(255, 255, 255, 0.5))),
-    radial-gradient(17.54% 48.21% at 17.57% 44.64%, rgba(223, 227, 255, 0.16) 0%, rgba(175, 184, 255, 0.16) 100%) /* warning: gradient uses a rotation that is not supported by CSS and may not behave as expected */;
-  }
-  .bg-file-error{
-    border: 1px solid red;
-    background: linear-gradient(0deg, var(--Transparencia, rgba(255, 255, 255, 0.5)), var(--Transparencia, rgba(255, 255, 255, 0.5))),
-  radial-gradient(17.54% 48.21% at 17.57% 44.64%, rgba(255, 215, 229, 0.17) 0%, rgba(195, 9, 74, 0.17) 100%) /* warning: gradient uses a rotation that is not supported by CSS and may not behave as expected */;
-  
-  }
-  .bg-file-success{
-    border: 1px solid green;
-    background: linear-gradient(0deg, var(--Transparencia, rgba(255, 255, 255, 0.5)), var(--Transparencia, rgba(255, 255, 255, 0.5))),
-  radial-gradient(17.54% 48.21% at 17.57% 44.64%, rgba(215, 255, 226, 0.17) 0%, rgba(9, 195, 39, 0.17) 100%) /* warning: gradient uses a rotation that is not supported by CSS and may not behave as expected */;
-  }

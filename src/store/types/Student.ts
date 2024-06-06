@@ -8,6 +8,6 @@ export type Student = {
   institutionalEmail: string;
   facultyName: string;
   isRegistered: boolean;
-  tutorId: number;
-  tutorName: string;
+  tutorId?: number;
+  tutorName?: string;
 };

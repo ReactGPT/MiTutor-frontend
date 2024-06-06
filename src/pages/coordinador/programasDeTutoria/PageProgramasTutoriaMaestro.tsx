@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useState, useEffect } from 'react';
+import { useState, useEffect,useMemo } from 'react';
 import ProgramaTutoríaSearchBar from './ProgramaTutoríaSearchBar';
 import { AgGridReact } from 'ag-grid-react';
 import 'ag-grid-community/styles/ag-grid.css';
@@ -8,9 +8,43 @@ import { ColDef } from 'ag-grid-community';
 import CustomProgramaTutoriaGridButton from './CustomProgramaTutoriaGridButton';
 import { DetailsIcon } from '../../../assets';
 import { useNavigate } from 'react-router-dom';
+import { useProgramaTutoria } from '../../../store/hooks';
+import { Spinner } from '../../../components';
+import { ProgramaTutoria } from '../../../store/types';
+//import { useHistory } from 'react-router-dom';
+import { useTitle } from '../../../context';
+
 
 export default function PageProgramasTutoriaMaestro() {
+    const {handleSetTitle} = useTitle();
+    handleSetTitle("Programas de tutoría");
     const navigate=useNavigate();
+    //const history = useHistory();
+    const {isLoading,programaTutoriaData,fetchProgramaTutorias} = useProgramaTutoria();
+    //const [programaTutoriaFiltered,setProgramaTutoriaFiltered] = useState<ProgramaTutoria[]|null>(null)
+    useEffect(()=>{
+        fetchProgramaTutorias();
+    },[])
+    
+    const handleNavigation=(data:ProgramaTutoria)=>{
+        //console.log(data);
+        navigate('editar',{state:{programaTutoria:data}});
+    }
+
+    const [filters,setFilters]=useState<any>({
+        idSpeciality:null,
+        idFaculty:null,
+        name:null
+    });
+    const handleOnChangeFilters = (filter:any)=>{
+        setFilters(filter);
+    }
+    const programaTutoriaFiltered : ProgramaTutoria[]=  useMemo(()=>{
+        return [...(programaTutoriaData).filter((item)=>
+            item.nombre.toLowerCase().includes(filters.name?filters.name:"")&&(filters.idSpeciality?filters.idSpeciality===item.especialidadId:true)&&(filters.idFaculty?filters.idFaculty===item.facultadId:true)
+    )]
+    },[programaTutoriaData,filters])
+    
     
     const defaultColDef = {
         suppressHeaderMenuButton: true,
@@ -25,114 +59,47 @@ export default function PageProgramasTutoriaMaestro() {
         },
     };
     const columnDefs: ColDef[] = [
-        { headerName: 'Código Tutoría', field: 'cod_tutoria',maxWidth:150 },
-        { headerName: 'Nombre', field: 'nombre_tutoria'},
-        { headerName: 'Facultad/Especialidad', field: 'unidad_academica' },
+        
+        { headerName: 'Nombre', field: 'nombre', minWidth:150},
+        { headerName: 'Facultad', field: 'facultadNombre',minWidth:240 },
+        { headerName: 'Especialidad', field: 'especialidadNombre', minWidth:200 },
         {
-          headerName: 'Cantidad Tutores',
-          field: 'cant_tutores'
+          headerName: 'Tutores',
+          field: 'cant_tutores',
+          minWidth:100,maxWidth:100
+        },
+        {
+            headerName: 'Alumnos',
+            field: 'cant_alumnos',
+            minWidth:100,maxWidth:100
         },
         {
             headerName:'',
             field:'',
             maxWidth:60,
             minWidth:40,
-            cellRenderer: CustomProgramaTutoriaGridButton,
-            cellRendererParams:{
-                onClick: ()=>{
-                    navigate("/");
-                },
-                icon:DetailsIcon,
-                iconSize:4
+            cellRenderer: (rowData:any)=>{
+                return(
+                    <CustomProgramaTutoriaGridButton icon={DetailsIcon} iconSize={4} onClick={()=>(handleNavigation(rowData.data))}/>
+                )
             }
         }
 
     ];
-    const rowData=[{
-        cod_tutoria:"TC000000",
-        nombre_tutoria:"Cachimbos Ciencias",
-        unidad_academica:"Ciencias e Ing.",
-        cant_tutores:17
-    },
-    {
-        cod_tutoria:"TC000001",
-        nombre_tutoria:"Futuro Laboral",
-        unidad_academica:"Ciencias e Ing.",
-        cant_tutores:35
-    },
-    {
-        cod_tutoria:"TC000002",
-        nombre_tutoria:"Primeras Prácticas",
-        unidad_academica:"Ing. Informática",
-        cant_tutores:4
-    },
-    {
-        cod_tutoria:"TC000003",
-        nombre_tutoria:"Maestrías",
-        unidad_academica:"Ing. Informática",
-        cant_tutores:15
-    },
-    {
-        cod_tutoria:"TC000004",
-        nombre_tutoria:"Cachimbos Ciencias",
-        unidad_academica:"Ciencias e Ing.",
-        cant_tutores:17
-    },
-    {
-        cod_tutoria:"TC000005",
-        nombre_tutoria:"Cachimbos Ciencias",
-        unidad_academica:"Ciencias e Ing.",
-        cant_tutores:17
-    },
-    {
-        cod_tutoria:"TC000006",
-        nombre_tutoria:"Cachimbos Ciencias",
-        unidad_academica:"Ciencias e Ing.",
-        cant_tutores:17
-    },
-    {
-        cod_tutoria:"TC000007",
-        nombre_tutoria:"Cachimbos Ciencias",
-        unidad_academica:"Ciencias e Ing.",
-        cant_tutores:17
-    },
-    {
-        cod_tutoria:"TC000008",
-        nombre_tutoria:"Cachimbos Ciencias",
-        unidad_academica:"Ciencias e Ing.",
-        cant_tutores:17
-    },
-    {
-        cod_tutoria:"TC000009",
-        nombre_tutoria:"Cachimbos Ciencias",
-        unidad_academica:"Ciencias e Ing.",
-        cant_tutores:17
-    },
-    {
-        cod_tutoria:"TC000010",
-        nombre_tutoria:"Cachimbos Ciencias",
-        unidad_academica:"Ciencias e Ing.",
-        cant_tutores:17
-    }
-
-];
-
     return (
-    <div className='flex w-full h-full flex-col space-y-10 mt-5'>
+    <div className='flex w-full h-full flex-col space-y-10 mt-10'>
         <div className='flex w-full h-[10%]'>
-            <ProgramaTutoríaSearchBar/>
+            <ProgramaTutoríaSearchBar handleOnChangeFilters={handleOnChangeFilters}/>
         </div>
-        <div className='flex w-full h-[75%] ag-theme-alpine ag-theme-alpine2 '>
-            <div className='w-full h-full'>
+        <div className='flex w-full h-[80%] ag-theme-alpine items-center justify-center'>
+            {isLoading?<Spinner size='lg'/>:<div className='w-full h-full'>
                 <AgGridReact
                     defaultColDef={defaultColDef}
                     columnDefs={columnDefs}
-                    rowData={rowData}
+                    rowData={programaTutoriaFiltered}
                 />
-            </div>
-            
-        </div>
-        
+            </div>}            
+        </div>        
     </div>
   )
 }

@@ -2,7 +2,7 @@ import * as React from 'react';
 import { useState, useEffect } from 'react';
 import { CustomCellRendererProps } from "@ag-grid-community/react";
 
-interface CustomButtonParams extends CustomCellRendererProps{
+type CustomButtonParams = {
     onClick: ()=>void;
     icon: any;
     iconSize?:number;

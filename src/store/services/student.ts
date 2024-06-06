@@ -1,5 +1,5 @@
-import { Student } from './../types/Student';
 import axios from 'axios';
+import { Student } from '../types/Student';
 
 type StudentDetailResponse={
   studentList:Student[];

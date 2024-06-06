@@ -9,7 +9,7 @@ import { ColDef } from "ag-grid-community";
 import AddIcon from "../../../../assets/svg/AddIcon";
 import Papa from "papaparse";
 import * as XLSX from "xlsx";
-import { useStudent } from "../../../../store/hooks/useStudent";
+import { useStudent } from '../../../../store/hooks/useStudent';
 import { Student } from '../../../../store/types/Student';
 import { CloseIcon } from "../../../../assets";
 //import { Button } from "../../../../components";
@@ -297,7 +297,7 @@ const PageCargarMasivamente = (
   ];
 
   return (
-    <div className="w-full flex flex-col gap-[20px]">
+    <div className="w-full h-full flex flex-col gap-[20px]">
       {/* Empieza input file */}
       <div className="flex gap-[10px] items-end">
         <div className="flex flex-col gap-[2px]">

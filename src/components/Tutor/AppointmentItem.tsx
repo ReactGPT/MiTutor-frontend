@@ -78,8 +78,8 @@ export const AppointmentItem: React.FC<AppointmentItemProps> = ({ appointment, t
 
   const goToDetalleCita = () => {
     if (user === 'tutor') {
-      if (new Date(appointment.creationDate) < currentDate)
-        navigate("/listaDeCitas/resultadoCitaIndividual", { state: { cita: appointment } });
+      //if (new Date(appointment.creationDate) < currentDate)
+      navigate("/listaDeCitas/resultadoCitaIndividual", { state: { cita: appointment } });
     } else if (user === 'alumno') {
       navigate("/listaDeCitasAlumno/detalleCitaAlumno", { state: { cita: appointment } });
     }

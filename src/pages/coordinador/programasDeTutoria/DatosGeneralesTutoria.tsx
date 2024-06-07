@@ -6,19 +6,26 @@ import { useAppSelector } from '../../../store/hooks';
 import { RootState } from '../../../store/store';
 import { useProgramaTutoria } from '../../../store/hooks';
 import { useNavigate } from 'react-router-dom';
+import ModalSuccess from '../../../components/ModalSuccess';
+import ModalError from '../../../components/ModalError';
 function DatosGeneralesTutoria() {
   //const[open,setOpen] = useState<boolean>(true);
   const { postProgramaTutoria, isLoading } = useProgramaTutoria();
   const navigate = useNavigate();
   const { tutoringProgram, onChangeTutoringProgram } = useTutoringProgramContext();
   const { facultyList, specialityList } = useAppSelector((state: RootState) => state.parameters);
-  console.log(tutoringProgram);
+  const [isOpenModalSucess,setIsOpenModalSucess]=useState<boolean>(false);
+  const [isOpenModalError,setIsOpenModalError]=useState<boolean>(false);
+  const handleSaveTutoria=()=>{
+    postProgramaTutoria(tutoringProgram)
+    .then((response) => response?setIsOpenModalSucess(true):setIsOpenModalError(true));
+  }
   return (
     <div className='flex flex-col w-full h-full'>
       <div id="ProgramaTutoriaBox1Header" className='flex flex-row justify-between max-h-[45px] w-full h-[30%]'>
         <h2 className='text-xl font-bold text-primary'>Datos del programa</h2>
         <div className='flex flex-row gap-4'>
-          {isLoading ? <Spinner /> : <Button text='Guardar' icon={SaveIcon} onClick={() => { postProgramaTutoria(tutoringProgram).then(() => navigate("/programasDeTutoriaMaestro")); }} />}
+          {isLoading ? <Spinner /> : <Button text='Guardar' icon={SaveIcon} onClick={handleSaveTutoria} />}
           <Button text='Cancelar' variant='primario' icon={CloseIcon} iconSize={4} onClick={() => { navigate(-1); }} />
         </div>
       </div>
@@ -27,7 +34,7 @@ function DatosGeneralesTutoria() {
           <div className='flex flex-col gap-2'>
             <span className='flex flex-col'>
               <label className='text-md w-full font-medium text-gray-900 dark:text-white mb-2'>Nombre de Tutoría</label>
-
+              
               <InputCell name='nombre' placeholder='Escoja un nombre' text={tutoringProgram.nombre} onChange={{ tipo: 'object', onChange: onChangeTutoringProgram }} boxSize='w-full flex h-[37px] ' />
             </span>
 
@@ -67,6 +74,16 @@ function DatosGeneralesTutoria() {
 
         </div>
       </div>
+      <ModalSuccess isOpen={isOpenModalSucess} 
+                      message={!!tutoringProgram.id?"Se guardaron los cambios satisfactoriamente":"Se creó la tutoría satisfactoriamente"}
+                      onClose={()=>{
+                        setIsOpenModalSucess(false);
+                        navigate("/programasDeTutoria");
+                      }}
+                      />
+      <ModalError isOpen={isOpenModalError} message='Ocurrió un error al intentar procesar el programa de tutoría. Intente nuevamente'
+                  onClose={()=>setIsOpenModalError(false)}
+                  />
     </div>
   );
 }

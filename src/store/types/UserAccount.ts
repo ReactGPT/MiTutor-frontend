@@ -28,12 +28,15 @@ export type ManagerRoleDetails={
     departmentName:string;
     departmentAcronym:string;
 }
+export type AdminRoleDetails={
+    isAdmin:boolean;
+}
 
 export type Role ={
     accountTypeId:number;
     rolName:string;
     type:string;
-    details:TutorRoleDetails|StudentRoleDetails|ManagerRoleDetails
+    details:TutorRoleDetails|StudentRoleDetails|ManagerRoleDetails|AdminRoleDetails
 }
 
 export type UserAccount={

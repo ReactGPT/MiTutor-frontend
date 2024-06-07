@@ -71,7 +71,7 @@ export default function PageProgramasTutoriaMaestro() {
     };
     const programaTutoriaFiltered : ProgramaTutoria[]=  useMemo(()=>{
         return [...(programaTutoriaData).filter((item)=>
-            item.nombre.toLowerCase().includes(filters.name?filters.name:"")&&(filters.idSpeciality?filters.idSpeciality===item.especialidadId:true)&&(filters.idFaculty?filters.idFaculty===item.facultadId:true)
+            item.nombre.toLowerCase().includes(filters.name?filters.name.toString().toLowerCase():"")&&(filters.idSpeciality?filters.idSpeciality===item.especialidadId:true)&&(filters.idFaculty?filters.idFaculty===item.facultadId:true)
     )]
     },[programaTutoriaData,filters]);
     

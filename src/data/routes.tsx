@@ -53,6 +53,7 @@ type RouterConfig = {
   tutor: RouterDetail;
   coordinador: RouterDetail;
   alumno: RouterDetail;
+  administrador:RouterDetail
 };
 
 export const Routes: RouterConfig = {
@@ -295,6 +296,23 @@ export const Routes: RouterConfig = {
         label: 'Mi Perfil',
         path: '/miPerfil',
         icon: <BiUser fontSize={32} />,
+      }
+    ]
+  },
+  administrador:{
+    pages:[{
+      path:"/",
+      element:<></>
+    },{
+      path:'*',
+      element:<Navigate to="/"/>
+    }],
+    navBarLink:[
+      {
+        key: 'inicio',
+        label: 'Inicio',
+        path: '/',
+        icon: <BiHome fontSize={32} />,
       }
     ]
   }

@@ -60,6 +60,10 @@ const RouterContextProvider = () => {
                     childrenArrayFound = childrenArrayFound.concat(Routes.coordinador.pages);
                     sideBarOptionsFound = sideBarOptionsFound.concat(Routes.coordinador.navBarLink);
                     break;
+                case "ADMIN":
+                    childrenArrayFound = childrenArrayFound.concat(Routes.administrador.pages);
+                    sideBarOptionsFound = sideBarOptionsFound.concat(Routes.administrador.navBarLink);
+                    break;
             };
         });
         //console.log(childrenArrayFound);

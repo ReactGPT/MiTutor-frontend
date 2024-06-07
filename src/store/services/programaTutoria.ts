@@ -66,8 +66,9 @@ type ServiceResponse={
             method: 'post',
             url: ServicesProperties.BaseUrl+'/crearEditarProgramaDeTutoria',
             headers : ServicesProperties.Headers,
-            data: JSON.stringify(!!programa.id?{
-                TutoringProgramId : programa?.id,
+            data: JSON.stringify({
+                
+                TutoringProgramId : !!programa.id?programa?.id:-1,
                 FaceToFace:programa.presencial,
                 Virtual:programa.virtual,
                 GroupBased : programa.grupal,
@@ -78,6 +79,12 @@ type ServiceResponse={
                 ProgramName : programa.nombre,
                 Description : programa.descripcion,
                 Duration : "00:30:00",
+                Tutors: programa.tutores.map(tutor=>{
+                  return {
+                    TutorId: tutor.idTutor,
+                    MeetingRoom : tutor.meetingRoom
+                  }
+                }),
                 Faculty : {
                   FacultyId:programa.facultadId
                 },
@@ -86,27 +93,7 @@ type ServiceResponse={
                 },
                 TutorTypeId:programa.tutorTypeId,
                 IsActive:programa.vigente
-            }:{
-              //TutoringProgramId : programa?.id,
-              FaceToFace:programa.presencial,
-              Virtual:programa.virtual,
-              GroupBased : programa.grupal,
-              IndividualBased : !programa.grupal,
-              Optional: !programa.obligatorio,
-              Mandatory : programa.obligatorio,
-              MembersCount : programa.cant_integrantes,
-              ProgramName : programa.nombre,
-              Description : programa.descripcion,
-              Duration : "00:30:00",
-              Faculty : {
-                FacultyId:programa.facultadId
-              },
-              Specialty: {
-                SpecialtyId:programa.especialidadId,
-              },
-              TutorTypeId:programa.tutorTypeId,
-              IsActive:programa.vigente
-          })
+            })
         });
         if(!response?.data.success){
             return {
@@ -158,6 +145,25 @@ type ServiceResponse={
     } catch (err:any) {
       throw new Error(err.message);
     }
-  }
 
-export {getListaProgramaTutorias,crearEditarProgramaTutoria,getTutoresByTutoringProgramId}
+    
+}
+async function getEliminarTutoria(tutoringProgramId:number):Promise<ServiceResponse>{
+  try {
+    const response = await axios({
+        method: 'get',
+        url: ServicesProperties.BaseUrl+`/eliminarProgramaTutoria?tutoringProgramId=${tutoringProgramId}`,
+        headers : ServicesProperties.Headers
+    });
+    if(!response.data.success){
+        return {sucess:false,message:response.data.message};
+    }
+    
+    return {sucess:true,message:response.data.message};
+      
+  } catch (err:any) {
+    throw new Error(err.message);
+  }
+}
+
+export {getListaProgramaTutorias,crearEditarProgramaTutoria,getTutoresByTutoringProgramId,getEliminarTutoria}

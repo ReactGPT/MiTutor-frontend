@@ -4,11 +4,14 @@ import Pagination from "../../../components/Pagination";
 import { SearchInput } from "../../../components";
 import { useCitasPorTutor } from "../../../store/hooks/useCita";
 import { useAuth } from '../../../context';
+import { TutorRoleDetails } from '../../../store/types';
 
 
 const PageListaDeCitas = () => {
   const { userData } = useAuth();
-  const tutorId = userData?.userInfo?.roles[0].details.tutorId;
+  //const tutorId = userData?.userInfo?.roles[0].details.tutorId;
+  const tutorId = (userData?.userInfo?.roles[0].details as TutorRoleDetails).tutorId;
+
 
   const { cita, fetchCita } = useCitasPorTutor(tutorId);
 
@@ -29,7 +32,7 @@ const PageListaDeCitas = () => {
 
   const handleOnChangeFilters = (filter: any) => {
     setFilters(filter);
-  }
+  };
 
   const handleSearch = (text: string) => {
     setSearchText(text);

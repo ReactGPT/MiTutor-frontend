@@ -9,7 +9,7 @@ import { useAuth } from "../../../context";
 
 const PageListaDeTutorias = () => {
   const { userData } = useAuth();
-  const studentId = userData?.userInfo?.id;
+  const studentId = userData?.userInfo?.id || 0;
 
   const { programaTutoriaAlumno, fetchProgramaDeTutoriaAlumno, loading } = useProgramaDeTutoriaAlumno(studentId);
 

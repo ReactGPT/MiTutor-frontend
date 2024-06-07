@@ -6,10 +6,13 @@ import { useCitasPorTutorPorAlumno } from '../../../store/hooks/useCita';
 import { useAuth } from '../../../context';
 import { useLocation } from 'react-router-dom';
 import { ListStudent } from '../../../store/types/ListStudent';
+import { TutorRoleDetails } from '../../../store/types';
 
 const PageHistoricoDeCitas = () => {
   const { userData } = useAuth();
-  const tutorId = userData?.userInfo?.roles[0].details.tutorId;
+  //const tutorId = userData?.userInfo?.roles[0].details.tutorId;
+  const tutorId = (userData?.userInfo?.roles[0].details as TutorRoleDetails).tutorId;
+
 
   const location = useLocation();
   const student: ListStudent = location.state.data;
@@ -52,7 +55,7 @@ const PageHistoricoDeCitas = () => {
       </div>
 
       <div className="h-[7%]">
-        <SearchInput placeholder="Cosa a buscar" onSearch={handleSearch} />
+        <SearchInput placeholder="Cosa a buscar" onSearch={handleSearch} handleOnChangeFilters={() => { }} />
       </div>
 
       <div className="w-full h-[65%] min-h-[60px]">
@@ -62,6 +65,7 @@ const PageHistoricoDeCitas = () => {
             key={`ap-Item-${index}`}
             appointment={cita}
             tipo="historico"
+            user="tutor"
           />
         ))}
 

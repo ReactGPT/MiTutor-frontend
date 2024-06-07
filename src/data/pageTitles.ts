@@ -21,7 +21,7 @@ export const PageTitles = [
   },
   {
     path: '/programasDeTutoria/detalle-programa',
-    pageName: "Detalle de programa"
+    pageName: "Detalle de tutoría"
   },
   {
     path: '/programasDeTutoria/detalle-programa/alumno',
@@ -48,16 +48,8 @@ export const PageTitles = [
     pageName: "Resulta de Cita"
   },
   {
-    path: '/PerfilAlumno',
-    pageName: "Perfil"
-  },
-  {
     path: '/programasDeTutoriaMaestro',
     pageName: "Tipos de Tutoría"
-  },
-  {
-    path: '/agregarDisponibilidad',
-    pageName: "Disponibilidad"
   },
   {
     path: '/misDerivacionesHechas',
@@ -73,7 +65,7 @@ export const PageTitles = [
   },
   {
     path: '/calendario/agregarDisponibilidad',
-    pageName: "Disponibilidad del Tutor"
+    pageName: "Mi Disponibilidad"
   },
   {
     path: '/misTutorias/detalle/planesDeAccion',
@@ -111,5 +103,9 @@ export const PageTitles = [
   {
     path: "/misTutorias/detalle/solicitarCita",
     pageName: "Solicitar Cita"
+  },
+  {
+    path: "/indicadorTutor",
+    pageName: "Indicador Tutor"
   }
 ];

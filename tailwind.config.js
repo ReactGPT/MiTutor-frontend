@@ -14,7 +14,13 @@ export default {
         secondary: '#d0ddf1',
         terciary: '#bdc1da',
         quaternary: '#d0d1dd',
-        warning: '#d5b5c0'
+        warning: '#d5b5c0',
+        custom:{
+          '2e9e96': '#2e9e96',
+          '57aad9':'#57aad9',
+          '7d2bc5':'#7d2bc5',
+          '00e742': '#00e742'
+        },
       },
       fontFamily: {
         roboto: 'Roboto',

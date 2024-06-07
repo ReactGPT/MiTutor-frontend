@@ -29,11 +29,19 @@ function useAppointment(): AppointmentHooksReturn {
 
   const addNewAppointment = async (appointmentData: AddAppointmentRequest) => {
     setLoading(true);
+    setError(null);
     try {
-      await addAppointment(appointmentData);
+      const response = await addAppointment(appointmentData);
+      if (response.status >= 400) {
+        throw new Error(`Error: ${response.status} ${response.statusText}`);
+      }
       setLoading(false);
-    } catch (error) {
-      setError("Error al agregar cita");
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        setError(err.message);
+      } else {
+        setError("Error desconocido al agregar cita");
+      }
       setLoading(false);
     }
   };

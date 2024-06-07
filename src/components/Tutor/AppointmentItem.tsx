@@ -72,15 +72,15 @@ const controlColor = (color: string, tipo: string) => {
 };
 
 export const AppointmentItem: React.FC<AppointmentItemProps> = ({ appointment, tipo, user }) => {
-  
+
   const navigate = useNavigate();
   const currentDate = new Date();
 
   const goToDetalleCita = () => {
-    if(user === 'tutor'){
-      if(new Date(appointment.creationDate) < currentDate)
+    if (user === 'tutor') {
+      if (new Date(appointment.creationDate) < currentDate)
         navigate("/listaDeCitas/resultadoCitaIndividual", { state: { cita: appointment } });
-    }else if(user === 'alumno'){
+    } else if (user === 'alumno') {
       navigate("/listaDeCitasAlumno/detalleCitaAlumno", { state: { cita: appointment } });
     }
   };
@@ -108,7 +108,7 @@ export const AppointmentItem: React.FC<AppointmentItemProps> = ({ appointment, t
                     user === "tutor" && (
                       <>
                         <span className="text-black font-semibold">Participante:</span>
-                        <span className="text-primary">{`${appointment.name} ${appointment.lastName} ${appointment.secondLastName}`}</span>    
+                        <span className="text-primary">{`${appointment.name} ${appointment.lastName} ${appointment.secondLastName}`}</span>
                       </>
                     )
                   }
@@ -116,7 +116,7 @@ export const AppointmentItem: React.FC<AppointmentItemProps> = ({ appointment, t
                     user === "alumno" && (
                       <>
                         <span className="text-black font-semibold">Tutor:</span>
-                        <span className="text-primary">{`${appointment.tutorName} ${appointment.tutorLastName} ${appointment.tutorSecondLastName}`}</span>    
+                        <span className="text-primary">{`${appointment.tutorName} ${appointment.tutorLastName} ${appointment.tutorSecondLastName}`}</span>
                       </>
                     )
                   }

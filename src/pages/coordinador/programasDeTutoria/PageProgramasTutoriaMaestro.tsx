@@ -10,17 +10,24 @@ import { DetailsIcon } from '../../../assets';
 import { useNavigate } from 'react-router-dom';
 import { useProgramaTutoria } from '../../../store/hooks';
 import { Spinner } from '../../../components';
-import { ProgramaTutoria } from '../../../store/types';
+import { ProgramaTutoria, Tutor } from '../../../store/types';
 //import { useHistory } from 'react-router-dom';
 import { useTitle } from '../../../context';
+import DeleteIcon from '../../../assets/svg/DeleteIcon';
+//import { getEliminarTutoria } from '../../../store/services';
+import ModalConfirmation from '../../../components/ModalConfirmation';
+import ModalSuccess from '../../../components/ModalSuccess';
+import ModalError from '../../../components/ModalError';
 
 
 export default function PageProgramasTutoriaMaestro() {
-    const {handleSetTitle} = useTitle();
-    handleSetTitle("Programas de tutoría");
     const navigate=useNavigate();
     //const history = useHistory();
-    const {isLoading,programaTutoriaData,fetchProgramaTutorias} = useProgramaTutoria();
+    const [isOpen,setIsOpen] = useState<boolean>(false);
+    const [isOpenModalSuccess,setIsOpenModalSuccess] = useState<boolean>(false);
+    const [isOpenModalError,setIsOpenModalError] = useState<boolean>(false);
+    const {isLoading,programaTutoriaData,fetchProgramaTutorias,postEliminarProgramaTutoria} = useProgramaTutoria();
+    const [programaSelected,setProgramaSelected] = useState<ProgramaTutoria|null>(null);
     //const [programaTutoriaFiltered,setProgramaTutoriaFiltered] = useState<ProgramaTutoria[]|null>(null)
     useEffect(()=>{
         //console.log("llamada fetch prog tutoria");
@@ -31,7 +38,29 @@ export default function PageProgramasTutoriaMaestro() {
         //console.log(data);
         navigate("/programasDeTutoriaMaestro/editar",{state:{programaTutoria:data}});
     };
-
+    const handleOnSelectProgramaTutoria=(programa: ProgramaTutoria)=>{
+        setProgramaSelected(programa);
+    }
+    useEffect(()=>{
+        if(programaSelected){
+            setIsOpen(true);
+        }
+    },[programaSelected])
+    const handleOnConfirmDeleteProgramaTutoria=()=>{
+        if(programaSelected&&!!programaSelected.id){
+            postEliminarProgramaTutoria(programaSelected?.id)
+            .then((result)=>{
+                if(result){
+                    setIsOpenModalSuccess(true);
+                }
+                else{
+                    setIsOpenModalError(true);
+                }
+                setIsOpen(false);
+                //setProgramaSelected(null);
+            })
+        }
+    }
     const [filters,setFilters]=useState<any>({
         idSpeciality:null,
         idFaculty:null,
@@ -84,6 +113,19 @@ export default function PageProgramasTutoriaMaestro() {
                     <CustomProgramaTutoriaGridButton icon={DetailsIcon} iconSize={4} onClick={()=>(handleNavigation(rowData.data))}/>
                 )
             }
+        },
+        {
+            headerName:'',
+            field:'',
+            maxWidth:60,
+            minWidth:40,
+            cellRenderer:(rowData:any)=>{
+                return(
+                    <button className='text-primary' onClick={()=>handleOnSelectProgramaTutoria(rowData.data)}>
+                        <DeleteIcon size={6}/>
+                    </button>
+                )
+            }
         }
 
     ];
@@ -100,7 +142,30 @@ export default function PageProgramasTutoriaMaestro() {
                     rowData={programaTutoriaFiltered}
                 />
             </div>}            
-        </div>        
+        </div>
+        <ModalConfirmation isOpen={isOpen} message={`¿Esta seguro de eliminar el programa de tutoría : ${programaSelected&&programaSelected.nombre}?`} 
+                            onClose={()=>{
+                                setIsOpen(false);
+                            }}
+                            onConfirm={()=>{
+                                handleOnConfirmDeleteProgramaTutoria();
+                                setIsOpen(false);
+                            }}
+                            isAcceptAction={true}
+                            />
+        <ModalSuccess isOpen={isOpenModalSuccess} message={`Se elimino con éxito el programa : ${programaSelected&&programaSelected.nombre}`}
+                        onClose={()=>{
+                            setProgramaSelected(null);
+                            setIsOpenModalSuccess(false);
+                            fetchProgramaTutorias();
+                        }}
+                        />
+        <ModalError isOpen={isOpenModalError} message='Ocurrió un problema inesperado. Intente nuevamente'
+                    onClose={()=>{
+                        setProgramaSelected(null);
+                        setIsOpenModalError(false)
+                    }}
+                    />     
     </div>
   )
 }

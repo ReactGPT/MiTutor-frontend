@@ -18,7 +18,7 @@ const PageDetalleProgramaTutoriaTutor: React.FC = () => {
   return (
     <div className="flex flex-col w-full h-full">
 
-      <div className="flex flex-col w-full h-1/4 bg-[rgba(255,255,255,0.5)] border-custom drop-shadow-md p-5" >
+      <div className="flex flex-col w-full h-2/5 bg-[rgba(255,255,255,0.5)] border-custom drop-shadow-md p-5" >
         <h1 className="text-3xl font-bold">Datos de Tutoría</h1>
         <div className="flex w-full h-full">
           <div className="flex flex-col w-full">
@@ -33,7 +33,7 @@ const PageDetalleProgramaTutoriaTutor: React.FC = () => {
               </div>
             </div>
             <Label className="text-primary font-roboto">Descripción</Label>
-            <Textarea className='min-h-16 max-h-28' value={data.description} readOnly />
+            <Textarea className='min-h-16 max-h-16' value={data.description} readOnly />
           </div>
         </div>
       </div>

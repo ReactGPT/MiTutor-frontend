@@ -1,4 +1,4 @@
-import { Dialog,Transition } from "@headlessui/react";
+import { Dialog, Transition } from "@headlessui/react";
 import { Fragment, useEffect, useState } from 'react';
 import { useTutoringProgramContext } from "../../context";
 import { useProgramaTutoria } from "../../store/hooks";
@@ -13,8 +13,19 @@ import { CloseIcon, SaveIcon } from "../../assets";
 type ModalAgregarTutoresProps ={
   isOpen:boolean ;
   closeModal:()=>void;    
+
   //indexSelected:number;
-}
+};
+
+function ModalAgregarTutores({ isOpen, closeModal }: ModalAgregarTutoresProps) {
+  const { tutoringProgram } = useTutoringProgramContext();
+  const { fetchTutoresByProgramaTutoria, isLoading } = useProgramaTutoria();
+  const [tutores, setTutores] = useState<Tutor[]>([]);
+  const [tutoresFiltered, setTutoresFiltered] = useState<Tutor[]>([]);
+  const [searchFilter, setSearchFilter] = useState<string>("");
+
+  const handleSave = () => {
+
 
 function ModalAgregarTutores({isOpen,closeModal}:ModalAgregarTutoresProps) {
   const {tutoringProgram,onChangeTutoringProgram}=useTutoringProgramContext();
@@ -29,19 +40,20 @@ function ModalAgregarTutores({isOpen,closeModal}:ModalAgregarTutoresProps) {
     closeModal();
     setTutoresAgregados([]);
     //console.log(nuevosArrayTutores);
-    //console.log(tutoringProgram);
+    
   };
   const defaultColDef = {
     suppressHeaderMenuButton: true,
     flex: 1,
     sortable: true,
-    resizable: true,        
+    resizable: true,
     cellStyle: {
-        textAlign: 'center',
-        justifyContent: 'center',
-        alignItems: 'center',
-        display: 'flex',
+      textAlign: 'center',
+      justifyContent: 'center',
+      alignItems: 'center',
+      display: 'flex',
     },
+
 };
 const columnDefs: ColDef[] = [
     
@@ -60,21 +72,23 @@ const columnDefs: ColDef[] = [
             setTutoresAgregados([...tutoresAgregados,rowData.data]);
           }
          }}/>
+
       }
     }
-];
+  ];
 
-  const handleOnChangeSearch=(query:string)=>{
-    setSearchFilter(query); 
-  }
+  const handleOnChangeSearch = (query: string) => {
+    setSearchFilter(query);
+  };
   //Rendering control
-  useEffect(()=>{
-    if(isOpen){
+  useEffect(() => {
+    if (isOpen) {
       fetchTutoresByProgramaTutoria(-1)
-      .then((tutores)=>{
-        setTutores(tutores);
-      });
+        .then((tutores) => {
+          setTutores(tutores);
+        });
     }
+
   },[isOpen]);
   
   useEffect(()=>{
@@ -82,20 +96,22 @@ const columnDefs: ColDef[] = [
     setTutoresFiltered([...tutores.filter((item)=>(item.fullname.toLowerCase().includes(searchFilter.toLowerCase())||item.email.toLowerCase().includes(searchFilter.toLowerCase()))&&!(tutoringProgram.tutores.some((tutor)=>tutor.idTutor===item.idTutor)))]);
   },[tutores,searchFilter]);
 
+
   return (
     <Transition appear show={isOpen} as={Fragment}>
-        <Dialog as="div" className="relative z-10" onClose={closeModal}>
-          <Transition.Child
-            as={Fragment}
-            enter="ease-out duration-300"
-            enterFrom="opacity-0"
-            enterTo="opacity-100"
-            leave="ease-in duration-200"
-            leaveFrom="opacity-100"
-            leaveTo="opacity-0"
-          >
-            <div className="fixed inset-0 bg-black bg-opacity-75" />
-          </Transition.Child>
+      <Dialog as="div" className="relative z-10" onClose={closeModal}>
+        <Transition.Child
+          as={Fragment}
+          enter="ease-out duration-300"
+          enterFrom="opacity-0"
+          enterTo="opacity-100"
+          leave="ease-in duration-200"
+          leaveFrom="opacity-100"
+          leaveTo="opacity-0"
+        >
+          <div className="fixed inset-0 bg-black bg-opacity-75" />
+        </Transition.Child>
+
 
           <div className="fixed inset-0 overflow-y-auto">
             <div className="flex min-h-full items-center justify-center p-4 ">
@@ -148,27 +164,3 @@ const columnDefs: ColDef[] = [
 
 export default ModalAgregarTutores
 
-/**
-<Dialog.Panel className="max-w-[800px] w-1/3 min-h-[700px] h-[60%] w-[70%] max-h-[700px] min-w-[300px] bg-white text-left align-middle transform rounded-2xl p-6   shadow-xl transition-all">
-                  <Dialog.Title as="div" className="flex flex-row h-[10%] max-h-[80px] items-center ml-2 mr-2">
-                    <h3 className='text-2xl font-bold w-full text-primary font-large leading-6 text-gray-900'>{`Seleccionar Tutores`}</h3>
-                  </Dialog.Title> 
-                  <div className="flex flex-col w-full min-h-[450px] ml-2 mr-2 mt-4 flex flex-col gap-4">
-                    <div className="flex w-full h-[30%]">
-                      <SearchInput selectDisabled={true} placeholder="Escriba nombre o correo" onSearch={()=>{}}/>
-                    </div>
-                      <div className="flex flex-col w-full h-[70%] ag-theme-alpine items-center justify-center">
-                        <div className='flex w-full h-full'>
-                            <AgGridReact
-                                defaultColDef={defaultColDef}
-                                columnDefs={columnDefs}
-                                rowData={[]}
-                            />
-                        </div>
-                      </div>
-                  </div>
-                    
-                </Dialog.Panel> 
-
-
- */

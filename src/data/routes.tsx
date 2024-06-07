@@ -1,28 +1,4 @@
 import { Navigate, RouteObject } from "react-router-dom";
-//import PageInicioTutor from "../pages/tutor/inicio/PageInicioTutor"
-import PageListadoPlanAccion from '../pages/tutor/listaDeCitas/PageListadoPlanAccion.tsx';
-import PageDetallePlanAccion from '../pages/tutor/listaDeCitas/PageDetallePlanAccion.tsx';
-import PageResultadoCitaIndividual from '../pages/tutor/resultadoCita/PageResultadoCitaIndividual.tsx';
-import PageMiPerfilAlumno from '../pages/alumno/miPerfil/PageMiPerfilAlumno.tsx';
-import PageSolicitarAlumno from '../pages/tutor/solicitarTutor/PageSolicitarAlumno.tsx';
-import PageListadoPlanAccionAlumno from '../pages/alumno/PlanDeAccion/PageListadoPlanAccionAlumno.tsx';
-import PageDetallePlanAccionAlumno from '../pages/alumno/PlanDeAccion/PageDetallePlanAccionAlumno.tsx';
-import App from '../App.tsx';
-import PageInicioTutor from '../pages/tutor/inicio/PageInicioTutor.tsx';
-import PageCalendarioTutor from '../pages/tutor/calendario/PageCalendarioTutor.tsx';
-import PageProgramasDeTutoriaTutor from '../pages/tutor/programasDeTutoria/PageProgramasDeTutoriaTutor.tsx';
-import PageMiPerfilTutor from '../pages/tutor/miPerfil/PageMiPerfilTutor.tsx';
-import PageDetalleProgramaTutoriaTutor from '../pages/tutor/programasDeTutoria/PageDetalleProgramaTutoriaTutor.tsx';
-import PageHistoricoDeCitas from '../pages/tutor/listaDeCitas/PageHistoricoDeCitas.tsx';
-import PageListaDeCitas from '../pages/tutor/listaDeCitas/PageListaDeCitas.tsx';
-
-import PageProgTutoria from '../pages/coordinador/programasDeTutoria/PageProgTutoria.tsx';
-import PageProgramasTutoriaMaestro from '../pages/coordinador/programasDeTutoria/PageProgramasTutoriaMaestro.tsx';
-
-import PageAgregarDisponibilidadTutor from '../pages/tutor/calendario/PageAgregarDisponibilidadTutor.tsx';
-import PageDerivacionesHechas from '../pages/tutor/miPerfil/PageDerivacionesHechas.tsx';
-import PagePerfilAlumnoTutor from '../pages/tutor/programasDeTutoria/PagePerfilAlumnoTutor.tsx';
-
 import { SidebarLink } from "../store/types/SidebarLink.ts";
 import {
   BiCabinet,
@@ -31,18 +7,36 @@ import {
   BiListUl,
   BiUser
 } from "react-icons/bi";
+
+import PageListadoPlanAccion from '../pages/tutor/listaDeCitas/PageListadoPlanAccion.tsx';
+import PageDetallePlanAccion from '../pages/tutor/listaDeCitas/PageDetallePlanAccion.tsx';
+import PageResultadoCitaIndividual from '../pages/tutor/resultadoCita/PageResultadoCitaIndividual.tsx';
+import PageMiPerfilAlumno from '../pages/alumno/miPerfil/PageMiPerfilAlumno.tsx';
+import PageSolicitarAlumno from '../pages/tutor/solicitarTutor/PageSolicitarAlumno.tsx';
+import PageListadoPlanAccionAlumno from '../pages/alumno/PlanDeAccion/PageListadoPlanAccionAlumno.tsx';
+import PageDetallePlanAccionAlumno from '../pages/alumno/PlanDeAccion/PageDetallePlanAccionAlumno.tsx';
+import PageInicioTutor from '../pages/tutor/inicio/PageInicioTutor.tsx';
+import PageCalendarioTutor from '../pages/tutor/calendario/PageCalendarioTutor.tsx';
+import PageProgramasDeTutoriaTutor from '../pages/tutor/programasDeTutoria/PageProgramasDeTutoriaTutor.tsx';
+import PageMiPerfilTutor from '../pages/tutor/miPerfil/PageMiPerfilTutor.tsx';
+import PageDetalleProgramaTutoriaTutor from '../pages/tutor/programasDeTutoria/PageDetalleProgramaTutoriaTutor.tsx';
+import PageHistoricoDeCitas from '../pages/tutor/listaDeCitas/PageHistoricoDeCitas.tsx';
+import PageListaDeCitas from '../pages/tutor/listaDeCitas/PageListaDeCitas.tsx';
+import PageProgTutoria from '../pages/coordinador/programasDeTutoria/PageProgTutoria.tsx';
+import PageProgramasTutoriaMaestro from '../pages/coordinador/programasDeTutoria/PageProgramasTutoriaMaestro.tsx';
+import PageAgregarDisponibilidadTutor from '../pages/tutor/calendario/PageAgregarDisponibilidadTutor.tsx';
+import PageDerivacionesHechas from '../pages/tutor/miPerfil/PageDerivacionesHechas.tsx';
+import PagePerfilAlumnoTutor from '../pages/tutor/programasDeTutoria/PagePerfilAlumnoTutor.tsx';
 import PageSolicitarCita from "../pages/alumno/misTutorias/PageSolicitarCita.tsx";
 import PageListaDeCitasAlumno from '../pages/alumno/listaDeCitasAlumno/PageListaDeCitasAlumno.tsx';
 import PageResultadoCitaIndividualAlumno from '../pages/alumno/resultadoCita/PageResultadoCitaIndividualAlumno.tsx';
-///listaDeCitasAlumno/detalleCitaAlumno
 import PageListaDeTutorias from "../pages/alumno/misTutorias/PageListaDeTutorias.tsx";
-import PageDetalleDeTutoriaAsignado from "../pages/alumno/misTutorias/PageDetalleDeTutoriaAsignado.tsx";
-import PageDetalleDeTutoriaSolicitado from "../pages/alumno/misTutorias/PageDetalleDeTutoriaSolicitado.tsx";
-import PageDetalleDeTutoriaVariable from "../pages/alumno/misTutorias/PageDetalleDeTutoriaVariable.tsx";
-
 import PageSolicitudGestion from "../pages/coordinador/gestionSolicitudes/PageSolicitudGestion.tsx";
 import PageCalendarioAlumno from "../pages/alumno/calendario/PageCalendarioAlumno.tsx";
 import PageDetalleDeTutoria from "../pages/alumno/misTutorias/PageDetalleDeTutoria.tsx";
+import PageIndicadorTutor from "../pages/tutor/indicadorTutores/PageIndicadorTutor.tsx";
+ 
+ 
 
 type RouterDetail = {
   pages: RouteObject[];
@@ -107,17 +101,19 @@ export const Routes: RouterConfig = {
         element: <PageAgregarDisponibilidadTutor />,
       },
       {
-        path: '/misDerivacionesHechas',
+        path: '/derivaciones',
         element: <PageDerivacionesHechas />
       },
       {
         path: '/listaDeCitas/resultadoCitaIndividual',
         element: <PageResultadoCitaIndividual />
       },
+
       {
         path: '*',
         element: <Navigate to="/" />
-      }
+      } 
+      
     ],
     navBarLink: [
       {
@@ -134,7 +130,7 @@ export const Routes: RouterConfig = {
       },
       {
         key: 'programasDeTutoria',
-        label: 'Programas de Tutoria',
+        label: 'Tipos de Tutoria',
         path: '/programasDeTutoria',
         icon: <BiCabinet fontSize={32} />,
       },
@@ -150,6 +146,7 @@ export const Routes: RouterConfig = {
         path: '/miPerfil',
         icon: <BiUser fontSize={32} />,
       },
+      
     ]
   },
   coordinador: {
@@ -175,6 +172,10 @@ export const Routes: RouterConfig = {
         element: <PageSolicitudGestion />,
       },
       {
+        path: '/indicadorTutor',
+        element: <PageIndicadorTutor/>
+      },
+      {
         path: '*',
         element: <Navigate to="/" />
       }
@@ -188,7 +189,7 @@ export const Routes: RouterConfig = {
       },
       {
         key: 'programasDeTutoria',
-        label: 'Programas de Tutoria',
+        label: 'Tipos de Tutoria',
         path: '/programasDeTutoria',
         icon: <BiCabinet fontSize={32} />,
       },
@@ -208,6 +209,12 @@ export const Routes: RouterConfig = {
         key: 'indicadores',
         label: 'Indicadores',
         path: '/indicadores',
+        icon: <BiUser fontSize={32} />,
+      },
+      {
+        key: 'indicadorTutor',
+        label: 'IndicadorTutor',
+        path: '/indicadorTutor',
         icon: <BiUser fontSize={32} />,
       }
     ]
@@ -299,5 +306,3 @@ export const Routes: RouterConfig = {
     ]
   }
 };
-
-//const router = createBrowserRouter();

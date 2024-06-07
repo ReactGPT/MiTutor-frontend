@@ -9,6 +9,8 @@ interface CardProps {
 }
 
 const SimpleCard: React.FC<CardProps> = ({ title, content, subContent, onClick }) => {
+
+
   return (
     <div onClick={onClick} className="bg-white shadow-custom rounded-lg flex flex-col justify-center items-center max-w-60 max-h-80" style={{ width: '300px', height: '200px', cursor: 'pointer' }}>
       <img className="h-2/3 w-full overflow-hidden" src={avatar} />
@@ -23,8 +25,3 @@ const SimpleCard: React.FC<CardProps> = ({ title, content, subContent, onClick }
 };
 
 export default SimpleCard;
-
-
-
-
-

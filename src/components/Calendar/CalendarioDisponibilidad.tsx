@@ -9,6 +9,7 @@ import { useAvailability } from '../../store/hooks/useAvailability';
 import "./index.css";
 import ModalModificarDisponibilidad from '../Tutor/ModalModificarDisponibilidad';
 import { useAuth } from '../../context';
+import { TutorRoleDetails } from '../../store/types';
 
 interface CustomEvent extends Event {
   isBackgroundEvent?: boolean;
@@ -88,7 +89,7 @@ function transformAvailabilityToEvent(availability: Availability[]): CustomEvent
 
 const CalendarioDisponibilidad: React.FC<CalendarioDisponibilidadProps> = ({ citas = null, programable = false, onSelectEvent, refresh }) => {
   const { userData } = useAuth();
-  const tutorId = userData?.userInfo?.roles[0].details.tutorId;
+  const tutorId = (userData?.userInfo?.roles[0].details as TutorRoleDetails).tutorId;
 
   const { availability, fetchAvailability } = useAvailability(tutorId);
 

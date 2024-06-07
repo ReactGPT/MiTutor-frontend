@@ -11,8 +11,9 @@ import { Button } from '../../../components';
 import { ListUnitDerivation } from '../../../store/types/ListUnitDerivation'; 
 import { Derivation } from '../../../store/types/Derivation';
 import { useRef } from 'react'; 
-import jsPDF from 'jspdf';
-import { UserAccount } from '../../../store/types';
+import jsPDF from 'jspdf'; 
+import { useAuth } from '../../../context';
+import { TutorRoleDetails } from '../../../store/types';
 
 type InputProps = {
   className:string; 
@@ -20,26 +21,13 @@ type InputProps = {
 } 
  
 function FormularioDerivacion({className,cita}:InputProps){  
+  const { userData } = useAuth();
+  const tutorId = (userData?.userInfo?.roles[0].details as TutorRoleDetails).tutorId;
   //Traer datos del estudiante
   const { estudiante, fetchEstudiante } = useEstudianteResultadoCita(cita); 
   //Traer datos del profesor
   /*const [tutorRId, setTutorRId] = useState(0);*/
-  const { tutor, fetchTutor } = useTutorResultadoCita(2);
-
-  /*useEffect(() => {
-      // Verifica si tutorR tiene un valor y establece tutorRId con su ID
-      if (tutorR?.id) {
-          setTutorRId(tutorR.id);
-      }
-  }, [tutorR]);
-
-  // Llama fetchTutor si tutorRId cambia
-  useEffect(() => {
-      if (tutorRId) {
-          fetchTutor();
-          console.log("id tutor",tutorRId);
-      }
-  }, [tutorRId]);*/
+  const { tutor, fetchTutor } = useTutorResultadoCita(tutorId); 
 
   //Traer datos de Unidades Derivacion
   const { unidadesDerivacion,fetchUnidadesDerivacion} = useUnidadesDerivacion();

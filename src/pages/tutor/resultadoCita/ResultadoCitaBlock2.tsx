@@ -18,7 +18,7 @@ import { useArchivos, useArchivosDB, useArchivosOtros} from '../../../store/hook
 import { Archivo, ExtendedFile } from '../../../store/types/Archivo';
 //import { Archivo, ExtendedFile } from '../../../store/types/Archivo';
 import { Services as ServicesProperties } from '../../../config';
-import { FaExpand } from 'react-icons/fa';
+import { FaExpand } from 'react-icons/fa'; 
 
 type InputProps = {
     className:string;
@@ -28,11 +28,11 @@ type InputProps = {
 function ResultadoCitaBlock2({className,cita}:InputProps) {
     const { resultadoCita, fetchResultadoCita } = useResultadoCita(cita);
     //Enviar archivos
-    const { enviarArchivoServidor } = useArchivos();
-    const { enviarArchivoBd, fetchArchivosBD, archivosBD, setArchivosBD } = useArchivosDB();  
+    const { enviarArchivoServidor,loadingServidor } = useArchivos();
+    const { enviarArchivoBd, fetchArchivosBD, archivosBD, setArchivosBD,loading } = useArchivosDB();  
     const [ archivosBDCopia, setArchivosBDCopia] = useState<ExtendedFile[]>([]);
 
-    const { enviarArchivoOtros, fetchArchivosOtros, archivosOtros, setArchivosOtros } = useArchivosOtros();  
+    const { enviarArchivoOtros, fetchArchivosOtros, archivosOtros, setArchivosOtros,loading2 } = useArchivosOtros();  
     const [ archivosOtrosCopia, setArchivosOtrosCopia] = useState<ExtendedFile[]>([]);
 
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -251,7 +251,7 @@ function ResultadoCitaBlock2({className,cita}:InputProps) {
                     // Actualizar el estado del archivo en archivosBD
                     file.id_archivo=idArchivo; 
 
-                    const updatedArchivosBD: ExtendedFile[] = archivosBDCopia.map(file => {
+                    /*const updatedArchivosBD: ExtendedFile[] = archivosBDCopia.map(file => {
                       const copiedFile: ExtendedFile = new File([file], file.name, {
                         type: file.type,
                         lastModified: file.lastModified
@@ -267,7 +267,7 @@ function ResultadoCitaBlock2({className,cita}:InputProps) {
                     });
           
                       // Actualizar el estado de archivosBD
-                      setArchivosBD([...updatedArchivosBD]); 
+                      setArchivosBD([...updatedArchivosBD]); */
                     }).catch(error => {
                         console.error('Error al enviar archivo al servidor:', error);
                     });
@@ -290,7 +290,24 @@ function ResultadoCitaBlock2({className,cita}:InputProps) {
                     console.error(`Error al eliminar el archivo ${file.name}:`, error);
                   }
                 }
-                setArchivosBD([...archivosBDCopia]);
+
+                const updatedArchivosBD: ExtendedFile[] = archivosBDCopia.map(file => {
+                  const copiedFile: ExtendedFile = new File([file], file.name, {
+                    type: file.type,
+                    lastModified: file.lastModified
+                  }) as ExtendedFile;
+                
+                  // Copiar las propiedades adicionales
+                  copiedFile.nuevo = 0;
+                  copiedFile.eliminado = file.eliminado;
+                  copiedFile.id_archivo = file.id_archivo;
+                  copiedFile.nombre = file.nombre;  // Asegúrate de copiar esta propiedad también
+                
+                  return copiedFile;
+                });
+      
+                  // Actualizar el estado de archivosBD
+                  setArchivosBD([...updatedArchivosBD]);
                 console.log('Archivos enviados correctamente');  
               } catch (error) {
                 console.error('Error al enviar archivos:', error);
@@ -298,14 +315,14 @@ function ResultadoCitaBlock2({className,cita}:InputProps) {
           }
           //copia
           // Enviar archivos si hay archivos seleccionados
-          if (archivosOtros.length > 0) {
+          if (archivosOtrosCopia.length > 0) {
             try {
               // Seleccionar archivos a guardar
-              const filesToSend = archivosOtros.filter(file => file.nuevo === 1 && file.eliminado === 0);
+              const filesToSend = archivosOtrosCopia.filter(file => file.nuevo === 1 && file.eliminado === 0);
               // Seleccionar archivos a eliminar
-              const filesToDelete = archivosOtros.filter(file => file.nuevo === 0 && file.eliminado === 1);
+              const filesToDelete = archivosOtrosCopia.filter(file => file.nuevo === 0 && file.eliminado === 1);
               // Seleccionar archivos a reactivar
-              const filesToActive = archivosOtros.filter(file => file.nuevo === 0 && file.eliminado === 0);
+              const filesToActive = archivosOtrosCopia.filter(file => file.nuevo === 0 && file.eliminado === 0);
 
               //INSERTAR ARCHIVOS ALUMNOS
               for (const file of filesToSend) {
@@ -316,28 +333,12 @@ function ResultadoCitaBlock2({className,cita}:InputProps) {
                     appointmentResultId: resultadoCita.appointmentResult.appointmentResultId,
                     privacyTypeId: 2
                 }
-                const idArchivo = await enviarArchivoBd(archivo); // Espera a que se complete enviarArchivoBd
+                const idArchivo = await enviarArchivoOtros(archivo); // Espera a que se complete enviarArchivoBd
                 // Enviar archivo al servidor
                 await enviarArchivoServidor(file, idArchivo.toString(), 'archivosCita').then(() => {
                   // Actualizar el estado del archivo en archivosBD
                   file.id_archivo=idArchivo; 
-                  const updatedArchivosBD: ExtendedFile[] = archivosOtrosCopia.map(file => {
-                    const copiedFile: ExtendedFile = new File([file], file.name, {
-                      type: file.type,
-                      lastModified: file.lastModified
-                    }) as ExtendedFile;
-                  
-                    // Copiar las propiedades adicionales
-                    copiedFile.nuevo = 0;
-                    copiedFile.eliminado = file.eliminado;
-                    copiedFile.id_archivo = file.id_archivo;
-                    copiedFile.nombre = file.nombre;  // Asegúrate de copiar esta propiedad también
-                  
-                    return copiedFile;
-                  });
-        
-                    // Actualizar el estado de archivosBD
-                    setArchivosOtros([...updatedArchivosBD]);
+
                   }).catch(error => {
                       console.error('Error al enviar archivo al servidor:', error);
                   });
@@ -360,8 +361,24 @@ function ResultadoCitaBlock2({className,cita}:InputProps) {
                   console.error(`Error al eliminar el archivo ${file.name}:`, error);
                 }
               }
-
-              console.log('Archivos enviados correctamente');  
+              const updatedArchivosBD: ExtendedFile[] = archivosOtrosCopia.map(file => {
+                const copiedFile: ExtendedFile = new File([file], file.name, {
+                  type: file.type,
+                  lastModified: file.lastModified
+                }) as ExtendedFile;
+              
+                // Copiar las propiedades adicionales
+                copiedFile.nuevo = 0;
+                copiedFile.eliminado = file.eliminado;
+                copiedFile.id_archivo = file.id_archivo;
+                copiedFile.nombre = file.nombre;  // Asegúrate de copiar esta propiedad también
+              
+                return copiedFile;
+              });
+    
+                // Actualizar el estado de archivosBD
+                setArchivosOtros([...updatedArchivosBD]);
+              console.log('Archivos enviados correctamente..profesor');  
             } catch (error) {
               console.error('Error al enviar archivos:', error);
             }
@@ -419,7 +436,7 @@ function ResultadoCitaBlock2({className,cita}:InputProps) {
                 </div>
             </div>
 
-            <div className='flex flex-col h-[80%] border-custom drop-shadow-md p-4 flex-grow overflow-auto'>
+            <div className='flex w-full flex-col h-[80%] border-custom drop-shadow-md p-4 flex-grow overflow-auto'>
                 <div className='w-full flex items-center mb-5 '>
                     <h3 className='font-montserrat text-lg font-bold text-primary w-full'>Asistencia</h3>
                     <div className='flex items-center gap-4'>
@@ -501,11 +518,12 @@ function ResultadoCitaBlock2({className,cita}:InputProps) {
                             updatePage={()=>{}}
                             selectedFiles={archivosBDCopia}
                             setSelectedFiles={setArchivosBDCopia}
+                            loading={loading}
                         />
                     </div>
                   </div>
                 </div>
-                <div className='flex flex-col w-full pb-5'>
+                <div className='flex flex-col w-full'>
                     <h3 className='font-montserrat text-lg font-bold text-primary w-full mb-2'>Comentario Privado</h3>
                     <div className='w-full'>
                     <div className='relative w-full h-full'>
@@ -533,14 +551,15 @@ function ResultadoCitaBlock2({className,cita}:InputProps) {
                           commentValue={commentValue2}
                           commentChange={handleCommentChange2}
                           updatePage={()=>{}}
-                          selectedFiles={archivosOtros}
-                          setSelectedFiles={setArchivosOtros}
+                          selectedFiles={archivosOtrosCopia}
+                          setSelectedFiles={setArchivosOtrosCopia}
+                          loading={loading2}
                       />
                     </div>
                   </div>
                 </div>
             </div> 
-            <div>{isModalOpen && <ModalResultadoCita onClose={closeModal} />}</div>
+            <div>{isModalOpen && <ModalResultadoCita onClose={closeModal} loading={loadingServidor}/>}</div>
         </div>
   )
 }

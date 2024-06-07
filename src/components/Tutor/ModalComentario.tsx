@@ -6,6 +6,8 @@ import axios from 'axios';
 import { IconDelete,SaveIcon } from '../../assets';
 import { ExtendedFile } from '../../store/types/Archivo';
 import { FaDownload } from 'react-icons/fa';
+import ClipLoader from 'react-spinners/ClipLoader';
+
 interface ModalComentarioProps {
   isOpen: boolean;
   onClose: () => void;
@@ -14,10 +16,11 @@ interface ModalComentarioProps {
   commentValue: string;
   selectedFiles: ExtendedFile[];
   setSelectedFiles: React.Dispatch<React.SetStateAction<ExtendedFile[]>>;
+  loading: boolean;
 }
 
 export default function ModalComentario({ isOpen, onClose,  updatePage, commentValue,commentChange,
-  selectedFiles, setSelectedFiles}: ModalComentarioProps) {
+  selectedFiles, setSelectedFiles,loading}: ModalComentarioProps) {
 
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
@@ -160,23 +163,30 @@ export default function ModalComentario({ isOpen, onClose,  updatePage, commentV
                 </div>
                   
                 <div className='w-full rounded-md resize-none outline-none px-3 py-2 mt-1 font-montserrat text-[90%] border-custom drop-shadow-md'>
-                <h3 className='font-montserrat text-lg mr-2 font-bold'>Archivos seleccionados:</h3>
-                  {selectedFiles.length > 0 && (
-                    <div className='w-full max-h-48 overflow-y-auto'>
-                      <ul>
-                        {selectedFiles
-                          .filter(file => file.eliminado != 1)
-                          .map((file, index) => (
-                          <li key={index} className="flex justify-between items-center p-2 bg-gray-100 rounded-md shadow-md mb-2" style={{ maxHeight: '300px' }}> 
-                            <span className="flex-1">{file.name}</span>  
-                            <Button icon={IconDelete} iconSize={4} onClick={()=> handleFileDelete(file)}/> 
-                            <Button icon={FaDownload} iconSize={15} onClick={() => handleFileDownload(file)}/> 
-                          </li>
-                        ))}
-                      </ul>
+                  <h3 className='font-montserrat text-lg mr-2 font-bold'>Archivos seleccionados:</h3>
+                  {loading ? ( // Mostrar spinner si isLoading es true
+                    <div className='w-full flex justify-center items-center'>
+                      <ClipLoader color="#3498db" loading={loading} size={60} />
                     </div>
+                  ) : (
+                    selectedFiles.length > 0 && (
+                      <div className='w-full max-h-48 overflow-y-auto'>
+                        <ul>
+                          {selectedFiles
+                            .filter(file => file.eliminado !== 1)
+                            .map((file, index) => (
+                              <li key={index} className="flex justify-between items-center p-2 bg-gray-100 rounded-md shadow-md mb-2" style={{ maxHeight: '300px' }}>
+                                <span className="flex-1">{file.name}</span>
+                                <Button icon={IconDelete} iconSize={4} onClick={() => handleFileDelete(file)} />
+                                <Button icon={FaDownload} iconSize={15} onClick={() => handleFileDownload(file)} />
+                              </li>
+                            ))}
+                        </ul>
+                      </div>
+                    )
                   )}
                 </div>
+
  
                 <div className="flex justify-end pt-3">
                   <Button onClick={triggerFileInput} text='Seleccionar Archivo'/> 

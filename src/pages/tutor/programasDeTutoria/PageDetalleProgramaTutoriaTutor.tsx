@@ -3,6 +3,7 @@ import InputTutor from '../../../components/Tutor/InputTutor';
 import TablaDetalle from '../../../components/Tutor/TablaDetalle';
 import { useLocation, useNavigate } from "react-router-dom";
 import { ListTutoringProgram } from '../../../store/types/ListTutoringProgram';
+import { Label, TextInput, Textarea } from 'flowbite-react';
 
 const PageDetalleProgramaTutoriaTutor: React.FC = () => {
   const location = useLocation();
@@ -15,26 +16,35 @@ const PageDetalleProgramaTutoriaTutor: React.FC = () => {
   };
 
   return (
-    <div className="w-full h-full">
-      <div className="w-full flex bg-[rgba(255,255,255,0.5)] border-custom drop-shadow-md p-5" style={{ display: "flex", width: "100%", flexDirection: "column" }}>
-        <h1 className="text-3xl font-bold">Datos del Programa de Tutoría</h1>
-        <div style={{ display: "flex", width: "100%", flexDirection: "row" }}>
-          <div className="w-2/5 h-full flex-basis='50%' flex-shrink='0'">
-            <InputTutor titulo="Nombre de Tutoría" texto={data.programName} enable={false} />
-            <InputTutor titulo="Unidad Académica" texto={data.specialtyName ? data.specialtyName : data.facultyName} enable={false} />
-          </div>
-          <div className="flex-grow">
-            <InputTutor titulo="Descripcion" texto={data.description} enable={false} />
+    <div className="flex flex-col w-full h-full">
+
+      <div className="flex flex-col w-full h-1/4 bg-[rgba(255,255,255,0.5)] border-custom drop-shadow-md p-5" >
+        <h1 className="text-3xl font-bold">Datos de Tutoría</h1>
+        <div className="flex w-full h-full">
+          <div className="flex flex-col w-full">
+            <div className='flex w-full gap-5'>
+              <div className='w-1/2'>
+                <Label className="text-primary font-roboto">Nombre de Tutoría</Label>
+                <TextInput value={data.programName} readOnly />
+              </div>
+              <div className='w-1/2'>
+                <Label className="text-primary font-roboto">Unidad Académica</Label>
+                <TextInput value={data.specialtyName ? data.specialtyName : data.facultyName} readOnly />
+              </div>
+            </div>
+            <Label className="text-primary font-roboto">Descripción</Label>
+            <Textarea className='min-h-16 max-h-28' value={data.description} readOnly />
           </div>
         </div>
       </div>
-      <div className="w-full flex bg-[rgba(255,_255,_255,_0.50)] border-custom drop-shadow-md p-5 mt-4"
-        style={{ display: "flex", width: "100%", flexDirection: "column" }}>
-        <h1 className="text-3xl font-bold">Alumnos de la tutoría</h1>
-        <div>
+
+      <div className="flex flex-col gap-5 w-full h-3/4 bg-[rgba(255,_255,_255,_0.50)] border-custom drop-shadow-md p-5 mt-4">
+        <h1 className="text-3xl font-bold">Alumnos inscritos</h1>
+        <div className='w-full h-full'>
           <TablaDetalle onclick={toDetail} tutoringProgramId={data.tutoringProgramId} />
         </div>
       </div>
+
     </div>
   );
 };

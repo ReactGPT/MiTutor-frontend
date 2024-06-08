@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { addAppointment } from '../services/cita';
+import { addAppointment, cancelAppointment } from '../services/cita';
 
 type MakeAppointment = {
   startTime: string;
@@ -19,6 +19,7 @@ type AddAppointmentRequest = {
 
 type AppointmentHooksReturn = {
   addNewAppointment: (appointmentData: AddAppointmentRequest) => Promise<void>;
+  cancelCita: (appointmentId: number) => Promise<boolean>;
   loading: boolean;
   error: any;
 };
@@ -46,7 +47,28 @@ function useAppointment(): AppointmentHooksReturn {
     }
   };
 
-  return { addNewAppointment, loading, error };
+  const cancelCita = async (appointmentId: number): Promise<boolean> => { // Cambio en la firma de la función
+    setLoading(true);
+    setError(null);
+    try {
+      const response = await cancelAppointment(appointmentId);
+      if (response.success === true) {
+        setLoading(false);
+        return true; // Devolver true si la operación se completó con éxito
+      }
+      else throw new Error("No se pudo cancelar la cita");
+    } catch (err: unknown) {
+      setLoading(false);
+      if (err instanceof Error) {
+        setError(err.message);
+      } else {
+        setError("Error desconocido al cancelar la cita");
+      }
+      return false; // Devolver false si hubo un error
+    }
+  };
+
+  return { addNewAppointment, cancelCita, loading, error };
 }
 
 export { useAppointment };

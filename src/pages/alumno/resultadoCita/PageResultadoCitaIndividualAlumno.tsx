@@ -91,7 +91,7 @@ function PageResultadoCitaIndividualAlumno() {
               <div className='w-full'>
               </div>
               <div className='w-full flex items-end justify-end'>
-                {shouldShowCancelButton && <ButtonModalCancelarCita />}
+                {shouldShowCancelButton && <ButtonModalCancelarCita appointmentId={cita.appointmentId} redirectUrl="/listaDeCitasAlumno" />}
               </div>
             </div>
           </div>

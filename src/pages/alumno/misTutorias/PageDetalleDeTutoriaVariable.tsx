@@ -1,12 +1,11 @@
 import { useState, useEffect } from "react";
-import TextBox from "../../../components/TextBox";
-import { Navigate, useNavigate, useLocation } from "react-router-dom";
-import { Button } from "../../../components";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useTutoresPorTutoriaVariable } from "../../../store/hooks/useListarTutoresPorAlumno";
 import Pagination from "../../../components/Pagination";
 import SimpleCard from "../../../components/Tutor/SimpleCard";
-import React from 'react';
 import { Spinner } from "../../../components";
+import { Label, TextInput, Textarea } from "flowbite-react";
+import { tutorxalumno } from "../../../store/types/Tutor";
 
 const PageDetalleDeTutoriaVariable = () => {
   const location = useLocation();
@@ -15,6 +14,11 @@ const PageDetalleDeTutoriaVariable = () => {
   const { listaDeTutores, fetchTutoresPorTutoria, loading } = useTutoresPorTutoriaVariable(data.tutoringProgramId);
 
   const navigate = useNavigate();
+
+  const goToSolicitarCita = (tutor: tutorxalumno) => {
+    const datos = { tutoringProgram: data, tutor: tutor };
+    navigate('/misTutorias/detalle/solicitarCita', { state: { datos } });
+  };
 
   useEffect(() => {
     fetchTutoresPorTutoria();
@@ -32,59 +36,52 @@ const PageDetalleDeTutoriaVariable = () => {
   };
 
   return (
-    <div className="w-full h-full container mx-auto">
-      <div className="w-full h-[40%] p-2 container mx-auto" >
-        <div className="w-full h-full p-5 border-custom shadow-custom bg-[rgba(255,_255,_255,_0.50)] font-roboto">
-          <div className="w-full h-1/4">
-            <span className="font-montserrat text-4xl font-bold text-primary">Datos Tutoria</span>
-          </div>
-          <div className="w-full flex h-1/3">
-            <div className="w-full h-full p-2">
-              <TextBox nombre='Nombre' contenido='Tutoria con Martina Solis' />
+    <div className="flex flex-col w-full h-full">
+
+      <div className="flex flex-col w-full h-2/5 bg-[rgba(255,255,255,0.5)] border-custom drop-shadow-md p-5" >
+        <h1 className="text-3xl font-bold">Datos de Tutoría</h1>
+        <div className="flex w-full h-full">
+          <div className="flex flex-col w-full">
+            <div className='flex w-full gap-5'>
+              <div className='w-1/2'>
+                <Label className="text-primary font-roboto">Nombre de Tutoría</Label>
+                <TextInput value={data.programName} readOnly />
+              </div>
+              <div className='w-1/2'>
+                <Label className="text-primary font-roboto">Unidad Académica</Label>
+                <TextInput value={data.specialtyName ? data.specialtyName : data.facultyName} readOnly />
+              </div>
             </div>
-            <div className="w-full h-full p-2">
-              <TextBox nombre='Facultad' contenido='Ciencias e ingenieria' />
-            </div>
-            <div className="w-full h-full p-2">
-              <TextBox nombre='Especialidad' contenido='Ingenieria Informatica' />
-            </div>
-          </div>
-          <div className="w-full flex h-1/3">
-            <div className="w-1/2 h-full p-2">
-              <TextBox nombre='Descripcion' contenido='Descripcion de la tutoria' />
-            </div>
+            <Label className="text-primary font-roboto">Descripción</Label>
+            <Textarea className='min-h-16 max-h-16' value={data.description} readOnly />
           </div>
         </div>
       </div>
-      <div className="w-full h-[60%] p-2 container mx-auto" >
-        <div className="w-full h-full p-5 border-custom shadow-custom bg-[rgba(255,_255,_255,_0.50)] font-roboto">
-          <div className="w-full h-1/4">
-            <span className="font-montserrat text-4xl font-bold text-primary">Tutores Disponibles</span>
-          </div>
-          <div className="w-full flex h-2/4">
-            {
-              loading ?
-                <div className="w-full h-[90%] flex items-center justify-center">
-                  <Spinner size="xl" />
+
+      <div className="flex flex-col gap-3 w-full h-3/5 bg-[rgba(255,_255,_255,_0.50)] border-custom drop-shadow-md p-5 mt-4">
+        <h1 className="text-3xl font-bold">Tutores disponibles</h1>
+        <div className='flex flex-wrap w-full h-3/4 gap-5'>
+          {
+            loading ?
+              <div className="w-full h-full flex items-center justify-center">
+                <Spinner size="xl" />
+              </div>
+              :
+              currentTutors.map((Tutor, index) => (
+                <div key={index} className="w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/5">
+                  <SimpleCard onClick={() => goToSolicitarCita(Tutor)} title={`${Tutor.tutorName} ${Tutor.tutorLastName} ${Tutor.tutorSecondLastName}`} content="Docente a tiempo completo" subContent={Tutor.state} />
                 </div>
-                :
-                <div className="w-full h-full flex gap-5">
-                  {currentTutors.map((Tutor) => (
-                    <SimpleCard title={`${Tutor.tutorName} ${Tutor.tutorLastName} ${Tutor.tutorSecondLastName}`} content="Docente a tiempo completo" subContent={Tutor.state} />
-                  ))}
-                </div>
-            }
-          </div>
-          <div className="w-full h-1/4">
-            <Pagination
-              currentPage={currentPage}
-              totalItems={listaDeTutores.length}
-              itemsPerPage={itemsPerPage}
-              onPageChange={handlePageChange}
-            />
-          </div>
+              ))
+          }
         </div>
+        <Pagination
+          currentPage={currentPage}
+          totalItems={listaDeTutores.length}
+          itemsPerPage={itemsPerPage}
+          onPageChange={handlePageChange}
+        />
       </div>
+
     </div>
   );
 

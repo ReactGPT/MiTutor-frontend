@@ -9,12 +9,14 @@ import { ProgramaTutoria } from '../../../store/types'
 import { TutoringProgramProvider } from '../../../context/ProgramaTutoriaNuevo'
 import { useLocation } from 'react-router-dom'
 import ModalAgregarTutores from '../ModalAgregarTutores'
+import ModalConfirmation from '../../../components/ModalConfirmation'
+
 
 export default function PageProgTutoria() {
   const {state} = useLocation();
   const {programaTutoria}=state;
   const [isOpenModalAgregarTutores,setIsOpenModalAgregarTutores]=useState<boolean>(false);
-  
+  //const [isOpenModalConfirmation,setisOpenModalConfirmation]= useState<boolean>(false);
   return (
     <TutoringProgramProvider tutoringProgram={programaTutoria}>
     <div className='flex flex-col w-full h-full gap-4 '>
@@ -32,6 +34,7 @@ export default function PageProgTutoria() {
         <DatosAlumnosSeleccionados className='flex flex-row w-[60%] h-full items-center p-4 border-custom drop-shadow-md'/>
       </div>
       <ModalAgregarTutores isOpen={isOpenModalAgregarTutores} closeModal={()=>{setIsOpenModalAgregarTutores(false)}}/>
+      
     </div>
     </TutoringProgramProvider>
   )

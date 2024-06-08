@@ -1,4 +1,4 @@
-import { getListaProgramaTutorias,crearEditarProgramaTutoria,getTutoresByTutoringProgramId } from '../services';
+import { getListaProgramaTutorias,crearEditarProgramaTutoria,getTutoresByTutoringProgramId, getEliminarTutoria } from '../services';
 import {useState} from 'react';
 import { ProgramaTutoria, Tutor } from "../types";
 
@@ -6,7 +6,8 @@ import { ProgramaTutoria, Tutor } from "../types";
 type ProgramaTutoriaHookReturnType =  {
     fetchProgramaTutorias: ()=>Promise<void>;
     fetchTutoresByProgramaTutoria:(tutoringProgramId:number)=>Promise<Tutor[]>;
-    postProgramaTutoria:(programa:ProgramaTutoria)=>Promise<void>;
+    postProgramaTutoria:(programa:ProgramaTutoria)=>Promise<boolean>;
+    postEliminarProgramaTutoria:(programaId:number)=>Promise<boolean>;
     programaTutoriaData: ProgramaTutoria[];    
     isLoading: boolean;
     error: Error | null;
@@ -43,13 +44,30 @@ function useProgramaTutoria(): ProgramaTutoriaHookReturnType{
             if(!response.sucess){
                 throw new Error(response.message);
             }
+            return true;
             //console.log(financeData);
             //return financeList;
             
         } catch (err:any) {
             setError(err);
+            return false;
         //return [];
         } finally {
+            setIsLoading(false);
+        }
+    };
+    const postEliminarProgramaTutoria = async (programaTutoriaId:number)=>{
+        setIsLoading(true);
+        try{
+            const response = await getEliminarTutoria(programaTutoriaId);
+            if(!response.sucess){
+                return false;
+            }
+            return true;
+        } catch(err:any){
+            setError(err);
+            return false;
+        }finally {
             setIsLoading(false);
         }
     };
@@ -75,7 +93,7 @@ function useProgramaTutoria(): ProgramaTutoriaHookReturnType{
         }
     };
 
-    return { fetchProgramaTutorias,fetchTutoresByProgramaTutoria,postProgramaTutoria,programaTutoriaData,isLoading, error,tutorListByProgramId };
+    return { fetchProgramaTutorias,fetchTutoresByProgramaTutoria,postProgramaTutoria,postEliminarProgramaTutoria,programaTutoriaData,isLoading, error,tutorListByProgramId };
 
 }
 

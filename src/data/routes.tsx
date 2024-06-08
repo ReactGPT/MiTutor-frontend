@@ -34,6 +34,9 @@ import PageListaDeTutorias from "../pages/alumno/misTutorias/PageListaDeTutorias
 import PageSolicitudGestion from "../pages/coordinador/gestionSolicitudes/PageSolicitudGestion.tsx";
 import PageCalendarioAlumno from "../pages/alumno/calendario/PageCalendarioAlumno.tsx";
 import PageDetalleDeTutoria from "../pages/alumno/misTutorias/PageDetalleDeTutoria.tsx";
+import PageIndicadorTutor from "../pages/tutor/indicadorTutores/PageIndicadorTutor.tsx";
+ 
+ 
 
 type RouterDetail = {
   pages: RouteObject[];
@@ -44,6 +47,7 @@ type RouterConfig = {
   tutor: RouterDetail;
   coordinador: RouterDetail;
   alumno: RouterDetail;
+  administrador:RouterDetail
 };
 
 export const Routes: RouterConfig = {
@@ -105,10 +109,12 @@ export const Routes: RouterConfig = {
         path: '/listaDeCitas/resultadoCitaIndividual',
         element: <PageResultadoCitaIndividual />
       },
+
       {
         path: '*',
         element: <Navigate to="/" />
-      }
+      } 
+      
     ],
     navBarLink: [
       {
@@ -141,6 +147,7 @@ export const Routes: RouterConfig = {
         path: '/miPerfil',
         icon: <BiUser fontSize={32} />,
       },
+      
     ]
   },
   coordinador: {
@@ -164,6 +171,10 @@ export const Routes: RouterConfig = {
       {
         path: '/gestionSolicitudes',
         element: <PageSolicitudGestion />,
+      },
+      {
+        path: '/indicadorTutor',
+        element: <PageIndicadorTutor/>
       },
       {
         path: '*',
@@ -199,6 +210,12 @@ export const Routes: RouterConfig = {
         key: 'indicadores',
         label: 'Indicadores',
         path: '/indicadores',
+        icon: <BiUser fontSize={32} />,
+      },
+      {
+        key: 'indicadorTutor',
+        label: 'IndicadorTutor',
+        path: '/indicadorTutor',
         icon: <BiUser fontSize={32} />,
       }
     ]
@@ -286,6 +303,23 @@ export const Routes: RouterConfig = {
         label: 'Mi Perfil',
         path: '/miPerfil',
         icon: <BiUser fontSize={32} />,
+      }
+    ]
+  },
+  administrador:{
+    pages:[{
+      path:"/",
+      element:<></>
+    },{
+      path:'*',
+      element:<Navigate to="/"/>
+    }],
+    navBarLink:[
+      {
+        key: 'inicio',
+        label: 'Inicio',
+        path: '/',
+        icon: <BiHome fontSize={32} />,
       }
     ]
   }

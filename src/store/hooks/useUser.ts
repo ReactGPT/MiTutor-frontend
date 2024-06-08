@@ -12,7 +12,7 @@ type UserHookReturnType = {
 };
     
 function useUser(): UserHookReturnType {
-    const [loading, setLoading] = useState<boolean>(true);
+    const [loading, setLoading] = useState<boolean>(false);
     const [error, setError] = useState<any>(null);
     const [userData,setUserData] = useState<User[]>([]);
 

@@ -49,11 +49,7 @@ type RouterConfig = {
   tutor: RouterDetail;
   coordinador: RouterDetail;
   alumno: RouterDetail;
-<<<<<<< HEAD
-  administrador: RouterDetail;
-=======
   administrador:RouterDetail
->>>>>>> main
 };
 
 export const Routes: RouterConfig = {
@@ -185,10 +181,6 @@ export const Routes: RouterConfig = {
       {
         path: '*',
         element: <Navigate to="/" />
-      },
-      {
-        path: '/usuarios',
-        element: <PageListadoUsuarios />
       }
     ],
     navBarLink: [
@@ -226,12 +218,6 @@ export const Routes: RouterConfig = {
         key: 'indicadorTutor',
         label: 'IndicadorTutor',
         path: '/indicadorTutor',
-        icon: <BiUser fontSize={32} />,
-      },
-      {
-        key: 'usuarios',
-        label: 'Usuarios',
-        path: '/usuarios',
         icon: <BiUser fontSize={32} />,
       }
     ]
@@ -322,7 +308,6 @@ export const Routes: RouterConfig = {
       }
     ]
   },
-<<<<<<< HEAD
   administrador: {
     pages: [
       {
@@ -339,26 +324,32 @@ export const Routes: RouterConfig = {
       },
       {
         path: '*',
-        element: <Navigate to="/usuarios" />
+        element: <Navigate to="/" />
       }
     ],
     navBarLink: [
       {
+        key: 'inicio',
+        label: 'Inicio',
+        path: '/',
+        icon: <BiHome fontSize={32} />,
+      },
+      {
         key: 'general',
         label: 'General',
-        path: '/',//Pendiente agregar
+        path: '/*',//Pendiente agregar
         icon: <BiCabinet fontSize={32} />,
       },
       {
         key: 'unidades',
         label: 'Unidades',
-        path: '/',//Pendiente agregar
+        path: '/*',//Pendiente agregar
         icon: <BiListUl fontSize={32} />,
       },
       {
         key: 'alumnos',
         label: 'Alumnos',
-        path: '/',//Pendiente agregar
+        path: '/*',//Pendiente agregar
         icon: <BiListUl fontSize={32} />,
       },
       {
@@ -366,22 +357,6 @@ export const Routes: RouterConfig = {
         label: 'Usuarios',
         path: '/usuarios',
         icon: <BiUser fontSize={32} />,
-=======
-  administrador:{
-    pages:[{
-      path:"/",
-      element:<></>
-    },{
-      path:'*',
-      element:<Navigate to="/"/>
-    }],
-    navBarLink:[
-      {
-        key: 'inicio',
-        label: 'Inicio',
-        path: '/',
-        icon: <BiHome fontSize={32} />,
->>>>>>> main
       }
     ]
   }

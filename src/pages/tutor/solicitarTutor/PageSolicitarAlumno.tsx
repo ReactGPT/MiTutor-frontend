@@ -6,6 +6,7 @@ import SimpleCard from '../../../components/Tutor/SimpleCard';
 import ModalSolicitud from '../../../components/Tutor/ModalSolicitud';
 import { listarTutoresTipo } from '../../../store/services/listarTutoresTipo';
 import { insertarSolicitudTutoria } from '../../../store/services/insertarSolicitudTutoria';
+import { useAuth } from '../../../context';
 
 // Interfaces
 export interface Persona {
@@ -54,9 +55,10 @@ export interface ApiResponse {
   data: Tutor[];
 }
 
-const studentId = 2;
-
 const PageSolicitarAlumno: React.FC = () => {
+  const { userData } = useAuth();
+  const studentId = userData?.userInfo?.id || 0;
+
   const location = useLocation();
   const { tutoriaData } = location.state;
   const { tutoringProgramId } = tutoriaData;

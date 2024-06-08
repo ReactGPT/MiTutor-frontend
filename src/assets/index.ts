@@ -16,6 +16,9 @@ import IconDetails from './svg/IconDetails';
 import PencilIcon from './svg/IconPencil';
 import IconSearch from './svg/IconSearch';
 import IconTime from './svg/IconTime';
+import UserPlus from './svg/UserPlus';
+import ArrowDownload from './svg/ArrowDown';
+import ArrowUpload from './svg/ArrowUp';
 
 export{
     DetailsIcon,
@@ -35,5 +38,8 @@ export{
     IconDetails,
     PencilIcon,
     IconSearch,
-    IconTime
+    IconTime,
+    UserPlus,
+    ArrowDownload,
+    ArrowUpload
 }

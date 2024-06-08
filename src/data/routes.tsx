@@ -35,6 +35,8 @@ import PageSolicitudGestion from "../pages/coordinador/gestionSolicitudes/PageSo
 import PageCalendarioAlumno from "../pages/alumno/calendario/PageCalendarioAlumno.tsx";
 import PageDetalleDeTutoria from "../pages/alumno/misTutorias/PageDetalleDeTutoria.tsx";
 import PageIndicadorTutor from "../pages/tutor/indicadorTutores/PageIndicadorTutor.tsx";
+import PageListadoUsuarios from "../pages/administrador/gestionUsuarios/PageListadoUsuarios.tsx";
+import PageUsuario from "../pages/administrador/gestionUsuarios/PageUsuario.tsx";
  
  
 
@@ -47,6 +49,7 @@ type RouterConfig = {
   tutor: RouterDetail;
   coordinador: RouterDetail;
   alumno: RouterDetail;
+  administrador: RouterDetail;
 };
 
 export const Routes: RouterConfig = {
@@ -178,6 +181,10 @@ export const Routes: RouterConfig = {
       {
         path: '*',
         element: <Navigate to="/" />
+      },
+      {
+        path: '/usuarios',
+        element: <PageListadoUsuarios />
       }
     ],
     navBarLink: [
@@ -215,6 +222,12 @@ export const Routes: RouterConfig = {
         key: 'indicadorTutor',
         label: 'IndicadorTutor',
         path: '/indicadorTutor',
+        icon: <BiUser fontSize={32} />,
+      },
+      {
+        key: 'usuarios',
+        label: 'Usuarios',
+        path: '/usuarios',
         icon: <BiUser fontSize={32} />,
       }
     ]
@@ -301,6 +314,52 @@ export const Routes: RouterConfig = {
         key: 'miPerfil',
         label: 'Mi Perfil',
         path: '/miPerfil',
+        icon: <BiUser fontSize={32} />,
+      }
+    ]
+  },
+  administrador: {
+    pages: [
+      {
+        path: '/usuarios',
+        element: <PageListadoUsuarios />
+      },
+      {
+        path: '/usuarios/nuevo',
+        element: <PageUsuario/>
+      },
+      {
+        path: '/usuarios/detalle',
+        element: <PageUsuario/>
+      },
+      {
+        path: '*',
+        element: <Navigate to="/usuarios" />
+      }
+    ],
+    navBarLink: [
+      {
+        key: 'general',
+        label: 'General',
+        path: '/',//Pendiente agregar
+        icon: <BiCabinet fontSize={32} />,
+      },
+      {
+        key: 'unidades',
+        label: 'Unidades',
+        path: '/',//Pendiente agregar
+        icon: <BiListUl fontSize={32} />,
+      },
+      {
+        key: 'alumnos',
+        label: 'Alumnos',
+        path: '/',//Pendiente agregar
+        icon: <BiListUl fontSize={32} />,
+      },
+      {
+        key: 'usuarios',
+        label: 'Usuarios',
+        path: '/usuarios',
         icon: <BiUser fontSize={32} />,
       }
     ]

@@ -107,5 +107,9 @@ export const PageTitles = [
   {
     path: "/indicadorTutor",
     pageName: "Indicador Tutor"
+  },
+  {
+    path: "/usuarios",
+    pageName: "Usuarios"
   }
 ];

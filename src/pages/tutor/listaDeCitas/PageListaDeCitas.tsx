@@ -67,7 +67,7 @@ const PageListaDeCitas = () => {
             key={`ap-Item-${index}`}
             appointment={cita}
             tipo="lista"
-            user='tutor'
+            user="tutor"
           />
         ))}
       </div>

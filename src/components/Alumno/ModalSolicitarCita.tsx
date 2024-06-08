@@ -6,6 +6,7 @@ import { Datepicker, Label, Select, TextInput } from 'flowbite-react';
 import { useAppointment } from '../../store/hooks/useAppointment';
 import ModalSuccess from '../ModalSuccess';
 import ModalError from '../ModalError';
+import { useAuth } from '../../context';
 
 type MakeAppointment = {
   startTime: string;
@@ -25,11 +26,11 @@ interface ModalSolicitarCitaProps {
   tutoringProgram: any;
 }
 
-const studentId = 2;
-
 const ModalSolicitarCita: React.FC<ModalSolicitarCitaProps> = (
   { isOpen, onClose, slotInfo, refreshCalendar, tutorId, tutoringProgram }
 ) => {
+  const { userData } = useAuth();
+  const studentId = userData?.userInfo?.id || 0;
   //
   const faceToFace: boolean = tutoringProgram.faceToFace;
   const virtual: boolean = tutoringProgram.virtual;

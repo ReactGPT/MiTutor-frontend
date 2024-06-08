@@ -33,7 +33,7 @@ const Pagination: React.FC<PaginationProps> = ({
   }
 
   return (
-    <div className="m-5 flex justify-center items-center space-x-4 font-roboto">
+    <div className="flex justify-center items-center space-x-4 font-roboto">
       <Button variant="primario" text="Ant." onClick={() => onPageChange(currentPage - 1)} disabled={currentPage === 1} />
       {pageNumbers.map(number => (
         <button

@@ -5,14 +5,19 @@ import ModalSuccess from './ModalSuccess';
 import ModalError from './ModalError';
 import { Dialog } from '@headlessui/react';
 import IconAlertCircle from '../assets/svg/IconAlertCircle';
+import { useAppointment } from '../store/hooks/useAppointment';
+import { useNavigate } from 'react-router-dom';
 
 interface ButtonModalCancelarCitaProps {
-
+  appointmentId: number;
+  redirectUrl?: string;
 }
 
 const ButtonModalCancelarCita: React.FC<ButtonModalCancelarCitaProps> = (
-  { }
+  { appointmentId, redirectUrl }
 ) => {
+  const navigate = useNavigate();
+  //console.log(appointmentId);
   const [isOpen, setIsOpen] = useState<boolean>(false);
   //
   const handleOpenModal = () => {
@@ -32,14 +37,23 @@ const ButtonModalCancelarCita: React.FC<ButtonModalCancelarCitaProps> = (
     setIsErrorModalOpen(true);
   };
   //
-  const handleCancelarCita = () => {
-    //TODO: falta cancelar la cita
+  const redirect = () => {
+    if (redirectUrl)
+      navigate(redirectUrl);
+  };
+  //
+  const { cancelCita, loading, error } = useAppointment();
+  //
+  const handleCancelarCita = async () => {
     try {
-      throw new Error();
-      handleCloseModal();
-      handleOpenSuccessModal();
-    }
-    catch {
+      const isCancelled = await cancelCita(appointmentId);
+      if (isCancelled) {
+        handleCloseModal();
+        handleOpenSuccessModal();
+        redirect();
+      }
+      else throw new Error("No se pudo cancelar la cita.");
+    } catch (error) {
       handleCloseModal();
       handleOpenErrorModal();
     }
@@ -65,7 +79,7 @@ const ButtonModalCancelarCita: React.FC<ButtonModalCancelarCitaProps> = (
           </div>
         </div>
         <div className="flex items-center justify-center pt-5 gap-5">
-          <Button text='Sí, cancelar' onClick={handleCancelarCita} />
+          <Button text='Sí, cancelar' onClick={handleCancelarCita} disabled={loading} />
           <Button variant='primario' text='Volver' onClick={handleCloseModal} />
         </div>
       </ModalBase >

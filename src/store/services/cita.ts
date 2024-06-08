@@ -142,4 +142,18 @@ async function addAppointment(appointmentData: AddAppointmentRequest): Promise<a
   }
 }
 
-export { getListaDeCitasByTutorId, getListaDeCitasByTutorIdByStudentId, addAppointment, getListaDeCitasByStudentId };
+type CancelAppointmentResponse = {
+  success: boolean;
+  message: string;
+};
+
+async function cancelAppointment(appointmentId: number): Promise<CancelAppointmentResponse> {
+  try {
+    const response: AxiosResponse<CancelAppointmentResponse> = await axios.put(`${ServicesProperties.BaseUrl}/cancelarCita/${appointmentId}`);
+    return response.data;
+  } catch (error) {
+    throw new Error("Error en cancelAppointment: cita");
+  }
+}
+
+export { getListaDeCitasByTutorId, getListaDeCitasByTutorIdByStudentId, addAppointment, getListaDeCitasByStudentId, cancelAppointment };

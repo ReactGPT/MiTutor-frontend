@@ -75,10 +75,10 @@ export default function ProgramaTutoríaSearchBar({handleOnChangeFilters}:InputP
         //console.log(filters);
     };
 
-    useEffect(()=>{
-        //console.log(filters);
+    // useEffect(()=>{
+    //     //console.log(filters);
 
-    },[filters]);
+    // },[filters]);
     return (
         <div className='flex w-full h-full flex-row py-5'>    
             <form className="w-[70%] max-w-[70%] min-w-[70%] h-full flex flex-row gap-4" onSubmit={handleOnSubmit}>            

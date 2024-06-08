@@ -47,6 +47,10 @@ async function getUserInfo(email:string='',codigoPUCP:string=''):Promise<Service
                         departmentName:item.departmentName,
                         departmentAcronym:item.departmentAcronym
                     }
+                case "ADMIN":
+                    return{
+                        isAdmin:true
+                    }
             }
         } 
         return {

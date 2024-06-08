@@ -22,7 +22,7 @@ const PageMiPerfilAlumno = () => {
       <div className="flex w-1/3 h-full justify-center items-center">
         <div className="flex w-full">
           {userData ?
-            <img src={userData?.imageUrl} alt="Imagen Tutor" className="w-[200px] h-[200px] rounded-full" />
+            <img src={userData?.imageUrl} alt="Imagen Alumno" className="w-[200px] h-[200px] rounded-full" />
             :
             <img src={image} alt="Imagen Alumno" className="w-[200px] h-[200px] rounded-full" />
           }

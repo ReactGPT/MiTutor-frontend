@@ -38,7 +38,7 @@ const PageDetalleDeTutoriaVariable = () => {
   return (
     <div className="flex flex-col w-full h-full">
 
-      <div className="flex flex-col w-full h-2/5 bg-[rgba(255,255,255,0.5)] border-custom drop-shadow-md p-5" >
+      <div className="flex flex-col w-full h-fit bg-[rgba(255,255,255,0.5)] border-custom drop-shadow-md p-5" >
         <h1 className="text-3xl font-bold">Datos de Tutoría</h1>
         <div className="flex w-full h-full">
           <div className="flex flex-col w-full">

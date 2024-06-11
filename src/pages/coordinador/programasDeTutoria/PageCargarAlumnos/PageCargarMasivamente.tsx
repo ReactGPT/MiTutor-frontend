@@ -83,7 +83,6 @@ const PageCargarMasivamente = (
       return [...prevData, ...studentData.filter((student) => 
         student.studentId !== 0 && !prevData.some((prevStudent) => prevStudent.pucpCode === student.pucpCode))
       ]
-      //return [...prevData, ...studentData.filter((student) => student.studentId !== 0)]
     });
     setPopout(false);
   }

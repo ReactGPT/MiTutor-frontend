@@ -78,7 +78,6 @@ const PageCargarMasivamente = (
       })
     );
   }, [rowData]);
-console.log("maxivo",rowData)
   const handleAgregar = () => {
     setStudentDataModified((prevData) =>{
       return [...prevData, ...studentData.filter((student) => 

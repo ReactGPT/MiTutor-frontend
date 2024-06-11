@@ -14,17 +14,18 @@ import PageCargarMasivamente from './PageCargarMasivamente';
 import { useTitle } from '../../../../context';
 
 const profesores = [
-  //{ id: 1, nombre: 'Pedro García'},
-  { id: 2, nombre: 'Profesor 2'},
-  { id: 3, nombre: 'Profesor 3'},
-  { id: 4, nombre: 'Profesor 4'},
-  { id: 5, nombre: 'Profesor 5'},
-  { id: 6, nombre: 'Profesor 6'},
-  { id: 7, nombre: 'Profesor 7'},
-  { id: 8, nombre: 'Profesor 8'},
-  { id: 9, nombre: 'Profesor 9'},
-  { id: 10, nombre: 'Profesor 10'},
-]
+  //{ id: 1, nombre: 'María González'},
+  { id: 2, nombre: 'Javier Martínez'},
+  { id: 3, nombre: 'Ana Ruiz'},
+  { id: 4, nombre: 'Carlos Sánchez'},
+  { id: 5, nombre: 'Laura López'},
+  { id: 6, nombre: 'José Rodríguez'},
+  { id: 7, nombre: 'Elena Fernández'},
+  { id: 8, nombre: 'David García'},
+  { id: 9, nombre: 'Sara Pérez'},
+  { id: 10, nombre: 'Miguel López'},
+];
+
 const PageAlumnosSeleccionados = () => {
   //const navigate=useNavigate();
   const {handleSetTitle} = useTitle();
@@ -35,7 +36,7 @@ const PageAlumnosSeleccionados = () => {
   const {studentData, fetchStudentData} = useStudent();
   const [searchValue, setSearchValue] = useState('');
 
-  useEffect(()=>{fetchStudentData(1)},[])
+  useEffect(()=>{fetchStudentData(2)},[])
   useEffect(()=>{setStudentDataModified(studentData)},[studentData])
   
   console.log(studentDataModified)

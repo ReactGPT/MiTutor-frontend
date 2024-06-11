@@ -17,9 +17,9 @@ async function getStudentInfo(idTutoringProgram:number):Promise<StudentDetailRes
       const studentList: Student[] = response.data.data.map((item: any) => {
           return {
             studentId: item.id,
-            name: item.name,
-            lastName: item.lastName + " " + item.secondLastName,
-            secondLastName: item.secondLastName,
+            name: item.person.name,
+            lastName: item.person.lastName + " " + item.person.secondLastName,
+            secondLastName: item.person.secondLastName,
             isActive: item.isActive,
             pucpCode: item.usuario.pucpCode,
             institutionalEmail: item.usuario.institutionalEmail,
@@ -52,13 +52,13 @@ async function getStudentIdInfo(students:Student[]):Promise<StudentDetailRespons
       }
       const studentList: Student[] = response.data.data.map((item: any) => {
           return {
-            studentId: item.id,
+            studentId: item.studentId,
             name: item.name,
             lastName: item.lastName + " " + item.secondLastName,
             secondLastName: item.secondLastName,
             isActive: item.isActive,
-            pucpCode: item.usuario.pucpCode,
-            institutionalEmail: item.usuario.institutionalEmail,
+            pucpCode: item.pucpCode,
+            institutionalEmail: item.institutionalEmail,
             facultyName: item.facultyName,
             isRegistered: false,
           };

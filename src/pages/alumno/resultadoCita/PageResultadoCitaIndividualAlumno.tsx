@@ -59,7 +59,7 @@ function PageResultadoCitaIndividualAlumno() {
         <>
           <div className='h-fit bg-gradient-to-r from-slate-200/50 to-blue-50 p-5 rounded-xl border-custom border border-secondary flex flex-col '>
             <h1 className="text-3xl font-bold">Datos de Cita</h1>
-            <div className='grid grid-cols-3 grid-rows-2 gap-3 h-full'>
+            <div className='grid grid-cols-3 grid-rows-2 gap-1 h-full'>
               <div className='w-full'>
                 <Label className="text-primary font-roboto">Estado</Label>
                 <TextInput value={cita.appointmentStatus} readOnly />

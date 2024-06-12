@@ -1,5 +1,6 @@
 import Sidebar from "../components/Sidebar";
 import { useEffect } from "react";
+import React from "react";
 import Header from "../components/ui/Header";
 import { DASHBOARD_SIDEBAR_LINKS } from "../data/navigation";
 import { Outlet } from "react-router-dom";
@@ -21,7 +22,7 @@ function Layout() {
         <Sidebar sidebarLinks={sideBarOption} />
       </div>
       <div className="w-full h-full p-5 flex flex-col gap-5">
-        <div className="w-full flex h-[6.5%] min-h-[60px]">
+        <div className="w-full flex h-[6.5%] min-h-[60px] z-10">
           <Header />
         </div>
         <div className="w-full flex-1 bg-[rgba(255,_255,_255,_0.50)] border-custom drop-shadow-md overflow-auto p-5">

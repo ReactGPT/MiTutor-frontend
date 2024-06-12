@@ -4,7 +4,6 @@ import Pagination from "../../../components/Pagination";
 import { SearchInput } from "../../../components";
 import { useCitasPorAlumno } from "../../../store/hooks/useCita";
 
-
 const PageListaDeCitasAlumno = () => {
 
   const { cita, fetchCita } = useCitasPorAlumno(2);

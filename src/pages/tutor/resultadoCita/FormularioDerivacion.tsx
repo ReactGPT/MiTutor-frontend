@@ -291,7 +291,7 @@ function FormularioDerivacion({className,cita}:InputProps){
 
     try { 
       // Enviar el PDF al servidor 
-      const response = await axios.post(ServicesProperties.BaseUrl+`/api/Archivos/uploadAutomatic?fileName=${fileName}&carpeta=${carpeta}`, formData2, {
+      const response = await axios.post(ServicesProperties.BaseUrl+`/api/S3/uploadAutomatic?fileName=${fileName}&carpeta=${carpeta}`, formData2, {
       headers: {
           'Content-Type': 'multipart/form-data',
           'Accept': '*/*'
@@ -306,7 +306,7 @@ function FormularioDerivacion({className,cita}:InputProps){
 
   async function descargarArchivo() {
     try {
-      const response = await axios.get(ServicesProperties.BaseUrl+`/api/Archivos/download/${fileName}?carpeta=${carpeta}`, {
+      const response = await axios.get(ServicesProperties.BaseUrl+`/api/S3/download/${fileName}?carpeta=${carpeta}`, {
         responseType: 'blob', // Para recibir la respuesta como un blob (archivo binario)
       });
   

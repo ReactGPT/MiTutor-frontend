@@ -9,14 +9,19 @@ import { useEffect } from 'react';
 import { FaCheckCircle } from "react-icons/fa";
 import { useLocation } from 'react-router-dom';
 import { useActionPlans } from '../../../store/hooks/useActionPlan';
+import { useAuth } from '../../../context';
+import { TutorRoleDetails } from '../../../store/types';
 
 
 const PageListadoPlanAccion = () => {
+  const { userData } = useAuth();
+  const tutorId = (userData?.userInfo?.roles[0].details as TutorRoleDetails).tutorId;
+
   const [modalOpen, setModalOpen] = useState(false);
   const [registrationModalOpen, setRegistrationModalOpen] = useState(false);
-  const {state} = useLocation();
-  const {studentId} = state;
-  const {programId} = state;
+  const { state } = useLocation();
+  const { studentId } = state;
+  const { programId } = state;
 
   // Estados para la búsqueda y paginación
   const [searchText, setSearchText] = useState('');
@@ -24,7 +29,7 @@ const PageListadoPlanAccion = () => {
   const itemsPerPage = 5;
 
   //Estados para el uso de la API
-  const { actionPlans, fetchActionPlans } = useActionPlans(studentId, programId, 1); //el id del tutor logueado
+  const { actionPlans, fetchActionPlans } = useActionPlans(studentId, programId, tutorId);
 
   useEffect(() => {
     fetchActionPlans();
@@ -59,7 +64,7 @@ const PageListadoPlanAccion = () => {
     <div className="w-full h-full flex flex-col gap-5">
       <div className='flex justify-end'>
         <Button variant='call-to-action' onClick={openModal} text='Nuevo Plan de Acción' />
-        <ModalNuevoPlanAccion isOpen={modalOpen} onClose={closeModal} updatePage={updatePlans} studentId={studentId} programId={programId}/>
+        <ModalNuevoPlanAccion isOpen={modalOpen} onClose={closeModal} updatePage={updatePlans} studentId={studentId} programId={programId} />
         {registrationModalOpen && ( // Mostrar el modal de registro exitoso si registrationModalOpen es true
           <ModalRegistroExitoso
             title="¡Registro Exitoso!"
@@ -72,18 +77,18 @@ const PageListadoPlanAccion = () => {
 
 
       <div className="w-full h-[85%] flex flex-col gap-5">
-      {currentPlans.length === 0 ? (
-        <div className="flex flex-col items-center justify-center text-center">
-          <img src="src\assets\Tutor\no-planes.png" alt="No plans" className="w-1/4 h-auto mb-4" />
-          <i className="your-icon-class-name mb-2"></i> {/* Cambia `your-icon-class-name` por la clase de tu ícono */}
-          <p className="text-xl font-bold">Ups... Todavía no tienes ningún plan de acción para el alumno</p>
-          <p className="text-md">Crea un nuevo plan de acción para hacer seguimiento de los compromisos acordados.</p>
-        </div>
-      ) : (
-        currentPlans.map((plan) => (
-          <CardPlanAccion key={plan.actionPlanId} data={plan} usuario='tutor' />
-        ))
-      )}
+        {currentPlans.length === 0 ? (
+          <div className="flex flex-col items-center justify-center text-center">
+            <img src="src\assets\Tutor\no-planes.png" alt="No plans" className="w-1/4 h-auto mb-4" />
+            <i className="your-icon-class-name mb-2"></i> {/* Cambia `your-icon-class-name` por la clase de tu ícono */}
+            <p className="text-xl font-bold">Ups... Todavía no tienes ningún plan de acción para el alumno</p>
+            <p className="text-md">Crea un nuevo plan de acción para hacer seguimiento de los compromisos acordados.</p>
+          </div>
+        ) : (
+          currentPlans.map((plan) => (
+            <CardPlanAccion key={plan.actionPlanId} data={plan} usuario='tutor' />
+          ))
+        )}
       </div>
 
       <Pagination
@@ -94,6 +99,6 @@ const PageListadoPlanAccion = () => {
       />
     </div>
   );
-}
+};
 
 export default PageListadoPlanAccion;

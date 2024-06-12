@@ -27,6 +27,8 @@ async function getUsuarios(): Promise<ServiceResponseUser> {
         institutionalEmail: item.institutionalEmail,
         pucpCode: item.pucpCode,
         isActive: item.isActive,
+        creationDate: item.creationDate,
+        modificationDate: item.modificationDate,
         persona: {
           id: item.persona.id,
           name: item.persona.name,
@@ -50,10 +52,65 @@ async function getUsuarios(): Promise<ServiceResponseUser> {
 
 }
 
-type ServiceResponse={
-  sucess:boolean;
-  data?:any;
-  message?:string;
+async function getStudents(): Promise<ServiceResponseUser> {
+
+  try {
+    const response = await axios({
+      method: 'get',
+      url: ServicesProperties.BaseUrl + `/listarEstudiantesTodo`,
+      headers: ServicesProperties.Headers
+    });
+
+    if (!response.data.success) {
+      // Si la llamada no es exitosa, devolvemos una lista vacía
+      return { userList: [] };
+    }
+
+    // Mapeamos la respuesta para obtener la lista de usuarios
+    const userList: User[] = response.data.data.map((item: any) => {
+      return {
+        id: item.personId,
+        institutionalEmail: item.institutionalEmail,
+        pucpCode: item.pucpCode,
+        isActive: item.userIsActive,
+        creationDate: item.creationDate,
+        modificationDate: item.modificationDate,
+        persona: {
+          id: item.personId,
+          name: item.name,
+          lastName: item.lastName,
+          secondLastName: item.secondLastName,
+          phone: item.phone,
+          isActive: item.personIsActive
+        },
+        estudiante: {
+          isRisk: item.isRisk,
+          specialityId: item.specialityId,
+          specialtyName: item.specialtyName,
+          specialtyAcronym: item.specialtyAcronym,
+          facultyId: item.facultyId,
+          facultyName: item.facultyName,
+          facultyAcronym: item.facultyAcronym,
+        }
+      };
+    });
+
+    // Devolvemos la lista de students
+    return { userList: userList };
+
+  } catch (err: any) {
+    console.error(err);
+    throw new Error(err.message);
+  }
+
+}
+
+
+
+type ServiceResponse = {
+  sucess: boolean;
+  data?: any;
+  message?: string;
 }
 
 async function crearEditarUsuario(user: User): Promise<ServiceResponse> {
@@ -65,16 +122,16 @@ async function crearEditarUsuario(user: User): Promise<ServiceResponse> {
       data: user
     });
 
-    if(!response?.data.success){
+    if (!response?.data.success) {
       return {
-          sucess:false,
-          message:response?.data?.message
+        sucess: false,
+        message: response?.data?.message
       };
-  }
-  return {
-      sucess:response?.data.success,
-      message:response?.data.message
-  };;
+    }
+    return {
+      sucess: response?.data.success,
+      message: response?.data.message
+    };;
 
   } catch (err: any) {
     console.error(err);
@@ -82,4 +139,29 @@ async function crearEditarUsuario(user: User): Promise<ServiceResponse> {
   }
 }
 
-export { getUsuarios, crearEditarUsuario }
+async function eliminarUsuario(id: number): Promise<ServiceResponse> {
+  try {
+    const response = await axios({
+      method: 'post',
+      url: ServicesProperties.BaseUrl + `/eliminarUsuario?id=${id}`,
+      headers: ServicesProperties.Headers
+    });
+
+    if (!response?.data.success) {
+      return {
+        sucess: false,
+        message: response?.data?.message
+      };
+    }
+    return {
+      sucess: response?.data.success,
+      message: response?.data.message
+    };;
+
+  } catch (err: any) {
+    console.error(err);
+    throw new Error(err.message);
+  }
+}
+
+export { getUsuarios, crearEditarUsuario, eliminarUsuario, getStudents }

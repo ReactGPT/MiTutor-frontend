@@ -1,5 +1,5 @@
 import {useState} from 'react';
-import { crearEditarUsuario, getUsuarios } from '../services/User';
+import { crearEditarUsuario, eliminarUsuario, getUsuarios, getStudents } from '../services/User';
 import { User } from '../types/User';
 
 
@@ -9,6 +9,8 @@ type UserHookReturnType = {
     error: any;
     fetchUsers: () => Promise<void>;
     postUser: (user:User) => Promise<boolean>;
+    deleteUser: (id:number) => Promise<boolean>;
+    fetchStudents: () => Promise<void>;
 };
     
 function useUser(): UserHookReturnType {
@@ -29,9 +31,23 @@ function useUser(): UserHookReturnType {
         }
     }
 
+    const fetchStudents = async () => {
+        setLoading(true);
+        try {
+            const response = await getStudents();
+            setUserData(response.userList);            
+        } catch (err:any) {
+            setError(err);
+            setUserData([]);
+        } finally {
+            setLoading(false);
+        }
+    }
+
     const postUser = async (user:User) => {
         setLoading(true);
         try {
+            //console.log("user en postUser: ",user)
             const response = await crearEditarUsuario(user);
             if(!response.sucess){
                 throw new Error(response.message);
@@ -45,7 +61,23 @@ function useUser(): UserHookReturnType {
         }
     }
 
-    return { userData, loading, error, fetchUsers, postUser };
+    const deleteUser = async (id:number) => {
+        setLoading(true);
+        try {
+            const response = await eliminarUsuario(id);
+            if(!response.sucess){
+                throw new Error(response.message);
+            }
+            return true;
+        } catch (err:any) {
+            setError(err);
+            return false;
+        } finally {
+            setLoading(false);
+        }
+    }
+
+    return { userData, loading, error, fetchUsers, postUser, deleteUser, fetchStudents };
 }
 
 export {useUser}

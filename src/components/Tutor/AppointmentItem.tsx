@@ -33,40 +33,34 @@ const toClasses = {
 
 const controlColor = (color: string, tipo: string) => {
   if (tipo == 'from') {
-    if (color == 'Solicitado') {
-      return fromClasses.yellow;
-    } else if (color == 'Completado') {
+    if (color == 'completada') {
       return fromClasses.blue;
-    } else if (color == 'Registrada') {
+    } else if (color == 'registrada') {
       return fromClasses.green;
-    } else if (color == 'Pendiente') {
+    } else if (color == 'pendiente resultado') {
       return fromClasses.red;
     } else {
-      return fromClasses.green;
+      return fromClasses.yellow;
     }
   } else if (tipo == 'text') {
-    if (color == 'Solicitado') {
-      return textClasses.yellow;
-    } else if (color == 'Completado') {
+    if (color == 'completada') {
       return textClasses.blue;
-    } else if (color == 'Registrada') {
+    } else if (color == 'registrada') {
       return textClasses.green;
-    } else if (color == 'Pendiente') {
+    } else if (color == 'pendiente resultado') {
       return textClasses.red;
     } else {
-      return textClasses.green;
+      return textClasses.yellow;
     }
   } else if (tipo == 'to') {
-    if (color == 'Solicitado') {
-      return toClasses.yellow;
-    } else if (color == 'Completado') {
+    if (color == 'completada') {
       return toClasses.blue;
-    } else if (color == 'Registrada') {
+    } else if (color == 'registrada') {
       return toClasses.green;
-    } else if (color == 'Pendiente') {
+    } else if (color == 'pendiente resultado') {
       return toClasses.red;
     } else {
-      return toClasses.green;
+      return toClasses.yellow;
     }
   }
 };

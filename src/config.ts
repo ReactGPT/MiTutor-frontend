@@ -1,5 +1,5 @@
 export const Services = {
-    BaseUrl: import.meta.env.VITE_API_URL || "https://api.daoch.me",
+    BaseUrl: import.meta.env.VITE_API_URL || "https://localhost:44369",
     //BaseUrl:"https://localhost:44369",
     //BaseUrl:"http://54.235.188.31",
     Headers: {

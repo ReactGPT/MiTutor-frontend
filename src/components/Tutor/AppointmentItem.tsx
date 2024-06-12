@@ -3,7 +3,8 @@ import Button from "../Button";
 import IconDetails from '../../assets/svg/IconDetails';
 import { useNavigate } from "react-router-dom";
 import { ListCita } from "../../store/types/ListCita";
-
+import { Services as ServicesProperties } from '../../config'; 
+import axios from 'axios';
 interface AppointmentItemProps {
   appointment: ListCita;
   tipo: "lista" | "historico";
@@ -75,9 +76,19 @@ const AppointmentItem: React.FC<AppointmentItemProps> = ({ appointment, tipo, us
   // Combina creationDate y endTime para crear la fecha de finalización completa
   const endDateTime = new Date(`${appointment.creationDate}T${appointment.endTime}`);
   
-
+  async function actulizarCita() {
+    try {
+        const response = await axios.put(ServicesProperties.BaseUrl+`/actulizar_Estado_Insertar_Resultado?id_appointment=${appointment.appointmentId}`, {
+        
+      });
+ 
+    } catch (error) {
+      console.error('Error al descargar el archivo:', error);
+    }
+  }
+  
   const goToDetalleCita = () => {
-    if (user === 'tutor') {
+    if (user === 'tutor' && appointment.appointmentStatus!="registrada") {
       navigate("/listaDeCitas/resultadoCitaIndividual", { state: { cita: appointment } });
     } else if (user === 'alumno') {
       navigate("/listaDeCitasAlumno/detalleCitaAlumno", { state: { cita: appointment } });
@@ -88,16 +99,17 @@ const AppointmentItem: React.FC<AppointmentItemProps> = ({ appointment, tipo, us
   const checkAppointmentStatus = () => {
     const currentDate = new Date();
     if (appointmentStatus === 'registrada' && currentDate > endDateTime) {
-      setAppointmentStatus('completada');
+      appointment.appointmentStatus='pendiente resultado';
+      setAppointmentStatus('pendiente resultado');
+      actulizarCita(); //appointment.programId, appointment.personId
     }
   };
 
-  // useEffect para verificar periódicamente el estado de la cita
   useEffect(() => {
     const intervalId = setInterval(checkAppointmentStatus, 10000); // Verifica cada 10 segundos
 
-    return () => clearInterval(intervalId); // Limpia el intervalo al desmontar el componente
-  }, [appointmentStatus]);
+    return () => clearInterval(intervalId);
+  }, [appointmentStatus,appointment]);
 
   return (
     <div className="w-full h-22 border-custom shadow-custom flex bg-[rgba(235,_236,_250,_1.00)] overflow-hidden font-roboto">

@@ -5,6 +5,7 @@ import { useEffect } from 'react';
 import { useCitasPorTutor } from '../../../store/hooks/useCita';
 import { useAuth } from '../../../context';
 import { TutorRoleDetails } from '../../../store/types';
+import ProgramarCita from './ProgramarCita';
 
 const PageCalendarioTutor: React.FC = () => {
   const { userData } = useAuth();

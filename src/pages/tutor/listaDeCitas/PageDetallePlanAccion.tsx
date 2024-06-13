@@ -71,11 +71,11 @@ const PageDetallePlanAccion = () => {
 
   const handleConfirmDeleteCommit = () => {
     setdeleteCommintModalOpen(true);
-  }
+  };
 
   const handleConfirmDeleteActionPlan = () => {
     setdeleteActionPlanModalOpen(true);
-  }
+  };
 
   const onBlurName = (e: ChangeEvent<HTMLInputElement>) => {
     if (!name.trim()) {
@@ -83,11 +83,11 @@ const PageDetallePlanAccion = () => {
     } else {
       setNameError('');
     }
-  }
+  };
 
   const handleSaveChanges = async () => {
     try {
-      const newData:ActionPlanUpdate = {
+      const newData: ActionPlanUpdate = {
         "actionPlanId": id,
         "name": name,
         "description": description,
@@ -109,11 +109,11 @@ const PageDetallePlanAccion = () => {
 
   const handleDeleteActionPlan = async () => {
     //await axios.put('https://localhost:44369' + '/eliminarActionPlan?actionPlanId=' + id);
-    console.log('id:', id)
+    console.log('id:', id);
     useDeleteActionPlan(id);
     setdeleteActionPlanModalOpen(false);
     navigate(-1);
-  }
+  };
 
   const handleDisabledActionPlan = async () => {
     try {
@@ -126,16 +126,22 @@ const PageDetallePlanAccion = () => {
         "tutorId": 0,
         "creationDate": "2024-05-10T04:39:19.094Z", //no necesita
         "modificationDate": "2024-05-10T04:39:19.094Z" //no necesita
+<<<<<<< HEAD
       }
       await axios.put(ServicesProperties.BaseUrl + '/actualizarActionPlan', data3);
       console.log("data desactivar: ", data3);
       //useUpdateActionPlan(data3);
+=======
+      };
+      //await axios.put(ServicesProperties.BaseUrl + '/actualizarActionPlan', data3);
+      useUpdateActionPlan(data3);
+>>>>>>> ce8c51317dbb254454487ef8daa3c0c8aeeb08ba
       setdeleteActionPlanModalOpen(false);
       window.location.reload();
     } catch (error) {
       console.error('Error updating action plan:', error);
     }
-  }
+  };
 
   const handleEnabledActionPlan = async () => {
     try {
@@ -148,15 +154,21 @@ const PageDetallePlanAccion = () => {
         "tutorId": 0,
         "creationDate": "2024-05-10T04:39:19.094Z", //no necesita
         "modificationDate": "2024-05-10T04:39:19.094Z" //no necesita
+<<<<<<< HEAD
       }
       await axios.put(ServicesProperties.BaseUrl + '/actualizarActionPlan', data3);
       //useUpdateActionPlan(data3);
+=======
+      };
+      //await axios.put(ServicesProperties.BaseUrl + '/actualizarActionPlan', data3);
+      useUpdateActionPlan(data3);
+>>>>>>> ce8c51317dbb254454487ef8daa3c0c8aeeb08ba
       setdeleteActionPlanModalOpen(false);
       window.location.reload();
     } catch (error) {
       console.error('Error updating action plan:', error);
     }
-  }
+  };
 
   const openModal = () => {
     setModalOpen(true);
@@ -185,7 +197,7 @@ const PageDetallePlanAccion = () => {
         <h1 className="text-3xl font-bold">Datos del Plan de Acción</h1>
         <div style={{ display: "flex", width: "100%", flexDirection: "row" }}>
           <div className='flex' style={{ flexDirection: "column", width: "40%", marginRight: "2rem" }}>
-            <InputTutor titulo='Nombre' value={name} readOnly={!editable} onChange={(e) => setName(e.target.value)} manejarBlur={onBlurName}/>
+            <InputTutor titulo='Nombre' value={name} readOnly={!editable} onChange={(e) => setName(e.target.value)} manejarBlur={onBlurName} />
             {nameError && <p className="text-red-500 pl-6">{nameError}</p>}
             <div className='grid grid-cols-2 gap-4' style={{ width: "100%" }}>
               <InputTutor titulo='Fecha de creación' texto={plan?.creationDate ? new Date(plan.creationDate).toLocaleDateString() : 'No disponible'} enable={false} />
@@ -199,7 +211,7 @@ const PageDetallePlanAccion = () => {
             {plan && plan.isActive === true ? (
               editable ? (
                 <>
-                  <Button text="Guardar Cambios&nbsp;" variant='call-to-action' icon={FaSave} iconSize={20} onClick={handleSaveChanges} disabled={!name.trim()}/>
+                  <Button text="Guardar Cambios&nbsp;" variant='call-to-action' icon={FaSave} iconSize={20} onClick={handleSaveChanges} disabled={!name.trim()} />
                   <Button text="Cancelar Cambios" variant='secundario' icon={FaTimes} iconSize={20} onClick={handleCancelEdit} />
                 </>
               ) : (
@@ -234,7 +246,7 @@ const PageDetallePlanAccion = () => {
                 icon={FaCheckCircle}
                 iconSize={60}
                 onClose={() => {
-                  window.location.reload()
+                  window.location.reload();
                 }} />
             )}
             {editionModalOpen && ( // Mostrar el modal de edición exitoso si editionModalOpen es true
@@ -264,6 +276,6 @@ const PageDetallePlanAccion = () => {
     </div>
 
   );
-}
+};
 
 export default PageDetallePlanAccion;

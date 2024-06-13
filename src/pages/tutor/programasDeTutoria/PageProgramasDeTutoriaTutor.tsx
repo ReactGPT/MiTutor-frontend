@@ -3,10 +3,14 @@ import { SearchInput, Spinner } from "../../../components";
 import TutoringProgramCard from "../../../components/Tutor/TutoringProgramCard";
 import Pagination from "../../../components/Pagination";
 import { useProgramaDeTutoria } from "../../../store/hooks/useProgramaDeTutoria";
+import { TutorRoleDetails } from "../../../store/types";
+import { useAuth } from "../../../context";
 
 const PageProgramasDeTutoriaTutor: React.FC = () => {
+  const { userData } = useAuth();
+  const tutorId = (userData?.userInfo?.roles[0].details as TutorRoleDetails).tutorId;
 
-  const { programaTutoria, fetchProgramaDeTutoria, loading } = useProgramaDeTutoria(1);
+  const { programaTutoria, fetchProgramaDeTutoria, loading } = useProgramaDeTutoria(tutorId);
 
   useEffect(() => {
     fetchProgramaDeTutoria();

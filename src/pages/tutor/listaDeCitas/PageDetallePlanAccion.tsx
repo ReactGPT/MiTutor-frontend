@@ -126,16 +126,10 @@ const PageDetallePlanAccion = () => {
         "tutorId": 0,
         "creationDate": "2024-05-10T04:39:19.094Z", //no necesita
         "modificationDate": "2024-05-10T04:39:19.094Z" //no necesita
-<<<<<<< HEAD
       }
       await axios.put(ServicesProperties.BaseUrl + '/actualizarActionPlan', data3);
       console.log("data desactivar: ", data3);
       //useUpdateActionPlan(data3);
-=======
-      };
-      //await axios.put(ServicesProperties.BaseUrl + '/actualizarActionPlan', data3);
-      useUpdateActionPlan(data3);
->>>>>>> ce8c51317dbb254454487ef8daa3c0c8aeeb08ba
       setdeleteActionPlanModalOpen(false);
       window.location.reload();
     } catch (error) {
@@ -154,15 +148,9 @@ const PageDetallePlanAccion = () => {
         "tutorId": 0,
         "creationDate": "2024-05-10T04:39:19.094Z", //no necesita
         "modificationDate": "2024-05-10T04:39:19.094Z" //no necesita
-<<<<<<< HEAD
       }
       await axios.put(ServicesProperties.BaseUrl + '/actualizarActionPlan', data3);
       //useUpdateActionPlan(data3);
-=======
-      };
-      //await axios.put(ServicesProperties.BaseUrl + '/actualizarActionPlan', data3);
-      useUpdateActionPlan(data3);
->>>>>>> ce8c51317dbb254454487ef8daa3c0c8aeeb08ba
       setdeleteActionPlanModalOpen(false);
       window.location.reload();
     } catch (error) {

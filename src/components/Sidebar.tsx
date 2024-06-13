@@ -16,7 +16,7 @@ const Sidebar = ({ sidebarLinks }: SidebarProps) => {
         <img alt='Logo' src={logo} draggable="false"></img>
         <span className='text-neutral-950 text-4xl font-semibold letter-spacing-title'>MiTutor</span>
       </div>
-      <div className="py-5 flex flex-1 flex-col gap-2 cursor-pointer">
+      <div className="py-5 flex flex-1 flex-col gap-2">
         {sidebarLinks.map((link, index) => (
           <NavLink
             className={({ isActive }) =>

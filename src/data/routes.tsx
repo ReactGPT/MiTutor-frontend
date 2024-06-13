@@ -35,8 +35,10 @@ import PageSolicitudGestion from "../pages/coordinador/gestionSolicitudes/PageSo
 import PageCalendarioAlumno from "../pages/alumno/calendario/PageCalendarioAlumno.tsx";
 import PageDetalleDeTutoria from "../pages/alumno/misTutorias/PageDetalleDeTutoria.tsx";
 import PageIndicadorTutor from "../pages/tutor/indicadorTutores/PageIndicadorTutor.tsx";
- 
- 
+import PageListadoUsuarios from "../pages/administrador/gestionUsuarios/PageListadoUsuarios.tsx";
+import PageUsuario from "../pages/administrador/gestionUsuarios/PageUsuario.tsx";
+
+
 
 type RouterDetail = {
   pages: RouteObject[];
@@ -47,7 +49,7 @@ type RouterConfig = {
   tutor: RouterDetail;
   coordinador: RouterDetail;
   alumno: RouterDetail;
-  administrador:RouterDetail
+  administrador: RouterDetail;
 };
 
 export const Routes: RouterConfig = {
@@ -102,7 +104,7 @@ export const Routes: RouterConfig = {
         element: <PageAgregarDisponibilidadTutor />,
       },
       {
-        path: '/derivaciones',
+        path: '/miPerfil/derivaciones',
         element: <PageDerivacionesHechas />
       },
       {
@@ -113,8 +115,8 @@ export const Routes: RouterConfig = {
       {
         path: '*',
         element: <Navigate to="/" />
-      } 
-      
+      }
+
     ],
     navBarLink: [
       {
@@ -147,7 +149,7 @@ export const Routes: RouterConfig = {
         path: '/miPerfil',
         icon: <BiUser fontSize={32} />,
       },
-      
+
     ]
   },
   coordinador: {
@@ -174,7 +176,7 @@ export const Routes: RouterConfig = {
       },
       {
         path: '/indicadorTutor',
-        element: <PageIndicadorTutor/>
+        element: <PageIndicadorTutor />
       },
       {
         path: '*',
@@ -306,20 +308,55 @@ export const Routes: RouterConfig = {
       }
     ]
   },
-  administrador:{
-    pages:[{
-      path:"/",
-      element:<></>
-    },{
-      path:'*',
-      element:<Navigate to="/"/>
-    }],
-    navBarLink:[
+  administrador: {
+    pages: [
+      {
+        path: '/usuarios',
+        element: <PageListadoUsuarios />
+      },
+      {
+        path: '/usuarios/nuevo',
+        element: <PageUsuario />
+      },
+      {
+        path: '/usuarios/detalle',
+        element: <PageUsuario />
+      },
+      {
+        path: '*',
+        element: <Navigate to="/" />
+      }
+    ],
+    navBarLink: [
       {
         key: 'inicio',
         label: 'Inicio',
         path: '/',
         icon: <BiHome fontSize={32} />,
+      },
+      {
+        key: 'general',
+        label: 'General',
+        path: '/*',//Pendiente agregar
+        icon: <BiCabinet fontSize={32} />,
+      },
+      {
+        key: 'unidades',
+        label: 'Unidades',
+        path: '/*',//Pendiente agregar
+        icon: <BiListUl fontSize={32} />,
+      },
+      {
+        key: 'alumnos',
+        label: 'Alumnos',
+        path: '/*',//Pendiente agregar
+        icon: <BiListUl fontSize={32} />,
+      },
+      {
+        key: 'usuarios',
+        label: 'Usuarios',
+        path: '/usuarios',
+        icon: <BiUser fontSize={32} />,
       }
     ]
   }

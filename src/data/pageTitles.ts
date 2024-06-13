@@ -20,6 +20,10 @@ export const PageTitles = [
     pageName: "Mi Perfil",
   },
   {
+    path: '/miPerfil/derivaciones',
+    pageName: "Derivaciones",
+  },
+  {
     path: '/programasDeTutoria/detalle-programa',
     pageName: "Detalle de tutoría"
   },
@@ -28,8 +32,8 @@ export const PageTitles = [
     pageName: "Detalle programa Alumno"
   },
   {
-    path: '/historicoDeCitas',
-    pageName: "Histórico de Citas",
+    path: '/programasDeTutoria/detalle-programa/alumno/historicoCitas',
+    pageName: "Histórico de citas"
   },
   {
     path: '/programasDeTutoriaMaestro/nuevo',
@@ -107,5 +111,9 @@ export const PageTitles = [
   {
     path: "/indicadorTutor",
     pageName: "Indicador Tutor"
+  },
+  {
+    path: "/usuarios",
+    pageName: "Usuarios"
   }
 ];

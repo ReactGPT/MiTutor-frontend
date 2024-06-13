@@ -38,7 +38,7 @@ const ProgramarCita: React.FC = () => {
   };
 
   return (
-    <ModalBase isOpen={isModalSeleccionOpen} onClose={closeModalSeleccion}>
+    <ModalBase isOpen={true} onClose={closeModalSeleccion}>
       <div className="flex flex-col w-[990px] h-[550px] gap-5">
         <div className='flex w-full h-[11%] items-center justify-between px-3 shadow-custom border-custom bg-[rgba(255,255,255,0.50)]'>
           <h3 className="text-4xl font-semibold font-roboto text-gray-900 ">

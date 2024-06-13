@@ -38,7 +38,7 @@ const PageDetalleDeTutoriaVariable = () => {
   return (
     <div className="flex flex-col w-full h-full">
 
-      <div className="flex flex-col w-full h-2/5 bg-[rgba(255,255,255,0.5)] border-custom drop-shadow-md p-5" >
+      <div className="flex flex-col w-full h-fit bg-[rgba(255,255,255,0.5)] border-custom drop-shadow-md p-5" >
         <h1 className="text-3xl font-bold">Datos de Tutoría</h1>
         <div className="flex w-full h-full">
           <div className="flex flex-col w-full">
@@ -53,12 +53,12 @@ const PageDetalleDeTutoriaVariable = () => {
               </div>
             </div>
             <Label className="text-primary font-roboto">Descripción</Label>
-            <Textarea className='min-h-16 max-h-16' value={data.description} readOnly />
+            <Textarea className='min-h-16 max-h-16' value={data.programDescription} readOnly />
           </div>
         </div>
       </div>
 
-      <div className="flex flex-col gap-3 w-full h-3/5 bg-[rgba(255,_255,_255,_0.50)] border-custom drop-shadow-md p-5 mt-4">
+      <div className="flex flex-col gap-3 w-full h-full bg-[rgba(255,_255,_255,_0.50)] border-custom drop-shadow-md p-5 mt-4">
         <h1 className="text-3xl font-bold">Tutores disponibles</h1>
         <div className='flex flex-wrap w-full h-3/4 gap-5'>
           {

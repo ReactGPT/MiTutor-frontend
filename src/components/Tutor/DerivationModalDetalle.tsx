@@ -19,7 +19,7 @@ export default function DerivationModalDetalle({ onClose, derivation }: Derivati
 
   async function descargarArchivo() {
     try {
-      const response = await axios.get(ServicesProperties.BaseUrl+`/api/Archivos/download/${fileName}?carpeta=${carpeta}`, {
+      const response = await axios.get(ServicesProperties.BaseUrl+`/api/S3/download/${fileName}?carpeta=${carpeta}`, {
         responseType: 'blob', // Para recibir la respuesta como un blob (archivo binario)
       });
 
@@ -36,6 +36,7 @@ export default function DerivationModalDetalle({ onClose, derivation }: Derivati
       console.error('Error al descargar el archivo:', error);
     }
   }
+  
   function closeModal() {
     setIsOpen(false);
     onClose(); // Llamar a la función onClose para comunicar que se cerró el modal

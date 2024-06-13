@@ -37,8 +37,8 @@ import PageDetalleDeTutoria from "../pages/alumno/misTutorias/PageDetalleDeTutor
 import PageIndicadorTutor from "../pages/tutor/indicadorTutores/PageIndicadorTutor.tsx";
 import PageListadoUsuarios from "../pages/administrador/gestionUsuarios/PageListadoUsuarios.tsx";
 import PageUsuario from "../pages/administrador/gestionUsuarios/PageUsuario.tsx";
- 
- 
+
+
 
 type RouterDetail = {
   pages: RouteObject[];
@@ -49,7 +49,7 @@ type RouterConfig = {
   tutor: RouterDetail;
   coordinador: RouterDetail;
   alumno: RouterDetail;
-  administrador:RouterDetail
+  administrador: RouterDetail;
 };
 
 export const Routes: RouterConfig = {
@@ -104,7 +104,7 @@ export const Routes: RouterConfig = {
         element: <PageAgregarDisponibilidadTutor />,
       },
       {
-        path: '/derivaciones',
+        path: '/miPerfil/derivaciones',
         element: <PageDerivacionesHechas />
       },
       {
@@ -115,8 +115,8 @@ export const Routes: RouterConfig = {
       {
         path: '*',
         element: <Navigate to="/" />
-      } 
-      
+      }
+
     ],
     navBarLink: [
       {
@@ -149,7 +149,7 @@ export const Routes: RouterConfig = {
         path: '/miPerfil',
         icon: <BiUser fontSize={32} />,
       },
-      
+
     ]
   },
   coordinador: {
@@ -176,7 +176,7 @@ export const Routes: RouterConfig = {
       },
       {
         path: '/indicadorTutor',
-        element: <PageIndicadorTutor/>
+        element: <PageIndicadorTutor />
       },
       {
         path: '*',
@@ -316,11 +316,11 @@ export const Routes: RouterConfig = {
       },
       {
         path: '/usuarios/nuevo',
-        element: <PageUsuario/>
+        element: <PageUsuario />
       },
       {
         path: '/usuarios/detalle',
-        element: <PageUsuario/>
+        element: <PageUsuario />
       },
       {
         path: '*',

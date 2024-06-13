@@ -20,6 +20,10 @@ export const PageTitles = [
     pageName: "Mi Perfil",
   },
   {
+    path: '/miPerfil/derivaciones',
+    pageName: "Derivaciones",
+  },
+  {
     path: '/programasDeTutoria/detalle-programa',
     pageName: "Detalle de tutoría"
   },

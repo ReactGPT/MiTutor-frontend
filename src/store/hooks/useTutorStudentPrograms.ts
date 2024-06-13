@@ -21,15 +21,35 @@ export interface TutorStudentProgram {
     State: string;
     IsActive: number;
     Motivo: string;
+    studentProgram: {
+        student: {
+            name: string;
+            specialty: {
+                name: string;
+            };
+            faculty: {
+                name: string;
+            };
+        };
+    };
+    tutor: {
+        userAccount: {
+            persona: {
+                name: string;
+                lastName: string;
+                secondLastName: string;
+            };
+        };
+    };
 }
 
 // Configura Axios para usar la URL base del backend
 const api = axios.create({
-    baseURL: ServicesProperties.BaseUrl+'/api', // Asegúrate de que esta URL es correcta
-  });
+    baseURL: ServicesProperties.BaseUrl + '/api', // Asegúrate de que esta URL es correcta
+});
 
 type UseTutorStudentProgramsReturnType = {
-    fetchTutorStudentPrograms: (tutorFirstName?: string, tutorLastName?: string, state?: string, tutoringProgramId?: number) => Promise<void>;
+    fetchTutorStudentPrograms: () => Promise<void>;
     updateProgramState: (ids: number[], newState: string) => Promise<void>;
     tutorStudentPrograms: TutorStudentProgram[];
     isLoading: boolean;
@@ -41,17 +61,10 @@ function useTutorStudentPrograms(): UseTutorStudentProgramsReturnType {
     const [error, setError] = useState<Error | null>(null);
     const [tutorStudentPrograms, setTutorStudentPrograms] = useState<TutorStudentProgram[]>([]);
 
-    const fetchTutorStudentPrograms = async (tutorFirstName?: string, tutorLastName?: string, state?: string, tutoringProgramId?: number): Promise<void> => {
+    const fetchTutorStudentPrograms = async (): Promise<void> => {
         setIsLoading(true);
         try {
-            const response = await api.get<{ success: boolean; data: TutorStudentProgram[] }>('/tutorstudentprogram/listarTutorStudentProgram', {
-                params: {
-                    tutorFirstName,
-                    tutorLastName,
-                    state,
-                    tutoringProgramId
-                }
-            });
+            const response = await api.get<{ success: boolean; data: TutorStudentProgram[] }>('/tutorstudentprogram/listarTutorStudentProgram');
             setTutorStudentPrograms(response.data.data); // Actualiza el estado con los datos obtenidos
         } catch (err: any) {
             setError(err);
@@ -63,7 +76,7 @@ function useTutorStudentPrograms(): UseTutorStudentProgramsReturnType {
 
     const updateProgramState = async (ids: number[], newState: string) => {
         try {
-            await api.post('/TutorStudentProgram/UpdateEstado', {
+            await api.post('/tutorstudentprogram/updateEstado', {
                 TutorStudentProgramIds: ids.join(','),
                 NewState: newState
             });

@@ -10,6 +10,7 @@ import "./index.css";
 import ModalModificarDisponibilidad from '../Tutor/ModalModificarDisponibilidad';
 import { useAuth } from '../../context';
 import { TutorRoleDetails } from '../../store/types';
+import ModalProgramarCitaTutor from '../Tutor/ModalProgramarCitaTutor';
 
 interface CustomEvent extends Event {
   isBackgroundEvent?: boolean;
@@ -33,7 +34,9 @@ interface CalendarioDisponibilidadProps {
   citas?: ListCita[];
   programable?: boolean;
   onSelectEvent?: (event: CustomEvent) => void;
+  onSelectSlot?: (slotInfo: SlotInfo) => void;
   refresh?: boolean;
+  tipo: "solicitar" | "disponibilidad";
 }
 
 dayjs.locale("es");
@@ -87,7 +90,7 @@ function transformAvailabilityToEvent(availability: Availability[]): CustomEvent
   }));
 }
 
-const CalendarioDisponibilidad: React.FC<CalendarioDisponibilidadProps> = ({ citas = null, programable = false, onSelectEvent, refresh }) => {
+const CalendarioDisponibilidad: React.FC<CalendarioDisponibilidadProps> = ({ citas = null, programable = false, onSelectEvent, onSelectSlot, refresh, tipo }) => {
   const { userData } = useAuth();
   const tutorId = (userData?.userInfo?.roles[0].details as TutorRoleDetails).tutorId;
 
@@ -103,7 +106,8 @@ const CalendarioDisponibilidad: React.FC<CalendarioDisponibilidadProps> = ({ cit
   const disponibilidad = transformAvailabilityToEvent(availability);
   //
   const [selectedSlot, setSelectedSlot] = useState<SlotInfo | null>(null);
-  const [showModal, setShowModal] = useState(false);
+  const [showModalDisponibilidad, setShowModalDisponibilidad] = useState<boolean>(false);
+  const [showModalProgramarCita, setShowModalProgramarCita] = useState<boolean>(false);
 
   const handleSelectSlot = (slotInfo: SlotInfo) => {
     // Obtener las fechas de inicio y fin del nuevo slot
@@ -118,7 +122,7 @@ const CalendarioDisponibilidad: React.FC<CalendarioDisponibilidadProps> = ({ cit
       newStartTime > currentDateTime && newEndTime > currentDateTime;
 
     // Verificar si hay solapamiento con los eventos existentes y si es posterior a la fecha y hora actuales
-    const hasOverlap = disponibilidad.some((event) => {
+    const hasOverlapWithDisponibilidad = disponibilidad.some((event) => {
       const eventStart = event.start;
       const eventEnd = event.end;
 
@@ -134,14 +138,44 @@ const CalendarioDisponibilidad: React.FC<CalendarioDisponibilidadProps> = ({ cit
       return false;
     });
 
-    if (!hasOverlap && isAfterCurrentDateTime) {
-      setSelectedSlot(slotInfo);
-      setShowModal(true);
+    // Verificar si hay solapamiento con los eventos existentes y si es posterior a la fecha y hora actuales
+    const hasOverlapWithEvents = events.some((event) => {
+      const eventStart = event.start;
+      const eventEnd = event.end;
+
+      // Verificar que eventStart y eventEnd sean instancias de Date
+      if (eventStart instanceof Date && eventEnd instanceof Date) {
+        return (
+          (newStartTime >= eventStart && newStartTime < eventEnd) ||
+          (newEndTime > eventStart && newEndTime <= eventEnd) ||
+          (newStartTime <= eventStart && newEndTime >= eventEnd)
+        );
+      }
+
+      return false;
+    });
+
+    if (tipo == "solicitar") {
+      if (!hasOverlapWithEvents && isAfterCurrentDateTime) {
+        setSelectedSlot(slotInfo);
+        setShowModalProgramarCita(true);
+      }
+    }
+    else if (tipo == "disponibilidad") {
+      if (!hasOverlapWithDisponibilidad && isAfterCurrentDateTime) {
+        setSelectedSlot(slotInfo);
+        setShowModalDisponibilidad(true);
+      }
     }
   };
-
-  const closeModal = () => {
-    setShowModal(false);
+  //
+  const closeModalDisponibilidad = () => {
+    setShowModalDisponibilidad(false);
+    setSelectedSlot(null);
+  };
+  //
+  const closeModalProgramarCita = () => {
+    setShowModalProgramarCita(false);
     setSelectedSlot(null);
   };
   //
@@ -203,10 +237,11 @@ const CalendarioDisponibilidad: React.FC<CalendarioDisponibilidadProps> = ({ cit
         min={new Date(0, 0, 0, 8, 0)}
         max={new Date(0, 0, 0, 18, 0)}
         onSelectEvent={onSelectEvent}
-        onSelectSlot={handleSelectSlot}
+        onSelectSlot={onSelectSlot ? onSelectSlot : handleSelectSlot}
         selectable={programable}
       />
-      <ModalModificarDisponibilidad slotInfo={selectedSlot} isOpen={showModal} onClose={closeModal} refreshCalendar={refreshCalendar} />
+      <ModalModificarDisponibilidad slotInfo={selectedSlot} isOpen={showModalDisponibilidad} onClose={closeModalDisponibilidad} refreshCalendar={refreshCalendar} />
+      <ModalProgramarCitaTutor slotInfo={selectedSlot} isOpen={showModalProgramarCita} onClose={closeModalProgramarCita} />
     </>
   );
 };

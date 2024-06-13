@@ -15,6 +15,8 @@ interface ProgramarCitaTutorProps {
 }
 
 const ModalProgramarCitaTutor: React.FC<ProgramarCitaTutorProps> = ({ isOpen, onClose, slotInfo }) => {
+  //
+
   //Datos Tabla
   const defaultColDef = {
     suppressHeaderMenuButton: true,
@@ -75,7 +77,7 @@ const ModalProgramarCitaTutor: React.FC<ProgramarCitaTutorProps> = ({ isOpen, on
                 <div className="block">
                   <Label value="Fin" className='font-roboto text-primary' />
                 </div>
-                <TextInput type="time" value={slotInfo?.start.toTimeString().split(' ')[0]} disabled />
+                <TextInput type="time" value={slotInfo?.end.toTimeString().split(' ')[0]} disabled />
               </div>
 
             </div>
@@ -104,7 +106,7 @@ const ModalProgramarCitaTutor: React.FC<ProgramarCitaTutorProps> = ({ isOpen, on
                 <TextInput type="text" />
               </>
             )}
-            <div className="block">
+            {/* <div className="block">
               <Label value="Unidad" className='font-roboto text-primary' />
             </div>
 
@@ -118,10 +120,13 @@ const ModalProgramarCitaTutor: React.FC<ProgramarCitaTutorProps> = ({ isOpen, on
               searchable={false}
               className="bg-white text-sm"
               dropdownPosition="top"
-            />
+            /> */}
 
           </div>
           <div className="flex-1 shadow-custom border-custom bg-[rgba(255,255,255,0.50)] p-4 flex flex-col gap-2">
+
+            {/* Dropdown Programas de Tutoria */}
+
             <label className="text-2xl font-semibold font-roboto text-gray-900">
               Programa de Tutoría
             </label>
@@ -129,7 +134,13 @@ const ModalProgramarCitaTutor: React.FC<ProgramarCitaTutorProps> = ({ isOpen, on
             <Select
               labelField='text'
               valueField='text'
-              options={[{ key: "eeggcc", text: "Programa de EEGGCC", value: "eeggcc" }, { key: "faci", text: "Feria de Empleabilidad", value: "faci" }, { key: "inf", text: "Programa de Cachimbos", value: "inf" }]}
+              options={
+                [
+                  { key: "eeggcc", text: "Programa de EEGGCC", value: "eeggcc" },
+                  { key: "faci", text: "Feria de Empleabilidad", value: "faci" },
+                  { key: "inf", text: "Programa de Cachimbos", value: "inf" }
+                ]
+              }
               values={[]}
               onChange={() => { }}
               placeholder="Selecciona Programa de Tutoría"

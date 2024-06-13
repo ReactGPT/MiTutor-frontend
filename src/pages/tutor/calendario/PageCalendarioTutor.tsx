@@ -1,17 +1,20 @@
 import Button from '../../../components/Button';
 import { useNavigate } from 'react-router-dom';
 import CalendarioDisponibilidad from '../../../components/Calendar/CalendarioDisponibilidad';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useCitasPorTutor } from '../../../store/hooks/useCita';
 import { useAuth } from '../../../context';
 import { TutorRoleDetails } from '../../../store/types';
-import ProgramarCita from './ProgramarCita';
+import { SlotInfo } from 'react-big-calendar';
+import ModalProgramarCita from './ModalProgramarCita';
 
 const PageCalendarioTutor: React.FC = () => {
   const { userData } = useAuth();
   const tutorId = (userData?.userInfo?.roles[0].details as TutorRoleDetails).tutorId;
 
   const { cita, fetchCita } = useCitasPorTutor(tutorId);
+
+  const [programarCita, setProgramarCita] = useState<boolean>(false);
 
   useEffect(() => {
     fetchCita();
@@ -48,11 +51,16 @@ const PageCalendarioTutor: React.FC = () => {
           </div>
         </div>
         <div className="flex gap-5">
+          {programarCita ?
+            <Button text='Cancelar Programación' onClick={() => setProgramarCita(false)} variant="warning" />
+            :
+            <Button text='Programar Cita' onClick={() => setProgramarCita(true)} variant="primario" />
+          }
           <Button text='Ver Disponibilidad' onClick={goToDisponibilidad} variant="primario" />
         </div>
       </div>
       <div className="flex-1 w-full overflow-auto bg-white rounded-md p-4">
-        <CalendarioDisponibilidad citas={cita} />
+        <CalendarioDisponibilidad citas={cita} tipo='solicitar' programable={programarCita} />
       </div>
     </div >
   );

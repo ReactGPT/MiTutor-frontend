@@ -32,8 +32,8 @@ export const PageTitles = [
     pageName: "Detalle programa Alumno"
   },
   {
-    path: '/historicoDeCitas',
-    pageName: "Histórico de Citas",
+    path: '/programasDeTutoria/detalle-programa/alumno/historicoCitas',
+    pageName: "Histórico de citas"
   },
   {
     path: '/programasDeTutoriaMaestro/nuevo',

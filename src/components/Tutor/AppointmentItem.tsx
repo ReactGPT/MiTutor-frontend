@@ -71,24 +71,10 @@ const controlColor = (color: string, tipo: string) => {
 
 const AppointmentItem: React.FC<AppointmentItemProps> = ({ appointment, tipo, user }) => {
   const navigate = useNavigate();
-  const [appointmentStatus, setAppointmentStatus] = useState(appointment.appointmentStatus);
+  const [appointmentStatus, setAppointmentStatus] = useState(appointment.appointmentStatus); 
 
   // Combina creationDate y endTime para crear la fecha de finalización completa
   const endDateTime = new Date(`${appointment.creationDate}T${appointment.endTime}`);
-  
-  async function actulizarCita() {
-    try {
-        const response = await axios.put(ServicesProperties.BaseUrl+`/actulizar_Estado_Insertar_Resultado?id_appointment=${appointment.appointmentId}`, {
-        });
-
-        const response2 = await axios.post(ServicesProperties.BaseUrl+`/agregarResultadoCita?studentId=${appointment.personId}&tutoringProgramId=${appointment.programId}&id_appointment=${appointment.appointmentId}`, {
-          //https://localhost:44369/agregarResultadoCita?studentId=19191&tutoringProgramId=28282&id_appointment=27272
-        });
- 
-    } catch (error) {
-      console.error('Error al descargar el archivo:', error);
-    }
-  }
   
   const goToDetalleCita = () => {
     if (user === 'tutor' && appointment.appointmentStatus!="registrada") {
@@ -101,19 +87,19 @@ const AppointmentItem: React.FC<AppointmentItemProps> = ({ appointment, tipo, us
   // Función para verificar si la cita ha terminado
   const checkAppointmentStatus = () => {
     const currentDate = new Date();
-    if (appointmentStatus === 'registrada' && currentDate > endDateTime) {
-      appointment.appointmentStatus='pendiente resultado';
+    if (appointmentStatus === 'registrada' && currentDate > endDateTime) { 
       setAppointmentStatus('pendiente resultado');
-      actulizarCita(); //appointment.programId, appointment.personId
     }
   };
+   
 
   useEffect(() => {
     const intervalId = setInterval(checkAppointmentStatus, 10000); // Verifica cada 10 segundos
 
     return () => clearInterval(intervalId);
-  }, [appointmentStatus,appointment]);
-
+  }, [appointmentStatus,endDateTime]);
+ 
+  
   return (
     <div className="w-full h-22 border-custom shadow-custom flex bg-[rgba(235,_236,_250,_1.00)] overflow-hidden font-roboto">
       <div className={`w-[2%] max-w-6 bg-gradient-to-b ${controlColor(appointmentStatus, 'from')} ${controlColor(appointmentStatus, 'to')}`}></div>

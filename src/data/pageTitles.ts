@@ -106,10 +106,14 @@ export const PageTitles = [
   },
   {
     path: "/indicadorTutor",
-    pageName: "Indicador Tutor"
+    pageName: "Indicadores Tutores"
   },
   {
     path: "/usuarios",
     pageName: "Usuarios"
+  },
+  {
+    path: "/tutor-detail",
+    pageName: "Indicador Tutor Detalle"
   }
 ];

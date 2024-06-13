@@ -37,6 +37,7 @@ import PageDetalleDeTutoria from "../pages/alumno/misTutorias/PageDetalleDeTutor
 import PageIndicadorTutor from "../pages/tutor/indicadorTutores/PageIndicadorTutor.tsx";
 import PageListadoUsuarios from "../pages/administrador/gestionUsuarios/PageListadoUsuarios.tsx";
 import PageUsuario from "../pages/administrador/gestionUsuarios/PageUsuario.tsx";
+import TutorDetail from "../pages/tutor/indicadorTutores/TutorDetail.tsx";
  
  
 
@@ -178,9 +179,15 @@ export const Routes: RouterConfig = {
         path: '/indicadorTutor',
         element: <PageIndicadorTutor/>
       },
+
       {
         path: '*',
         element: <Navigate to="/" />
+      }
+      ,
+      {
+        path: '/tutor-detail',
+        element:<TutorDetail/> 
       }
     ],
     navBarLink: [

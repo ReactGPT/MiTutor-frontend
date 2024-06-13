@@ -89,7 +89,6 @@ const AppointmentItem: React.FC<AppointmentItemProps> = ({ appointment, tipo, us
     const currentDate = new Date();
     if (appointmentStatus === 'registrada' && currentDate > endDateTime) { 
       setAppointmentStatus('pendiente resultado');
-      appointment.appointmentStatus='pendiente resultado';
     }
   };
    
@@ -103,7 +102,7 @@ const AppointmentItem: React.FC<AppointmentItemProps> = ({ appointment, tipo, us
   
   return (
     <div className="w-full h-22 border-custom shadow-custom flex bg-[rgba(235,_236,_250,_1.00)] overflow-hidden font-roboto">
-      <div className={`w-[2%] max-w-6 bg-gradient-to-b ${controlColor(appointment.appointmentStatus, 'from')} ${controlColor(appointment.appointmentStatus, 'to')}`}></div>
+      <div className={`w-[2%] max-w-6 bg-gradient-to-b ${controlColor(appointmentStatus, 'from')} ${controlColor(appointmentStatus, 'to')}`}></div>
 
       <div className="w-full flex p-5 gap-5 justify-between items-center">
         <div className="w-1/3">
@@ -113,7 +112,7 @@ const AppointmentItem: React.FC<AppointmentItemProps> = ({ appointment, tipo, us
         <div className="flex gap-6 items-center h-full text-center justify-between">
           <div className="flex flex-col items-start">
             <span className="text-black font-semibold">Estado:</span>
-            <span className={`font-semibold ${controlColor(appointment.appointmentStatus, 'text')}`}>{appointment.appointmentStatus}</span>
+            <span className={`font-semibold ${controlColor(appointmentStatus, 'text')}`}>{appointmentStatus}</span>
           </div>
           <hr className="h-full border-custom" />
           {

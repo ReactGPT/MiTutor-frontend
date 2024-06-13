@@ -79,8 +79,11 @@ const AppointmentItem: React.FC<AppointmentItemProps> = ({ appointment, tipo, us
   async function actulizarCita() {
     try {
         const response = await axios.put(ServicesProperties.BaseUrl+`/actulizar_Estado_Insertar_Resultado?id_appointment=${appointment.appointmentId}`, {
-        
-      });
+        });
+
+        const response2 = await axios.post(ServicesProperties.BaseUrl+`/agregarResultadoCita?studentId=${appointment.personId}&tutoringProgramId=${appointment.programId}&id_appointment=${appointment.appointmentId}`, {
+          //https://localhost:44369/agregarResultadoCita?studentId=19191&tutoringProgramId=28282&id_appointment=27272
+        });
  
     } catch (error) {
       console.error('Error al descargar el archivo:', error);

@@ -99,7 +99,15 @@ const CalendarioSolicitud: React.FC<CalendarioSolicitudProps> = (
     fetchCita();
   }, [refresh, refreshKey]);
 
-  const events: CustomEvent[] = cita.map(transformCitaToEvent) ?? [];
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  const filteredCita = cita.filter(c => {
+    const startDate = combineDateAndTime(c.creationDate, c.startTime.toString());
+    return startDate >= today;
+  });
+
+  const events: CustomEvent[] = filteredCita.map(transformCitaToEvent) ?? [];
   const disponibilidad = transformAvailabilityToEvent(availability);
   //
   const [selectedSlot, setSelectedSlot] = useState<SlotInfo | null>(null);

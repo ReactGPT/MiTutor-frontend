@@ -9,6 +9,7 @@ type TutoringProgramCardProps = {
 };
 
 const TutoringProgramCard: React.FC<TutoringProgramCardProps> = ({ data }) => {
+  console.log(data);
   const navigate = useNavigate();
 
   const goToProgramDetails = () => {
@@ -18,7 +19,8 @@ const TutoringProgramCard: React.FC<TutoringProgramCardProps> = ({ data }) => {
   return (
     <div className="w-full h-24 border-custom shadow-custom flex bg-[rgba(235,_236,_250,_1.00)] overflow-hidden font-roboto">
 
-      <div className="bg-green-400 w-[2%] max-w-6"></div>
+      {(data.tutorType == "TUTOR FIJO SOLICITADO" || data.tutorType == "TUTOR FIJO ASIGNADO") && <div className="bg-blue-400 w-[2%] max-w-6" />}
+      {data.tutorType == "TUTOR VARIABLE" && <div className="bg-green-400 w-[2%] max-w-6" />}
 
       <div className="w-full flex p-5 gap-5 justify-between items-center">
         <div className="w-1/3">

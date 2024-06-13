@@ -5,7 +5,9 @@ import {
   BiCalendar,
   BiHome,
   BiListUl,
-  BiUser
+  BiUser,
+  BiUserCheck,
+  BiBarChartAlt
 } from "react-icons/bi";
 
 import PageListadoPlanAccion from '../pages/tutor/listaDeCitas/PageListadoPlanAccion.tsx';
@@ -50,7 +52,7 @@ type RouterConfig = {
   tutor: RouterDetail;
   coordinador: RouterDetail;
   alumno: RouterDetail;
-  administrador:RouterDetail
+  administrador: RouterDetail;
 };
 
 export const Routes: RouterConfig = {
@@ -105,7 +107,7 @@ export const Routes: RouterConfig = {
         element: <PageAgregarDisponibilidadTutor />,
       },
       {
-        path: '/derivaciones',
+        path: '/miPerfil/derivaciones',
         element: <PageDerivacionesHechas />
       },
       {
@@ -116,8 +118,8 @@ export const Routes: RouterConfig = {
       {
         path: '*',
         element: <Navigate to="/" />
-      } 
-      
+      }
+
     ],
     navBarLink: [
       {
@@ -150,7 +152,7 @@ export const Routes: RouterConfig = {
         path: '/miPerfil',
         icon: <BiUser fontSize={32} />,
       },
-      
+
     ]
   },
   coordinador: {
@@ -177,7 +179,7 @@ export const Routes: RouterConfig = {
       },
       {
         path: '/indicadorTutor',
-        element: <PageIndicadorTutor/>
+        element: <PageIndicadorTutor />
       },
 
       {
@@ -207,7 +209,7 @@ export const Routes: RouterConfig = {
         key: 'gestionDeSolicitudes',
         label: 'Gestion de Solicitudes',
         path: '/gestionSolicitudes',
-        icon: <BiListUl fontSize={32} />,
+        icon: <BiUserCheck fontSize={32} />,
       },
       {
         key: 'especialidades',
@@ -219,7 +221,7 @@ export const Routes: RouterConfig = {
         key: 'indicadores',
         label: 'Indicadores',
         path: '/indicadores',
-        icon: <BiUser fontSize={32} />,
+        icon: <BiBarChartAlt fontSize={32} />,
       },
       {
         key: 'indicadorTutor',
@@ -323,11 +325,11 @@ export const Routes: RouterConfig = {
       },
       {
         path: '/usuarios/nuevo',
-        element: <PageUsuario/>
+        element: <PageUsuario />
       },
       {
         path: '/usuarios/detalle',
-        element: <PageUsuario/>
+        element: <PageUsuario />
       },
       {
         path: '*',

@@ -4,31 +4,36 @@ import { Services as ServicesProperties } from '../../config';
 
 // Define la interfaz para los datos del programa de tutoría del estudiante
 export interface TutorStudentProgram {
-    TutorStudentProgramId: number;
-    StudentId: number;
-    StudentCode: string;
-    SpecialtyId: number;
-    SpecialtyName: string;
-    SpecialtyAcronym: string;
-    StudentFirstName: string;
-    StudentLastName: string;
-    TutorId: number;
-    TutorFirstName: string;
-    TutorLastName: string;
-    ProgramName: string;
-    ProgramDescription: string;
-    RequestDate: string;
-    State: string;
-    IsActive: number;
-    Motivo: string;
+    tutorStudentProgramId: number;
+    studentId: number;
+    studentCode: string;
+    specialtyId: number;
+    specialtyName: string;
+    specialtyAcronym: string;
+    studentFirstName: string;
+    studentLastName: string;
+    tutorId: number;
+    tutorFirstName: string;
+    tutorLastName: string;
+    programName: string;
+    programDescription: string;
+    requestDate: string;
+    state: string;
+    isActive: number;
+    motivo: string;
     studentProgram: {
-        student: {
+        student: {   
             name: string;
+            lastName: string;
+            secondLastName: string;         
             specialty: {
                 name: string;
-            };
-            faculty: {
-                name: string;
+                faculty: {
+                    name: string;
+                };
+            };           
+            usuario: {
+                pucpCode: string;
             };
         };
     };
@@ -77,14 +82,13 @@ function useTutorStudentPrograms(): UseTutorStudentProgramsReturnType {
     const updateProgramState = async (ids: number[], newState: string) => {
         try {
             await api.post('/tutorstudentprogram/updateEstado', {
-                TutorStudentProgramIds: ids.join(','),
+                TutorStudentProgramIds: ids,
                 NewState: newState
             });
         } catch (err: any) {
             setError(err);
         }
     };
-
     return { fetchTutorStudentPrograms, updateProgramState, tutorStudentPrograms, isLoading, error };
 }
 

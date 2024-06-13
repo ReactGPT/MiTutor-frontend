@@ -5,7 +5,9 @@ import {
   BiCalendar,
   BiHome,
   BiListUl,
-  BiUser
+  BiUser,
+  BiUserCheck,
+  BiBarChartAlt
 } from "react-icons/bi";
 
 import PageListadoPlanAccion from '../pages/tutor/listaDeCitas/PageListadoPlanAccion.tsx';
@@ -200,7 +202,7 @@ export const Routes: RouterConfig = {
         key: 'gestionDeSolicitudes',
         label: 'Gestion de Solicitudes',
         path: '/gestionSolicitudes',
-        icon: <BiListUl fontSize={32} />,
+        icon: <BiUserCheck fontSize={32} />,
       },
       {
         key: 'especialidades',
@@ -212,7 +214,7 @@ export const Routes: RouterConfig = {
         key: 'indicadores',
         label: 'Indicadores',
         path: '/indicadores',
-        icon: <BiUser fontSize={32} />,
+        icon: <BiBarChartAlt fontSize={32} />,
       },
       {
         key: 'indicadorTutor',

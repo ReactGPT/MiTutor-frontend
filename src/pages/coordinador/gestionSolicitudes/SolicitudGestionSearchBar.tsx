@@ -3,6 +3,7 @@ import { Button } from '../../../components';
 import DropdownSolicitud from '../../../components/DropdownSolicitud';
 import AcademicUnit from '../../../assets/svg/AcademicUnit';
 import Program from '../../../assets/svg/Program';
+import State from '../../../assets/svg/State';
 import { useNavigate } from 'react-router-dom';
 import { Faculty, Specialty } from '../../../store/types';
 import { RootState } from '../../../store/store';
@@ -18,6 +19,7 @@ export default function SolicitudGestionSearchBar({ handleOnChangeFilters }: Inp
 
     const [specialitySelected, setSpecialitySelected] = useState<Specialty | null>(null);
     const [facultySelected, setFacultySelected] = useState<Faculty | null>(null);
+    const [statusSelected, setStatusSelected] = useState<{ id: number | string; name: string } | null>(null);
 
     const specialityOptions = useMemo(() => {
         if (!facultySelected?.id) {
@@ -32,18 +34,23 @@ export default function SolicitudGestionSearchBar({ handleOnChangeFilters }: Inp
             setSpecialitySelected(null);
         }
         setFacultySelected({ id: value.id as number, name: value.name, acronym: "", numberStudents: 0, numberTutors: 0 });
-    };
+    };    
 
     const handleOnChangeSpeciality = (value: { id: number | string; name: string }) => {
         setSpecialitySelected({ id: value.id as number, name: value.name, acronym: "", numberStudents: 0, facultyId: 0 });
     };
 
+    const handleOnChangeStatus = (value: { id: number | string; name: string }) => {
+        setStatusSelected({ id: value.id as number, name: value.name });
+    };
+
     const filters = useMemo(() => {
         return {
-            idSpeciality: specialitySelected?.id,
-            idFaculty: facultySelected?.id,
+            specialty: specialitySelected?.name,
+            faculty: facultySelected?.name,
+            status: statusSelected?.name
         };
-    }, [specialitySelected, facultySelected]);
+    }, [specialitySelected, facultySelected, statusSelected]);
 
     useEffect(() => {
         handleOnChangeFilters(filters);
@@ -51,22 +58,33 @@ export default function SolicitudGestionSearchBar({ handleOnChangeFilters }: Inp
 
     return (
         <div className='flex w-full h-full flex-row py-5'>
-            <form className="w-[70%] max-w-[70%] min-w-[70%] h-full flex flex-row gap-4">
+            <div className="w-[70%] max-w-[70%] min-w-[70%] h-full flex flex-row gap-4">
                 <DropdownSolicitud
                     options={facultyList.map(faculty => ({ id: faculty.id, name: faculty.name }))}
                     onSelect={handleOnChangeFaculty}
-                    defaultOption="Seleccione una Facultad"
+                    defaultOption="Facultad"
                     icon={AcademicUnit}
-                    value={facultySelected ? facultySelected.name : "Seleccione una Facultad"}
+                    value={facultySelected ? facultySelected.name : "Facultad"}
                 />
                 <DropdownSolicitud
                     options={specialityOptions.map(speciality => ({ id: speciality.id, name: speciality.name }))}
                     onSelect={handleOnChangeSpeciality}
-                    defaultOption="Seleccione una Especialidad"
+                    defaultOption="Especialidad"
                     icon={Program}
-                    value={specialitySelected ? specialitySelected.name : "Seleccione una Especialidad"}
+                    value={specialitySelected ? specialitySelected.name : "Especialidad"}
                 />
-            </form>
+                <DropdownSolicitud
+                    options={[
+                        { id: 1, name: 'Asignado' },
+                        { id: 2, name: 'Solicitado' },
+                        { id: 3, name: 'Rechazado' }
+                    ]}
+                    onSelect={handleOnChangeStatus}
+                    defaultOption="Estado"
+                    icon={State}
+                    value={statusSelected ? statusSelected.name : "Estado"}
+                />
+            </div>
         </div>
     );
 }

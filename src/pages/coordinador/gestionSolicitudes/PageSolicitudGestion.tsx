@@ -14,10 +14,11 @@ import ModalWarning from '../../../components/ModalWarning';
 import ModalError from '../../../components/ModalError';
 import ModalConfirmation from '../../../components/ModalConfirmation';
 import ModalSuccess from '../../../components/ModalSuccess';
+import ProgramaTutoríaSearchBar from '../programasDeTutoria/ProgramaTutoríaSearchBar';
 
 const PageSolicitudGestion: React.FC = () => {
     const { fetchTutorStudentPrograms, tutorStudentPrograms, isLoading, updateProgramState } = useTutorStudentPrograms();
-    const [filters, setFilters] = useState<{ faculty?: string; specialty?: string }>({});
+    const [filters, setFilters] = useState<{ faculty?: string; specialty?: string; status?:string }>({});
     const gridApiRef = useRef<GridApi | null>(null);
 
     const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
@@ -29,11 +30,11 @@ const PageSolicitudGestion: React.FC = () => {
 
     useEffect(() => {
         fetchTutorStudentPrograms();
-    }, []);
+    }, [filters]);    
 
     const handleOnChangeFilters = (filter: { faculty?: string; specialty?: string }) => {
-        setFilters(filter);
-        console.log("Filters changed: ", filter);
+        setFilters(filter);     
+        console.log("Filters changed: ", filter);   
     };
 
     const handleAcceptClick = () => {
@@ -45,7 +46,7 @@ const PageSolicitudGestion: React.FC = () => {
             setModalMessage('¿Está seguro de aceptar las solicitudes seleccionadas?');
             setConfirmationAction(() => async () => {
                 try {
-                    await updateProgramState(selectedIds, 'ASIGNADO');
+                    await updateProgramState(selectedIds, 'Asignado');
                     setIsSuccessModalOpen(true);
                 } catch (error) {
                     setIsErrorModalOpen(true);
@@ -65,7 +66,7 @@ const PageSolicitudGestion: React.FC = () => {
             setModalMessage('¿Está seguro de rechazar las solicitudes seleccionadas?');
             setConfirmationAction(() => async () => {
                 try {
-                    await updateProgramState(selectedIds, 'RECHAZADO');
+                    await updateProgramState(selectedIds, 'Rechazado');
                     setIsSuccessModalOpen(true);
                 } catch (error) {
                     setIsErrorModalOpen(true);
@@ -85,41 +86,61 @@ const PageSolicitudGestion: React.FC = () => {
         gridApiRef.current = params.api;
     };
 
+    const onSelectionChanged = () => {
+        const selectedNodes = gridApiRef.current?.getSelectedNodes() || [];
+        const selectedIds = selectedNodes.map((node: any) => node.data.TutorStudentProgramId);
+    };
+
     const columnDefs: ColDef[] = [
         {
             headerCheckboxSelection: true,
             checkboxSelection: true,
-            width: 50
+            width: 10
         },
+        { headerName: 'Código', field: 'StudentCode', minWidth: 150 },
         { headerName: 'Especialidad', field: 'SpecialtyName', minWidth: 150 },
-        { headerName: 'Nombres del Alumno', field: 'StudentFirstName', minWidth: 240 },
-        { headerName: 'Apellidos del Profesor', field: 'TutorFullName', minWidth: 200 },
-        { headerName: 'Estado', field: 'State', minWidth: 150 }
+        { headerName: 'Alumno', field: 'StudentFullName', minWidth: 240 },
+        { headerName: 'Profesor', field: 'TutorFullName', minWidth: 200 },
+        { headerName: 'Estado', field: 'State', minWidth: 150 },
+        { headerName: 'ID TutorStudentProgram', field: 'TutorStudentProgramId', hide: true },
     ];
 
     const filteredRowData = useMemo(() => {
-        return tutorStudentPrograms.filter(program => {
-            const matchesFaculty = filters.faculty ? program.studentProgram?.student?.faculty?.name === filters.faculty : true;
-            const matchesSpecialty = filters.specialty ? program.studentProgram?.student?.specialty?.name === filters.specialty : true;
-            return matchesFaculty && matchesSpecialty;
-        }).map(program => ({
-            SpecialtyName: program.studentProgram?.student?.specialty?.name || 'N/A',
-            StudentFirstName: program.studentProgram?.student?.name || 'N/A',
-            TutorFullName: `${program.tutor?.userAccount?.persona?.name || 'N/A'} ${program.tutor?.userAccount?.persona?.lastName || ''} ${program.tutor?.userAccount?.persona?.secondLastName || ''}`,
-            State: program.State || 'N/A',
+        let filteredData = [...tutorStudentPrograms];
+
+        if (filters.faculty!=undefined) {      
+            filteredData = filteredData.filter(program => program.studentProgram.student.specialty.faculty.name === filters.faculty);
+        }
+
+        if (filters.specialty!=undefined) {                       
+            filteredData = filteredData.filter(program => program.studentProgram.student.specialty.name === filters.specialty);
+        }
+
+        if (filters.status!=undefined) {                       
+            filteredData = filteredData.filter(program => program.state === filters.status);
+        }
+
+        return filteredData.map(program => ({
+            StudentCode: program.studentProgram.student.usuario.pucpCode,
+            SpecialtyName: program.studentProgram.student.specialty.name,
+            StudentFullName: `${program.studentProgram.student.name} ${program.studentProgram.student.lastName} ${program.studentProgram.student.secondLastName}`,
+            TutorFullName: `${program.tutor.userAccount.persona.name} ${program.tutor.userAccount.persona.lastName} ${program.tutor.userAccount.persona.secondLastName}`,
+            State: `${program.state}`,
+            TutorStudentProgramId: program.tutorStudentProgramId
         }));
     }, [tutorStudentPrograms, filters]);
+    
 
     return (
         <div className='flex flex-col'>
             <main>
                 <div className="mb-2">
-                    <h2 className="font-montserrat text-[26px] font-bold text-lg">
+                    <h2 className="font-montserrat text-[26px] font-bold text-lg mb-[-12px]">
                         Solicitud
                     </h2>
                     <SolicitudGestionSearchBar handleOnChangeFilters={handleOnChangeFilters} />
                     <div className="mb-2">
-                        <h2 className="font-montserrat text-[26px] font-bold text-lg mb-2">
+                        <h2 className="font-montserrat text-[26px] font-bold text-lg mb-2 mt-[-12px]">
                             Tutor
                         </h2>
                         <div className="flex space-x-4 mt-2">
@@ -141,7 +162,7 @@ const PageSolicitudGestion: React.FC = () => {
                         </div>
                     </div>
                 </div>
-                <div className="flex justify-between items-center mb-4 mt-4">
+                <div className="flex justify-between items-center mt-8">
                     <h2 className="font-montserrat text-[26px] font-bold text-lg mb-2 mt-4">
                         Resultado de Solicitudes
                     </h2>
@@ -154,6 +175,7 @@ const PageSolicitudGestion: React.FC = () => {
                     {isLoading ? <Spinner size='lg' /> :
                         <AgGridReact
                             onGridReady={onGridReady}
+                            onSelectionChanged={onSelectionChanged}
                             defaultColDef={{
                                 suppressHeaderMenuButton: true,
                                 flex: 1,
@@ -170,6 +192,8 @@ const PageSolicitudGestion: React.FC = () => {
                             rowData={filteredRowData}
                             pagination={true}
                             paginationPageSize={10}
+                            rowSelection='multiple'
+                            suppressRowClickSelection={true}
                         />
                     }
                 </div>

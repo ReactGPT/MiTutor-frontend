@@ -390,34 +390,34 @@ const TutorDetail: React.FC = () => {
     };
     
     
-    // Función para imprimir una cita
+     
     const printAppointment = (doc:any, appointment:any, x:any, y:any, height:any) => {
         doc.setFontSize(12);
         doc.setFont('calibri', 'normal');
     
-        // Hora de inicio
+         
         const startTime = new Date(appointment.startTime);
         const formattedStartTime = startTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
         doc.text(`Hora de inicio: ${formattedStartTime}`, x, y);
         y += 5;
     
-        // Hora de fin
+         
         const endTime = new Date(appointment.endTime);
         const formattedEndTime = endTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
         doc.text(`Hora de fin: ${formattedEndTime}`, x, y);
         y += 5;
     
-        // Fecha de creación
+        
         const creationDate = new Date(appointment.creationDate);
         const formattedCreationDate = creationDate.toLocaleDateString();
         doc.text(`Fecha de creación: ${formattedCreationDate}`, x, y);
         y += 5;
     
-        // Razón
+        
         doc.text(`Razón: ${appointment.reason}`, x, y);
         y += 5;
     
-        // Cantidad de estudiantes
+         
         doc.text(`Cantidad de estudiantes: ${appointment.studentCount}`, x, y);
     };
     

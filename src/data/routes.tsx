@@ -407,7 +407,7 @@ export const Routes: RouterConfig = {
       {
         key: 'unidades',
         label: 'Unidades',
-        path: '/*',//Pendiente agregar
+        path: '/unidades',//Pendiente agregar
         icon: <BiSolidLandmark fontSize={32} />,
       },
       {

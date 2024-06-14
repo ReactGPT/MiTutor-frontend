@@ -63,7 +63,7 @@ function TutoringProgramProvider({children,tutoringProgram:inputTutoria}:Context
     useEffect(()=>{
         dispatch(setTutoringProgram({...tutoringProgram}))
     },[tutoringProgram]);
-        
+
     const handleChangeTutoriaObject=(value:any)=>{
         setTutorinProgram({...value});
     }
@@ -77,7 +77,7 @@ function TutoringProgramProvider({children,tutoringProgram:inputTutoria}:Context
         <TutoringProgramContext.Provider value={{ tutoringProgram:tutoringProgram, onChangeTutoringProgram:handleChangeTutoringProgram,onChangeTutoringProgramObject:handleChangeTutoriaObject }}>
           {children}
         </TutoringProgramContext.Provider>
-      );
+    );
 };
 
 export {TutoringProgramContext,TutoringProgramProvider,useTutoringProgramContext}

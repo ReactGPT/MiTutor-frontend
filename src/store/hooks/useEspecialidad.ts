@@ -1,9 +1,10 @@
 import { useState } from "react";
 import { Specialty } from "../types/Specialty.ts";
-import { getEspecialidadInfo } from "../services/especialidad.ts";
+import { getEspecialidadInfo, getEspecialidadPorFacultadInfo } from "../services/especialidad.ts";
 
 interface EspecialidadHookReturnType {
     fetchEspecialidadData: () => Promise<void>;
+    fetchEspecialidadPorFacultadData: (idFacultad: number) => Promise<void>;
     especialidadData: Specialty[];
     isLoading: boolean;
     error: Error | null;
@@ -25,7 +26,19 @@ function useEspecialidad(): EspecialidadHookReturnType {
         }
     };
 
-    return { fetchEspecialidadData, especialidadData, isLoading, error };
+    const fetchEspecialidadPorFacultadData = async (idFacultad: number) => {
+        setIsLoading(true);
+        try {
+            const especialidadData = await getEspecialidadPorFacultadInfo(idFacultad);
+            setEspecialidadData(especialidadData.especialidadList);
+        } catch (error: any) {
+            setError(error);
+        } finally {
+            setIsLoading(false);
+        }
+    }
+
+    return { fetchEspecialidadData, fetchEspecialidadPorFacultadData,especialidadData, isLoading, error };
 }
 
 export { useEspecialidad }

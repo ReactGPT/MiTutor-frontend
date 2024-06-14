@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { UnidadDerivacion } from '../types/UnidadDerivacion';
+import { Services } from '../../config';
 
 type UnidadDetailResponse={
   unidadList:UnidadDerivacion[];
@@ -9,7 +10,7 @@ async function getUnidadInfo():Promise<UnidadDetailResponse>{
     try{
         const response = await axios({
             method: 'GET',
-            url: 'https://localhost:44369/listarUnidades',
+            url: `${Services.BaseUrl}/listarUnidades`,
         });
         if(response.data.success===false){
             return {unidadList:[]};

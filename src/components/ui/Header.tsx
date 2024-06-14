@@ -14,13 +14,12 @@ const Header: React.FC = () => {
 
   const navigate = useNavigate();
   const { title } = useTitle();
-  const handleOnClickBack = ()=>{
-    console.log(userAcountId);
-    //navigate(-1);
-  }
+  const handleOnClickBack = () => {
+    navigate(-1);
+  };
   return (
     <div className="w-full h-full flex flex-row justify-between items-center bg-[rgba(255,_255,_255,_0.50)] border-custom drop-shadow-md p-5">
-      <div className="flex items-center justify-center">          
+      <div className="flex items-center justify-center">
         <button onClick={handleOnClickBack} className="bg-white text-primary rounded-full p-2.5 size-13">
           <IconBack size={6} />
         </button>
@@ -30,8 +29,8 @@ const Header: React.FC = () => {
 
       <div className="flex items-center justify-center">
 
-        <Notifications userAcountId={userAcountId}/>
-      
+        <Notifications userAcountId={userAcountId} />
+
       </div>
     </div>
   );

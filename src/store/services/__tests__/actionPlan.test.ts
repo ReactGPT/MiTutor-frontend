@@ -7,7 +7,6 @@ import { ActionPlan, ActionPlanUpdate } from '../../types/ActionPlan';
 
 const mock = new MockAdapter(axios);
 
-// Mock data
 const mockActionPlan: ActionPlan = {
   actionPlanId: 1,
   name: 'Test Action Plan',
@@ -41,7 +40,6 @@ suite('ActionPlan Service Tests', () => {
     mock.onGet(`${ServicesProperties.BaseUrl}/listarActionPlans`).reply(200, { data: expectedData });
 
     const actionPlans = await getActionPlans(1, 1, 1);
-    // Convertir las fechas a cadenas ISO8601 antes de la comparación
     const expectedDataISO = expectedData.map(item => ({
       ...item,
       creationDate: item.creationDate.toISOString(),
@@ -56,7 +54,6 @@ suite('ActionPlan Service Tests', () => {
     mock.onGet(`${ServicesProperties.BaseUrl}/listarActionPlansStudent`).reply(200, { data: expectedData });
 
     const actionPlans = await getActionPlansStudent(1, 1, 1);
-    // Convertir las fechas a cadenas ISO8601 antes de la comparación
     const expectedDataISO = expectedData.map(item => ({
       ...item,
       creationDate: item.creationDate.toISOString(),
@@ -73,7 +70,6 @@ suite('ActionPlan Service Tests', () => {
     mock.onGet(`${ServicesProperties.BaseUrl}/listarActionPlansPorId`).reply(200, { data: expectedData });
 
     const actionPlan = await getActionPlanById(actionPlanId);
-    // Convertir las fechas a cadenas ISO8601 antes de la comparación
     const expectedDataISO = expectedData.map(item => ({
       ...item,
       creationDate: item.creationDate.toISOString(),

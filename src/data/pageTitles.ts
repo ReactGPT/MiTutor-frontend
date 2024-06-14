@@ -119,5 +119,9 @@ export const PageTitles = [
   {
     path: "/tutor-detail",
     pageName: "Indicador Tutor Detalle"
-  }
+  },
+  {
+    path: "/listaDeCitas/resultadoCitaGrupal",
+    pageName: "Resultado de Cita Grupal"
+  } 
 ];

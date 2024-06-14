@@ -40,7 +40,7 @@ import PageIndicadorTutor from "../pages/tutor/indicadorTutores/PageIndicadorTut
 import PageListadoUsuarios from "../pages/administrador/gestionUsuarios/PageListadoUsuarios.tsx";
 import PageUsuario from "../pages/administrador/gestionUsuarios/PageUsuario.tsx";
 import TutorDetail from "../pages/tutor/indicadorTutores/TutorDetail.tsx";
- 
+import PageResultadoCitaGrupal from '../pages/tutor/resultadoCita/PageResultadoCitaGrupal.tsx';
  
 
 type RouterDetail = {
@@ -112,7 +112,12 @@ export const Routes: RouterConfig = {
       },
       {
         path: '/listaDeCitas/resultadoCitaIndividual',
-        element: <PageResultadoCitaIndividual />
+        element: <PageResultadoCitaIndividual /> 
+      },
+      {
+        path: '/listaDeCitas/resultadoCitaGrupal',
+        element: <PageResultadoCitaGrupal />
+        //PageDetalleCitaGrupal
       },
 
       {

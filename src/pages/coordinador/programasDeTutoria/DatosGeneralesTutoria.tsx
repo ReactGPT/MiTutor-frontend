@@ -38,7 +38,7 @@ function DatosGeneralesTutoria() {
         <h2 className='text-xl font-bold text-primary'>Datos del programa</h2>
         <div className='flex flex-row gap-4'>
           {isLoading ? <Spinner /> : <Button disabled={!!roles? !(roles.some((rol:any)=>rol.type==="MANAGER"&&(rol.details.departmentType==='Facultad'?rol.details.departmentId.toString()===tutoringProgram.facultadId.toString():rol.details.departmentId.toString()===tutoringProgram.especialidadId.toString()))):true}  text='Guardar' icon={SaveIcon} onClick={handleSaveTutoria} />}
-          <Button text='Cancelar' variant='primario' icon={CloseIcon} iconSize={4} onClick={() => { navigate(-1); }} />
+          <Button text='Cancelar' variant='primario' icon={CloseIcon} iconSize={4} onClick={() => { navigate("/programasDeTutoria"); }} />
         </div>
       </div>
       <div id='ProgramaTutoriaBox1Content' className='flex flex-row w-full h-full gap-2 h-[70%]'>

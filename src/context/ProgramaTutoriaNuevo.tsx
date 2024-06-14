@@ -5,6 +5,8 @@ import {
     useEffect,
     useState,
   } from 'react';
+import { useAppDispatch } from '../store/hooks';
+import { tutoringProgramSlice } from '../store/slices';
 import { ProgramaTutoria } from '../store/types';
 type ContextProps = {
     children: ReactElement;
@@ -53,9 +55,14 @@ function TutoringProgramProvider({children,tutoringProgram:inputTutoria}:Context
         // }
     }
     const [tutoringProgram,setTutorinProgram] = useState<ProgramaTutoria>({...(inputTutoria?inputTutoria:defaultNewTutoringProgram)});
+    const dispatch = useAppDispatch();
+    const {setTutoringProgram} = tutoringProgramSlice.actions;
     useEffect(()=>{
         setTutorinProgram({...(tutoringProgram?tutoringProgram:defaultNewTutoringProgram)});
     },[inputTutoria]);
+    useEffect(()=>{
+        dispatch(setTutoringProgram({...tutoringProgram}))
+    },[tutoringProgram]);
 
     const handleChangeTutoriaObject=(value:any)=>{
         setTutorinProgram({...value});
@@ -70,7 +77,7 @@ function TutoringProgramProvider({children,tutoringProgram:inputTutoria}:Context
         <TutoringProgramContext.Provider value={{ tutoringProgram:tutoringProgram, onChangeTutoringProgram:handleChangeTutoringProgram,onChangeTutoringProgramObject:handleChangeTutoriaObject }}>
           {children}
         </TutoringProgramContext.Provider>
-      );
+    );
 };
 
 export {TutoringProgramContext,TutoringProgramProvider,useTutoringProgramContext}

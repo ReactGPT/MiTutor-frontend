@@ -10,6 +10,10 @@ import 'ag-grid-community/styles/ag-theme-alpine.css';
 import { ColDef } from 'ag-grid-community';
 import IconAdd from "../../assets/svg/IconAdd";
 import { CloseIcon, SaveIcon } from "../../assets";
+import { useAppSelector,useAppDispatch } from "../../store/hooks";
+import { RootState } from "../../store/store";
+import { tutoringProgramSlice } from "../../store/slices";
+
 type ModalAgregarTutoresProps = {
   isOpen: boolean;
   closeModal: () => void;
@@ -19,18 +23,24 @@ type ModalAgregarTutoresProps = {
 
 function ModalAgregarTutores({ isOpen, closeModal }: ModalAgregarTutoresProps) {
   const { tutoringProgram, onChangeTutoringProgram } = useTutoringProgramContext();
+  //const dispatch=useAppDispatch();
   const { fetchTutoresByProgramaTutoria, isLoading } = useProgramaTutoria();
+  //const { tutoringProgramSelected } = useAppSelector((state: RootState) => state.tutoringProgram);
+  //const {handleChangeTutoringProgram} = tutoringProgramSlice.actions;
   const [tutores, setTutores] = useState<Tutor[]>([]);
   const [tutoresFiltered, setTutoresFiltered] = useState<Tutor[]>([]);
   const [searchFilter, setSearchFilter] = useState<string>("");
   const [tutoresAgregados, setTutoresAgregados] = useState<Tutor[]>([]);
+  // const handleLocalChangeTutoringProgram= (name:string,value:any)=>{
+  //   dispatch(handleChangeTutoringProgram({name:name,value:value}));
+  // };
+  
   const handleSave = () => {
     const nuevosArrayTutores = [...(tutoringProgram.tutores), ...tutoresAgregados];
     onChangeTutoringProgram("tutores", nuevosArrayTutores);
     closeModal();
     setTutoresAgregados([]);
     //console.log(nuevosArrayTutores);
-
   };
   const defaultColDef = {
     suppressHeaderMenuButton: true,

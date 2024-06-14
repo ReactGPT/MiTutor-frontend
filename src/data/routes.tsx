@@ -42,14 +42,13 @@ import PageIndicadorAlumno from "../pages/alumno/indicadorAlumnos/PageIndicadorA
 import PageIndicadorTutor from "../pages/tutor/indicadorTutores/PageIndicadorTutor.tsx";
 import PageListadoUsuarios from "../pages/administrador/gestionUsuarios/PageListadoUsuarios.tsx";
 import PageUsuario from "../pages/administrador/gestionUsuarios/PageUsuario.tsx";
+import PageAlumnosSeleccionados from "../pages/coordinador/programasDeTutoria/PageCargarAlumnos/PageAlumnosSeleccionados.tsx";
 import PageListadoEstudiantes from "../pages/administrador/gestionUsuarios/PageListadoEstudiantes.tsx";
 import PageEstudiante from "../pages/administrador/gestionUsuarios/PageEstudiante.tsx";
 import PageCargaMasiva from "../pages/administrador/gestionUsuarios/PageCargaMasiva.tsx";
 import TutorDetail from "../pages/tutor/indicadorTutores/TutorDetail.tsx";
 import PageResultadoCitaGrupal from '../pages/tutor/resultadoCita/PageResultadoCitaGrupal.tsx';
 import AlumnoDetail from "../pages/alumno/indicadorAlumnos/AlumnoDetail.tsx";
- 
- 
 
 type RouterDetail = {
   pages: RouteObject[];
@@ -197,6 +196,10 @@ export const Routes: RouterConfig = {
       {
         path: '/indicadorTutor',
         element: <PageIndicadorTutor />
+      },
+      {
+        path: '/alumnosSeleccionados',
+        element: <PageAlumnosSeleccionados />,
       },
       {
         path: '*',

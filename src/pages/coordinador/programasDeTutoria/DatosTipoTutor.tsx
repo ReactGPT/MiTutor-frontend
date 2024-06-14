@@ -1,8 +1,9 @@
 import React from 'react'
 import { Combobox, Radial } from '../../../components';
 import { useTutoringProgramContext } from '../../../context/ProgramaTutoriaNuevo';
-import { useAppSelector } from '../../../store/hooks';
+import { useAppSelector,useAppDispatch } from '../../../store/hooks';
 import { RootState } from '../../../store/store';
+import { tutoringProgramSlice } from '../../../store/slices';
 type InputProps= {
     className:string;
 }
@@ -11,7 +12,13 @@ type InputProps= {
 
 function DatosTipoTutor({className}:InputProps) {
   const {tutoringProgram,onChangeTutoringProgramObject} = useTutoringProgramContext();
+  //const dispatch = useAppDispatch();
   const {tutorTypeList}= useAppSelector((state:RootState)=>state.parameters);
+  //const {tutoringProgramSelected}= useAppSelector((state:RootState)=>state.tutoringProgram);
+  //const {setTutoringProgram} = tutoringProgramSlice.actions;
+  // const handleLocalChangeTutoringProgram= (name:string,value:any)=>{
+  //   dispatch(handleChangeTutoringProgram({payload:{name:name,value:value}}));
+  // };
   return (
     <div className={className}>
         <h2 className='text-xl font-bold text-primary'>Tipo de Tutor</h2>

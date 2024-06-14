@@ -85,6 +85,12 @@ type ServiceResponse={
                     MeetingRoom : tutor.meetingRoom
                   }
                 }),
+                Students: programa.alumnos.map(alumno=>{
+                  return {
+                    Id:alumno.studentId,
+                    IdTutor:alumno.tutorId
+                  }
+                }),
                 Faculty : {
                   FacultyId:programa.facultadId
                 },
@@ -166,4 +172,21 @@ async function getEliminarTutoria(tutoringProgramId:number):Promise<ServiceRespo
   }
 }
 
-export {getListaProgramaTutorias,crearEditarProgramaTutoria,getTutoresByTutoringProgramId,getEliminarTutoria}
+async function getEliminarEstudiantesProgramaTutoria(tutoringProgramId:number):Promise<ServiceResponse>{
+  try{
+    const response = await axios({
+      method: 'get',
+      url: ServicesProperties.BaseUrl+`/eliminarEstudiantesPrograma?tutoringProgramId=${tutoringProgramId}`,
+      headers : ServicesProperties.Headers
+    });
+    if(!response.data.success){
+        return {sucess:false,message:response.data.message};
+    }
+    return {sucess:true,message:response.data.message};
+  }
+  catch(err:any){
+    throw new Error(err.message);
+  }
+}
+
+export {getListaProgramaTutorias,crearEditarProgramaTutoria,getTutoresByTutoringProgramId,getEliminarTutoria,getEliminarEstudiantesProgramaTutoria}

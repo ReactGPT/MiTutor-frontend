@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Button } from '../../../components'
 import DatosGeneralesTutoria from './DatosGeneralesTutoria'
 import DatosTipoTutoria from './DatosTipoTutoria'
@@ -10,11 +10,25 @@ import { TutoringProgramProvider } from '../../../context/ProgramaTutoriaNuevo'
 import { useLocation } from 'react-router-dom'
 import ModalAgregarTutores from '../ModalAgregarTutores'
 import ModalConfirmation from '../../../components/ModalConfirmation'
-
+import { useAppDispatch } from '../../../store/hooks'
+import { tutoringProgramSlice } from '../../../store/slices'
 
 export default function PageProgTutoria() {
   const {state} = useLocation();
   const {programaTutoria}=state;
+  //const dispatch = useAppDispatch();
+  //const {setTutoringProgramDefault,setTutoringProgram}=tutoringProgramSlice.actions
+  //const {isNew,tutoringProgram}=state;
+
+  // useEffect(()=>{
+  //   if(isNew){
+  //     dispatch(setTutoringProgramDefault());
+  //   }
+  //   else{
+  //     dispatch(setTutoringProgram(tutoringProgram));
+  //   }
+  // },[]);
+
   const [isOpenModalAgregarTutores,setIsOpenModalAgregarTutores]=useState<boolean>(false);
   //const [isOpenModalConfirmation,setisOpenModalConfirmation]= useState<boolean>(false);
   return (

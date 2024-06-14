@@ -5,7 +5,8 @@ import {
   BiCalendar,
   BiHome,
   BiListUl,
-  BiUser
+  BiUser,
+  BiSolidLandmark,
 } from "react-icons/bi";
 
 import PageListadoPlanAccion from '../pages/tutor/listaDeCitas/PageListadoPlanAccion.tsx';
@@ -37,6 +38,7 @@ import PageDetalleDeTutoria from "../pages/alumno/misTutorias/PageDetalleDeTutor
 import PageIndicadorTutor from "../pages/tutor/indicadorTutores/PageIndicadorTutor.tsx";
 import PageListadoUsuarios from "../pages/administrador/gestionUsuarios/PageListadoUsuarios.tsx";
 import PageUsuario from "../pages/administrador/gestionUsuarios/PageUsuario.tsx";
+import PageUnidadFacultad from "../pages/coordinador/PageUnidadFacultad.tsx";
  
  
 
@@ -181,7 +183,7 @@ export const Routes: RouterConfig = {
       {
         path: '*',
         element: <Navigate to="/" />
-      }
+      },
     ],
     navBarLink: [
       {
@@ -323,6 +325,10 @@ export const Routes: RouterConfig = {
         element: <PageUsuario/>
       },
       {
+        path: '/unidad-facultad',
+        element: <PageUnidadFacultad/>
+      },
+      {
         path: '*',
         element: <Navigate to="/" />
       }
@@ -342,15 +348,15 @@ export const Routes: RouterConfig = {
       },
       {
         key: 'unidades',
-        label: 'Unidades',
-        path: '/*',//Pendiente agregar
-        icon: <BiListUl fontSize={32} />,
+        label: 'Facultades y Unidades',
+        path: '/unidad-facultad',//Pendiente agregar
+        icon: <BiSolidLandmark fontSize={32} />,
       },
       {
         key: 'alumnos',
         label: 'Alumnos',
         path: '/*',//Pendiente agregar
-        icon: <BiListUl fontSize={32} />,
+        icon: <BiListUl  fontSize={32} />,
       },
       {
         key: 'usuarios',

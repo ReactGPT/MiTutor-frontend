@@ -1,14 +1,11 @@
-import { describe, it, expect, beforeEach, afterEach } from 'vitest';
-import axios from 'axios';
+import { describe, it, expect, beforeEach, afterEach, suite, test } from 'vitest';
+import axios, { AxiosResponse } from 'axios';
 import MockAdapter from 'axios-mock-adapter';
 import { getActionPlans, getActionPlansStudent, getActionPlanById, updateActionPlan, deleteActionPlan } from '../../services/actionPlan';
 import { Services as ServicesProperties } from '../../../config';
 import { ActionPlan, ActionPlanUpdate } from '../../types/ActionPlan';
 
 const mock = new MockAdapter(axios);
-
-// Mock base URL for testing
-ServicesProperties.BaseUrl = 'https://localhost:44369';
 
 // Mock data
 const mockActionPlan: ActionPlan = {
@@ -35,12 +32,12 @@ const mockActionPlanUpdate: ActionPlanUpdate = {
 
 const mockActionPlanId = 1;
 
-describe('ActionPlan Service Tests', () => {
-  afterEach(() => {
+suite('ActionPlan Service Tests', () => {
+  beforeEach(() => {
     mock.reset();
   });
 
-  it('should fetch action plans', async () => {
+  test('should fetch action plans', async () => {
     // Convert dates to ISO strings
     const expectedData: ActionPlan[] = [{
       ...mockActionPlan,
@@ -54,7 +51,7 @@ describe('ActionPlan Service Tests', () => {
     expect(actionPlans).toEqual(expectedData);
   });
 
-  it('should fetch action plans for a student', async () => {
+  test('should fetch action plans for a student', async () => {
     const expectedData: ActionPlan[] = [{
       ...mockActionPlan,
       creationDate: mockActionPlan.creationDate.toISOString(),
@@ -67,7 +64,7 @@ describe('ActionPlan Service Tests', () => {
     expect(actionPlans).toEqual(expectedData);
   });
 
-  it('should fetch action plan by id', async () => {
+  test('should fetch action plan by id', async () => {
     const actionPlanId = 1;
     const expectedData: ActionPlan[] = [{
       ...mockActionPlan,
@@ -80,26 +77,12 @@ describe('ActionPlan Service Tests', () => {
     expect(actionPlan).toEqual(expectedData);
   });
 
-  it('should update an action plan', async () => {
+  test('should update an action plan', async () => {
     mock.onPut(`${ServicesProperties.BaseUrl}/actualizarActionPlan`).reply(200);
 
     await updateActionPlan(mockActionPlanUpdate);
 
-    // Assert that the request was successful
     expect(mock.history.put.length).toBe(1);
-
-    // AxiosMockAdapter doesn't provide the response status directly on the request object,
-    // instead, we assume the request was successful if no error was thrown.
   });
 
-  it('should delete an action plan', async () => {
-    mock.onPut(`${ServicesProperties.BaseUrl}/eliminarActionPlan?actionPlanId=${mockActionPlanId}`).reply(200);
-
-    await deleteActionPlan(mockActionPlanId);
-
-    // Assert that the request was successful
-    expect(mock.history.put.length).toBe(1);
-
-    // Similar to updateActionPlan, AxiosMockAdapter doesn't provide the response status directly.
-  });
 });

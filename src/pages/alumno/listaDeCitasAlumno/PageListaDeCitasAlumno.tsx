@@ -3,11 +3,13 @@ import AppointmentItem from "../../../components/Tutor/AppointmentItem";
 import Pagination from "../../../components/Pagination";
 import { SearchInput } from "../../../components";
 import { useCitasPorAlumno } from "../../../store/hooks/useCita";
-
+import { useAuth } from '../../../context';
 
 const PageListaDeCitasAlumno = () => {
+  const { userData } = useAuth();
+  const studentId = userData?.userInfo?.id || 0;
 
-  const { cita, fetchCita } = useCitasPorAlumno(2);
+  const { cita, fetchCita } = useCitasPorAlumno(studentId);
 
   useEffect(() => {
     fetchCita();
@@ -27,7 +29,7 @@ const PageListaDeCitasAlumno = () => {
 
   const handleOnChangeFilters = (filter: any) => {
     setFilters(filter);
-  }
+  };
 
   const handleSearch = (text: string) => {
     setSearchText(text);
@@ -38,10 +40,10 @@ const PageListaDeCitasAlumno = () => {
   // Funcion para eliminar las tildes y caracteres especiales (para que "tutoria" y "tutoría" sean iguales)
   const normalizeText = (text: string) => {
     return text.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-  }
-  
+  };
+
   const citasFiltradas = cita?.filter(cita =>
-    normalizeText(cita.programName.toLowerCase()).includes(normalizeText(searchText.toLowerCase())) 
+    normalizeText(cita.programName.toLowerCase()).includes(normalizeText(searchText.toLowerCase()))
     // && (selectedStatus === 'Cualquiera' || cita.appointmentStatus.toLowerCase() === selectedStatus.toLowerCase())
   );
 
@@ -70,6 +72,7 @@ const PageListaDeCitasAlumno = () => {
             appointment={cita}
             tipo="lista"
             user='alumno'
+            flag={false}
           />
         ))}
       </div>

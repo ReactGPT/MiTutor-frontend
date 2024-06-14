@@ -1,173 +1,77 @@
 import React, { useState, useEffect, useMemo, useRef } from 'react';
-
-// Componentes
-import Button from "../../../components/Button";
-import Dropdown from "../../../components/Dropdown";
-import SearchInput from "../../../components/SearchInput";
-import Pagination from "../../../components/Pagination";
-import Checkbox from "../../../components/Checkbox";
-import CheckboxCellRenderer from '../../../components/CheckboxCellRenderer';
-
-// Icons
-import IconSearch from "../../../assets/svg/IconSearch";
-import AcademicUnit from "../../../assets/svg/AcademicUnit";
-import State from "../../../assets/svg/State";
-import Program from "../../../assets/svg/Program";
-import Accept from "../../../assets/svg/Accept";
-import Reject from "../../../assets/svg/Reject";
-
-// Hooks
-import { useFaculties } from '../../../store/hooks/useFaculties';
-import { useTutoringPrograms } from '../../../store/hooks/useTutoringPrograms';
-import { useTutores } from '../../../store/hooks/useTutores';
-import { useAlumnos } from '../../../store/hooks/useAlumnos';
-import { useTutorStudentPrograms } from '../../../store/hooks/useTutorStudentPrograms';
-
-// ag-Grid imports
 import { AgGridReact } from 'ag-grid-react';
-import 'ag-grid-community/styles/ag-grid.css'; // CSS de ag-Grid
-import 'ag-grid-community/styles/ag-theme-alpine.css'; // Tema de ag-Grid
-import { ColDef, GridApi } from 'ag-grid-community'; // Importa el tipo ColDef y GridApi
-
-import ModalSuccess from '../../../components/ModalSuccess';
+import 'ag-grid-community/styles/ag-grid.css';
+import 'ag-grid-community/styles/ag-theme-alpine.css';
+import { ColDef, GridApi } from 'ag-grid-community';
+import SolicitudGestionSearchBar from './SolicitudGestionSearchBar';
+import { useTutorStudentPrograms } from '../../../store/hooks/useTutorStudentPrograms';
+import { Spinner } from '../../../components';
+import Accept from '../../../assets/svg/Accept';
+import Reject from '../../../assets/svg/Reject';
+import Button from '../../../components/Button';
+import SimpleSearchInput from '../../../components/SimpleSearchInput';
+import ModalWarning from '../../../components/ModalWarning';
 import ModalError from '../../../components/ModalError';
-import ModalConfirmation from '../../../components/ModalConfirmation'; // Nuevo modal
-import ModalWarning from '../../../components/ModalWarning'; // Nuevo modal
+import ModalConfirmation from '../../../components/ModalConfirmation';
+import ModalSuccess from '../../../components/ModalSuccess';
+import ProgramaTutoríaSearchBar from '../programasDeTutoria/ProgramaTutoríaSearchBar';
 
-// Definir la interfaz RowData
-interface RowData {
-    studentCode: string;
-    specialtyName: string;
-    studentFirstName: string;
-    tutorFirstName: string;
-    programName: string;
-    requestDate: string;
-    state: string;
-    TutorStudentProgramId: number; // Asegúrate de que este campo está incluido
-}
-
-// Actualización del componente PageSolicitudGestion
 const PageSolicitudGestion: React.FC = () => {
-    const { fetchFaculties, faculties, isLoading: isLoadingFaculties, error: errorFaculties } = useFaculties();
-    const [facultyId, setFacultyId] = useState<number | undefined>(undefined);
-
-    const { fetchTutoringPrograms, tutoringPrograms, isLoading: isLoadingPrograms, error: errorPrograms } = useTutoringPrograms();
-    const [tutoringProgramId, setTutoringProgramId] = useState<number | undefined>(undefined);
-
-    const { fetchTutores, tutors, isLoading: isLoadingTutores, error: errorTutores } = useTutores();
-    const { fetchAlumnos, alumnos, isLoading: isLoadingAlumnos, error: errorAlumnos } = useAlumnos();
-
-    const { fetchTutorStudentPrograms, updateProgramState, tutorStudentPrograms, isLoading: isLoadingTutorStudentPrograms, error: errorTutorStudentPrograms } = useTutorStudentPrograms();
-
-    const [tutorSearch, setTutorSearch] = useState<string | undefined>(undefined);
-    const [studentSearch, setStudentSearch] = useState<string | undefined>(undefined);
-    const [state, setState] = useState<string | undefined>(undefined);
-    const [isSuccessModalOpen, setIsSuccessModalOpen] = useState<boolean>(false);
-    const [isErrorModalOpen, setIsErrorModalOpen] = useState<boolean>(false);
-    const [isConfirmationModalOpen, setIsConfirmationModalOpen] = useState<boolean>(false);
-    const [isWarningModalOpen, setIsWarningModalOpen] = useState<boolean>(false);
-    const [modalMessage, setModalMessage] = useState<string>('');
-    const [confirmationAction, setConfirmationAction] = useState<() => void>(() => {});
-    const [currentPage, setCurrentPage] = useState<number>(1);
-    const [itemsPerPage] = useState<number>(10); // Definido como 10 por página
-
+    const { fetchTutorStudentPrograms, tutorStudentPrograms, isLoading, updateProgramState } = useTutorStudentPrograms();
+    const [filters, setFilters] = useState<{ faculty?: string; specialty?: string; status?:string }>({});
     const gridApiRef = useRef<GridApi | null>(null);
 
-    const columnDefs: ColDef[] = useMemo(() => [
-        {
-            headerCheckboxSelection: true,
-            checkboxSelection: true,
-            headerCheckboxSelectionFilteredOnly: true,
-            headerName: '',
-            field: 'checkbox',
-            width: 50,
-            cellRendererFramework: CheckboxCellRenderer
-        },
-        { headerName: "Código", field: "studentCode" },
-        { headerName: "Especialidad", field: "specialtyName" },
-        { headerName: "Nombres", field: "studentFirstName" },
-        { headerName: "Tutor", field: "tutorFirstName" },
-        { headerName: "Programa", field: "programName" },
-        { headerName: "Fecha Solic.", field: "requestDate" },
-        { headerName: "Estado", field: "state" }
-    ], []);
+    const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
+    const [isErrorModalOpen, setIsErrorModalOpen] = useState(false);
+    const [isConfirmationModalOpen, setIsConfirmationModalOpen] = useState(false);
+    const [isWarningModalOpen, setIsWarningModalOpen] = useState(false);
+    const [modalMessage, setModalMessage] = useState('');
+    const [confirmationAction, setConfirmationAction] = useState<() => void>(() => {});
 
     useEffect(() => {
-        fetchFaculties();
-        fetchTutoringPrograms();
-    }, [fetchFaculties, fetchTutoringPrograms]);
+        fetchTutorStudentPrograms();
+    }, [filters]);    
 
-    const handleSelectUnidad = (value: string) => {
-        if (value === "Todos") {
-            setFacultyId(undefined); // No facultyId means fetch all
-        } else {
-            const selectedFaculty = faculties.find(faculty => faculty.Name === value);
-            if (selectedFaculty) {
-                setFacultyId(selectedFaculty.FacultyId);
-            }
-        }
-    };
-
-    const handleSelectPrograma = (value: string) => {
-        if (value === "Todos") {
-            setTutoringProgramId(undefined); // No tutoringProgramId means fetch all
-        } else {
-            const selectedTutoringProgram = tutoringPrograms.find(tutoringProgram => tutoringProgram.ProgramName === value);
-            if (selectedTutoringProgram) {
-                setTutoringProgramId(selectedTutoringProgram.TutoringProgramId);
-            }
-        }
-    };
-
-    const handleSelectState = (value: string) => {
-        if (value === "Todos") {
-            setState(undefined); // No state means fetch all
-        } else {
-            setState(value);
-        }
-    };
-
-    const handleSearchClick = () => {
-        fetchTutorStudentPrograms(tutorSearch, undefined, state, tutoringProgramId);
-    };
-
-    const handleTutorSearch = async (query: string) => {
-        setTutorSearch(query);
-        await fetchTutorStudentPrograms(query, undefined, state, tutoringProgramId);
-    };
-
-    const handleAlumnoSearch = async (query: string) => {
-        setStudentSearch(query);
-        // Aquí podrías agregar lógica para buscar por alumno si es necesario
+    const handleOnChangeFilters = (filter: { faculty?: string; specialty?: string }) => {
+        setFilters(filter);     
+        console.log("Filters changed: ", filter);   
     };
 
     const handleAcceptClick = () => {
-        const selectedIds = gridApiRef.current?.getSelectedNodes().map((node: any) => node.data.TutorStudentProgramId) || [];
+        const selectedNodes = gridApiRef.current?.getSelectedNodes() || [];
+        const selectedIds = selectedNodes.map((node: any) => node.data.TutorStudentProgramId);
         if (selectedIds.length === 0) {
             setIsWarningModalOpen(true);
         } else {
             setModalMessage('¿Está seguro de aceptar las solicitudes seleccionadas?');
             setConfirmationAction(() => async () => {
-                await updateProgramState(selectedIds, 'ASIGNADO');
-                setIsSuccessModalOpen(true);
-                // Refrescar datos
-                fetchTutorStudentPrograms(tutorSearch, undefined, state, tutoringProgramId);
+                try {
+                    await updateProgramState(selectedIds, 'Asignado');
+                    setIsSuccessModalOpen(true);
+                } catch (error) {
+                    setIsErrorModalOpen(true);
+                }
+                fetchTutorStudentPrograms();
             });
             setIsConfirmationModalOpen(true);
         }
     };
 
     const handleRejectClick = () => {
-        const selectedIds = gridApiRef.current?.getSelectedNodes().map((node: any) => node.data.TutorStudentProgramId) || [];
+        const selectedNodes = gridApiRef.current?.getSelectedNodes() || [];
+        const selectedIds = selectedNodes.map((node: any) => node.data.TutorStudentProgramId);
         if (selectedIds.length === 0) {
             setIsWarningModalOpen(true);
         } else {
             setModalMessage('¿Está seguro de rechazar las solicitudes seleccionadas?');
             setConfirmationAction(() => async () => {
-                await updateProgramState(selectedIds, 'RECHAZADO');
-                setIsErrorModalOpen(true);
-                // Refrescar datos
-                fetchTutorStudentPrograms(tutorSearch, undefined, state, tutoringProgramId);
+                try {
+                    await updateProgramState(selectedIds, 'Rechazado');
+                    setIsSuccessModalOpen(true);
+                } catch (error) {
+                    setIsErrorModalOpen(true);
+                }
+                fetchTutorStudentPrograms();
             });
             setIsConfirmationModalOpen(true);
         }
@@ -178,103 +82,121 @@ const PageSolicitudGestion: React.FC = () => {
         setIsConfirmationModalOpen(false);
     };
 
-    const handlePageChange = (page: number) => {
-        setCurrentPage(page);
+    const onGridReady = (params: any) => {
+        gridApiRef.current = params.api;
     };
 
-    const startIndex = (currentPage - 1) * itemsPerPage;
-    const endIndex = startIndex + itemsPerPage;
-    const currentData = tutorStudentPrograms.slice(startIndex, endIndex);
+    const onSelectionChanged = () => {
+        const selectedNodes = gridApiRef.current?.getSelectedNodes() || [];
+        const selectedIds = selectedNodes.map((node: any) => node.data.TutorStudentProgramId);
+    };
+
+    const columnDefs: ColDef[] = [
+        {
+            headerCheckboxSelection: true,
+            checkboxSelection: true,
+            width: 10
+        },
+        { headerName: 'Código', field: 'StudentCode', minWidth: 150 },
+        { headerName: 'Especialidad', field: 'SpecialtyName', minWidth: 150 },
+        { headerName: 'Alumno', field: 'StudentFullName', minWidth: 240 },
+        { headerName: 'Profesor', field: 'TutorFullName', minWidth: 200 },
+        { headerName: 'Estado', field: 'State', minWidth: 150 },
+        { headerName: 'ID TutorStudentProgram', field: 'TutorStudentProgramId', hide: true },
+    ];
+
+    const filteredRowData = useMemo(() => {
+        let filteredData = [...tutorStudentPrograms];
+
+        if (filters.faculty!=undefined) {      
+            filteredData = filteredData.filter(program => program.studentProgram.student.specialty.faculty.name === filters.faculty);
+        }
+
+        if (filters.specialty!=undefined) {                       
+            filteredData = filteredData.filter(program => program.studentProgram.student.specialty.name === filters.specialty);
+        }
+
+        if (filters.status!=undefined) {                       
+            filteredData = filteredData.filter(program => program.state === filters.status);
+        }
+
+        return filteredData.map(program => ({
+            StudentCode: program.studentProgram.student.usuario.pucpCode,
+            SpecialtyName: program.studentProgram.student.specialty.name,
+            StudentFullName: `${program.studentProgram.student.name} ${program.studentProgram.student.lastName} ${program.studentProgram.student.secondLastName}`,
+            TutorFullName: `${program.tutor.userAccount.persona.name} ${program.tutor.userAccount.persona.lastName} ${program.tutor.userAccount.persona.secondLastName}`,
+            State: `${program.state}`,
+            TutorStudentProgramId: program.tutorStudentProgramId
+        }));
+    }, [tutorStudentPrograms, filters]);
+    
 
     return (
-        <div className="flex flex-col">
+        <div className='flex flex-col'>
             <main>
-                <div className="mb-4">
-                    <h2 className="font-montserrat text-[26px] font-bold text-lg mb-2">
+                <div className="mb-2">
+                    <h2 className="font-montserrat text-[26px] font-bold text-lg mb-[-12px]">
                         Solicitud
                     </h2>
-                    <div className="flex space-x-4 mt-4">
-                        <div>
-                            <Dropdown
-                                options={["Todos", ...faculties.map(faculty => faculty.Name)]}
-                                onSelect={handleSelectUnidad}
-                                defaultOption="Unidad Académica"
-                                icon={AcademicUnit}
-                            />
-                        </div>
-                        <div>
-                            <Dropdown
-                                options={["Todos", "Solicitado", "Asignado", "Rechazado"]}
-                                defaultOption="Estado"
-                                onSelect={handleSelectState}
-                                icon={State}
-                            />
-                        </div>
-                        <div>
-                            <Dropdown
-                                options={["Todos", ...tutoringPrograms.map(program => program.ProgramName)]}
-                                defaultOption="Programa"
-                                onSelect={handleSelectPrograma}
-                                icon={Program}
-                            />
-                        </div>
-                        <div className="self-end">
-                            <Button
-                                variant="call-to-action"
-                                onClick={handleSearchClick}
-                                icon={IconSearch}
-                            />
-                        </div>
-                    </div>
-                </div>
-                <div className="mb-4 mt-6">
-                    <h2 className="font-montserrat text-[26px] font-bold text-lg mb-2">
-                        Tutor
-                    </h2>
-                    <div className="flex space-x-4 mt-4">
-                        <SearchInput
-                            placeholder="Nombre o apellido del tutor"
-                            onSearch={handleTutorSearch}
-                            handleOnChangeFilters={()=>{}}
-                        />
-                    </div>
-                </div>
-                <div className="mb-4 mt-8">
-                    <h2 className="font-montserrat text-[26px] font-bold text-lg mb-2">
-                        Alumno
-                    </h2>
-                    <div className="flex space-x-8 mt-4">
-                        <SearchInput
-                            placeholder="Nombre, apellido, o código de alumno"
-                            onSearch={handleAlumnoSearch}
-                            handleOnChangeFilters={()=>{}}
-                        />
-                    </div>
-                </div>
-                <div className="mb-4 mt-8">
-                    <div className="flex justify-between">
-                        <h2 className="font-montserrat text-[26px] font-bold text-lg mb-2">
-                            Resultado de Solicitudes
+                    <SolicitudGestionSearchBar handleOnChangeFilters={handleOnChangeFilters} />
+                    <div className="mb-2">
+                        <h2 className="font-montserrat text-[26px] font-bold text-lg mb-2 mt-[-12px]">
+                            Tutor
                         </h2>
-                        <div className="flex justify-end mb-4 space-x-4">
-                            <Button variant="accept" text="Aceptar" icon={Accept} onClick={handleAcceptClick} />
-                            <Button variant="reject" text="Rechazar" icon={Reject} onClick={handleRejectClick} />
+                        <div className="flex space-x-4 mt-2">
+                            <SimpleSearchInput
+                                placeholder="Nombre o apellido del tutor"
+                                onSearch={() => {}}
+                            />
                         </div>
                     </div>
-                    <div className="ag-theme-alpine" style={{ height: 300, width: '100%' }}>
-                        <AgGridReact
-                            columnDefs={columnDefs}
-                            rowData={currentData}
-                            onGridReady={params => gridApiRef.current = params.api}>
-                        </AgGridReact>
+                    <div className="mb-2 mt-2">
+                        <h2 className="font-montserrat text-[26px] font-bold text-lg mb-2 mt-4">
+                            Alumno
+                        </h2>
+                        <div className="flex space-x-8 mt-2">
+                            <SimpleSearchInput
+                                placeholder="Nombre, apellido, o código de alumno"
+                                onSearch={() => {}}
+                            />
+                        </div>
                     </div>
                 </div>
-                <Pagination
-                    currentPage={currentPage}
-                    totalItems={tutorStudentPrograms.length}
-                    itemsPerPage={itemsPerPage}
-                    onPageChange={handlePageChange}
-                />
+                <div className="flex justify-between items-center mt-8">
+                    <h2 className="font-montserrat text-[26px] font-bold text-lg mb-2 mt-4">
+                        Resultado de Solicitudes
+                    </h2>
+                    <div className="flex justify-end mb-4 space-x-4">
+                        <Button variant="accept" text="Aceptar" icon={Accept} onClick={handleAcceptClick} />
+                        <Button variant="reject" text="Rechazar" icon={Reject} onClick={handleRejectClick} />
+                    </div>
+                </div>
+                <div className="ag-theme-alpine" style={{ height: 400, width: '100%' }}>
+                    {isLoading ? <Spinner size='lg' /> :
+                        <AgGridReact
+                            onGridReady={onGridReady}
+                            onSelectionChanged={onSelectionChanged}
+                            defaultColDef={{
+                                suppressHeaderMenuButton: true,
+                                flex: 1,
+                                sortable: true,
+                                resizable: true,
+                                cellStyle: {
+                                    textAlign: 'center',
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                    display: 'flex',
+                                },
+                            }}
+                            columnDefs={columnDefs}
+                            rowData={filteredRowData}
+                            pagination={true}
+                            paginationPageSize={10}
+                            rowSelection='multiple'
+                            suppressRowClickSelection={true}
+                        />
+                    }
+                </div>
             </main>
             <ModalSuccess 
                 isOpen={isSuccessModalOpen} 

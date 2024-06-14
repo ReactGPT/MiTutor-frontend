@@ -13,19 +13,17 @@ const PageDetalleCitaGrupal: React.FC = () => {
   const { state } = useLocation();
   const { cita } = state;
 
-  const toDetail = (student: ListStudent2) => {
-    //Hacer una copia de appointment con los datos del alum y enviar a la pag sig
-    //navigate('/programasDeTutoria/detalle-programa/alumno', { state: { student } });
-  };
-
   const [estudiantes, setEstudiantes] = useState<ListStudent2[]>([]);
+  const [editMode, setEditMode] = useState(false);
+  const [originalEstudiantes, setOriginalEstudiantes] = useState<ListStudent2[]>([]); // Estado para guardar datos originales
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await axios.get(`${ServicesProperties.BaseUrl}/listarEstudiantePorIdCita/${cita.appointmentId}`);
         setEstudiantes(response.data.data);
-        console.log(response.data.data);
+        setOriginalEstudiantes(response.data.data); // Guardar los datos originales
+        console.log("datos recibidos",response.data.data);
       } catch (error) {
         console.error('Error al obtener datos:', error);
       }
@@ -34,7 +32,11 @@ const PageDetalleCitaGrupal: React.FC = () => {
     fetchData();
   }, [cita.appointmentId]);
 
+  useEffect(()=>{
+    console.log("cargaron",estudiantes);
+  },[estudiantes])
   const handleCheckboxChange = (studentId: number, checked: boolean) => {
+    if (!editMode) return; // No hacer nada si no está en modo de edición
     setEstudiantes((prevData) =>
       prevData.map((student) => 
         student.studentId === studentId ? { ...student, asistio: checked } : student
@@ -44,17 +46,69 @@ const PageDetalleCitaGrupal: React.FC = () => {
     console.log(estudiantes);
   };
 
+  const handleCancelar = () => {
+    setEstudiantes(originalEstudiantes); // Restaurar los datos originales
+    setEditMode(false); // Salir del modo de edición
+  };
+
+  const handleGuardar = async () => {
+    try {
+      if (estudiantes.length > 0) {
+        let response;
+        if (estudiantes[0].appointmentResultId === 0) {
+          // Operación de guardar
+          response = await axios.post(ServicesProperties.BaseUrl+`/guardarAsistenciasCitaGrupal`,estudiantes);
+          console.log('Datos guardados con éxito.');
+          // Obtener los IDs devueltos por la API
+          const nuevosIds = response.data; // Suponiendo que la API devuelve la lista de IDs en response.data
+    
+          // Actualizar los appointmentResultId en la lista de estudiantes
+          const estudiantesActualizados = estudiantes.map((estudiante, index) => ({
+            ...estudiante,
+            appointmentResultId: nuevosIds[index], // Asignar el ID correspondiente de la lista de IDs
+          }));
+    
+          // Actualizar los datos originales con los cambios guardados
+          setOriginalEstudiantes(estudiantesActualizados);
+          // Actualizar el estado de estudiantes
+          setEstudiantes(estudiantesActualizados);
+
+
+        } else {
+          // Operación de actualizar:actualizarResultadoCitaGrupal
+          console.log('Datos a actualizar.',estudiantes);
+          response = await axios.put(ServicesProperties.BaseUrl+`/actualizarResultadoCitaGrupal`,estudiantes);
+          console.log('Datos actualizados con éxito.',estudiantes);
+        }
+        // Salir del modo de edición
+        setEditMode(false);
+      } else {
+        console.warn('No hay estudiantes para guardar o actualizar.');
+      }
+    } catch (error) {
+      console.error('Error al guardar o actualizar datos:', error);
+    }
+  };
+  
+    
+  const toDetail = (student: ListStudent2) => {
+    //Hacer una copia de appointment con los datos del alum y enviar a la pag sig
+    //navigate('/programasDeTutoria/detalle-programa/alumno', { state: { student } });
+  };
+
   const defaultColDef = {
     suppressMenu: true,
-    flex: 1, // Ajustar columnas para ocupar el espacio disponible
+    flex: 1,
     sortable: true,
     resizable: true,
     minWidth: 100,
     cellStyle: {
-      textAlign: 'center', // Cambiar el alineamiento del texto a la izquierda
+      textAlign: 'center',
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
+      pointerEvents: editMode ? 'auto' : 'none', // Deshabilitar interacciones cuando no está en modo de edición
+      backgroundColor: editMode ? 'white' : 'lightgray', // Cambiar el color de fondo según el modo de edición
     },
   };
 
@@ -94,6 +148,7 @@ const PageDetalleCitaGrupal: React.FC = () => {
             type="checkbox"
             checked={data.asistio}
             onChange={(e) => handleCheckboxChange(data.studentId, e.target.checked)}
+            disabled={!editMode} // Deshabilitar checkbox si no está en modo de edición
           />
         );
       },
@@ -167,7 +222,16 @@ const PageDetalleCitaGrupal: React.FC = () => {
       <div className="flex flex-col gap-5 w-full h-3/4 bg-[rgba(255,_255,_255,_0.50)] border-custom drop-shadow-md p-5 mt-4">
         <div className="flex items-center justify-between">
           <h1 className="text-3xl font-bold">Participantes</h1>
-          <Button icon={EditIcon} onClick={() => {}} />
+          {!editMode ? (
+            <Button variant="primario" onClick={() => setEditMode(true)} text="Editar" />
+          ) : (
+            <>
+              <div className='flex'>
+                <Button variant="secundario" onClick={handleCancelar} text="Cancelar" className="mr-2"/>
+                <Button variant="primario" onClick={handleGuardar} text="Guardar" />
+              </div>
+            </>
+          )}
         </div>
         <div className='w-full h-full'>
           <div className="ag-theme-alpine w-full h-full">

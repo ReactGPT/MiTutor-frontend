@@ -18,4 +18,7 @@ export type ListStudent2 = {
   pucpCode: string;
   isRisk: boolean;
   asistio: boolean;
+  appointmentResultId : number;
+  tutoringProgramId : number;
+  appointmentId : number;
 };

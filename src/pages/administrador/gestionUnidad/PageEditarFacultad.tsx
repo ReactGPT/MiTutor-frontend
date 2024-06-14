@@ -25,8 +25,13 @@ const PageEditarFacultad = () => {
   const { state } = useLocation();
   const { facultadData } = state;
   
-  const { especialidadData, fetchEspecialidadData } = useEspecialidad();
+  const { especialidadData, fetchEspecialidadPorFacultadData } = useEspecialidad();
 
+  useEffect(() => {
+    console.log(facultadData)
+    fetchEspecialidadPorFacultadData(facultadData.id);
+  }, []);
+  
   const handleSearch = (query: string) => {
     setSearchValue(query);
   }
@@ -133,7 +138,7 @@ const PageEditarFacultad = () => {
                 rowData={especialidadData
                   .map((especialidad) => ({
                     nombre: especialidad.name,
-                    siglas: especialidad.acronym,
+                    acronimo: especialidad.acronym,
                     numeroEstudiantes: especialidad.numberStudents,
                     // email: especialidad.email,
                     // telefono: especialidad.telefono,

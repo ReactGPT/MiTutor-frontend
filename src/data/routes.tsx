@@ -5,7 +5,9 @@ import {
   BiCalendar,
   BiHome,
   BiListUl,
-  BiUser
+  BiUser,
+  BiUserCheck,
+  BiBarChartAlt
 } from "react-icons/bi";
 
 import PageListadoPlanAccion from '../pages/tutor/listaDeCitas/PageListadoPlanAccion.tsx';
@@ -37,8 +39,9 @@ import PageDetalleDeTutoria from "../pages/alumno/misTutorias/PageDetalleDeTutor
 import PageIndicadorTutor from "../pages/tutor/indicadorTutores/PageIndicadorTutor.tsx";
 import PageListadoUsuarios from "../pages/administrador/gestionUsuarios/PageListadoUsuarios.tsx";
 import PageUsuario from "../pages/administrador/gestionUsuarios/PageUsuario.tsx";
-
-
+import TutorDetail from "../pages/tutor/indicadorTutores/TutorDetail.tsx";
+ 
+ 
 
 type RouterDetail = {
   pages: RouteObject[];
@@ -178,9 +181,15 @@ export const Routes: RouterConfig = {
         path: '/indicadorTutor',
         element: <PageIndicadorTutor />
       },
+
       {
         path: '*',
         element: <Navigate to="/" />
+      }
+      ,
+      {
+        path: '/tutor-detail',
+        element:<TutorDetail/> 
       }
     ],
     navBarLink: [
@@ -200,7 +209,7 @@ export const Routes: RouterConfig = {
         key: 'gestionDeSolicitudes',
         label: 'Gestion de Solicitudes',
         path: '/gestionSolicitudes',
-        icon: <BiListUl fontSize={32} />,
+        icon: <BiUserCheck fontSize={32} />,
       },
       {
         key: 'especialidades',
@@ -212,7 +221,7 @@ export const Routes: RouterConfig = {
         key: 'indicadores',
         label: 'Indicadores',
         path: '/indicadores',
-        icon: <BiUser fontSize={32} />,
+        icon: <BiBarChartAlt fontSize={32} />,
       },
       {
         key: 'indicadorTutor',

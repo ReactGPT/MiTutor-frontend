@@ -4,32 +4,57 @@ import { Services as ServicesProperties } from '../../config';
 
 // Define la interfaz para los datos del programa de tutoría del estudiante
 export interface TutorStudentProgram {
-    TutorStudentProgramId: number;
-    StudentId: number;
-    StudentCode: string;
-    SpecialtyId: number;
-    SpecialtyName: string;
-    SpecialtyAcronym: string;
-    StudentFirstName: string;
-    StudentLastName: string;
-    TutorId: number;
-    TutorFirstName: string;
-    TutorLastName: string;
-    ProgramName: string;
-    ProgramDescription: string;
-    RequestDate: string;
-    State: string;
-    IsActive: number;
-    Motivo: string;
+    tutorStudentProgramId: number;
+    studentId: number;
+    studentCode: string;
+    specialtyId: number;
+    specialtyName: string;
+    specialtyAcronym: string;
+    studentFirstName: string;
+    studentLastName: string;
+    tutorId: number;
+    tutorFirstName: string;
+    tutorLastName: string;
+    programName: string;
+    programDescription: string;
+    requestDate: string;
+    state: string;
+    isActive: number;
+    motivo: string;
+    studentProgram: {
+        student: {   
+            name: string;
+            lastName: string;
+            secondLastName: string;         
+            specialty: {
+                name: string;
+                faculty: {
+                    name: string;
+                };
+            };           
+            usuario: {
+                pucpCode: string;
+            };
+        };
+    };
+    tutor: {
+        userAccount: {
+            persona: {
+                name: string;
+                lastName: string;
+                secondLastName: string;
+            };
+        };
+    };
 }
 
 // Configura Axios para usar la URL base del backend
 const api = axios.create({
-    baseURL: ServicesProperties.BaseUrl+'/api', // Asegúrate de que esta URL es correcta
-  });
+    baseURL: ServicesProperties.BaseUrl + '/api', // Asegúrate de que esta URL es correcta
+});
 
 type UseTutorStudentProgramsReturnType = {
-    fetchTutorStudentPrograms: (tutorFirstName?: string, tutorLastName?: string, state?: string, tutoringProgramId?: number) => Promise<void>;
+    fetchTutorStudentPrograms: () => Promise<void>;
     updateProgramState: (ids: number[], newState: string) => Promise<void>;
     tutorStudentPrograms: TutorStudentProgram[];
     isLoading: boolean;
@@ -41,17 +66,10 @@ function useTutorStudentPrograms(): UseTutorStudentProgramsReturnType {
     const [error, setError] = useState<Error | null>(null);
     const [tutorStudentPrograms, setTutorStudentPrograms] = useState<TutorStudentProgram[]>([]);
 
-    const fetchTutorStudentPrograms = async (tutorFirstName?: string, tutorLastName?: string, state?: string, tutoringProgramId?: number): Promise<void> => {
+    const fetchTutorStudentPrograms = async (): Promise<void> => {
         setIsLoading(true);
         try {
-            const response = await api.get<{ success: boolean; data: TutorStudentProgram[] }>('/tutorstudentprogram/listarTutorStudentProgram', {
-                params: {
-                    tutorFirstName,
-                    tutorLastName,
-                    state,
-                    tutoringProgramId
-                }
-            });
+            const response = await api.get<{ success: boolean; data: TutorStudentProgram[] }>('/tutorstudentprogram/listarTutorStudentProgram');
             setTutorStudentPrograms(response.data.data); // Actualiza el estado con los datos obtenidos
         } catch (err: any) {
             setError(err);
@@ -63,15 +81,14 @@ function useTutorStudentPrograms(): UseTutorStudentProgramsReturnType {
 
     const updateProgramState = async (ids: number[], newState: string) => {
         try {
-            await api.post('/TutorStudentProgram/UpdateEstado', {
-                TutorStudentProgramIds: ids.join(','),
+            await api.post('/tutorstudentprogram/updateEstado', {
+                TutorStudentProgramIds: ids,
                 NewState: newState
             });
         } catch (err: any) {
             setError(err);
         }
     };
-
     return { fetchTutorStudentPrograms, updateProgramState, tutorStudentPrograms, isLoading, error };
 }
 

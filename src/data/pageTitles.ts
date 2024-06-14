@@ -109,12 +109,40 @@ export const PageTitles = [
     pageName: "Solicitar Cita"
   },
   {
+    path: "/indicadorAlumno",
+    pageName: "Indicadores Alumnos"
+  },
+  {
     path: "/indicadorTutor",
     pageName: "Indicadores Tutores"
   },
   {
     path: "/usuarios",
     pageName: "Usuarios"
+  },
+  {
+    path: "/usuarios/detalle",
+    pageName: "Detalle de Usuario"
+  },
+  {
+    path: "/usuarios/nuevo",
+    pageName: "Nuevo Usuario"
+  },
+  {
+    path: "/estudiantes",
+    pageName: "Alumnos"
+  },
+  {
+    path: "/estudiantes/detalle",
+    pageName: "Detalle de Alumno"
+  },
+  {
+    path: "/estudiantes/nuevo",
+    pageName: "Nuevo Alumno"
+  },
+  {
+    path: "/usuarios/cargaMasiva",
+    pageName: "Carga Masiva de Usuarios"
   },
   {
     path: "/tutor-detail",

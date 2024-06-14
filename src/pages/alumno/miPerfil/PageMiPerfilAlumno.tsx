@@ -14,8 +14,8 @@ const PageMiPerfilAlumno = () => {
           <InputTutor titulo="Código" texto={userData?.userInfo?.pucpCode} enable={false} />
           <InputTutor titulo="Correo Electrónico" texto={userData?.email} enable={false} />
           <InputTutor titulo="Telefono" texto={userData?.userInfo?.personInfo.phone} enable={false} />
-          <InputTutor titulo="Facultad" texto="FALTA" enable={false} />
-          <InputTutor titulo="Especialidad" texto="FALTA" enable={false} />
+          <InputTutor titulo="Facultad" texto="Facultad de Ciencias e Ingeniería" enable={false} />
+          <InputTutor titulo="Especialidad" texto="Ingeniería Informática" enable={false} />
         </div>
       </div>
 

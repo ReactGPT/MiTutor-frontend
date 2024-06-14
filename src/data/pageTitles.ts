@@ -109,6 +109,10 @@ export const PageTitles = [
     pageName: "Solicitar Cita"
   },
   {
+    path: "/indicadorAlumno",
+    pageName: "Indicadores Alumnos"
+  },
+  {
     path: "/indicadorTutor",
     pageName: "Indicadores Tutores"
   },

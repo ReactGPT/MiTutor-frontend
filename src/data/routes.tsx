@@ -7,7 +7,8 @@ import {
   BiListUl,
   BiUser,
   BiUserCheck,
-  BiBarChartAlt
+  BiBarChart,
+  BiBarChartAlt  
 } from "react-icons/bi";
 
 import PageListadoPlanAccion from '../pages/tutor/listaDeCitas/PageListadoPlanAccion.tsx';
@@ -36,10 +37,12 @@ import PageListaDeTutorias from "../pages/alumno/misTutorias/PageListaDeTutorias
 import PageSolicitudGestion from "../pages/coordinador/gestionSolicitudes/PageSolicitudGestion.tsx";
 import PageCalendarioAlumno from "../pages/alumno/calendario/PageCalendarioAlumno.tsx";
 import PageDetalleDeTutoria from "../pages/alumno/misTutorias/PageDetalleDeTutoria.tsx";
+import PageIndicadorAlumno from "../pages/alumno/indicadorAlumnos/PageIndicadorAlumno.tsx";
 import PageIndicadorTutor from "../pages/tutor/indicadorTutores/PageIndicadorTutor.tsx";
 import PageListadoUsuarios from "../pages/administrador/gestionUsuarios/PageListadoUsuarios.tsx";
 import PageUsuario from "../pages/administrador/gestionUsuarios/PageUsuario.tsx";
 import TutorDetail from "../pages/tutor/indicadorTutores/TutorDetail.tsx";
+import AlumnoDetail from "../pages/alumno/indicadorAlumnos/AlumnoDetail.tsx";
  
  
 
@@ -178,10 +181,13 @@ export const Routes: RouterConfig = {
         element: <PageSolicitudGestion />,
       },
       {
+        path: '/indicadorAlumno',
+        element: <PageIndicadorAlumno />
+      },
+      {
         path: '/indicadorTutor',
         element: <PageIndicadorTutor />
       },
-
       {
         path: '*',
         element: <Navigate to="/" />
@@ -190,6 +196,11 @@ export const Routes: RouterConfig = {
       {
         path: '/tutor-detail',
         element:<TutorDetail/> 
+      }
+      ,
+      {
+        path: '/alumno-detail',
+        element:<AlumnoDetail/> 
       }
     ],
     navBarLink: [
@@ -218,16 +229,16 @@ export const Routes: RouterConfig = {
         icon: <BiListUl fontSize={32} />,
       },
       {
-        key: 'indicadores',
-        label: 'Indicadores',
-        path: '/indicadores',
-        icon: <BiBarChartAlt fontSize={32} />,
+        key: 'indicadorAlumno',
+        label: 'Indicador Alumno',
+        path: '/indicadorAlumno',
+        icon: <BiBarChart fontSize={32} />,
       },
       {
         key: 'indicadorTutor',
-        label: 'IndicadorTutor',
+        label: 'Indicador Tutor',
         path: '/indicadorTutor',
-        icon: <BiUser fontSize={32} />,
+        icon: <BiBarChartAlt fontSize={32} />,
       }
     ]
   },

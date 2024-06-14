@@ -6,4 +6,4 @@ export const Services = {
         'Content-Type': 'application/json'
     },
     ServiceErrorConectionMessage: "Ocurrió un problema de conexión interna. Intentar nuevamente o contactar al equipo de soporte"
-}; 
+};

@@ -10,9 +10,13 @@ import ModalError from '../../../components/ModalError';
 import InputTutor from '../../../components/Tutor/InputTutor';
 import InputAdmin from '../../../components/Administrador/InputAdmin';
 
-function DatosEncabezadoCuenta() {
+type InputProps = {
+  rol: "estudiante" | "usuario";
+}
+
+function DatosEncabezadoCuenta({ rol }: InputProps) {
   const { user, onChangeUser } = useUserContext();
-  const { postUser, loading } = useUser();
+  const { postUser, postStudent, loading } = useUser();
   const navigate = useNavigate();
   const [isOpenModalConfirmation, setIsOpenModalConfirmation] = useState<boolean>(false);
   const [isOpenModalSucess, setIsOpenModalSucess] = useState<boolean>(false);
@@ -23,8 +27,14 @@ function DatosEncabezadoCuenta() {
     user.pucpCode = String(user.pucpCode);
     user.persona.phone = String(user.persona.phone);
     console.log("User save 2: ", user);
-    postUser(user)
-      .then((response) => response ? setIsOpenModalSucess(true) : setIsOpenModalError(true));
+
+    if (rol === 'estudiante') {
+      postStudent(user)
+        .then((response) => response ? setIsOpenModalSucess(true) : setIsOpenModalError(true));
+    } else {
+      postUser(user)
+        .then((response) => response ? setIsOpenModalSucess(true) : setIsOpenModalError(true));
+    }
   }
 
   return (
@@ -45,7 +55,7 @@ function DatosEncabezadoCuenta() {
         message={!!user?.id ? "Se guardaron los cambios satisfactoriamente" : "Se creó el usuario satisfactoriamente"}
         onClose={() => {
           setIsOpenModalSucess(false);
-          navigate("/usuarios");
+          navigate(`/${rol}s`);
         }}
       />
       <ModalError isOpen={isOpenModalError} message='Ocurrió un error al intentar procesar el usuario. Intente nuevamente'

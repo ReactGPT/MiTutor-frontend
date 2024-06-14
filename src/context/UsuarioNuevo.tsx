@@ -38,7 +38,7 @@ function UserProvider({ children, user: inputUsuario }: ContextProps) {
     creationDate: new Date(),
     modificationDate: new Date(),
     persona: {
-      id: 0,
+      id: -1,
       name: "",
       lastName: "",
       secondLastName: "",
@@ -47,7 +47,15 @@ function UserProvider({ children, user: inputUsuario }: ContextProps) {
     },
     roles: null,
     isVerified: true,
-    estudiante: null
+    estudiante: {
+      isRisk: false,
+      specialityId: -1,
+      specialtyName: "",
+      specialtyAcronym: "",
+      facultyId: -1,
+      facultyName:"",
+      facultyAcronym: "",
+    }
   }
   const [user, setUser] = useState<User>({ ...(inputUsuario ? inputUsuario : defaultNewUser) });
   useEffect(() => {
@@ -72,7 +80,7 @@ function UserProvider({ children, user: inputUsuario }: ContextProps) {
             [part2]: value
           }
         })
-      } else if(part1 === "estudiante" && user.estudiante && part2 in user.estudiante){
+      } else if (part1 === "estudiante" && user.estudiante && part2 in user.estudiante) {
         setUser({
           ...user,
           estudiante: {

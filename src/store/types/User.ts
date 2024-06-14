@@ -27,6 +27,16 @@ export type User = {
   } | null;
 };
 
+export type ExcelDataUser = {
+  Codigo: string;
+  Correo: string;
+  Nombres: string;
+  PrimerApellido: string;
+  SegundoApellido: string;
+  Telefono: string;
+  EstadoCuenta: number;
+};
+
 /* export type Student = {
   id: number;
   institutionalEmail: string;

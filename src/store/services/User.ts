@@ -139,6 +139,54 @@ async function crearEditarUsuario(user: User): Promise<ServiceResponse> {
   }
 }
 
+
+async function crearEditarAlumno(user: User): Promise<ServiceResponse> {
+  try {
+    const response = await axios({
+      method: 'post',
+      url: ServicesProperties.BaseUrl + `/crearEstudiante`,
+      headers: ServicesProperties.Headers,
+      data: {
+        "personId": user.id,
+        "name": user.persona.name,
+        "lastName": user.persona.lastName,
+        "secondLastName": user.persona.secondLastName,
+        "phone": user.persona.phone,
+        "personIsActive": user.persona.isActive,
+        "isRisk": user.estudiante?.isRisk,
+        "specialityId": user.estudiante?.specialityId,
+        "specialtyName": "",
+        "specialtyAcronym": "",
+        "facultyId": user.estudiante?.facultyId,
+        "facultyName": "",
+        "facultyAcronym": "",
+        "institutionalEmail": user.institutionalEmail,
+        "userIsActive": user.isActive,
+        "pucpCode": user.pucpCode,
+        "creationDate": "2024-06-13T20:29:30.403Z", //se inserta en bd
+        "modificationDate": "2024-06-13T20:29:30.403Z" //se inserta en bd
+      }
+    });
+
+    if (!response?.data.success) {
+      return {
+        sucess: false,
+        message: response?.data?.message
+      };
+    }
+
+    return {
+      sucess: response?.data.success,
+      message: response?.data.message
+    };
+
+  } catch (err: any) {
+    console.error(err);
+    throw new Error(err.message);
+  }
+}
+
+
 async function eliminarUsuario(id: number): Promise<ServiceResponse> {
   try {
     const response = await axios({
@@ -164,4 +212,4 @@ async function eliminarUsuario(id: number): Promise<ServiceResponse> {
   }
 }
 
-export { getUsuarios, crearEditarUsuario, eliminarUsuario, getStudents }
+export { getUsuarios, crearEditarUsuario, eliminarUsuario, getStudents, crearEditarAlumno }

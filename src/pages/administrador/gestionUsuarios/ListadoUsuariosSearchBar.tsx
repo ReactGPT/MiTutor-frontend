@@ -11,20 +11,30 @@ import { useAppSelector } from '../../../store/hooks';
 
 type InputProps = {
   handleOnChangeFilters: (filter: any) => void;
+  rol: "estudiante" | "usuario";
 }
 
-export default function ListadoUsuariosSearchBar({ handleOnChangeFilters }: InputProps) {
+export default function ListadoUsuariosSearchBar({ handleOnChangeFilters, rol }: InputProps) {
   const navigate = useNavigate();
   const { specialityList, facultyList } = useAppSelector((state: RootState) => state.parameters)
   const handleClickNuevoUsuario = () => {
-    navigate("/usuarios/nuevo", { state: { userData: null } })
+    navigate(`/${rol}s/nuevo`, { state: { userData: null } });
+  }
+
+  const capitalize = (s: string) => {
+    if (typeof s !== 'string') return '';
+    return s.charAt(0).toUpperCase() + s.slice(1);
+  }
+
+  const handleClickImportarMasivo = () => {
+    navigate(`/${rol}s/cargaMasiva`);
   }
 
   return (
     <div className='flex w-full h-full flex-row py-0'>
       <div className='flex w-full h-12 justify-end space-x-4'>
-        <Button onClick={handleClickNuevoUsuario} text="Agregar Usuario" icon={UserPlus} />
-        <Button onClick={handleClickNuevoUsuario} text="Importar" variant='primario' icon={ArrowUpload} />
+        <Button onClick={handleClickNuevoUsuario} text={`Agregar ${capitalize(rol)}`} icon={UserPlus} />
+        <Button onClick={handleClickImportarMasivo} text="Importar" variant='primario' icon={ArrowUpload} />
         <Button onClick={handleClickNuevoUsuario} text="Descargar" variant='secundario' icon={ArrowDownload} />
       </div>
     </div>

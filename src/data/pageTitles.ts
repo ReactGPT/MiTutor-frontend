@@ -131,5 +131,9 @@ export const PageTitles = [
   {
     path: "/estudiantes/nuevo",
     pageName: "Nuevo Alumno"
+  },
+  {
+    path: "/usuarios/cargaMasiva",
+    pageName: "Carga Masiva de Usuarios"
   }
 ];

@@ -40,6 +40,7 @@ import PageListadoUsuarios from "../pages/administrador/gestionUsuarios/PageList
 import PageUsuario from "../pages/administrador/gestionUsuarios/PageUsuario.tsx";
 import PageListadoEstudiantes from "../pages/administrador/gestionUsuarios/PageListadoEstudiantes.tsx";
 import PageEstudiante from "../pages/administrador/gestionUsuarios/PageEstudiante.tsx";
+import PageCargaMasiva from "../pages/administrador/gestionUsuarios/PageCargaMasiva.tsx";
  
  
 
@@ -326,16 +327,20 @@ export const Routes: RouterConfig = {
         element: <PageUsuario/>
       },
       {
-        path: '/usuarios/nuevo',
-        element: <PageUsuario/>
-      },
-      {
         path: '/estudiantes',
         element: <PageListadoEstudiantes />
       },
       {
         path: '/estudiantes/detalle',
         element: <PageEstudiante />
+      },
+      {
+        path: '/estudiantes/nuevo',
+        element: <PageEstudiante />
+      },
+      {
+        path: '/usuarios/cargaMasiva',
+        element: <PageCargaMasiva/>
       },
       {
         path: '*',

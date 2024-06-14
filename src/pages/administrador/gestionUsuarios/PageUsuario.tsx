@@ -26,7 +26,7 @@ export default function PageUsuario() {
     <UserProvider user={userData}>
       <div className="flex w-full h-full">
         <div className="flex flex-col w-full h-full gap-6 px-4">
-          <DatosEncabezadoCuenta />
+          <DatosEncabezadoCuenta rol='usuario'/>
           <div className='flex flex-row gap-10 w-full'>
             <div className='flex flex-col gap-2 w-1/2 min-h-[240px] border-custom drop-shadow-md px-4 py-2'>
               <DatosPersona />

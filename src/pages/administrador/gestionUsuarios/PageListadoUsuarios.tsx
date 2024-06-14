@@ -139,7 +139,7 @@ export default function PageListadoUsuarios() {
   return (
     <div className='flex w-full h-full flex-col space-y-10 mt-10'>
       <div className='flex w-full h-[10%]'>
-        <ListadoUsuariosSearchBar handleOnChangeFilters={handleOnChangeFilters} />
+        <ListadoUsuariosSearchBar handleOnChangeFilters={handleOnChangeFilters} rol='usuario'/>
       </div>
       <div className='flex w-full h-[80%] ag-theme-alpine items-center justify-center'>
         {loading ? <Spinner size='lg' /> : <div className='w-full h-full'>

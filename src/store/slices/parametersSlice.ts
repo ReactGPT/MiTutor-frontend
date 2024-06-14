@@ -118,15 +118,15 @@ const initialState:ParametersState={
     tutorTypeList:[
         {
             id:1,
-            name:"Fijo Asignado"
+            name:"Tutor Fijo Solicitado"
         },
         {
             id:2,
-            name:"Fijo Solicitado"
+            name:"Tutor Fijo Asignado"
         },
         {
             id:3,
-            name:"Variable"
+            name:"Tutor Variable"
         }
     ]
 

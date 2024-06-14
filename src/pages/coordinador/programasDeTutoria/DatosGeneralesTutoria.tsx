@@ -18,12 +18,12 @@ function DatosGeneralesTutoria() {
   //const {handleChangeTutoringProgram}=tutoringProgramSlice.actions;
   const { tutoringProgram, onChangeTutoringProgram } = useTutoringProgramContext();
   const { facultyList, specialityList } = useAppSelector((state: RootState) => state.parameters);
-  //const { tutoringProgramSelected } = useAppSelector((state: RootState) => state.tutoringProgram);
+  const { tutoringProgramSelected } = useAppSelector((state: RootState) => state.tutoringProgram);
   
   const [isOpenModalSucess,setIsOpenModalSucess]=useState<boolean>(false);
   const [isOpenModalError,setIsOpenModalError]=useState<boolean>(false);
   const handleSaveTutoria=()=>{
-    postProgramaTutoria(tutoringProgram)
+    postProgramaTutoria(tutoringProgramSelected)
     .then((response) => response?setIsOpenModalSucess(true):setIsOpenModalError(true));
   }
   // const handleLocalChangeTutoringProgram= (name:string,value:any)=>{

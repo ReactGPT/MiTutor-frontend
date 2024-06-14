@@ -1,13 +1,9 @@
 import React, { useEffect, useMemo, useState } from 'react'
-//import { Button, Cell, Filters } from '../components'
 import { Button, Dropdown } from '../../../components'
 import { AddCircleIcon, UserPlus, ArrowDown, ArrowDownload,ArrowUpload, AddIcon } from '../../../assets'
 import { useNavigate } from 'react-router-dom';
-import { Combobox, InputCell } from '../../../components';
-import { Faculty, Specialty } from '../../../store/types';
-import { RootState } from '../../../store/store';
-import { useAppSelector } from '../../../store/hooks';
-
+import { useUser } from '../../../store/hooks/useUser';
+import { writeFile, utils } from 'xlsx';
 
 type InputProps = {
   handleOnChangeFilters: (filter: any) => void;
@@ -16,7 +12,8 @@ type InputProps = {
 
 export default function ListadoUsuariosSearchBar({ handleOnChangeFilters, rol }: InputProps) {
   const navigate = useNavigate();
-  const { specialityList, facultyList } = useAppSelector((state: RootState) => state.parameters)
+  const { loading,  userData, fetchUsers } = useUser();
+
   const handleClickNuevoUsuario = () => {
     navigate(`/${rol}s/nuevo`, { state: { userData: null } });
   }
@@ -30,12 +27,39 @@ export default function ListadoUsuariosSearchBar({ handleOnChangeFilters, rol }:
     navigate(`/${rol}s/cargaMasiva`);
   }
 
+  const handleClickDescargar = async () => {
+    await fetchUsers();
+    while(loading);
+    // Filtrar y transformar los datos
+    const filteredData = userData.map(user => ({
+      CorreoInstitucional: user.institutionalEmail,
+      CodigoPUCP: user.pucpCode,
+      Nombres: user.persona.name,
+      PrimerApellido: user.persona.lastName,
+      SegundoApellido: user.persona.secondLastName,
+      Telefono: user.persona.phone,
+      Activo: user.isActive,
+      CreationDate: user.creationDate,
+      ModificationDate: user.modificationDate
+    }));
+
+    // Crear una hoja de trabajo
+    const hoja = utils.json_to_sheet(filteredData);
+
+    // Crear un libro de trabajo
+    const libro = utils.book_new();
+    utils.book_append_sheet(libro, hoja, 'Usuarios');
+
+    // Descargar el archivo
+    writeFile(libro, 'usuarios.xlsx');
+  }
+
   return (
     <div className='flex w-full h-full flex-row py-0'>
       <div className='flex w-full h-12 justify-end space-x-4'>
         <Button onClick={handleClickNuevoUsuario} text={`Agregar ${capitalize(rol)}`} icon={UserPlus} />
         <Button onClick={handleClickImportarMasivo} text="Importar" variant='primario' icon={ArrowUpload} />
-        <Button onClick={handleClickNuevoUsuario} text="Descargar" variant='secundario' icon={ArrowDownload} />
+        <Button onClick={handleClickDescargar} text="Descargar" variant='secundario' icon={ArrowDownload} />
       </div>
     </div>
 

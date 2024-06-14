@@ -81,7 +81,7 @@ const PageListadoPlanAccion = () => {
           <div className="flex flex-col items-center justify-center text-center">
             <img src={noPlansImg} alt="No plans" className="w-1/4 h-auto mb-4" />
             <i className="your-icon-class-name mb-2"></i> {/* Cambia `your-icon-class-name` por la clase de tu ícono */}
-            <p className="text-xl font-bold">Ups... Todavía no tienes ningún plan de acción para el alumno</p>
+            <p className="text-xl font-bold">Todavía no tienes ningún plan de acción para el alumno</p>
             <p className="text-md">Crea un nuevo plan de acción para hacer seguimiento de los compromisos acordados.</p>
           </div>
         ) : (

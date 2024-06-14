@@ -9,6 +9,7 @@ import {
   BiUserCheck,
   BiBarChartAlt
 } from "react-icons/bi";
+import { PiStudent } from "react-icons/pi";
 
 import PageListadoPlanAccion from '../pages/tutor/listaDeCitas/PageListadoPlanAccion.tsx';
 import PageDetallePlanAccion from '../pages/tutor/listaDeCitas/PageDetallePlanAccion.tsx';
@@ -39,6 +40,9 @@ import PageDetalleDeTutoria from "../pages/alumno/misTutorias/PageDetalleDeTutor
 import PageIndicadorTutor from "../pages/tutor/indicadorTutores/PageIndicadorTutor.tsx";
 import PageListadoUsuarios from "../pages/administrador/gestionUsuarios/PageListadoUsuarios.tsx";
 import PageUsuario from "../pages/administrador/gestionUsuarios/PageUsuario.tsx";
+import PageListadoEstudiantes from "../pages/administrador/gestionUsuarios/PageListadoEstudiantes.tsx";
+import PageEstudiante from "../pages/administrador/gestionUsuarios/PageEstudiante.tsx";
+import PageCargaMasiva from "../pages/administrador/gestionUsuarios/PageCargaMasiva.tsx";
 import TutorDetail from "../pages/tutor/indicadorTutores/TutorDetail.tsx";
  
  
@@ -332,6 +336,22 @@ export const Routes: RouterConfig = {
         element: <PageUsuario />
       },
       {
+        path: '/estudiantes',
+        element: <PageListadoEstudiantes />
+      },
+      {
+        path: '/estudiantes/detalle',
+        element: <PageEstudiante />
+      },
+      {
+        path: '/estudiantes/nuevo',
+        element: <PageEstudiante />
+      },
+      {
+        path: '/usuarios/cargaMasiva',
+        element: <PageCargaMasiva/>
+      },
+      {
         path: '*',
         element: <Navigate to="/" />
       }
@@ -358,8 +378,8 @@ export const Routes: RouterConfig = {
       {
         key: 'alumnos',
         label: 'Alumnos',
-        path: '/*',//Pendiente agregar
-        icon: <BiListUl fontSize={32} />,
+        path: '/estudiantes',
+        icon: <PiStudent fontSize={32} />,
       },
       {
         key: 'usuarios',

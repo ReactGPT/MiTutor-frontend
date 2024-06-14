@@ -8,52 +8,49 @@ import { ColDef } from 'ag-grid-community';
 import CustomUsuariosGridButton from './CustomUsuariosGridButton';
 import { DetailsIcon } from '../../../assets';
 import { useNavigate } from 'react-router-dom';
-import { useProgramaTutoria } from '../../../store/hooks';
 import { useUser } from '../../../store/hooks/useUser';
 import { Spinner } from '../../../components';
-import { ProgramaTutoria, Tutor } from '../../../store/types';
-//import { useHistory } from 'react-router-dom';
-import { useTitle } from '../../../context';
 import DeleteIcon from '../../../assets/svg/DeleteIcon';
 //import { getEliminarTutoria } from '../../../store/services';
 import ModalConfirmation from '../../../components/ModalConfirmation';
 import ModalSuccess from '../../../components/ModalSuccess';
 import ModalError from '../../../components/ModalError';
 import { User } from '../../../store/types/User';
+//import { Student } from '../../../store/types/User';
 
 
-export default function PageListadoUsuarios() {
+export default function PageListadoEstudiantes() {
   const navigate = useNavigate();
   //const history = useHistory();
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [isOpenModalSuccess, setIsOpenModalSuccess] = useState<boolean>(false);
   const [isOpenModalError, setIsOpenModalError] = useState<boolean>(false);
   //const {isLoading,programaTutoriaData,fetchProgramaTutorias,postEliminarProgramaTutoria} = useProgramaTutoria();
-  const { loading, userData, fetchUsers, deleteUser } = useUser();
+  const { loading, userData, fetchStudents, deleteUser } = useUser();
   //const [programaSelected, setProgramaSelected] = useState<ProgramaTutoria | null>(null);
-  const [userSelected, setUserSelected] = useState<User | null>(null);
+  const [studentSelected, setStudentSelected] = useState<User | null>(null);
   //const [programaTutoriaFiltered,setProgramaTutoriaFiltered] = useState<ProgramaTutoria[]|null>(null)
   useEffect(() => {
     //console.log("llamada fetch prog tutoria");
     //fetchProgramaTutorias();
-    fetchUsers();
+    fetchStudents();
   }, []);
 
   const handleNavigation = (data: User) => {
     console.log(data);
-    navigate("/usuarios/detalle", { state: { userData: data } });
+    navigate("/estudiantes/detalle", { state: { userData: data } });
   };
-  const handleOnSelectUser = (usuario: User) => {
-    setUserSelected(usuario);
+  const handleOnSelectStudent = (estudiante: User) => {
+    setStudentSelected(estudiante);
   }
   useEffect(() => {
-    if (userSelected) {
+    if (studentSelected) {
       setIsOpen(true);
     }
-  }, [userSelected])
+  }, [studentSelected])
   const handleOnConfirmDeleteUsuario = () => {
-    if (userSelected && !!userSelected.id) {
-      deleteUser(userSelected?.id)
+    if (studentSelected && !!studentSelected.id) {
+      deleteUser(studentSelected?.id)
         .then((result) => {
           if (result) {
             setIsOpenModalSuccess(true);
@@ -66,14 +63,17 @@ export default function PageListadoUsuarios() {
         })
     }
   }
+
   const [filters, setFilters] = useState<any>({
     idSpeciality: null,
     idFaculty: null,
     name: null
   });
+
   const handleOnChangeFilters = (filter: any) => {
     setFilters(filter);
   };
+
   const UserFiltered: User[] = useMemo(() => {
     return [...(userData).filter((item) =>
       item.persona.name.toLowerCase().includes(filters.name ? filters.name : "")
@@ -93,17 +93,17 @@ export default function PageListadoUsuarios() {
       alignItems: 'center',
       display: 'flex'
     },
-    //filter: 'agTextColumnFilter',
     floatingFilter: true,
   };
   const columnDefs: ColDef[] = [
 
-    { headerName: 'Código', field: 'pucpCode', filter: 'agNumberColumnFilter', minWidth: 100 },
+    { headerName: 'Código', field: 'pucpCode', filter: 'agNumberColumnFilter', minWidth: 150 },
     { headerName: 'Nombres', field: 'persona.name', filter: 'agTextColumnFilter', minWidth: 150 },
     { headerName: 'Primer Apellido', field: 'persona.lastName', filter: 'agTextColumnFilter', minWidth: 150 },
     { headerName: 'Segundo Apellido', field: 'persona.secondLastName', filter: 'agTextColumnFilter', minWidth: 150 },
     { headerName: 'Correo', field: 'institutionalEmail', filter: 'agTextColumnFilter', minWidth: 300, maxWidth: 300 },
-    { headerName: 'Teléfono', field: 'persona.phone', filter: 'agNumberColumnFilter', minWidth: 100, maxWidth: 100 },
+    { headerName: 'Facultad', field: 'estudiante.facultyName', filter: 'agTextColumnFilter', minWidth: 300, maxWidth: 300 },
+    { headerName: 'Especialidad', field: 'estudiante.specialtyName', filter: 'agTextColumnFilter', minWidth: 300, maxWidth: 300 },
     {
       headerName: 'Activo',
       field: 'isActive',
@@ -128,7 +128,7 @@ export default function PageListadoUsuarios() {
       minWidth: 40,
       cellRenderer: (rowData: any) => {
         return (
-          <button className='text-primary' onClick={() => handleOnSelectUser(rowData.data)}>
+          <button className='text-primary' onClick={() => handleOnSelectStudent(rowData.data)}>
             <DeleteIcon size={6} />
           </button>
         )
@@ -139,7 +139,7 @@ export default function PageListadoUsuarios() {
   return (
     <div className='flex w-full h-full flex-col space-y-10 mt-10'>
       <div className='flex w-full h-[10%]'>
-        <ListadoUsuariosSearchBar handleOnChangeFilters={handleOnChangeFilters} rol='usuario'/>
+        <ListadoUsuariosSearchBar handleOnChangeFilters={handleOnChangeFilters} rol='estudiante'/>
       </div>
       <div className='flex w-full h-[80%] ag-theme-alpine items-center justify-center'>
         {loading ? <Spinner size='lg' /> : <div className='w-full h-full'>
@@ -153,7 +153,7 @@ export default function PageListadoUsuarios() {
           />
         </div>}
       </div>
-      <ModalConfirmation isOpen={isOpen} message={`¿Esta seguro de eliminar definitivamente el usuario : ${userSelected && userSelected.institutionalEmail}?`}
+      <ModalConfirmation isOpen={isOpen} message={`¿Esta seguro de eliminar definitivamente el usuario : ${studentSelected && studentSelected.institutionalEmail}?`}
         onClose={() => {
           setIsOpen(false);
         }}
@@ -163,16 +163,16 @@ export default function PageListadoUsuarios() {
         }}
         isAcceptAction={true}
       />
-      <ModalSuccess isOpen={isOpenModalSuccess} message={`Se elimino con éxito el usuario : ${userSelected && userSelected.institutionalEmail}`}
+      <ModalSuccess isOpen={isOpenModalSuccess} message={`Se elimino con éxito el usuario : ${studentSelected && studentSelected.institutionalEmail}`}
         onClose={() => {
-          setUserSelected(null);
+          setStudentSelected(null);
           setIsOpenModalSuccess(false);
-          fetchUsers();
+          fetchStudents();
         }}
       />
       <ModalError isOpen={isOpenModalError} message='Ocurrió un problema inesperado. Intente nuevamente'
         onClose={() => {
-          setUserSelected(null);
+          setStudentSelected(null);
           setIsOpenModalError(false)
         }}
       />

@@ -14,16 +14,21 @@ const PageCalendarioTutor: React.FC = () => {
   const { cita, fetchCita } = useCitasPorTutor(tutorId);
 
   const [programarCita, setProgramarCita] = useState<boolean>(false);
+  const [shouldFetch, setShouldFetch] = useState<boolean>(false);
 
   useEffect(() => {
     fetchCita();
-  }, []);
+  }, [shouldFetch]);
 
   //ir a disponibilidad
   const navigate = useNavigate();
 
   const goToDisponibilidad = () => {
     navigate('/calendario/agregarDisponibilidad');
+  };
+
+  const volverAFetchearCitas = () => {
+    setShouldFetch(prev => !prev);
   };
 
   return (
@@ -59,7 +64,7 @@ const PageCalendarioTutor: React.FC = () => {
         </div>
       </div>
       <div className="flex-1 w-full overflow-auto bg-white rounded-md p-4">
-        <CalendarioDisponibilidad citas={cita} tipo='solicitar' programable={programarCita} />
+        <CalendarioDisponibilidad citas={cita} tipo='solicitar' programable={programarCita} refresh={volverAFetchearCitas} />
       </div>
     </div >
   );

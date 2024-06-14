@@ -174,10 +174,10 @@ const ModalProgramarCitaTutor: React.FC<ProgramarCitaTutorProps> = ({ isOpen, on
         idTutor: tutorId,
         idStudent: studentIds,
       });
-      refreshCalendar();
       resetAppointment();
       setSelectedProgram(null);
       setShowClassroom(false);
+      refreshCalendar();
       onClose();
       handleOpenSuccessModal();
     } catch (error) {

@@ -35,7 +35,7 @@ interface CalendarioDisponibilidadProps {
   programable?: boolean;
   onSelectEvent?: (event: CustomEvent) => void;
   onSelectSlot?: (slotInfo: SlotInfo) => void;
-  refresh?: boolean;
+  refresh?: () => void;
   tipo: "solicitar" | "disponibilidad";
 }
 
@@ -100,7 +100,7 @@ const CalendarioDisponibilidad: React.FC<CalendarioDisponibilidadProps> = ({ cit
 
   useEffect(() => {
     fetchAvailability();
-  }, [refresh, refreshKey]);
+  }, [refreshKey]);
 
   const events: CustomEvent[] = citas?.map(transformCitaToEvent) ?? [];
   const disponibilidad = transformAvailabilityToEvent(availability);
@@ -241,7 +241,7 @@ const CalendarioDisponibilidad: React.FC<CalendarioDisponibilidadProps> = ({ cit
         selectable={programable}
       />
       <ModalModificarDisponibilidad slotInfo={selectedSlot} isOpen={showModalDisponibilidad} onClose={closeModalDisponibilidad} refreshCalendar={refreshCalendar} />
-      <ModalProgramarCitaTutor slotInfo={selectedSlot} isOpen={showModalProgramarCita} onClose={closeModalProgramarCita} refreshCalendar={refreshCalendar} />
+      <ModalProgramarCitaTutor slotInfo={selectedSlot} isOpen={showModalProgramarCita} onClose={closeModalProgramarCita} refreshCalendar={refresh ? refresh : () => { }} />
     </>
   );
 };

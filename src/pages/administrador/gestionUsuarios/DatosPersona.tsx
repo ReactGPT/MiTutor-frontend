@@ -32,7 +32,7 @@ function DatosPersona() {
           <Button text='Cancelar' variant='primario' icon={CloseIcon} iconSize={4} onClick={() => { navigate(-1); }} />
         </div>
       </div>
-      <div className='flex flex-row w-full h-full gap-2 h-[70%]'>
+      <div className='flex flex-row w-full gap-2 h-[70%]'>
         <div className='flex flex-col w-[30%]'>
           <div className='flex flex-col gap-2'>
           <InputTutor titulo="Nombre" value={user?.persona.name} enable={false} />

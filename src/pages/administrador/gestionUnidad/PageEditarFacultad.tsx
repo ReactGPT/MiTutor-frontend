@@ -6,7 +6,7 @@ import 'ag-grid-community/styles/ag-theme-alpine.css';
 import { ColDef } from 'ag-grid-community';
 import SearchInput from '../../../components/SearchInput';
 import DeleteIcon from '../../../assets/svg/DeleteIcon';
-import { DetailsIcon } from '../../../assets';
+import { DetailsIcon, PencilIcon } from '../../../assets';
 import { useTitle } from '../../../context';
 import { useNavigate } from 'react-router-dom';
 import { useEspecialidad } from '../../../store/hooks/useEspecialidad';
@@ -16,6 +16,9 @@ import { Facultad } from '../../../store/types/Facultad';
 import { FacultadProvider, useFacultadContext } from '../../../context/FacultadContext';
 import InputTutor from '../../../components/Tutor/InputTutor';
 import { useLocation } from 'react-router-dom';
+import InputAdmin from '../../../components/Administrador/InputAdmin';
+
+const circleButtonStyles = 'bg-[rgba(235,236,250,1)] shadow-custom border border-solid border-[rgba(116,170,255,0.70)]';
 
 const PageEditarFacultad = () => {
   const [searchValue, setSearchValue] = useState('');
@@ -73,13 +76,34 @@ const PageEditarFacultad = () => {
           </h1>
           <Button className="" onClick={() => {}} text="Editar" />
         </div>
-        <div className="grid grid-cols-3 gap-4 p-4">
-          <InputTutor titulo="Nombre de la Facultad" value={facultadData?.name} enable={false} />
-          <InputTutor titulo="Siglas" value={facultadData?.acronym} enable={false} />
-          <InputTutor titulo="Estado" value={facultadData?.isActive ? 'Activa' : 'Inactiva'} enable={false} />
-          <InputTutor titulo="Responsable" value={facultadData?.name} enable={false} />
-          <InputTutor titulo="Número de Estudiantes" value={facultadData?.numberStudents} enable={false} />
-          <InputTutor titulo="Número de Tutores" value={facultadData?.numberTutors} enable={false} />
+        <div className="grid grid-cols-2 gap-4 p-4">
+          <div className='grid grid-cols-1'>
+            <InputAdmin titulo="Nombre de la Facultad" value={facultadData?.name} enable={true}/>
+            <div className='flex'>
+              <InputAdmin 
+                titulo="Código del Responsable" value={facultadData?.facultyManager.pucpCode ? facultadData?.facultyManager.pucpCode : '-'} enable={false} />
+              <div className='w-[70%]'>
+                <InputAdmin 
+                  titulo="Nombre del Responsable" 
+                  value={facultadData?.facultyManager.persona.name + ' ' + facultadData?.facultyManager.persona.lastName + ' ' + (facultadData?.facultyManager.persona.secondLastName ? facultadData?.facultyManager.persona.secondLastName : '')} 
+                  enable={false} />
+              </div>
+              <div className='flex flex-col items-center justify-center p-4'>
+                <button className={`flex text-primary rounded-full w-12 h-12 justify-center items-center ${circleButtonStyles}`} onClick={()=>{}}>
+                      <PencilIcon className='flex flex-col justify-center items-center' size={6}/>
+                </button>
+              </div>
+              
+            </div>
+            
+          </div>
+          <div className='grid grid-cols-2'>
+            <InputAdmin titulo="Siglas" value={facultadData?.acronym} enable={false} />
+            <InputAdmin titulo="Estado" value={facultadData?.isActive ? 'Activa' : 'Inactiva'} enable={false} />
+            <InputAdmin titulo="Número de Estudiantes" value={facultadData?.numberStudents} enable={false} />
+            <InputAdmin titulo="Número de Tutores" value={facultadData?.numberTutors} enable={false} />
+          </div>
+          
         </div>
         
 

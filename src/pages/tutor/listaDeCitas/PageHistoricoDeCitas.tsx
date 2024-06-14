@@ -7,10 +7,10 @@ import { useAuth } from '../../../context';
 import { useLocation } from 'react-router-dom';
 import { ListStudent } from '../../../store/types/ListStudent';
 import { TutorRoleDetails } from '../../../store/types';
+import image from '/src/assets/Tutor/no-avatar.webp';
 
 const PageHistoricoDeCitas = () => {
   const { userData } = useAuth();
-  //const tutorId = userData?.userInfo?.roles[0].details.tutorId;
   const tutorId = (userData?.userInfo?.roles[0].details as TutorRoleDetails).tutorId;
 
 
@@ -45,20 +45,20 @@ const PageHistoricoDeCitas = () => {
   };
 
   return (
-    <div className="w-full h-full">
+    <div className="w-full h-full flex flex-col gap-5">
 
-      <div className="w-[30%] flex h-[15%] min-h-[60px]">
-        <div className="w-full h-[60%] flex flex-row justify-right items-center bg-[rgba(255,_255,_255,_0.50)] border-custom drop-shadow-md p-5">
-          <span className="font-montserrat text-4xl font-bold text-primary"><pre>Alumno: </pre></span>
-          <span className="font-roboto text-3xl text-primary"> {student.name} {student.lastName} {student.secondLastName} </span>
+      <div className="flex gap-5">
+        <div className='flex h-8 items-center justify-center gap-5'>
+          <img src={image} alt="Imagen Tutor" className="h-full rounded-full" />
+          <h2 className='font-montserrat text-xl font-bold text-black'>{student.name} {student.lastName} {student.secondLastName}</h2>
         </div>
       </div>
 
-      <div className="h-[7%]">
+      <div>
         <SearchInput placeholder="Cosa a buscar" onSearch={handleSearch} handleOnChangeFilters={() => { }} />
       </div>
 
-      <div className="w-full h-[65%] min-h-[60px]">
+      <div className="w-full h-[65%] min-h-[60px] flex flex-col gap-5">
 
         {citasFiltradasRango.map((cita, index) => (
           <AppointmentItem
@@ -66,6 +66,7 @@ const PageHistoricoDeCitas = () => {
             appointment={cita}
             tipo="historico"
             user="tutor"
+            flag={false}
           />
         ))}
 

@@ -1,13 +1,16 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Button from "../Button";
 import IconDetails from '../../assets/svg/IconDetails';
 import { useNavigate } from "react-router-dom";
 import { ListCita } from "../../store/types/ListCita";
-
+import { Services as ServicesProperties } from '../../config'; 
+import axios from 'axios';
+import CitaModalDetalle from "./CitaModalDetalle";
 interface AppointmentItemProps {
   appointment: ListCita;
   tipo: "lista" | "historico";
   user: "alumno" | "tutor";
+  flag: boolean;
 }
 
 const textClasses = {
@@ -32,62 +35,86 @@ const toClasses = {
 };
 
 const controlColor = (color: string, tipo: string) => {
-  if (tipo == 'from') {
-    if (color == 'Solicitado') {
-      return fromClasses.yellow;
-    } else if (color == 'Completado') {
-      return fromClasses.blue;
-    } else if (color == 'Registrada') {
-      return fromClasses.green;
-    } else if (color == 'Pendiente') {
-      return fromClasses.red;
-    } else {
-      return fromClasses.green;
+  if (tipo === 'from') {
+    switch (color) {
+      case 'completada':
+        return fromClasses.blue;
+      case 'registrada':
+        return fromClasses.green;
+      case 'pendiente resultado':
+        return fromClasses.red;
+      default:
+        return fromClasses.yellow;
     }
-  } else if (tipo == 'text') {
-    if (color == 'Solicitado') {
-      return textClasses.yellow;
-    } else if (color == 'Completado') {
-      return textClasses.blue;
-    } else if (color == 'Registrada') {
-      return textClasses.green;
-    } else if (color == 'Pendiente') {
-      return textClasses.red;
-    } else {
-      return textClasses.green;
+  } else if (tipo === 'text') {
+    switch (color) {
+      case 'completada':
+        return textClasses.blue;
+      case 'registrada':
+        return textClasses.green;
+      case 'pendiente resultado':
+        return textClasses.red;
+      default:
+        return textClasses.yellow;
     }
-  } else if (tipo == 'to') {
-    if (color == 'Solicitado') {
-      return toClasses.yellow;
-    } else if (color == 'Completado') {
-      return toClasses.blue;
-    } else if (color == 'Registrada') {
-      return toClasses.green;
-    } else if (color == 'Pendiente') {
-      return toClasses.red;
-    } else {
-      return toClasses.green;
+  } else if (tipo === 'to') {
+    switch (color) {
+      case 'completada':
+        return toClasses.blue;
+      case 'registrada':
+        return toClasses.green;
+      case 'pendiente resultado':
+        return toClasses.red;
+      default:
+        return toClasses.yellow;
     }
   }
 };
 
-export const AppointmentItem: React.FC<AppointmentItemProps> = ({ appointment, tipo, user }) => {
-
+const AppointmentItem: React.FC<AppointmentItemProps> = ({ appointment, tipo, user, flag }) => {
   const navigate = useNavigate();
-  const currentDate = new Date();
+  const [appointmentStatus, setAppointmentStatus] = useState(appointment.appointmentStatus); 
+
+  // Combina creationDate y endTime para crear la fecha de finalización completa
+  const endDateTime = new Date(`${appointment.creationDate}T${appointment.endTime}`);
+  
+  //Modal Registrado
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
 
   const goToDetalleCita = () => {
-    if (user === 'tutor') {
-      //if (new Date(appointment.creationDate) < currentDate)
+    if (user === 'tutor' && appointment.appointmentStatus!="registrada") {
       navigate("/listaDeCitas/resultadoCitaIndividual", { state: { cita: appointment } });
     } else if (user === 'alumno') {
       navigate("/listaDeCitasAlumno/detalleCitaAlumno", { state: { cita: appointment } });
+    } else if (user === 'tutor' && appointment.appointmentStatus=="registrada"){
+      setIsModalOpen(!isModalOpen); 
     }
   };
 
+  // Función para verificar si la cita ha terminado
+  const checkAppointmentStatus = () => {
+    const currentDate = new Date();
+    if (appointmentStatus === 'registrada' && currentDate > endDateTime) { 
+      setAppointmentStatus('pendiente resultado'); 
+    }
+  };
+   
+  useEffect(() => {
+    setAppointmentStatus(appointment.appointmentStatus);
+  }, [appointment]);
+
+  useEffect(() => {
+    checkAppointmentStatus();
+  }, [flag]);
+ 
+  
   return (
     <div className="w-full h-22 border-custom shadow-custom flex bg-[rgba(235,_236,_250,_1.00)] overflow-hidden font-roboto">
-      <div className={`w-[2%] max-w-6 bg-gradient-to-b ${controlColor(appointment.appointmentStatus, 'from')} ${controlColor(appointment.appointmentStatus, 'to')}`}></div>
+      <div className={`w-[2%] max-w-6 bg-gradient-to-b ${controlColor(appointmentStatus, 'from')} ${controlColor(appointmentStatus, 'to')}`}></div>
 
       <div className="w-full flex p-5 gap-5 justify-between items-center">
         <div className="w-1/3">
@@ -97,11 +124,11 @@ export const AppointmentItem: React.FC<AppointmentItemProps> = ({ appointment, t
         <div className="flex gap-6 items-center h-full text-center justify-between">
           <div className="flex flex-col items-start">
             <span className="text-black font-semibold">Estado:</span>
-            <span className={`font-semibold ${controlColor(appointment.appointmentStatus, 'text')}`}>{appointment.appointmentStatus}</span>
+            <span className={`font-semibold ${controlColor(appointmentStatus, 'text')}`}>{appointmentStatus}</span>
           </div>
           <hr className="h-full border-custom" />
           {
-            tipo == "lista" && (
+            tipo === "lista" && (
               <>
                 <div className="flex flex-col items-start min-w-40">
                   {
@@ -134,13 +161,12 @@ export const AppointmentItem: React.FC<AppointmentItemProps> = ({ appointment, t
             <span className="text-black font-semibold">Hora:</span>
             <span className="text-primary">{`${appointment.startTime}`}</span>
           </div>
-
-          <Button variant='primario' onClick={goToDetalleCita} icon={IconDetails} />
+            <Button variant='primario' onClick={goToDetalleCita} icon={IconDetails} />
+            <div>{isModalOpen && <CitaModalDetalle onClose={closeModal} appointment={appointment}/>}</div>
         </div>
       </div>
     </div>
   );
 };
-
 
 export default AppointmentItem;

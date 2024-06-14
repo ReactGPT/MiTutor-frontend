@@ -5,10 +5,12 @@ import { useNavigate } from "react-router-dom";
 import { ListCita } from "../../store/types/ListCita";
 import { Services as ServicesProperties } from '../../config'; 
 import axios from 'axios';
+import CitaModalDetalle from "./CitaModalDetalle";
 interface AppointmentItemProps {
   appointment: ListCita;
   tipo: "lista" | "historico";
   user: "alumno" | "tutor";
+  flag: boolean;
 }
 
 const textClasses = {
@@ -69,51 +71,51 @@ const controlColor = (color: string, tipo: string) => {
   }
 };
 
-const AppointmentItem: React.FC<AppointmentItemProps> = ({ appointment, tipo, user }) => {
+const AppointmentItem: React.FC<AppointmentItemProps> = ({ appointment, tipo, user, flag }) => {
   const navigate = useNavigate();
-  const [appointmentStatus, setAppointmentStatus] = useState(appointment.appointmentStatus);
+  const [appointmentStatus, setAppointmentStatus] = useState(appointment.appointmentStatus); 
 
   // Combina creationDate y endTime para crear la fecha de finalización completa
   const endDateTime = new Date(`${appointment.creationDate}T${appointment.endTime}`);
   
-  async function actulizarCita() {
-    try {
-        const response = await axios.put(ServicesProperties.BaseUrl+`/actulizar_Estado_Insertar_Resultado?id_appointment=${appointment.appointmentId}`, {
-        });
-
-        const response2 = await axios.post(ServicesProperties.BaseUrl+`/agregarResultadoCita?studentId=${appointment.personId}&tutoringProgramId=${appointment.programId}&id_appointment=${appointment.appointmentId}`, {
-          //https://localhost:44369/agregarResultadoCita?studentId=19191&tutoringProgramId=28282&id_appointment=27272
-        });
- 
-    } catch (error) {
-      console.error('Error al descargar el archivo:', error);
-    }
-  }
+  //Modal Registrado
+  const [isModalOpen, setIsModalOpen] = useState(false);
   
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
   const goToDetalleCita = () => {
     if (user === 'tutor' && appointment.appointmentStatus!="registrada") {
-      navigate("/listaDeCitas/resultadoCitaIndividual", { state: { cita: appointment } });
+      if(appointment.groupBased==false){
+        navigate("/listaDeCitas/resultadoCitaIndividual", { state: { cita: appointment } });
+      }else{
+        navigate("/listaDeCitas/resultadoCitaGrupal", { state: { cita: appointment } });
+      }
     } else if (user === 'alumno') {
       navigate("/listaDeCitasAlumno/detalleCitaAlumno", { state: { cita: appointment } });
+    } else if (user === 'tutor' && appointment.appointmentStatus=="registrada"){
+      setIsModalOpen(!isModalOpen); 
     }
   };
 
   // Función para verificar si la cita ha terminado
   const checkAppointmentStatus = () => {
     const currentDate = new Date();
-    if (appointmentStatus === 'registrada' && currentDate > endDateTime) {
-      appointment.appointmentStatus='pendiente resultado';
-      setAppointmentStatus('pendiente resultado');
-      actulizarCita(); //appointment.programId, appointment.personId
+    if (appointmentStatus === 'registrada' && currentDate > endDateTime) { 
+      setAppointmentStatus('pendiente resultado'); 
     }
   };
+   
+  useEffect(() => {
+    setAppointmentStatus(appointment.appointmentStatus);
+  }, [appointment]);
 
   useEffect(() => {
-    const intervalId = setInterval(checkAppointmentStatus, 10000); // Verifica cada 10 segundos
-
-    return () => clearInterval(intervalId);
-  }, [appointmentStatus,appointment]);
-
+    checkAppointmentStatus();
+  }, [flag]);
+ 
+  
   return (
     <div className="w-full h-22 border-custom shadow-custom flex bg-[rgba(235,_236,_250,_1.00)] overflow-hidden font-roboto">
       <div className={`w-[2%] max-w-6 bg-gradient-to-b ${controlColor(appointmentStatus, 'from')} ${controlColor(appointmentStatus, 'to')}`}></div>
@@ -137,7 +139,9 @@ const AppointmentItem: React.FC<AppointmentItemProps> = ({ appointment, tipo, us
                     user === "tutor" && (
                       <>
                         <span className="text-black font-semibold">Participante:</span>
-                        <span className="text-primary">{`${appointment.name} ${appointment.lastName} ${appointment.secondLastName}`}</span>
+                        <span className="text-primary">
+                          {appointment.groupBased === false ? `${appointment.name} ${appointment.lastName} ${appointment.secondLastName}` : appointment.name}
+                        </span>
                       </>
                     )
                   }
@@ -163,8 +167,8 @@ const AppointmentItem: React.FC<AppointmentItemProps> = ({ appointment, tipo, us
             <span className="text-black font-semibold">Hora:</span>
             <span className="text-primary">{`${appointment.startTime}`}</span>
           </div>
-
-          <Button variant='primario' onClick={goToDetalleCita} icon={IconDetails} />
+            <Button variant='primario' onClick={goToDetalleCita} icon={IconDetails} />
+            <div>{isModalOpen && <CitaModalDetalle onClose={closeModal} appointment={appointment}/>}</div>
         </div>
       </div>
     </div>

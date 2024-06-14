@@ -29,8 +29,9 @@ export default function PageListadoUsuarios() {
   const [isOpenModalSuccess, setIsOpenModalSuccess] = useState<boolean>(false);
   const [isOpenModalError, setIsOpenModalError] = useState<boolean>(false);
   //const {isLoading,programaTutoriaData,fetchProgramaTutorias,postEliminarProgramaTutoria} = useProgramaTutoria();
-  const { loading, userData, fetchUsers } = useUser();
-  const [programaSelected, setProgramaSelected] = useState<ProgramaTutoria | null>(null);
+  const { loading, userData, fetchUsers, deleteUser } = useUser();
+  //const [programaSelected, setProgramaSelected] = useState<ProgramaTutoria | null>(null);
+  const [userSelected, setUserSelected] = useState<User | null>(null);
   //const [programaTutoriaFiltered,setProgramaTutoriaFiltered] = useState<ProgramaTutoria[]|null>(null)
   useEffect(() => {
     //console.log("llamada fetch prog tutoria");
@@ -38,32 +39,32 @@ export default function PageListadoUsuarios() {
     fetchUsers();
   }, []);
 
-  const handleNavigation = (data: ProgramaTutoria) => {
+  const handleNavigation = (data: User) => {
     console.log(data);
-    navigate("/usuarios/detalle",{state:{userData:data}});
+    navigate("/usuarios/detalle", { state: { userData: data } });
   };
-  const handleOnSelectProgramaTutoria = (programa: ProgramaTutoria) => {
-    setProgramaSelected(programa);
+  const handleOnSelectUser = (usuario: User) => {
+    setUserSelected(usuario);
   }
   useEffect(() => {
-    if (programaSelected) {
+    if (userSelected) {
       setIsOpen(true);
     }
-  }, [programaSelected])
-  const handleOnConfirmDeleteProgramaTutoria = () => {
-    /* if(programaSelected&&!!programaSelected.id){
-        postEliminarProgramaTutoria(programaSelected?.id)
-        .then((result)=>{
-            if(result){
-                setIsOpenModalSuccess(true);
-            }
-            else{
-                setIsOpenModalError(true);
-            }
-            setIsOpen(false);
-            //setProgramaSelected(null);
+  }, [userSelected])
+  const handleOnConfirmDeleteUsuario = () => {
+    if (userSelected && !!userSelected.id) {
+      deleteUser(userSelected?.id)
+        .then((result) => {
+          if (result) {
+            setIsOpenModalSuccess(true);
+          }
+          else {
+            setIsOpenModalError(true);
+          }
+          setIsOpen(false);
+          //setProgramaSelected(null);
         })
-    } */
+    }
   }
   const [filters, setFilters] = useState<any>({
     idSpeciality: null,
@@ -127,7 +128,7 @@ export default function PageListadoUsuarios() {
       minWidth: 40,
       cellRenderer: (rowData: any) => {
         return (
-          <button className='text-primary' onClick={() => handleOnSelectProgramaTutoria(rowData.data)}>
+          <button className='text-primary' onClick={() => handleOnSelectUser(rowData.data)}>
             <DeleteIcon size={6} />
           </button>
         )
@@ -138,7 +139,7 @@ export default function PageListadoUsuarios() {
   return (
     <div className='flex w-full h-full flex-col space-y-10 mt-10'>
       <div className='flex w-full h-[10%]'>
-        <ListadoUsuariosSearchBar handleOnChangeFilters={handleOnChangeFilters} />
+        <ListadoUsuariosSearchBar handleOnChangeFilters={handleOnChangeFilters} rol='usuario'/>
       </div>
       <div className='flex w-full h-[80%] ag-theme-alpine items-center justify-center'>
         {loading ? <Spinner size='lg' /> : <div className='w-full h-full'>
@@ -146,29 +147,32 @@ export default function PageListadoUsuarios() {
             defaultColDef={defaultColDef}
             columnDefs={columnDefs}
             rowData={UserFiltered}
+            pagination={true}
+            paginationPageSize={10}
+            paginationPageSizeSelector={[10, 15, 20]}
           />
         </div>}
       </div>
-      <ModalConfirmation isOpen={isOpen} message={`¿Esta seguro de eliminar el programa de tutoría : ${programaSelected && programaSelected.nombre}?`}
+      <ModalConfirmation isOpen={isOpen} message={`¿Esta seguro de eliminar definitivamente el usuario : ${userSelected && userSelected.institutionalEmail}?`}
         onClose={() => {
           setIsOpen(false);
         }}
         onConfirm={() => {
-          handleOnConfirmDeleteProgramaTutoria();
+          handleOnConfirmDeleteUsuario();
           setIsOpen(false);
         }}
         isAcceptAction={true}
       />
-      <ModalSuccess isOpen={isOpenModalSuccess} message={`Se elimino con éxito el programa : ${programaSelected && programaSelected.nombre}`}
+      <ModalSuccess isOpen={isOpenModalSuccess} message={`Se elimino con éxito el usuario : ${userSelected && userSelected.institutionalEmail}`}
         onClose={() => {
-          setProgramaSelected(null);
+          setUserSelected(null);
           setIsOpenModalSuccess(false);
           fetchUsers();
         }}
       />
       <ModalError isOpen={isOpenModalError} message='Ocurrió un problema inesperado. Intente nuevamente'
         onClose={() => {
-          setProgramaSelected(null);
+          setUserSelected(null);
           setIsOpenModalError(false)
         }}
       />

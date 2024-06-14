@@ -20,6 +20,10 @@ export const PageTitles = [
     pageName: "Mi Perfil",
   },
   {
+    path: '/miPerfil/derivaciones',
+    pageName: "Derivaciones",
+  },
+  {
     path: '/programasDeTutoria/detalle-programa',
     pageName: "Detalle de tutoría"
   },
@@ -28,8 +32,8 @@ export const PageTitles = [
     pageName: "Detalle programa Alumno"
   },
   {
-    path: '/historicoDeCitas',
-    pageName: "Histórico de Citas",
+    path: '/programasDeTutoria/detalle-programa/alumno/historicoCitas',
+    pageName: "Histórico de citas"
   },
   {
     path: '/programasDeTutoriaMaestro/nuevo',
@@ -104,8 +108,12 @@ export const PageTitles = [
     pageName: "Solicitar Cita"
   },
   {
+    path: "/indicadorAlumno",
+    pageName: "Indicadores Alumnos"
+  },
+  {
     path: "/indicadorTutor",
-    pageName: "Indicador Tutor"
+    pageName: "Indicadores Tutores"
   },
   {
     path: "/usuarios",
@@ -118,5 +126,37 @@ export const PageTitles = [
   {
     path: "/unidades/editarUnidadDerivacion",
     pageName: "Editar Unidad de Derivación"
-  }
+  },
+  {
+    path: "/usuarios/detalle",
+    pageName: "Detalle de Usuario"
+  },
+  {
+    path: "/usuarios/nuevo",
+    pageName: "Nuevo Usuario"
+  },
+  {
+    path: "/estudiantes",
+    pageName: "Alumnos"
+  },
+  {
+    path: "/estudiantes/detalle",
+    pageName: "Detalle de Alumno"
+  },
+  {
+    path: "/estudiantes/nuevo",
+    pageName: "Nuevo Alumno"
+  },
+  {
+    path: "/usuarios/cargaMasiva",
+    pageName: "Carga Masiva de Usuarios"
+  },
+  {
+    path: "/tutor-detail",
+    pageName: "Indicador Tutor Detalle"
+  },
+  {
+    path: "/listaDeCitas/resultadoCitaGrupal",
+    pageName: "Resultado de Cita Grupal"
+  } 
 ];

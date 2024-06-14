@@ -19,7 +19,6 @@ const ModalModificarDisponibilidad: React.FC<ModalModificarDisponibilidadProps> 
 ) => {
 
   const { userData } = useAuth();
-  //const tutorId = userData?.userInfo?.roles[0].details.tutorId;
   const tutorId = (userData?.userInfo?.roles[0].details as TutorRoleDetails).tutorId;
 
 
@@ -54,29 +53,29 @@ const ModalModificarDisponibilidad: React.FC<ModalModificarDisponibilidadProps> 
 
   return (
     <ModalBase isOpen={isOpen} onClose={onClose}>
-      <div className="flex flex-col gap-5">
-        <div className='flex w-full h-[11%] items-center justify-between py-2 px-3 shadow-custom border-custom bg-[rgba(255,255,255,0.50)]'>
-          <h3 className="text-4xl font-semibold font-roboto text-gray-900 pr-5">
-            Nueva Disponibilidad
-          </h3>
-          <div className="flex gap-5 items-center justify-center">
-            <Button text="Guardar" variant="call-to-action" onClick={handleAddAvailability} />
-            <Button text="Cancelar" variant="warning" onClick={onClose} />
-          </div>
-        </div>
-        <div className="flex gap-5 items-center justify-between">
-          <div>
+      <div className="flex flex-col gap-5 p-5 border-custom bg-[rgba(255,255,255,0.50)]">
+        <h3 className="text-4xl font-semibold font-roboto text-gray-900">
+          Nueva Disponibilidad
+        </h3>
+        <div className="w-full flex flex-col gap-5 items-center justify-between">
+          <div className='w-full'>
             <Label value="Fecha" className='font-roboto text-primary' />
             <Datepicker value={slotInfo?.start.toLocaleDateString()} disabled />
           </div>
-          <div>
-            <Label value="Desde" className='font-roboto text-primary' />
-            <TextInput type="time" value={slotInfo?.start.toTimeString().split(' ')[0]} disabled />
+          <div className='w-full flex gap-5'>
+            <div className='w-1/2'>
+              <Label value="Desde" className='font-roboto text-primary' />
+              <TextInput type="time" value={slotInfo?.start.toTimeString().split(' ')[0]} disabled />
+            </div>
+            <div className='w-1/2'>
+              <Label value="Hasta" className='font-roboto text-primary' />
+              <TextInput type="time" value={slotInfo?.end.toTimeString().split(' ')[0]} disabled />
+            </div>
           </div>
-          <div>
-            <Label value="Hasta" className='font-roboto text-primary' />
-            <TextInput type="time" value={slotInfo?.end.toTimeString().split(' ')[0]} disabled />
-          </div>
+        </div>
+        <div className="flex gap-5 items-center justify-center">
+          <Button text="Guardar" variant="call-to-action" onClick={handleAddAvailability} />
+          <Button text="Cancelar" variant="warning" onClick={onClose} />
         </div>
       </div>
     </ModalBase>

@@ -159,6 +159,7 @@ export default function ModalComentario({ isOpen, onClose,  updatePage, commentV
                     className='w-full h-full rounded-md resize-none 
                       outline-none px-3 py-2 mt-1 font-montserrat text-[90%] 
                       border-custom drop-shadow-md font-bold'
+                    style={{ width: '400px', height: '100px' }}
                   />  
                 </div>
                   

@@ -16,7 +16,7 @@ import { Facultad } from '../../../store/types/Facultad';
 import { FacultadProvider, useFacultadContext } from '../../../context/FacultadContext';
 import InputTutor from '../../../components/Tutor/InputTutor';
 import { useLocation } from 'react-router-dom';
-import InputAdmin from '../../../components/Administrador/InputAdmin';
+import InputAdmin2 from '../../../components/Administrador/InputAdmin2';
 
 const circleButtonStyles = 'bg-[rgba(235,236,250,1)] shadow-custom border border-solid border-[rgba(116,170,255,0.70)]';
 
@@ -83,12 +83,12 @@ const PageEditarFacultad = () => {
         </div>
         <div className="grid grid-cols-2 gap-4 p-4">
           <div className='grid grid-cols-1'>
-            <InputAdmin titulo="Nombre de la Facultad" value={facultadData?.name} enable={false}/>
+            <InputAdmin2 titulo="Nombre de la Facultad" value={facultadData?.name} enable={false}/>
             <div className='flex'>
-              <InputAdmin 
+              <InputAdmin2 
                 titulo="Código del Responsable" value={facultadData?.facultyManager.pucpCode ? facultadData?.facultyManager.pucpCode : '-'} enable={false} />
               <div className='w-[70%]'>
-                <InputAdmin 
+                <InputAdmin2 
                   titulo="Nombre del Responsable" 
                   value={facultadData?.facultyManager.persona.name + ' ' + facultadData?.facultyManager.persona.lastName + ' ' + (facultadData?.facultyManager.persona.secondLastName ? facultadData?.facultyManager.persona.secondLastName : '')} 
                   enable={false} />
@@ -103,10 +103,10 @@ const PageEditarFacultad = () => {
             
           </div>
           <div className='grid grid-cols-2'>
-            <InputAdmin titulo="Siglas" value={facultadData?.acronym} enable={false} />
-            <InputAdmin titulo="Estado" value={facultadData?.isActive ? 'Activa' : 'Inactiva'} enable={false} />
-            <InputAdmin titulo="Número de Estudiantes" value={facultadData?.numberStudents} enable={false} />
-            <InputAdmin titulo="Número de Tutores" value={facultadData?.numberTutors} enable={false} />
+            <InputAdmin2 titulo="Siglas" value={facultadData?.acronym} enable={false} />
+            <InputAdmin2 titulo="Estado" value={facultadData?.isActive ? 'Activa' : 'Inactiva'} enable={false} />
+            <InputAdmin2 titulo="Número de Estudiantes" value={facultadData?.numberStudents} enable={false} />
+            <InputAdmin2 titulo="Número de Tutores" value={facultadData?.numberTutors} enable={false} />
           </div>
           
         </div>

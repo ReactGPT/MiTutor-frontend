@@ -8,7 +8,7 @@ const PageMiPerfilTutor: React.FC = () => {
   const { userData } = useAuth();
   const navigate = useNavigate();
   const goToDerivaciones = () => {
-    navigate("/derivaciones");
+    navigate("/miPerfil/derivaciones");
   };
 
   return (
@@ -35,7 +35,7 @@ const PageMiPerfilTutor: React.FC = () => {
           <Button onClick={goToDerivaciones} variant="primario" text="Derivaciones" />
         </div>
         </div>*/}
-        <div className="w-1/2">
+      <div className="w-1/2">
         <div className="flex justify-center">
           {userData ?
             <img src={userData?.imageUrl} alt="Imagen Tutor" className="w-[200px] h-[200px] rounded-full" />
@@ -46,16 +46,16 @@ const PageMiPerfilTutor: React.FC = () => {
         <div>
           <div className="flex justify-center">
             <div className="space-x-4 pt-5">
-              <ul className="flex flex-col items-center w-full"> 
+              <ul className="flex flex-col items-center w-full">
                 <li className='mb-4'>
                   <Button onClick={goToDerivaciones} variant="call-to-action" text="Derivaciones" />
                 </li>
               </ul>
             </div>
           </div>
-        </div> 
-        </div> 
-        </div> 
+        </div>
+      </div>
+    </div>
   );
 };
 

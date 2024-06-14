@@ -15,7 +15,7 @@ import CustomUnidadGridButton from './CustomUnidadGridButton';
 import { UnidadDerivacion } from '../../../store/types/UnidadDerivacion';
 import { UnidadProvider, useUnidadContext } from '../../../context/UnidadDerivacionContext';
 import { useLocation } from 'react-router-dom';
-import InputAdmin from '../../../components/Administrador/InputAdmin';
+import InputAdmin2 from '../../../components/Administrador/InputAdmin2';
 
 const circleButtonStyles = 'bg-[rgba(235,236,250,1)] shadow-custom border border-solid border-[rgba(116,170,255,0.70)]';
 
@@ -104,10 +104,10 @@ const PageEditarUnidadDerivacion = () => {
 
         <div className="grid grid-cols-2 gap-4 p-4">
             <div className='grid grid-cols-1'>
-              <InputAdmin titulo="Nombre de la Unidad de Derivación" value={unidadData?.nombre} enable={false}/>
+              <InputAdmin2 titulo="Nombre de la Unidad de Derivación" value={unidadData?.nombre} enable={false}/>
               <div className='flex'>
                 <div className='w-full'>
-                  <InputAdmin 
+                  <InputAdmin2 
                     titulo="Nombre del Responsable" 
                     value={unidadData?.responsable}
                     enable={false} />
@@ -117,9 +117,9 @@ const PageEditarUnidadDerivacion = () => {
               
             </div>
             <div className='grid grid-cols-2'>
-              <InputAdmin titulo="Siglas" value={unidadData?.siglas} enable={false} />
-              <InputAdmin titulo="Estado" value={unidadData?.estado} enable={false} />
-              <InputAdmin titulo="Fecha de Creación" value={unidadData?.fechaCreacion} enable={false} />
+              <InputAdmin2 titulo="Siglas" value={unidadData?.siglas} enable={false} />
+              <InputAdmin2 titulo="Estado" value={unidadData?.estado} enable={false} />
+              <InputAdmin2 titulo="Fecha de Creación" value={unidadData?.fechaCreacion} enable={false} />
             </div>
             
           </div>
@@ -139,7 +139,7 @@ const PageEditarUnidadDerivacion = () => {
           />
           <div className='flex items-end align-center justify-between gap-4'>
             <Button variant="primario" onClick={() => {}} text="Crear SubUnidad" className='w-[20%]'/>
-            <InputAdmin titulo="Total SubUnidades" value={subUnidadData.length.toString()} enable={false} noPad={true}/>
+            <InputAdmin2 titulo="Total SubUnidades" value={subUnidadData.length.toString()} enable={false} noPad={true}/>
           </div>
         </div>
 

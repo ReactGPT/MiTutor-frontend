@@ -1,4 +1,4 @@
-import { getListaProgramaTutorias,crearEditarProgramaTutoria,getTutoresByTutoringProgramId, getEliminarTutoria } from '../services';
+import { getListaProgramaTutorias,crearEditarProgramaTutoria,getTutoresByTutoringProgramId, getEliminarTutoria, getEliminarEstudiantesProgramaTutoria } from '../services';
 import {useState} from 'react';
 import { ProgramaTutoria, Tutor } from "../types";
 
@@ -8,6 +8,7 @@ type ProgramaTutoriaHookReturnType =  {
     fetchTutoresByProgramaTutoria:(tutoringProgramId:number)=>Promise<Tutor[]>;
     postProgramaTutoria:(programa:ProgramaTutoria)=>Promise<boolean>;
     postEliminarProgramaTutoria:(programaId:number)=>Promise<boolean>;
+    postEliminarEstudiantesPrograma:(programaId:number)=>Promise<boolean>;
     programaTutoriaData: ProgramaTutoria[];    
     isLoading: boolean;
     error: Error | null;
@@ -63,6 +64,7 @@ function useProgramaTutoria(): ProgramaTutoriaHookReturnType{
             if(!response.sucess){
                 return false;
             }
+            //console.log("Eliminar programa");
             return true;
         } catch(err:any){
             setError(err);
@@ -92,8 +94,23 @@ function useProgramaTutoria(): ProgramaTutoriaHookReturnType{
             //return tutores;
         }
     };
-
-    return { fetchProgramaTutorias,fetchTutoresByProgramaTutoria,postProgramaTutoria,postEliminarProgramaTutoria,programaTutoriaData,isLoading, error,tutorListByProgramId };
+    const postEliminarEstudiantesPrograma = async (programaTutoriaId:number)=>{
+        setIsLoading(true);
+        try{
+            const response = await getEliminarEstudiantesProgramaTutoria(programaTutoriaId);
+            if(!response.sucess){
+                return false;
+            }
+            //console.log("Eliminar Estudiantes");
+            return true;
+        } catch(err:any){
+            setError(err);
+            return false;
+        }finally {
+            setIsLoading(false);
+        }
+    };
+    return { fetchProgramaTutorias,fetchTutoresByProgramaTutoria,postProgramaTutoria,postEliminarProgramaTutoria,postEliminarEstudiantesPrograma,programaTutoriaData,isLoading, error,tutorListByProgramId };
 
 }
 

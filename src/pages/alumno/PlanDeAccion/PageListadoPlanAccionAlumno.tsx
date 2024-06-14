@@ -6,11 +6,11 @@ import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useActionPlansStudent } from '../../../store/hooks/useActionPlan';
 import { useAuth } from "../../../context";
-import noPlansImg from "../../../assets/Tutor/no-planes.png";
+import noPlansImg from "../../../assets/Tutor/no-planes.webp";
 
 const PageListadoPlanAccionAlumno = () => {
   const { userData } = useAuth();
-  const studentId = userData?.userInfo?.id || 0;
+  const studentId = userData?.userInfo?.id || 1;
 
   const { state } = useLocation() || {};
   //const { studentId: studentId = 2, programId: programId = 4, tutorId: tutorId = 1 } = state || {};
@@ -48,7 +48,7 @@ const PageListadoPlanAccionAlumno = () => {
           <div className="flex flex-col items-center justify-center text-center">
             <img src={noPlansImg} alt="No plans" className="w-1/4 h-auto mb-4" />
             <i className="your-icon-class-name mb-2"></i> {/* Cambia `your-icon-class-name` por la clase de tu ícono */}
-            <p className="text-xl font-bold">Ups... Todavía no tienes asignado ningún plan de acción.</p>
+            <p className="text-xl font-bold">Todavía no tienes asignado ningún plan de acción.</p>
             <p className="text-md">Por favor, espera a que tu tutor te asigne uno. Si tienes alguna duda, no dudes en contactarlo.</p>
           </div>
         ) : (

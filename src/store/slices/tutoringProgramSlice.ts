@@ -1,36 +1,68 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 //import { Finance } from '../../models/entities';
-import { TutoringProgram } from '../types';
+import { ProgramaTutoria, TutoringProgram } from '../types';
 
 type TutoringProgramState={
-    tutoringProgramList : TutoringProgram[];
+    tutoringProgramSelected : ProgramaTutoria;
 }
-/*
 
+const newTutoringProgramTemplate : ProgramaTutoria ={
+    presencial :true,
+    virtual: false,
+    grupal:false  ,
+    obligatorio:false,
+    cant_integrantes:1,
+    cant_tutores:0,
+    nombre:"",
+    descripcion:"",
+    vigente:true,
+    duracion:"30 mins",
+    facultadId:0,
+    facultadNombre:"",
+    especialidadId:0,
+    especialidadNombre:"",
+    tutores:[],
+    alumnos:[],
+    cant_alumnos:0,
+    tutorTypeId:1,
+    tutorTypeDescription:"Fijo Asignado"
+}
 
-*/ 
 const initialState:TutoringProgramState={
-    tutoringProgramList : [],
+    tutoringProgramSelected : newTutoringProgramTemplate,
 };
 export const tutoringProgramSlice = createSlice({
     name : 'tutoringProgram',
     initialState:initialState,
     reducers:{
-        setPrograms : (state,action:{payload : any})=>{
-            const { payload  } = action;
+        // setPrograms : (state,action:{payload : any})=>{
+        //     const { payload  } = action;
             
-            if(payload.length!==0){
+        //     if(payload.length!==0){
                 
-                state.tutoringProgramList = payload;
-            }
+        //         state.tutoringProgramList = payload;
+        //     }
+        // },
+        resetProgram : (state)=>{
+            state.tutoringProgramSelected=newTutoringProgramTemplate;
         },
-        /*updateFinance : (state,action:{payload:{updatedPrice:Finance}})=>{
+        setTutoringProgramDefault:(state)=>{
+            state.tutoringProgramSelected = newTutoringProgramTemplate;
+        },
+        setTutoringProgram : (state,action:{payload:ProgramaTutoria})=>{
             const {payload} = action;
-            state.financeList[state.financeList.findIndex(finance=>finance.id===payload.updatedPrice.id)] = payload.updatedPrice;
+            state.tutoringProgramSelected=payload;
         },
-        resetFinance : (state,action:{payload:any})=>{
-           state.financeList=initialState.financeList;
-        }*/
+        handleChangeTutoringProgram: (state,action:PayloadAction<{name:string,value:any}>)=>{
+            const {name,value} = action.payload;
+
+            //console.log(name,value);
+            //const oldState = state.tutoringProgramSelected;
+            state.tutoringProgramSelected[name]=value;
+            // if (state.tutoringProgramSelected.hasOwnProperty(payload.name)) {
+            //     console.log(state.tutoringProgramSelected[payload.name]);
+            //   }
+        }
     }
 });
-export const { setPrograms } = tutoringProgramSlice.actions;
+export const { resetProgram,setTutoringProgramDefault,setTutoringProgram,handleChangeTutoringProgram } = tutoringProgramSlice.actions;

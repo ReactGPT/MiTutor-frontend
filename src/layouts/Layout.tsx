@@ -8,7 +8,7 @@ import { useRouter } from "../context";
 
 function Layout() {
   const { fetchEspecialidades, fetchFacultades } = useParameters();
-  const {sideBarOption}=useRouter();
+  const { sideBarOption } = useRouter();
   useEffect(() => {
     fetchEspecialidades();
     fetchFacultades();

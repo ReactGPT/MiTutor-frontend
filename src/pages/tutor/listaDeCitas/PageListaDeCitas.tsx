@@ -5,7 +5,9 @@ import { SearchInput } from "../../../components";
 import { useCitasPorTutor } from "../../../store/hooks/useCita";
 import { useAuth } from '../../../context';
 import { TutorRoleDetails } from '../../../store/types';
-
+import { Services as ServicesProperties } from '../../../config';
+import axios from 'axios';
+import { ListCita } from '../../../store/types/ListCita';
 
 const PageListaDeCitas = () => {
   const { userData } = useAuth();
@@ -46,6 +48,37 @@ const PageListaDeCitas = () => {
   const indiceUltimaCita = currentPage * itemsPerPage;
   const indicePrimeraCita = indiceUltimaCita - itemsPerPage;
   const citasFiltradasRango = citasFiltradas.slice(indicePrimeraCita, indiceUltimaCita);
+ 
+  // Función para actualizar la cita en el servidor
+  const actualizarCitaEnServidor = async (appointment:ListCita) => {
+    try {
+      await axios.put(`${ServicesProperties.BaseUrl}/actulizar_Estado_Insertar_Resultado?id_appointment=${appointment.appointmentId}`, {});
+      //esto era si no habian grupales
+      //await axios.post(`${ServicesProperties.BaseUrl}/agregarResultadoCita?studentId=${appointment.personId}&tutoringProgramId=${appointment.programId}&id_appointment=${appointment.appointmentId}`, {});
+    } catch (error) {
+      console.error('Error al actualizar la cita:', error);
+    }
+  };
+ 
+  const [flag,setFlag] =useState(false);
+
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      if (citasFiltradas) {
+        citasFiltradas.forEach((appointment) => {
+          const currentDate = new Date();
+          const endDateTime = new Date(`${appointment.creationDate}T${appointment.endTime}`);
+          if (appointment.appointmentStatus === 'registrada' && currentDate > endDateTime) {
+            appointment.appointmentStatus = 'pendiente resultado';
+            actualizarCitaEnServidor(appointment); 
+            setFlag(true);
+          } 
+        }); 
+      } 
+    }, 5000);
+
+    return () => clearInterval(intervalId);
+  }, [citasFiltradas,]);
 
   const handlePageChange = (newPage: number) => {
     setCurrentPage(newPage);
@@ -68,6 +101,7 @@ const PageListaDeCitas = () => {
             appointment={cita}
             tipo="lista"
             user="tutor"
+            flag={flag}
           />
         ))}
       </div>

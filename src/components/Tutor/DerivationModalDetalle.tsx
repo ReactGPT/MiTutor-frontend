@@ -36,6 +36,7 @@ export default function DerivationModalDetalle({ onClose, derivation }: Derivati
       console.error('Error al descargar el archivo:', error);
     }
   }
+  
   function closeModal() {
     setIsOpen(false);
     onClose(); // Llamar a la función onClose para comunicar que se cerró el modal

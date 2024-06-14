@@ -11,6 +11,7 @@ import { useLocation } from 'react-router-dom';
 import { useActionPlans } from '../../../store/hooks/useActionPlan';
 import { useAuth } from '../../../context';
 import { TutorRoleDetails } from '../../../store/types';
+import noPlansImg from "../../../assets/Tutor/no-planes.webp";
 
 
 const PageListadoPlanAccion = () => {
@@ -75,11 +76,10 @@ const PageListadoPlanAccion = () => {
         )}
       </div>
 
-
       <div className="w-full h-[85%] flex flex-col gap-5">
         {currentPlans.length === 0 ? (
           <div className="flex flex-col items-center justify-center text-center">
-            <img src="src\assets\Tutor\no-planes.png" alt="No plans" className="w-1/4 h-auto mb-4" />
+            <img src={noPlansImg} alt="No plans" className="w-1/4 h-auto mb-4" />
             <i className="your-icon-class-name mb-2"></i> {/* Cambia `your-icon-class-name` por la clase de tu ícono */}
             <p className="text-xl font-bold">Todavía no tienes ningún plan de acción para el alumno</p>
             <p className="text-md">Crea un nuevo plan de acción para hacer seguimiento de los compromisos acordados.</p>

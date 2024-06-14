@@ -37,6 +37,7 @@ import PageDetalleDeTutoria from "../pages/alumno/misTutorias/PageDetalleDeTutor
 import PageIndicadorTutor from "../pages/tutor/indicadorTutores/PageIndicadorTutor.tsx";
 import PageListadoUsuarios from "../pages/administrador/gestionUsuarios/PageListadoUsuarios.tsx";
 import PageUsuario from "../pages/administrador/gestionUsuarios/PageUsuario.tsx";
+import PageAlumnosSeleccionados from "../pages/coordinador/programasDeTutoria/PageCargarAlumnos/PageAlumnosSeleccionados.tsx";
 
 
 
@@ -177,6 +178,10 @@ export const Routes: RouterConfig = {
       {
         path: '/indicadorTutor',
         element: <PageIndicadorTutor />
+      },
+      {
+        path: '/alumnosSeleccionados',
+        element: <PageAlumnosSeleccionados />,
       },
       {
         path: '*',

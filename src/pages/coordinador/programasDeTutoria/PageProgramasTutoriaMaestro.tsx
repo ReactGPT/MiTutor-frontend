@@ -6,7 +6,7 @@ import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-alpine.css';
 import { ColDef } from 'ag-grid-community';
 import CustomProgramaTutoriaGridButton from './CustomProgramaTutoriaGridButton';
-import { DetailsIcon } from '../../../assets';
+import { DetailsIcon, RefreshIcon } from '../../../assets';
 import { useNavigate } from 'react-router-dom';
 import { useProgramaTutoria } from '../../../store/hooks';
 import { Spinner } from '../../../components';
@@ -28,9 +28,8 @@ export default function PageProgramasTutoriaMaestro() {
     const [isOpenModalError,setIsOpenModalError] = useState<boolean>(false);
     const {isLoading,programaTutoriaData,fetchProgramaTutorias,postEliminarProgramaTutoria} = useProgramaTutoria();
     const [programaSelected,setProgramaSelected] = useState<ProgramaTutoria|null>(null);
-    //const [programaTutoriaFiltered,setProgramaTutoriaFiltered] = useState<ProgramaTutoria[]|null>(null)
+    
     useEffect(()=>{
-        //console.log("llamada fetch prog tutoria");
         fetchProgramaTutorias();
     },[]);
     
@@ -40,12 +39,13 @@ export default function PageProgramasTutoriaMaestro() {
     };
     const handleOnSelectProgramaTutoria=(programa: ProgramaTutoria)=>{
         setProgramaSelected(programa);
-    }
+    };
+
     useEffect(()=>{
         if(programaSelected){
             setIsOpen(true);
         }
-    },[programaSelected])
+    },[programaSelected]);
     const handleOnConfirmDeleteProgramaTutoria=()=>{
         if(programaSelected&&!!programaSelected.id){
             postEliminarProgramaTutoria(programaSelected?.id)
@@ -60,7 +60,8 @@ export default function PageProgramasTutoriaMaestro() {
                 //setProgramaSelected(null);
             })
         }
-    }
+    };
+    
     const [filters,setFilters]=useState<any>({
         idSpeciality:null,
         idFaculty:null,
@@ -106,8 +107,8 @@ export default function PageProgramasTutoriaMaestro() {
         {
             headerName:'',
             field:'',
-            maxWidth:60,
-            minWidth:40,
+            maxWidth:40,
+            minWidth:20,
             cellRenderer: (rowData:any)=>{
                 return(
                     <CustomProgramaTutoriaGridButton icon={DetailsIcon} iconSize={4} onClick={()=>(handleNavigation(rowData.data))}/>
@@ -117,8 +118,21 @@ export default function PageProgramasTutoriaMaestro() {
         {
             headerName:'',
             field:'',
-            maxWidth:60,
-            minWidth:40,
+            maxWidth:40,
+            minWidth:20,
+            cellRenderer:(rowData:any)=>{
+                return(
+                    <button className='text-primary' onClick={()=>{}}>
+                        <RefreshIcon size={4}/>
+                    </button>
+                )
+            }
+        },
+        {
+            headerName:'',
+            field:'',
+            maxWidth:40,
+            minWidth:20,
             cellRenderer:(rowData:any)=>{
                 return(
                     <button className='text-primary' onClick={()=>handleOnSelectProgramaTutoria(rowData.data)}>

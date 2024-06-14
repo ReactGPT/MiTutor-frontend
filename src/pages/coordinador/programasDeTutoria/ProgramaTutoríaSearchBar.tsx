@@ -6,8 +6,8 @@ import { useNavigate } from 'react-router-dom';
 import { Combobox,InputCell } from '../../../components';
 import { Faculty, Specialty } from '../../../store/types';
 import { RootState } from '../../../store/store';
-import { useAppSelector } from '../../../store/hooks';
-
+import { useAppSelector,useAppDispatch } from '../../../store/hooks';
+import { tutoringProgramSlice } from '../../../store/slices';
 
 type InputProps = {
     handleOnChangeFilters : (filter:any)=>void;
@@ -16,9 +16,12 @@ type InputProps = {
 
 export default function ProgramaTutoríaSearchBar({handleOnChangeFilters}:InputProps) {
     const navigate=useNavigate();
+    const dispatch = useAppDispatch();
+    const {setTutoringProgramDefault}=tutoringProgramSlice.actions;
     const {specialityList,facultyList} = useAppSelector((state:RootState)=>state.parameters)
     const handleClickNuevaTutoria = ()=>{
         //navigate("/programasDeTutoriaMaestro/nuevo");
+        //dispatch(setTutoringProgramDefault());
         navigate("/programasDeTutoriaMaestro/nuevo",{state:{programaTutoria:null}})
     }
 

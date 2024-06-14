@@ -1,3 +1,5 @@
+import { Student } from "./Student";
+
 export type Tutor={
     idTutor:number;
     nombre:string;
@@ -45,9 +47,10 @@ export type ProgramaTutoria = {
     especialidadId:number;
     especialidadNombre:string;
     tutores:Tutor[];
-    alumnos:Alumno[];
+    alumnos:Student[];
     //tipoTutor:TutorType;
     tutorTypeId:number;
     tutorTypeDescription:string;
+    [key: string]: any;
     //id?:number;
 }

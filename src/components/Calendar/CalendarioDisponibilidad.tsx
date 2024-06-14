@@ -36,6 +36,7 @@ interface CalendarioDisponibilidadProps {
   onSelectEvent?: (event: CustomEvent) => void;
   onSelectSlot?: (slotInfo: SlotInfo) => void;
   refresh?: () => void;
+  refrescar?: boolean;
   tipo: "solicitar" | "disponibilidad";
 }
 
@@ -90,7 +91,7 @@ function transformAvailabilityToEvent(availability: Availability[]): CustomEvent
   }));
 }
 
-const CalendarioDisponibilidad: React.FC<CalendarioDisponibilidadProps> = ({ citas = null, programable = false, onSelectEvent, onSelectSlot, refresh, tipo }) => {
+const CalendarioDisponibilidad: React.FC<CalendarioDisponibilidadProps> = ({ citas = null, programable = false, onSelectEvent, onSelectSlot, refresh, refrescar, tipo }) => {
   const { userData } = useAuth();
   const tutorId = (userData?.userInfo?.roles[0].details as TutorRoleDetails).tutorId;
 
@@ -100,7 +101,7 @@ const CalendarioDisponibilidad: React.FC<CalendarioDisponibilidadProps> = ({ cit
 
   useEffect(() => {
     fetchAvailability();
-  }, [refreshKey]);
+  }, [refrescar, refreshKey]);
 
   const events: CustomEvent[] = citas?.map(transformCitaToEvent) ?? [];
   const disponibilidad = transformAvailabilityToEvent(availability);

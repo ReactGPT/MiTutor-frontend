@@ -70,6 +70,7 @@ const PageListaDeCitasAlumno = () => {
             appointment={cita}
             tipo="lista"
             user='alumno'
+            flag={false}
           />
         ))}
       </div>

@@ -38,9 +38,9 @@ import PageDetalleDeTutoria from "../pages/alumno/misTutorias/PageDetalleDeTutor
 import PageIndicadorTutor from "../pages/tutor/indicadorTutores/PageIndicadorTutor.tsx";
 import PageListadoUsuarios from "../pages/administrador/gestionUsuarios/PageListadoUsuarios.tsx";
 import PageUsuario from "../pages/administrador/gestionUsuarios/PageUsuario.tsx";
-import PageUnidadFacultad from "../pages/coordinador/PageUnidadFacultad.tsx";
- 
- 
+import PageUnidadFacultad from "../pages/administrador/gestionUnidad/PageUnidadFacultad.tsx";
+import PageEditarFacultad from "../pages/administrador/gestionUnidad/PageEditarFacultad.tsx";
+import PageEditarUnidadDerivacion from "../pages/administrador/gestionUnidad/PageEditarUnidadDerivacion.tsx";
 
 type RouterDetail = {
   pages: RouteObject[];
@@ -325,8 +325,16 @@ export const Routes: RouterConfig = {
         element: <PageUsuario/>
       },
       {
-        path: '/unidad-facultad',
+        path: '/unidades',
         element: <PageUnidadFacultad/>
+      },
+      {
+        path: '/unidades/editarFacultad',
+        element: <PageEditarFacultad/>
+      },
+      {
+        path: '/unidades/editarUnidadDerivacion',
+        element: <PageEditarUnidadDerivacion/>
       },
       {
         path: '*',
@@ -348,8 +356,8 @@ export const Routes: RouterConfig = {
       },
       {
         key: 'unidades',
-        label: 'Facultades y Unidades',
-        path: '/unidad-facultad',//Pendiente agregar
+        label: 'Unidades',
+        path: '/unidades',//Pendiente agregar
         icon: <BiSolidLandmark fontSize={32} />,
       },
       {

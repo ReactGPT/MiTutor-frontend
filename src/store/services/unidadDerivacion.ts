@@ -23,6 +23,8 @@ async function getUnidadInfo():Promise<UnidadDetailResponse>{
                 email: item.email,
                 telefono: item.phone,
                 estado: item.isActive,
+                fechaCreacion: item.creationDate.split('T')[0],
+                esPadre: item.isParent,
             }
         });
         return {unidadList};

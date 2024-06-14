@@ -18,6 +18,7 @@ function DatosPersona() {
   const [isOpenModalError,setIsOpenModalError]=useState<boolean>(false);
 
   const handleSaveUsuario=()=>{
+    console.log(user);
     postUser(user)
     .then((response) => response?setIsOpenModalSucess(true):setIsOpenModalError(true));
   }

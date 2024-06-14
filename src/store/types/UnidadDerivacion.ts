@@ -6,4 +6,6 @@ export type UnidadDerivacion = {
     email: string;
     telefono: string;
     estado: boolean;
+    esPadre: boolean;
+    fechaCreacion: string;
 };

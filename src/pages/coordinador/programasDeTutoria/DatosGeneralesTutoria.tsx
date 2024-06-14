@@ -9,6 +9,7 @@ import { useNavigate } from 'react-router-dom';
 import ModalSuccess from '../../../components/ModalSuccess';
 import ModalError from '../../../components/ModalError';
 import { tutoringProgramSlice } from '../../../store/slices';
+import { useAuth } from '../../../context';
 
 function DatosGeneralesTutoria() {
   //const[open,setOpen] = useState<boolean>(true);
@@ -26,6 +27,8 @@ function DatosGeneralesTutoria() {
     postProgramaTutoria(tutoringProgramSelected)
     .then((response) => response?setIsOpenModalSucess(true):setIsOpenModalError(true));
   }
+  const {userData} = useAuth();
+  const roles = !!userData?userData?.userInfo?.roles:[];
   // const handleLocalChangeTutoringProgram= (name:string,value:any)=>{
   //   dispatch(handleChangeTutoringProgram({name:name,value:value}));
   // };
@@ -34,8 +37,8 @@ function DatosGeneralesTutoria() {
       <div id="ProgramaTutoriaBox1Header" className='flex flex-row justify-between max-h-[45px] w-full h-[30%]'>
         <h2 className='text-xl font-bold text-primary'>Datos del programa</h2>
         <div className='flex flex-row gap-4'>
-          {isLoading ? <Spinner /> : <Button text='Guardar' icon={SaveIcon} onClick={handleSaveTutoria} />}
-          <Button text='Cancelar' variant='primario' icon={CloseIcon} iconSize={4} onClick={() => { navigate(-1); }} />
+          {isLoading ? <Spinner /> : <Button disabled={!!roles? !(roles.some((rol:any)=>rol.type==="MANAGER"&&(rol.details.departmentType==='Facultad'?rol.details.departmentId.toString()===tutoringProgram.facultadId.toString():rol.details.departmentId.toString()===tutoringProgram.especialidadId.toString()))):true}  text='Guardar' icon={SaveIcon} onClick={handleSaveTutoria} />}
+          <Button text='Cancelar' variant='primario' icon={CloseIcon} iconSize={4} onClick={() => { navigate("/programasDeTutoria"); }} />
         </div>
       </div>
       <div id='ProgramaTutoriaBox1Content' className='flex flex-row w-full h-full gap-2 h-[70%]'>

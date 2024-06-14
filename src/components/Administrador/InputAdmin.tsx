@@ -9,11 +9,12 @@ type InputProps = {
   readOnly?: boolean;
   onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
   manejarBlur?: (e: ChangeEvent<HTMLInputElement>) => void;
+  noPad?: boolean;
 };
 
-const InputAdmin = ({ titulo = "", texto = "", enable = true, name, value, onChange, readOnly, manejarBlur }: InputProps) => {
+const InputAdmin = ({ titulo = "", texto = "", enable = true, name, value, onChange, readOnly, manejarBlur, noPad }: InputProps) => {
   return (
-    <li className="drop-shadow-md p-3 flex items-center space-x-5 height-100% personalizado"
+    <li className={`drop-shadow-md flex items-center space-x-5 height-100% personalizado ${noPad ? '' : 'p-3'}`}
       style={{ display: "flex", height: "100%", flexDirection: "column", alignItems: "flex-start" }}>
       <label className="font-roboto text-base text-primary">{titulo}</label>
       <input type="text"

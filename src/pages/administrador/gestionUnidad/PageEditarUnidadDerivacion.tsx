@@ -27,7 +27,9 @@ const PageEditarUnidadDerivacion = () => {
   const { subUnidadData, fetchSubUnidadData } = useUnidadDerivacion();
   const { unidad, onChangeUnidad } = useUnidadContext();
 
-  useEffect(() => {fetchSubUnidadData(unidadData.unidadDerivacionId)}, []);
+  console.log("unidad",unidadData);
+  useEffect(() => {fetchSubUnidadData(unidadData.id)}, []);
+  
 
   const handleSearch = (query: string) => {
     console.log(unidadData);
@@ -60,10 +62,10 @@ const PageEditarUnidadDerivacion = () => {
     { headerName: 'Estado', field: 'estado', minWidth:100, maxWidth:100},
     { headerName: 'Fecha de Creacion', field: 'fechaCreacion', minWidth:100, maxWidth:100},
     {
-      headerName:'',
+      headerName:'Editar',
       field:'',
-      maxWidth:60,
-      minWidth:40,
+      maxWidth:100,
+      minWidth:80,
       cellRenderer: (rowData:any)=>{
         return(
           <CustomUnidadGridButton 
@@ -76,10 +78,10 @@ const PageEditarUnidadDerivacion = () => {
       }
     },
     {
-      headerName:'',
+      headerName:'Eliminar',
       field:'',
-      maxWidth:60,
-      minWidth:40,
+      maxWidth:100,
+      minWidth:80,
       cellRenderer:(rowData:any)=>{
         return(
           <button className='text-primary' onClick={()=>{}}>
@@ -102,14 +104,12 @@ const PageEditarUnidadDerivacion = () => {
 
         <div className="grid grid-cols-2 gap-4 p-4">
             <div className='grid grid-cols-1'>
-              <InputAdmin titulo="Nombre de la Unidad de Derivación" value={unidadData?.nombre} enable={true}/>
+              <InputAdmin titulo="Nombre de la Unidad de Derivación" value={unidadData?.nombre} enable={false}/>
               <div className='flex'>
-                <InputAdmin 
-                  titulo="Código del Responsable" value={unidadData?.responsable} enable={false} />
-                <div className='w-[70%]'>
+                <div className='w-full'>
                   <InputAdmin 
                     titulo="Nombre del Responsable" 
-                    value={unidadData?.facultyManager.persona.name + ' ' + unidadData?.facultyManager.persona.lastName + ' ' + (unidadData?.facultyManager.persona.secondLastName ? unidadData?.facultyManager.persona.secondLastName : '')} 
+                    value={unidadData?.responsable}
                     enable={false} />
                 </div>
                 
@@ -118,27 +118,29 @@ const PageEditarUnidadDerivacion = () => {
             </div>
             <div className='grid grid-cols-2'>
               <InputAdmin titulo="Siglas" value={unidadData?.siglas} enable={false} />
-              <InputAdmin titulo="Estado" value={unidadData?.isActive ? 'Activa' : 'Inactiva'} enable={false} />
-              <InputAdmin titulo="Número de Estudiantes" value={unidadData?.numberStudents} enable={false} />
-              <InputAdmin titulo="Número de Tutores" value={unidadData?.numberTutors} enable={false} />
+              <InputAdmin titulo="Estado" value={unidadData?.estado} enable={false} />
+              <InputAdmin titulo="Fecha de Creación" value={unidadData?.fechaCreacion} enable={false} />
             </div>
             
           </div>
 
         <div className="w-full flex justify-between items-center">
           <h1 className="text-[28px] font-bold text-[#2F2F2F]">
-            Sub Unidades
+            SubUnidades
           </h1>
-          <Button className="" onClick={() => {}} text="Agregar Unidad" />
+          
         </div>  
-
-        <div className="w-full mt-[1%]">
+        <div className='grid grid-cols-2 gap-4 p-4 items-end'>
           <SearchInput
             onSearch={handleSearch}
             handleOnChangeFilters={() => {}}
-            placeholder="Siglas o nombre de la Unidad"
+            placeholder="Siglas o nombre de la SubUnidad"
             selectDisabled={true}
           />
+          <div className='flex items-end align-center justify-between gap-4'>
+            <Button variant="primario" onClick={() => {}} text="Crear SubUnidad" className='w-[20%]'/>
+            <InputAdmin titulo="Total SubUnidades" value={subUnidadData.length.toString()} enable={false} noPad={true}/>
+          </div>
         </div>
 
         <div className="flex w-full h-[35%] flex-col space-y-10 mt-10">

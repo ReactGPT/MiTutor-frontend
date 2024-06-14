@@ -31,7 +31,7 @@ function useUnidadDerivacion(): UnidadHookReturnType {
         setIsLoading(true);
         try {
             const subUnidadData = await getSubUnidadInfo(unidadId);
-            setUnidadData(subUnidadData.unidadList);
+            setSubUnidadData(subUnidadData.unidadList);
         } catch (error: any) {
             setError(error);
         } finally {

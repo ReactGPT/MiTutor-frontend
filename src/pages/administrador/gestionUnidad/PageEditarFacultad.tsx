@@ -83,7 +83,7 @@ const PageEditarFacultad = () => {
         </div>
         <div className="grid grid-cols-2 gap-4 p-4">
           <div className='grid grid-cols-1'>
-            <InputAdmin titulo="Nombre de la Facultad" value={facultadData?.name} enable={true}/>
+            <InputAdmin titulo="Nombre de la Facultad" value={facultadData?.name} enable={false}/>
             <div className='flex'>
               <InputAdmin 
                 titulo="Código del Responsable" value={facultadData?.facultyManager.pucpCode ? facultadData?.facultyManager.pucpCode : '-'} enable={false} />
@@ -145,9 +145,9 @@ const PageEditarFacultad = () => {
                     // estado: especialidad.estado ? "Activo" : "Inactivo",
                     // fechaCreacion: especialidad.fechaCreacion,
                   }))
-                  // .filter((item) =>
-                  //   // item.nombre.toLowerCase().includes(searchValue.toLowerCase()) || item.siglas.toLowerCase().includes(searchValue.toLowerCase())
-                  // )
+                  .filter((item) =>
+                    item.nombre.toLowerCase().includes(searchValue.toLowerCase()) || item.acronimo.toLowerCase().includes(searchValue.toLowerCase())
+                  )
                 }
               />
             </div>

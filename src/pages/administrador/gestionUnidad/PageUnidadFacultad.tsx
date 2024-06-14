@@ -38,7 +38,7 @@ const PageUnidadFacultad = () => {
   };
   const handleNavigationUnidadDerivacion = (data: UnidadDerivacion) => {
     console.log(data);
-    navigate("/unidades/editarUnidadDerivacion",{state:{userData:data}});
+    navigate("/unidades/editarUnidadDerivacion",{state:{unidadData:data}});
   };
 
   const defaultColDef = {
@@ -59,7 +59,7 @@ const PageUnidadFacultad = () => {
     { headerName: 'Núm. de Estudiantes', field: 'numeroEstudiantes', minWidth:130, maxWidth:180},
     { headerName: 'Núm. de Tutores', field: 'numeroTutores', minWidth:130, maxWidth:180},
     { headerName: 'Administrador', field: 'nombreAdmin', minWidth:200 },
-    { headerName: 'Email', field: 'email', minWidth:200 },
+    { headerName: 'Email', field: 'email', minWidth:250 },
     {
         headerName:'Modificar',
         field:'',
@@ -81,10 +81,10 @@ const PageUnidadFacultad = () => {
         }
     },
     {
-        headerName:'',
+        headerName:'Eliminar',
         field:'',
-        maxWidth:60,
-        minWidth:40,
+        maxWidth:100,
+        minWidth:80,
         cellRenderer:(rowData:any)=>{
             return(
                 <button className='text-primary' onClick={()=>{}}>
@@ -104,10 +104,10 @@ const PageUnidadFacultad = () => {
     { headerName: 'Estado', field: 'estado', minWidth:100, maxWidth:100},
     { headerName: 'Fecha de Creacion', field: 'fechaCreacion', minWidth:100, maxWidth:100},
     {
-      headerName:'',
+      headerName:'Modificar',
       field:'',
-      maxWidth:60,
-      minWidth:40,
+      maxWidth:100,
+      minWidth:80,
       cellRenderer: (rowData:any)=>{
         return(
           <CustomUnidadGridButton 
@@ -120,10 +120,10 @@ const PageUnidadFacultad = () => {
       }
     },
     {
-      headerName:'',
+      headerName:'Eliminar',
       field:'',
-      maxWidth:60,
-      minWidth:40,
+      maxWidth:100,
+      minWidth:80,
       cellRenderer:(rowData:any)=>{
         return(
           <button className='text-primary' onClick={()=>{}}>

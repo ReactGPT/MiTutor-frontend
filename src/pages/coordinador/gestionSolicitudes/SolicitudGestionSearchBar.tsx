@@ -73,17 +73,6 @@ export default function SolicitudGestionSearchBar({ handleOnChangeFilters }: Inp
                     icon={Program}
                     value={specialitySelected ? specialitySelected.name : "Especialidad"}
                 />
-                <DropdownSolicitud
-                    options={[
-                        { id: 1, name: 'Asignado' },
-                        { id: 2, name: 'Solicitado' },
-                        { id: 3, name: 'Rechazado' }
-                    ]}
-                    onSelect={handleOnChangeStatus}
-                    defaultOption="Estado"
-                    icon={State}
-                    value={statusSelected ? statusSelected.name : "Estado"}
-                />
             </div>
         </div>
     );

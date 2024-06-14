@@ -14,7 +14,6 @@ import ModalWarning from '../../../components/ModalWarning';
 import ModalError from '../../../components/ModalError';
 import ModalConfirmation from '../../../components/ModalConfirmation';
 import ModalSuccess from '../../../components/ModalSuccess';
-import ProgramaTutoríaSearchBar from '../programasDeTutoria/ProgramaTutoríaSearchBar';
 
 const PageSolicitudGestion: React.FC = () => {
     const { fetchTutorStudentPrograms, tutorStudentPrograms, isLoading, updateProgramState } = useTutorStudentPrograms();
@@ -46,7 +45,7 @@ const PageSolicitudGestion: React.FC = () => {
             setModalMessage('¿Está seguro de aceptar las solicitudes seleccionadas?');
             setConfirmationAction(() => async () => {
                 try {
-                    await updateProgramState(selectedIds, 'Asignado');
+                    await updateProgramState(selectedIds, 'ASIGNADO');
                     setIsSuccessModalOpen(true);
                 } catch (error) {
                     setIsErrorModalOpen(true);
@@ -66,7 +65,7 @@ const PageSolicitudGestion: React.FC = () => {
             setModalMessage('¿Está seguro de rechazar las solicitudes seleccionadas?');
             setConfirmationAction(() => async () => {
                 try {
-                    await updateProgramState(selectedIds, 'Rechazado');
+                    await updateProgramState(selectedIds, 'RECHAZADO');
                     setIsSuccessModalOpen(true);
                 } catch (error) {
                     setIsErrorModalOpen(true);

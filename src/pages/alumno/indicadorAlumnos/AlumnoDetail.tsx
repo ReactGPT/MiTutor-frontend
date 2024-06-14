@@ -124,7 +124,7 @@ const AlumnoDetail: React.FC = () => {
     const fetchProgramaTutorias = async () => {
         try {
             // Realiza la petición al servicio para obtener los programas de tutoría del alumno
-            const response = await fetch(`https://localhost:44369/listarProgramasDeTutoriaPorStudentId/${student?.id}`);
+            const response = await fetch(`https://api.daoch.me/listarProgramasDeTutoriaPorStudentId/${student?.id}`);
             if (!response.ok) {
                 throw new Error('Failed to fetch data');
             }
@@ -137,7 +137,7 @@ const AlumnoDetail: React.FC = () => {
     };
     const fetchData = async () => {
         try {
-            let url = `https://localhost:44369/listarProgramaFechaStudent/${student?.id}`;
+            let url = `https://api.daoch.me/listarProgramaFechaStudent/${student?.id}`;
             if (startDate && endDate) {
                 url += `?startDate=${startDate}&endDate=${endDate}`;
             }
@@ -161,7 +161,7 @@ const AlumnoDetail: React.FC = () => {
 
     const fetchAppointments = async () => {
         try {
-            let url = `https://localhost:44369/listarAppointmentPorFecha/${student?.id}`;
+            let url = `https://api.daoch.me/listarAppointmentPorFecha/${student?.id}`;
             if (startDate && endDate) {
                 url += `?startDate=${startDate}&endDate=${endDate}`;
             }
@@ -180,7 +180,7 @@ const AlumnoDetail: React.FC = () => {
 
     const fetchProgramVirtualFace = async () => {
         try {
-            let url = `https://localhost:44369/listarProgramaVirtualFace/${student?.id}`;
+            let url = `https://api.daoch.me/listarProgramaVirtualFace/${student?.id}`;
             if (startDate && endDate) {
                 url += `?startDate=${startDate}&endDate=${endDate}`;
             }

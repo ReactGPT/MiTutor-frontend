@@ -5,10 +5,12 @@ import { useNavigate } from "react-router-dom";
 import { ListCita } from "../../store/types/ListCita";
 import { Services as ServicesProperties } from '../../config'; 
 import axios from 'axios';
+import CitaModalDetalle from "./CitaModalDetalle";
 interface AppointmentItemProps {
   appointment: ListCita;
   tipo: "lista" | "historico";
   user: "alumno" | "tutor";
+  flag: boolean;
 }
 
 const textClasses = {
@@ -69,18 +71,27 @@ const controlColor = (color: string, tipo: string) => {
   }
 };
 
-const AppointmentItem: React.FC<AppointmentItemProps> = ({ appointment, tipo, user }) => {
+const AppointmentItem: React.FC<AppointmentItemProps> = ({ appointment, tipo, user, flag }) => {
   const navigate = useNavigate();
   const [appointmentStatus, setAppointmentStatus] = useState(appointment.appointmentStatus); 
 
   // Combina creationDate y endTime para crear la fecha de finalización completa
   const endDateTime = new Date(`${appointment.creationDate}T${appointment.endTime}`);
   
+  //Modal Registrado
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
   const goToDetalleCita = () => {
     if (user === 'tutor' && appointment.appointmentStatus!="registrada") {
       navigate("/listaDeCitas/resultadoCitaIndividual", { state: { cita: appointment } });
     } else if (user === 'alumno') {
       navigate("/listaDeCitasAlumno/detalleCitaAlumno", { state: { cita: appointment } });
+    } else if (user === 'tutor' && appointment.appointmentStatus=="registrada"){
+      setIsModalOpen(!isModalOpen); 
     }
   };
 
@@ -88,16 +99,17 @@ const AppointmentItem: React.FC<AppointmentItemProps> = ({ appointment, tipo, us
   const checkAppointmentStatus = () => {
     const currentDate = new Date();
     if (appointmentStatus === 'registrada' && currentDate > endDateTime) { 
-      setAppointmentStatus('pendiente resultado');
+      setAppointmentStatus('pendiente resultado'); 
     }
   };
    
+  useEffect(() => {
+    setAppointmentStatus(appointment.appointmentStatus);
+  }, [appointment]);
 
   useEffect(() => {
-    const intervalId = setInterval(checkAppointmentStatus, 10000); // Verifica cada 10 segundos
-
-    return () => clearInterval(intervalId);
-  }, [appointmentStatus,endDateTime]);
+    checkAppointmentStatus();
+  }, [flag]);
  
   
   return (
@@ -149,8 +161,8 @@ const AppointmentItem: React.FC<AppointmentItemProps> = ({ appointment, tipo, us
             <span className="text-black font-semibold">Hora:</span>
             <span className="text-primary">{`${appointment.startTime}`}</span>
           </div>
-
-          <Button variant='primario' onClick={goToDetalleCita} icon={IconDetails} />
+            <Button variant='primario' onClick={goToDetalleCita} icon={IconDetails} />
+            <div>{isModalOpen && <CitaModalDetalle onClose={closeModal} appointment={appointment}/>}</div>
         </div>
       </div>
     </div>

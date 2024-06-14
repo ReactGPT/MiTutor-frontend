@@ -53,12 +53,14 @@ const PageListaDeCitas = () => {
   const actualizarCitaEnServidor = async (appointment:ListCita) => {
     try {
       await axios.put(`${ServicesProperties.BaseUrl}/actulizar_Estado_Insertar_Resultado?id_appointment=${appointment.appointmentId}`, {});
-      await axios.post(`${ServicesProperties.BaseUrl}/agregarResultadoCita?studentId=${appointment.personId}&tutoringProgramId=${appointment.programId}&id_appointment=${appointment.appointmentId}`, {});
+      //esto era si no habian grupales
+      //await axios.post(`${ServicesProperties.BaseUrl}/agregarResultadoCita?studentId=${appointment.personId}&tutoringProgramId=${appointment.programId}&id_appointment=${appointment.appointmentId}`, {});
     } catch (error) {
       console.error('Error al actualizar la cita:', error);
     }
   };
  
+  const [flag,setFlag] =useState(false);
 
   useEffect(() => {
     const intervalId = setInterval(() => {
@@ -69,6 +71,7 @@ const PageListaDeCitas = () => {
           if (appointment.appointmentStatus === 'registrada' && currentDate > endDateTime) {
             appointment.appointmentStatus = 'pendiente resultado';
             actualizarCitaEnServidor(appointment); 
+            setFlag(true);
           } 
         }); 
       } 
@@ -98,6 +101,7 @@ const PageListaDeCitas = () => {
             appointment={cita}
             tipo="lista"
             user="tutor"
+            flag={flag}
           />
         ))}
       </div>

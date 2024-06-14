@@ -10,7 +10,7 @@ import { InitialData } from '../../../store/types/AppointmentResult';
 import { ListCita } from '../../../store/types/ListCita';
 import { TimePicker } from 'antd';
 import dayjs, { Dayjs } from 'dayjs';
-import { useResultadoCita, useUpdateResultadoCita, useUpdateComentario } from "../../../store/hooks/useResultadoCita";
+import { useResultadoCita, useUpdateResultadoCita, useUpdateComentario,useInsertarResultadoCita } from "../../../store/hooks/useResultadoCita";
 import { ComboboxOptionProps } from '@headlessui/react'; 
 import ModalComentario from '../../../components/Tutor/ModalComentario';
 import { useArchivos, useArchivosDB, useArchivosOtros} from '../../../store/hooks/useArchivos';
@@ -26,6 +26,8 @@ type InputProps = {
 } 
  
 function ResultadoCitaBlock2({className,cita}:InputProps) {
+    //insertar Resultado
+    //await axios.post(`${ServicesProperties.BaseUrl}/agregarResultadoCita?studentId=${appointment.personId}&tutoringProgramId=${appointment.programId}&id_appointment=${appointment.appointmentId}`, {});
     const { resultadoCita, fetchResultadoCita } = useResultadoCita(cita);
     //Enviar archivos
     const { enviarArchivoServidor,loadingServidor } = useArchivos();
@@ -64,7 +66,7 @@ function ResultadoCitaBlock2({className,cita}:InputProps) {
     };
    
     /*Habilitar comentarios,asistencia,duracion*/    
-    const [enableAttendance,setEnableAttendance] = useState<boolean>(false);
+    const [enableAttendance, setEnableAttendance] = useState<boolean | undefined>(undefined);
 
     type AssistanceOption = {
       name: string;
@@ -100,7 +102,9 @@ function ResultadoCitaBlock2({className,cita}:InputProps) {
     //Inicializar 
     const [commentValue, setCommentValue] = useState('');
     const [commentValue2, setCommentValue2] = useState('');
-    const [selectOption, setSelectOption] = useState(resultadoCita?.appointmentResult.asistio ?? false);
+    const [selectOption, setSelectOption] = useState<boolean | undefined>(
+      resultadoCita && resultadoCita.appointmentResult ? resultadoCita.appointmentResult.asistio ?? undefined : undefined
+    );
     const [startTime, setStartTime] = useState( dayjs('00:00:00', 'HH:mm:ss'));
     const [endTime, setEndTime] = useState(dayjs('00:00:00', 'HH:mm:ss'));
     
@@ -121,6 +125,7 @@ function ResultadoCitaBlock2({className,cita}:InputProps) {
           setSelectOption(resultadoCita.appointmentResult.asistio);
           setStartTime(dayjs(resultadoCita.appointmentResult.startTime, 'HH:mm:ss'));
           setEndTime(dayjs(resultadoCita.appointmentResult.endTime, 'HH:mm:ss'));
+          console.log("llego resultado:",resultadoCita);
       }
     }, [resultadoCita]);
 
@@ -195,9 +200,19 @@ function ResultadoCitaBlock2({className,cita}:InputProps) {
       if (resultadoCita && resultadoCita.appointmentResult) {  
         setCommentValue2(resultadoCita.appointmentResult.comments[1].message);
         setCommentValue(resultadoCita.appointmentResult.comments[0].message); 
-        setSelectOption(resultadoCita.appointmentResult.asistio);
-        setStartTime(dayjs(resultadoCita.appointmentResult.startTime, 'HH:mm:ss')); 
-        setEndTime(dayjs(resultadoCita.appointmentResult.endTime, 'HH:mm:ss'));  
+        setSelectOption(resultadoCita.appointmentResult.asistio ?? false);
+        if (!resultadoCita.appointmentResult.startTime){
+          setStartTime(dayjs('00:00:00', 'HH:mm:ss')); 
+        }else{
+          setStartTime(dayjs(resultadoCita.appointmentResult.startTime, 'HH:mm:ss')); 
+        }
+
+        if (!resultadoCita.appointmentResult.endTime){
+          setEndTime(dayjs('00:00:00', 'HH:mm:ss')); 
+        }else{
+          setEndTime(dayjs(resultadoCita.appointmentResult.endTime, 'HH:mm:ss'));  
+        }
+        
       }   
     }; 
 
@@ -216,16 +231,115 @@ function ResultadoCitaBlock2({className,cita}:InputProps) {
     } 
 
     const handleGuardar = async () => {
-        setIsModalOpen(!isModalOpen); 
-        setEnableAttendance(!enableAttendance); 
-        if (resultadoCita && resultadoCita.appointmentResult) {
-            resultadoCita.appointmentResult.comments[0].message = commentValue ?? '';
-            resultadoCita.appointmentResult.comments[1].message = commentValue2 ?? '';
-            resultadoCita.appointmentResult.asistio=selectOption;
-            resultadoCita.appointmentResult.startTime=startTime.format('HH:mm:ss');
-            resultadoCita.appointmentResult.endTime=endTime.format('HH:mm:ss');
-            useUpdateComentario(resultadoCita); 
-            useUpdateResultadoCita(resultadoCita);
+      setIsModalOpen(!isModalOpen); 
+      setEnableAttendance(!enableAttendance); 
+      if (resultadoCita && resultadoCita.appointmentResult) {
+          resultadoCita.appointmentResult.comments[0].message = commentValue ?? '';
+          resultadoCita.appointmentResult.comments[1].message = commentValue2 ?? '';
+          resultadoCita.appointmentResult.asistio = selectOption ?? false;
+          resultadoCita.appointmentResult.startTime=startTime.format('HH:mm:ss');
+          resultadoCita.appointmentResult.endTime=endTime.format('HH:mm:ss');
+
+        if(resultadoCita.appointmentResult.appointmentResultId==0){
+          const idResultado = await useInsertarResultadoCita(resultadoCita);
+          if (archivosBDCopia.length > 0) {
+            try {
+              // Seleccionar archivos a guardar
+              const filesToSend = archivosBDCopia.filter(file => file.nuevo === 1 && file.eliminado === 0);
+              //INSERTAR ARCHIVOS ALUMNOS
+              for (const file of filesToSend) {
+                //creo un tipo archivo
+                const archivo:Archivo={  
+                    filesId: 0,
+                    filesName: file.name,
+                    appointmentResultId: idResultado,
+                    privacyTypeId: 1
+                }
+                const idArchivo = await enviarArchivoBd(archivo); // Espera a que se complete enviarArchivoBd
+                // Enviar archivo al servidor
+                await enviarArchivoServidor(file, idArchivo.toString(), 'archivosCita').then(() => {
+                  // Actualizar el estado del archivo en archivosBD
+                  file.id_archivo=idArchivo; 
+                  }).catch(error => {
+                      console.error('Error al enviar archivo al servidor:', error);
+                  });
+              }
+
+              const updatedArchivosBD: ExtendedFile[] = archivosBDCopia.map(file => {
+                const copiedFile: ExtendedFile = new File([file], file.name, {
+                  type: file.type,
+                  lastModified: file.lastModified
+                }) as ExtendedFile;
+              
+                // Copiar las propiedades adicionales
+                copiedFile.nuevo = 0;
+                copiedFile.eliminado = file.eliminado;
+                copiedFile.id_archivo = file.id_archivo;
+                copiedFile.nombre = file.nombre;  // Asegúrate de copiar esta propiedad también
+              
+                return copiedFile;
+              });
+    
+                // Actualizar el estado de archivosBD
+                setArchivosBD([...updatedArchivosBD]);
+              console.log('Archivos enviados correctamente');  
+            }catch (error) {
+              console.error('Error al enviar archivos:', error);
+            } 
+          }  
+
+          //ALUMNO
+          // Enviar archivos si hay archivos seleccionados
+          if (archivosOtrosCopia.length > 0) {
+            try {
+              // Seleccionar archivos a guardar
+              const filesToSend = archivosOtrosCopia.filter(file => file.nuevo === 1 && file.eliminado === 0); 
+              //INSERTAR ARCHIVOS ALUMNOS
+              for (const file of filesToSend) {
+                //creo un tipo archivo
+                const archivo:Archivo={  
+                    filesId: 0,
+                    filesName: file.name,
+                    appointmentResultId: idResultado,
+                    privacyTypeId: 2
+                }
+                const idArchivo = await enviarArchivoOtros(archivo); // Espera a que se complete enviarArchivoBd
+                // Enviar archivo al servidor
+                await enviarArchivoServidor(file, idArchivo.toString(), 'archivosCita').then(() => {
+                  // Actualizar el estado del archivo en archivosBD
+                  file.id_archivo=idArchivo; 
+
+                  }).catch(error => {
+                      console.error('Error al enviar archivo al servidor:', error);
+                  });
+              }
+ 
+              const updatedArchivosBD: ExtendedFile[] = archivosOtrosCopia.map(file => {
+                const copiedFile: ExtendedFile = new File([file], file.name, {
+                  type: file.type,
+                  lastModified: file.lastModified
+                }) as ExtendedFile;
+              
+                // Copiar las propiedades adicionales
+                copiedFile.nuevo = 0;
+                copiedFile.eliminado = file.eliminado;
+                copiedFile.id_archivo = file.id_archivo;
+                copiedFile.nombre = file.nombre;  // Asegúrate de copiar esta propiedad también
+              
+                return copiedFile;
+              });
+    
+                // Actualizar el estado de archivosBD
+                setArchivosOtros([...updatedArchivosBD]);
+              console.log('Archivos enviados correctamente..profesor');  
+            } catch (error) {
+              console.error('Error al enviar archivos:', error);
+            }
+          }
+ 
+        }else{
+          useUpdateComentario(resultadoCita); 
+          useUpdateResultadoCita(resultadoCita);
             // Enviar archivos si hay archivos seleccionados
             if (archivosBDCopia.length > 0) {
               try {
@@ -250,24 +364,6 @@ function ResultadoCitaBlock2({className,cita}:InputProps) {
                   await enviarArchivoServidor(file, idArchivo.toString(), 'archivosCita').then(() => {
                     // Actualizar el estado del archivo en archivosBD
                     file.id_archivo=idArchivo; 
-
-                    /*const updatedArchivosBD: ExtendedFile[] = archivosBDCopia.map(file => {
-                      const copiedFile: ExtendedFile = new File([file], file.name, {
-                        type: file.type,
-                        lastModified: file.lastModified
-                      }) as ExtendedFile;
-                    
-                      // Copiar las propiedades adicionales
-                      copiedFile.nuevo = 0;
-                      copiedFile.eliminado = file.eliminado;
-                      copiedFile.id_archivo = file.id_archivo;
-                      copiedFile.nombre = file.nombre;  // Asegúrate de copiar esta propiedad también
-                    
-                      return copiedFile;
-                    });
-          
-                      // Actualizar el estado de archivosBD
-                      setArchivosBD([...updatedArchivosBD]); */
                     }).catch(error => {
                         console.error('Error al enviar archivo al servidor:', error);
                     });
@@ -382,9 +478,9 @@ function ResultadoCitaBlock2({className,cita}:InputProps) {
             } catch (error) {
               console.error('Error al enviar archivos:', error);
             }
+          }
         }
-
-        }  
+      }  
     }; 
 
     async function eliminarArchivo(idArchivo: number) {
@@ -440,14 +536,15 @@ function ResultadoCitaBlock2({className,cita}:InputProps) {
                 <div className='w-full flex items-center mb-5 '>
                     <h3 className='font-montserrat text-lg font-bold text-primary w-full'>Asistencia</h3>
                     <div className='flex items-center gap-4'>
-                        <Combobox disabled={!enableAttendance} 
-                        value={selectOption} name={selectOption?'Asistio':'Falto'} options= {assistanceState}
-                        onChange={handleAsistencia} className='w-[150px]'/>
-                        
-                        {/*<Button variant='primario' onClick={handleCancelar} text={enableAttendance ? 'Cancelar' : 'Editar'}/> 
-                          <div style={{ display: enableAttendance ? 'inline-block' : 'none' }}>
-                            <Button variant='secundario' onClick={handleGuardar} text='Guardar' />
-                          </div>*/}
+                        <Combobox
+                            disabled={!enableAttendance}
+                            value={selectOption}  // Usando nullish coalescing para establecer un valor vacío si selectOption es undefined
+                            name={selectOption ? 'Asistio' : 'Falto'}
+                            options={assistanceState}
+                            onChange={handleAsistencia}
+                            className='w-[150px]'
+                          />
+                         
                           {!enableAttendance ? (
                             <Button variant="primario" onClick={()=>setEnableAttendance(true)} text="Editar" />
                           ) : (

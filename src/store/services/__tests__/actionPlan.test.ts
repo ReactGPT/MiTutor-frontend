@@ -30,51 +30,56 @@ const mockActionPlanUpdate: ActionPlanUpdate = {
   modificationDate: new Date().toISOString(),
 };
 
-const mockActionPlanId = 1;
-
 suite('ActionPlan Service Tests', () => {
   beforeEach(() => {
     mock.reset();
   });
 
   test('should fetch action plans', async () => {
-    // Convert dates to ISO strings
-    const expectedData: ActionPlan[] = [{
-      ...mockActionPlan,
-      creationDate: mockActionPlan.creationDate.toISOString(),
-      modificationDate: mockActionPlan.modificationDate.toISOString(),
-    }];
+    const expectedData: ActionPlan[] = [mockActionPlan];
 
     mock.onGet(`${ServicesProperties.BaseUrl}/listarActionPlans`).reply(200, { data: expectedData });
 
     const actionPlans = await getActionPlans(1, 1, 1);
-    expect(actionPlans).toEqual(expectedData);
+    // Convertir las fechas a cadenas ISO8601 antes de la comparación
+    const expectedDataISO = expectedData.map(item => ({
+      ...item,
+      creationDate: item.creationDate.toISOString(),
+      modificationDate: item.modificationDate.toISOString(),
+    }));
+    expect(actionPlans).toEqual(expectedDataISO);
   });
 
   test('should fetch action plans for a student', async () => {
-    const expectedData: ActionPlan[] = [{
-      ...mockActionPlan,
-      creationDate: mockActionPlan.creationDate.toISOString(),
-      modificationDate: mockActionPlan.modificationDate.toISOString(),
-    }];
+    const expectedData: ActionPlan[] = [mockActionPlan];
 
     mock.onGet(`${ServicesProperties.BaseUrl}/listarActionPlansStudent`).reply(200, { data: expectedData });
 
     const actionPlans = await getActionPlansStudent(1, 1, 1);
-    expect(actionPlans).toEqual(expectedData);
+    // Convertir las fechas a cadenas ISO8601 antes de la comparación
+    const expectedDataISO = expectedData.map(item => ({
+      ...item,
+      creationDate: item.creationDate.toISOString(),
+      modificationDate: item.modificationDate.toISOString(),
+    }));
+    expect(actionPlans).toEqual(expectedDataISO);
   });
+
 
   test('should fetch action plan by id', async () => {
     const actionPlanId = 1;
-    const expectedData: ActionPlan[] = [{
-      ...mockActionPlan,
-      creationDate: mockActionPlan.creationDate.toISOString(),
-      modificationDate: mockActionPlan.modificationDate.toISOString(),
-    }];
+    const expectedData: ActionPlan[] = [mockActionPlan];
+
     mock.onGet(`${ServicesProperties.BaseUrl}/listarActionPlansPorId`).reply(200, { data: expectedData });
 
     const actionPlan = await getActionPlanById(actionPlanId);
-    expect(actionPlan).toEqual(expectedData);
+    // Convertir las fechas a cadenas ISO8601 antes de la comparación
+    const expectedDataISO = expectedData.map(item => ({
+      ...item,
+      creationDate: item.creationDate.toISOString(),
+      modificationDate: item.modificationDate.toISOString(),
+    }));
+    expect(actionPlan).toEqual(expectedDataISO);
   });
 
   test('should update an action plan', async () => {

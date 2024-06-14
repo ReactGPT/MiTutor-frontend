@@ -458,9 +458,9 @@ const AlumnoDetail: React.FC = () => {
             </div>
 
             <div className="flex">
-                <div className="flex-grow bg-gradient-to-r from-indigo-500 from-10% via-sky-500 via-30% to-emerald-600 to-90% flex flex-col">
-                    <div className="bg-gray-500 py-2 px-4 mb-4">
-                        <h2 className="text-xl font-semibold text-gray-800 text-center font-montserrat">Programas Académicos</h2>
+                <div className="flex-grow bg-white shadow-md  overflow-hidden flex flex-col">
+                    <div className="bg-primary py-2 px-4 mb-4">
+                        <h2 className="text-xl font-semibold text-white text-center">Programas Académicos</h2>
                     </div>
                     <div className="h-1/2 m-4 flex-grow flex flex-col">
                         <div className="flex-grow bg-gray-200">
@@ -506,10 +506,10 @@ const AlumnoDetail: React.FC = () => {
 
                     <div className="h-1/2 m-4 flex-grow flex">
                         <div className="h-full w-1/2 flex flex-col">
-                            <div className="bg-gray-500 py-2 px-4 mb-4">
-                                <h2 className="text-xl font-semibold text-gray-800 text-center font-montserrat">Citas de Tutoría</h2>
+                            <div className="bg-primary py-2 px-4">
+                                <h2 className="text-xl font-semibold text-white text-center">Citas de Tutoría</h2>
                             </div>
-                            <div className="flex-grow">
+                            <div className="flex-grow bg-gray-200">
                                 <ResponsiveContainer width="100%" height="100%">
                                     <BarChart
                                         data={appointments}
@@ -527,8 +527,8 @@ const AlumnoDetail: React.FC = () => {
                             </div>
                         </div>
                         <div className="h-full w-1/2 flex flex-col">
-                            <div className="bg-gray-200 py-2 px-4 mb-4">
-                                <h2 className="text-xl font-semibold text-gray-800 text-center font-montserrat">Modalidad Cita</h2>
+                            <div className="bg-primary py-2 px-4">
+                                <h2 className="text-xl font-semibold text-white text-center">Modalidad Cita</h2>
                             </div>
                             <div className="flex-grow bg-gray-200">
                                 {programVirtualFace.every(({ cantidadPresenciales, cantidadVirtuales }) => cantidadPresenciales === 0 && cantidadVirtuales === 0) ? (
@@ -559,9 +559,9 @@ const AlumnoDetail: React.FC = () => {
                         </div>
                     </div>
                 </div>
-                <div className="w-1/3 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-300 h-screen ">
-                    <div className="bg-gray-200 py-2 px-4 mb-4">
-                        <h2 className="text-xl font-semibold text-gray-800 text-center mb-4 font-montserrat">Consolidado de Programas</h2>
+                <div className="w-1/3 bg-gray-200  h-screen  ">
+                    <div className="bg-primary py-2 px-4">
+                        <h2 className="text-xl font-semibold text-white text-center">Consolidado de Programas</h2>
                     </div>
                     <div className="overflow-auto h-full">
                         <ul className="divide-y divide-gray-200">

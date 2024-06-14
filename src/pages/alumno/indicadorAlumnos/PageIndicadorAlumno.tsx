@@ -391,7 +391,7 @@ const PageIndicadorAlumno: React.FC = () => {
                     <div className="bg-primary py-2 px-4">
                         <h2 className="text-xl font-semibold text-white text-center">Cantidad de Citas por Alumno</h2>
                     </div>
-                    <div className="h-1/4 bg-gradient-to-r from-green-200 m-4 py-2 px-4">
+                    <div className="h-1/2 bg-white-300 m-4 flex-grow p-4 overflow-auto">
                         <ResponsiveContainer width="100%" height="100%">
                             <AreaChart
                                 data={data1}

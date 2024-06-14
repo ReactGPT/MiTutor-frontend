@@ -8,7 +8,7 @@ import { TrophyIcon } from '@heroicons/react/16/solid';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 import ModalTutores from './ModalTutores';
-
+import noAvatar from '../../../assets/Tutor/no-avatar.webp';
 
 
 interface TutorData {
@@ -182,114 +182,114 @@ const PageIndicadorTutor: React.FC = () => {
             doc.setFont('calibri');
             doc.setFontSize(12);
             doc.setTextColor(0);
-    
-             
+
+
             doc.setFillColor(200, 200, 200);
-            doc.rect(0, 0, 210, 297, 'F');  
-    
-             
+            doc.rect(0, 0, 210, 297, 'F');
+
+
             doc.setTextColor(150);
-            doc.setFontSize(20);  
+            doc.setFontSize(20);
             doc.setFont('calibri', 'bold');
-            for (let i = -40; i < 297; i += 20) {  
-                for (let j = -10; j < 210; j += 20) {  
-                    doc.setFontSize(12);  
+            for (let i = -40; i < 297; i += 20) {
+                for (let j = -10; j < 210; j += 20) {
+                    doc.setFontSize(12);
                     doc.textWithLink('PUCP', j, i, { angle: 45, url: 'https://www.pucp.edu.pe/' });
                 }
             }
-    
-             
+
+
             doc.setTextColor(0);
             doc.setFontSize(12);
-    
-             
+
+
             doc.setFontSize(16);
             doc.setFont('calibri', 'bold');
             doc.text('FICHA DE INDICADORES TUTORES', 105, 10, { align: 'center' });
             doc.text('SERVICIOS DAES', 105, 20, { align: 'center' });
-    
+
             let y = 30;
             doc.setFontSize(12);
             doc.setFont('calibri');
-    
-            const underlineText = (text:any, x:any, y:any) => {
+
+            const underlineText = (text: any, x: any, y: any) => {
                 doc.text(text, x, y);
                 const textWidth = doc.getTextWidth(text);
                 doc.line(x, y + 1, x + textWidth, y + 1);
             };
-    
+
             for (const tutor of data) {
                 doc.setFont('calibri', 'bold');
                 doc.text(`Nombre del tutor:`, 20, y);
                 doc.setFont('calibri', 'normal');
-                doc.text(`${tutor.name}`, 70, y);   
-    
+                doc.text(`${tutor.name}`, 70, y);
+
                 y += 5;
                 doc.setFont('calibri', 'bold');
                 doc.text(`Cantidad de programas:`, 20, y);
                 doc.setFont('calibri', 'normal');
-                doc.text(`${tutor.programCount}`, 70, y);   
-    
+                doc.text(`${tutor.programCount}`, 70, y);
+
                 y += 10;
                 doc.setFont('calibri', 'bold');
                 underlineText('Programas Académicos', 20, y);
-    
+
                 const programsData = await fetchProgramsData(tutor.tutorId);
                 let programY = y + 5;
                 programsData.forEach(program => {
                     doc.setFont('calibri', 'bold');
-                    const programNameLabelLines = doc.splitTextToSize(`Nombre del programa:`, 40);  
+                    const programNameLabelLines = doc.splitTextToSize(`Nombre del programa:`, 40);
                     doc.text(programNameLabelLines, 20, programY);
                     doc.setFont('calibri', 'normal');
-                    const programNameValueLines = doc.splitTextToSize(`${program.programName}`, 130);  
-                    doc.text(programNameValueLines, 70, programY);  
+                    const programNameValueLines = doc.splitTextToSize(`${program.programName}`, 130);
+                    doc.text(programNameValueLines, 70, programY);
                     programY += Math.max(programNameLabelLines.length, programNameValueLines.length) * 5;
-    
+
                     doc.setFont('calibri', 'bold');
-                    const programDescriptionLabelLines = doc.splitTextToSize(`Descripción:`, 40);  
+                    const programDescriptionLabelLines = doc.splitTextToSize(`Descripción:`, 40);
                     doc.text(programDescriptionLabelLines, 20, programY);
                     doc.setFont('calibri', 'normal');
-                    const programDescriptionValueLines = doc.splitTextToSize(`${program.programDescription}`, 130);  
-                    doc.text(programDescriptionValueLines, 70, programY);  
+                    const programDescriptionValueLines = doc.splitTextToSize(`${program.programDescription}`, 130);
+                    doc.text(programDescriptionValueLines, 70, programY);
                     programY += Math.max(programDescriptionLabelLines.length, programDescriptionValueLines.length) * 5 + 5;
                 });
-    
+
                 for (let i = 0; i < data1.length; i++) {
                     if (tutor.tutorId == data1[i].tutorId) {
                         doc.setFont('calibri', 'bold');
                         doc.text(`Cantidad Total de Citas:`, 20, programY);
                         doc.setFont('calibri', 'normal');
-                        doc.text(`${data1[i].totalAppointments}`, 70, programY);  
+                        doc.text(`${data1[i].totalAppointments}`, 70, programY);
                         programY += 5;
-    
+
                         doc.setFont('calibri', 'bold');
                         doc.text(`Citas Registradas:`, 20, programY);
                         doc.setFont('calibri', 'normal');
-                        doc.text(`${data1[i].registeredCount}`, 70, programY);   
+                        doc.text(`${data1[i].registeredCount}`, 70, programY);
                         programY += 5;
-    
+
                         doc.setFont('calibri', 'bold');
                         doc.text(`Citas Pendientes:`, 20, programY);
                         doc.setFont('calibri', 'normal');
-                        doc.text(`${data1[i].pendingResultCount}`, 70, programY);   
+                        doc.text(`${data1[i].pendingResultCount}`, 70, programY);
                         programY += 5;
-    
+
                         doc.setFont('calibri', 'bold');
                         doc.text(`Citas Completadas:`, 20, programY);
                         doc.setFont('calibri', 'normal');
-                        doc.text(`${data1[i].completedCount}`, 70, programY);   
-                        y = programY + 10;  
+                        doc.text(`${data1[i].completedCount}`, 70, programY);
+                        y = programY + 10;
                         break;
                     }
                 }
-    
-                y += 10;  
+
+                y += 10;
             }
             doc.save('ficha_de_indicador.pdf');
         }
     };
-    
-    
+
+
 
 
     const handleBuscarTutoresClick = async () => {
@@ -308,8 +308,8 @@ const PageIndicadorTutor: React.FC = () => {
 
     return (
         <>
-            <div className="mb-4 flex justify-between">
-                <button className="bg-primary cursor-default rounded-l-full rounded-r-full text-white px-5 shadow-custom border border-solid border-[rgba(116,170,255,0.70)] active:bg-black hover:cursor-pointer ml-6" onClick={handleExportClick}>
+            <div className="ml-[-24px] mb-4 flex justify-between">
+                <button className="bg-primary cursor-default rounded-xl rounded-xl text-white px-5 shadow-custom border border-solid border-[rgba(116,170,255,0.70)] active:bg-black hover:cursor-pointer ml-6" onClick={handleExportClick}>
                     Exportar
                 </button>
                 <button className="bg-primary cursor-default rounded-l-full rounded-r-full text-white px-5 shadow-custom border border-solid border-[rgba(116,170,255,0.70)] active:bg-black hover:cursor-pointer ml-6" onClick={handleBuscarTutoresClick}>
@@ -338,18 +338,18 @@ const PageIndicadorTutor: React.FC = () => {
             </div>
 
 
-            <div className="flex">
-                <div className="w-1/3 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-300 h-screen">
-                    <div className="bg-white shadow-md rounded-md overflow-hidden max-w-lg mx-auto mt-16">
-                        <div className="bg-gray-100 py-2 px-4">
-                            <h2 className="text-xl font-semibold text-gray-800 text-center">Top Tutores-Programas Académicos</h2>
+            <div className="flex gap-4">
+                <div className="w-1/3 h-screen">
+                    <div className="bg-white shadow-md rounded-md overflow-hidden max-w-lg mx-auto">
+                        <div className="bg-primary py-2 px-4">
+                            <h2 className="text-xl font-semibold text-white text-center">Top Tutores Programas Académicos</h2>
                         </div>
 
-                        <ul className="divide-y bg-gradient-to-r from-indigo-600 via-green-200 to-blue-200">
+                        <ul className="divide-y bg-gray-200">
                             {topTutors.map((tutor, index) => (
-                                <li key={index} className="flex items-center py-4 px-6 cursor-pointer hover:bg-gray-200" onClick={() => handleTutorClick(tutor.tutorId)}>
+                                <li key={index} className="flex items-center py-4 px-6 cursor-pointer hover:bg-gradient-to-r from-secondary to-blue-300" onClick={() => handleTutorClick(tutor.tutorId)}>
                                     <span className="text-gray-700 text-lg font-medium mr-4">{index + 1}.</span>
-                                    <img className="w-12 h-12 rounded-full object-cover mr-4" src={`https://randomuser.me/api/portraits/men/${index + 40}.jpg`} alt="User avatar" />
+                                    <img className="w-12 h-12 rounded-full object-cover mr-4" src={noAvatar} alt="User avatar" />
 
                                     <div className="flex-1">
                                         <h3 className="text-lg font-medium text-gray-800">{tutor.name}</h3>
@@ -367,11 +367,11 @@ const PageIndicadorTutor: React.FC = () => {
                     </div>
                 </div>
 
-                <div className="flex-grow bg-gradient-to-r from-indigo-500 from-10% via-sky-500 via-30% to-emerald-600 to-90% flex flex-col">
-                    <div className="bg-gray-100 py-2 px-4">
-                        <h2 className="text-xl font-semibold text-gray-800 text-center">Tutores Programas</h2>
+                <div className="flex-grow bg-gray-200 flex flex-col shadow-md">
+                    <div className="bg-primary py-2 px-4">
+                        <h2 className="text-xl font-semibold text-white text-center">Tutores Programas</h2>
                     </div>
-                    <div className="h-1/2 bg-gradient-to-r from-green-200 m-4" id="chart-container">
+                    <div className="h-1/3 m-4 shadow-md rounded-md overflow-hidden" id="chart-container">
                         <ResponsiveContainer width="100%" height="100%">
                             <BarChart
                                 data={data}
@@ -391,8 +391,8 @@ const PageIndicadorTutor: React.FC = () => {
                             </BarChart>
                         </ResponsiveContainer>
                     </div>
-                    <div className="bg-gray-100 py-2 px-4">
-                        <h2 className="text-xl font-semibold text-gray-800 text-center">Citas Tutores</h2>
+                    <div className="bg-primary py-2 px-4">
+                        <h2 className="text-xl font-semibold text-white text-center">Citas Tutores</h2>
                     </div>
                     <div className="h-1/2 bg-white-300 m-4 flex-grow p-4 overflow-auto">
                         <ResponsiveContainer width="100%" height="100%">

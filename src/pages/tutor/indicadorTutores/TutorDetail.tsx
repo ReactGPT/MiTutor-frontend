@@ -237,48 +237,48 @@ const TutorDetail: React.FC = () => {
             doc.setFont('calibri');
             doc.setFontSize(12);
             doc.setTextColor(0);
-    
+
             // Definir márgenes
             const marginLeft = 20;
             const marginTop = 20;
             const marginRight = 20;
             const marginBottom = 20;
-    
+
             // Función para imprimir una cita
-            const printAppointment = (doc:any, appointment:any, x:any, y:any, height:any) => {
+            const printAppointment = (doc: any, appointment: any, x: any, y: any, height: any) => {
                 doc.setFontSize(12);
                 doc.setFont('calibri', 'normal');
-    
+
                 // Hora de inicio
                 const startTime = new Date(appointment.startTime);
                 const formattedStartTime = startTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
                 doc.text(`Hora de inicio: ${formattedStartTime}`, x, y);
                 y += 5;
-    
+
                 // Hora de fin
                 const endTime = new Date(appointment.endTime);
                 const formattedEndTime = endTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
                 doc.text(`Hora de fin: ${formattedEndTime}`, x, y);
                 y += 5;
-    
+
                 // Fecha de creación
                 const creationDate = new Date(appointment.creationDate);
                 const formattedCreationDate = creationDate.toLocaleDateString();
                 doc.text(`Fecha de creación: ${formattedCreationDate}`, x, y);
                 y += 5;
-    
+
                 // Razón
                 doc.text(`Razón: ${appointment.reason}`, x, y);
                 y += 5;
-    
+
                 // Cantidad de estudiantes
                 doc.text(`Cantidad de estudiantes: ${appointment.studentCount}`, x, y);
             };
-    
+
             // Agregar un fondo gris transparente
             doc.setFillColor(200, 200, 200);
             doc.rect(0, 0, 210, 297, 'F'); // 210x297 es el tamaño A4 en mm
-    
+
             // Agregar marca de agua "PUCP"
             doc.setTextColor(150);
             doc.setFontSize(20); // Reducir el tamaño del texto de la marca de agua
@@ -289,25 +289,25 @@ const TutorDetail: React.FC = () => {
                     doc.textWithLink('PUCP', j, i, { angle: 45, url: 'https://www.pucp.edu.pe/' });
                 }
             }
-    
+
             // Restablecer el color del texto y el tamaño
             doc.setTextColor(0);
             doc.setFontSize(12);
-    
+
             // Nombre del tutor
             doc.setFontSize(16);
             doc.setFont('calibri', 'bold');
             doc.text(`${tutor.userAccount.persona.name} ${tutor.userAccount.persona.lastName} ${tutor.userAccount.persona.secondLastName}`, 105, marginTop + 10, { align: 'center' });
-    
+
             // Detalles del tutor
             let y = marginTop + 30;
-    
+
             // Título de Programas
             doc.setFontSize(14);
             doc.setFont('calibri', 'bold');
             doc.text('Programas Académicos', 105, y, { align: 'center' });
             y += 10;
-    
+
             // Detalles de los programas académicos
             programsTutor.forEach(program => {
                 // Nombre del programa
@@ -317,15 +317,15 @@ const TutorDetail: React.FC = () => {
                 doc.setFont('calibri', 'normal');
                 doc.text(`${program.programName}`, marginLeft + 60, y); // Ajustamos la posición en x
                 y += 10;
-    
+
                 // Descripción del programa
                 const descriptionLines = doc.splitTextToSize(program.programDescription, 170);
                 descriptionLines.forEach((line: string) => {
                     doc.text(line, marginLeft, y);
                     y += 5;
                 });
-                
-    
+
+
                 // Facultad
                 doc.setFontSize(12);
                 doc.setFont('calibri', 'bold');
@@ -333,34 +333,34 @@ const TutorDetail: React.FC = () => {
                 doc.setFont('calibri', 'normal');
                 doc.text(`${program.nameFaculty}`, marginLeft + 20, y); // Ajustamos la posición en x
                 y += 10;
-    
+
                 // Separador
                 doc.line(marginLeft, y, 210 - marginRight, y);
                 y += 5;
             });
-    
+
             // Separador
             doc.line(marginLeft, y, 210 - marginRight, y);
             y += 10;
-    
+
             // Título de las citas
             doc.setFontSize(14);
             doc.setFont('calibri', 'bold');
             doc.text('Citas del Tutor', 105, y, { align: 'center' });
             y += 10;
-    
+
             // Dividir las citas en dos columnas
             const halfAppointments = Math.ceil(appointments.length / 2);
             const firstColumnAppointments = appointments.slice(0, halfAppointments);
             const secondColumnAppointments = appointments.slice(halfAppointments);
-    
+
             // Determinar el espacio vertical disponible para cada columna
             const availableHeight = doc.internal.pageSize.height - y - marginBottom;
             const columnHeight = Math.max(firstColumnAppointments.length, secondColumnAppointments.length) * 60; // Asumiendo 60 unidades de altura por cita
-    
+
             // Calcular la altura de cada fila en función del espacio disponible
             const rowHeight = Math.min(availableHeight, columnHeight) / Math.max(firstColumnAppointments.length, secondColumnAppointments.length);
-    
+
             // Imprimir las citas en dos columnas
             let xFirstColumn = marginLeft;
             let xSecondColumn = 105 + marginRight; // Separación de columnas
@@ -371,59 +371,59 @@ const TutorDetail: React.FC = () => {
                     const appointment = firstColumnAppointments[index];
                     printAppointment(doc, appointment, xFirstColumn, y, rowHeight);
                 }
-    
+
                 // Segunda columna
                 if (index < secondColumnAppointments.length) {
                     const appointment = secondColumnAppointments[index];
                     printAppointment(doc, appointment, xSecondColumn, y, rowHeight);
                 }
-    
-                 
+
+
                 y += rowHeight;
-    
+
                 index++;
             }
-    
-             
+
+
             doc.save('detalle_tutor.pdf');
         }
     };
-    
-    
-     
-    const printAppointment = (doc:any, appointment:any, x:any, y:any, height:any) => {
+
+
+
+    const printAppointment = (doc: any, appointment: any, x: any, y: any, height: any) => {
         doc.setFontSize(12);
         doc.setFont('calibri', 'normal');
-    
-         
+
+
         const startTime = new Date(appointment.startTime);
         const formattedStartTime = startTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
         doc.text(`Hora de inicio: ${formattedStartTime}`, x, y);
         y += 5;
-    
-         
+
+
         const endTime = new Date(appointment.endTime);
         const formattedEndTime = endTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
         doc.text(`Hora de fin: ${formattedEndTime}`, x, y);
         y += 5;
-    
-        
+
+
         const creationDate = new Date(appointment.creationDate);
         const formattedCreationDate = creationDate.toLocaleDateString();
         doc.text(`Fecha de creación: ${formattedCreationDate}`, x, y);
         y += 5;
-    
-        
+
+
         doc.text(`Razón: ${appointment.reason}`, x, y);
         y += 5;
-    
-         
+
+
         doc.text(`Cantidad de estudiantes: ${appointment.studentCount}`, x, y);
     };
-    
-        
-    
-    
+
+
+
+
 
     return (
         <div>
@@ -459,9 +459,9 @@ const TutorDetail: React.FC = () => {
             </div>
 
             <div className="flex">
-                <div className="flex-grow bg-gradient-to-r from-indigo-500 from-10% via-sky-500 via-30% to-emerald-600 to-90% flex flex-col">
-                    <div className="bg-gray-500 py-2 px-4 mb-4">
-                        <h2 className="text-xl font-semibold text-gray-800 text-center font-montserrat">Programas Académicos</h2>
+                <div className="flex-grow bg-white shadow-md  overflow-hidden flex flex-col">
+                    <div className="bg-primary py-2 px-4 mb-4">
+                        <h2 className="text-xl font-semibold text-white text-center">Programas Académicos</h2>
                     </div>
                     <div className="h-1/2 m-4 flex-grow flex flex-col">
                         <div className="flex-grow bg-gray-200">
@@ -507,10 +507,10 @@ const TutorDetail: React.FC = () => {
 
                     <div className="h-1/2 m-4 flex-grow flex">
                         <div className="h-full w-1/2 flex flex-col">
-                            <div className="bg-gray-500 py-2 px-4 mb-4">
-                                <h2 className="text-xl font-semibold text-gray-800 text-center font-montserrat">Citas de Tutoría</h2>
+                            <div className="bg-primary py-2 px-4">
+                                <h2 className="text-xl font-semibold text-white text-center">Citas de Tutoría</h2>
                             </div>
-                            <div className="flex-grow">
+                            <div className="flex-grow bg-gray-200">
                                 <ResponsiveContainer width="100%" height="100%">
                                     <BarChart
                                         data={appointments}
@@ -528,8 +528,8 @@ const TutorDetail: React.FC = () => {
                             </div>
                         </div>
                         <div className="h-full w-1/2 flex flex-col">
-                            <div className="bg-gray-200 py-2 px-4 mb-4">
-                                <h2 className="text-xl font-semibold text-gray-800 text-center font-montserrat">Modalidad Cita</h2>
+                            <div className="bg-primary py-2 px-4">
+                                <h2 className="text-xl font-semibold text-white text-center">Modalidad Cita</h2>
                             </div>
                             <div className="flex-grow bg-gray-200">
                                 {programVirtualFace.every(({ cantidadPresenciales, cantidadVirtuales }) => cantidadPresenciales === 0 && cantidadVirtuales === 0) ? (
@@ -560,9 +560,9 @@ const TutorDetail: React.FC = () => {
                         </div>
                     </div>
                 </div>
-                <div className="w-1/3 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-300 h-screen ">
-                    <div className="bg-gray-200 py-2 px-4 mb-4">
-                        <h2 className="text-xl font-semibold text-gray-800 text-center mb-4 font-montserrat">Consolidado de Programas</h2>
+                <div className="w-1/3 bg-gray-200  h-screen ">
+                    <div className="bg-primary py-2 px-4">
+                        <h2 className="text-xl font-semibold text-white text-center">Consolidado de Programas</h2>
                     </div>
                     <div className="overflow-auto h-full">
                         <ul className="divide-y divide-gray-200">

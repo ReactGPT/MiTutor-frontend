@@ -48,7 +48,6 @@ export default function PageProgTutoria() {
         <DatosAlumnosSeleccionados className='flex flex-row w-[60%] h-full items-center p-4 border-custom drop-shadow-md'/>
       </div>
       <ModalAgregarTutores isOpen={isOpenModalAgregarTutores} closeModal={()=>{setIsOpenModalAgregarTutores(false)}}/>
-      
     </div>
     </TutoringProgramProvider>
   )

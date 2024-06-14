@@ -1,89 +1,65 @@
 import React, { useEffect, useMemo, useState } from 'react'
-//import { Button, Cell, Filters } from '../components'
 import { Button, Dropdown } from '../../../components'
 import { AddCircleIcon, UserPlus, ArrowDown, ArrowDownload,ArrowUpload, AddIcon } from '../../../assets'
 import { useNavigate } from 'react-router-dom';
-import { Combobox, InputCell } from '../../../components';
-import { Faculty, Specialty } from '../../../store/types';
-import { RootState } from '../../../store/store';
-import { useAppSelector } from '../../../store/hooks';
-
+import { useUser } from '../../../store/hooks/useUser';
+import { writeFile, utils } from 'xlsx';
 
 type InputProps = {
   handleOnChangeFilters: (filter: any) => void;
+  rol: "estudiante" | "usuario";
 }
 
-export default function ListadoUsuariosSearchBar({ handleOnChangeFilters }: InputProps) {
+export default function ListadoUsuariosSearchBar({ handleOnChangeFilters, rol }: InputProps) {
   const navigate = useNavigate();
-  const { specialityList, facultyList } = useAppSelector((state: RootState) => state.parameters)
-  const handleClickNuevaTutoria = () => {
-    //navigate("/programasDeTutoriaMaestro/nuevo");
-    navigate("/programasDeTutoriaMaestro/nuevo", { state: { programaTutoria: null } })
+  const { loading,  userData, fetchUsers } = useUser();
+
+  const handleClickNuevoUsuario = () => {
+    navigate(`/${rol}s/nuevo`, { state: { userData: null } });
   }
 
+  const capitalize = (s: string) => {
+    if (typeof s !== 'string') return '';
+    return s.charAt(0).toUpperCase() + s.slice(1);
+  }
 
-  /*const [filters,setFilters] = useState({
-      idSpeciality : null,
-      idFacultty : null,
-      name:null
-  });*/
+  const handleClickImportarMasivo = () => {
+    navigate(`/${rol}s/cargaMasiva`);
+  }
 
+  const handleClickDescargar = async () => {
+    await fetchUsers();
+    while(loading);
+    // Filtrar y transformar los datos
+    const filteredData = userData.map(user => ({
+      CorreoInstitucional: user.institutionalEmail,
+      CodigoPUCP: user.pucpCode,
+      Nombres: user.persona.name,
+      PrimerApellido: user.persona.lastName,
+      SegundoApellido: user.persona.secondLastName,
+      Telefono: user.persona.phone,
+      Activo: user.isActive,
+      CreationDate: user.creationDate,
+      ModificationDate: user.modificationDate
+    }));
 
+    // Crear una hoja de trabajo
+    const hoja = utils.json_to_sheet(filteredData);
 
-  const [specialitySelected, setSpecialitySelected] = useState<Specialty | null>(null);
-  const [facultySelected, setFacultySelected] = useState<Faculty | null>(null);
-  const [searchQuery, setSearchQuery] = useState<string>("");
+    // Crear un libro de trabajo
+    const libro = utils.book_new();
+    utils.book_append_sheet(libro, hoja, 'Usuarios');
 
-  const specialityOptions = useMemo(() => {
-    if (!facultySelected?.id) {
-      return [...specialityList]
-    }
-    else return [...specialityList.filter(item => item.facultyId === facultySelected?.id)]
-    //: specialities.map((item)=>item)]
-  }, [facultySelected]);
-  const handleOnChangeQuery = (value: string | number) => {
-    if (typeof value === 'string') {
-      //console.log("Se cambia query");
-      //console.log(value);
-      setSearchQuery(value);
-    }
-  };
+    // Descargar el archivo
+    writeFile(libro, 'usuarios.xlsx');
+  }
 
-  const handleOnChangeFaculty = (value: Faculty) => {
-    console.log(specialitySelected?.facultyId);
-    if ((facultySelected && facultySelected.id !== value.id) || (!facultySelected && specialitySelected?.facultyId !== value.id)) {
-      setSpecialitySelected(null);
-    }
-    setFacultySelected(value);
-  };
-
-  const filters = useMemo(() => {
-    return {
-      idSpeciality: specialitySelected?.id,
-      idFaculty: facultySelected?.id,
-      name: searchQuery
-    }
-  }, [specialitySelected, facultySelected, searchQuery]);
-
-  useEffect(() => {
-    handleOnChangeFilters(filters);
-  }, [filters])
-
-  const handleOnSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    //console.log(filters);
-  };
-
-  useEffect(() => {
-    //console.log(filters);
-
-  }, [filters]);
   return (
     <div className='flex w-full h-full flex-row py-0'>
       <div className='flex w-full h-12 justify-end space-x-4'>
-        <Button onClick={handleClickNuevaTutoria} text="Agregar Usuario" icon={UserPlus} />
-        <Button onClick={handleClickNuevaTutoria} text="Importar" variant='primario' icon={ArrowUpload} />
-        <Button onClick={handleClickNuevaTutoria} text="Descargar" variant='secundario' icon={ArrowDownload} />
+        <Button onClick={handleClickNuevoUsuario} text={`Agregar ${capitalize(rol)}`} icon={UserPlus} />
+        <Button onClick={handleClickImportarMasivo} text="Importar" variant='primario' icon={ArrowUpload} />
+        <Button onClick={handleClickDescargar} text="Descargar" variant='secundario' icon={ArrowDownload} />
       </div>
     </div>
 

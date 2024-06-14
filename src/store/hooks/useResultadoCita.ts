@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { getResultadoCita,updateResultadoCita,updateComentario,
-   getEstudianteDatos, getTutorDatos, getUnidadesDerivacion, getDerivacion } from '../services/resultadoCita';
+   getEstudianteDatos, getTutorDatos, getUnidadesDerivacion, getDerivacion,insertResultadoCita } from '../services/resultadoCita';
 import { ListCita } from '../types/ListCita';
 import { InitialData } from '../types/AppointmentResult';
 import { ListStudent } from '../types/ListStudent';
@@ -20,11 +20,47 @@ function useResultadoCita(cita : ListCita): ResultadoCitaHooksReturn {
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<any>(null); 
 
+
+    useEffect(() => {
+      if (!resultadoCita) {
+        // Inicializar la derivación con valores predeterminados si es null
+        setResultadoCita({
+          appointmentResult: {
+            appointmentResultId: 0, // Actualiza con un ID real o deja 0 para no asignado
+            asistio: true, // Actualiza según el estado real del appointment
+            startTime: '', // Actualiza con una hora real o deja vacío
+            endTime: '', // Actualiza con una hora real o deja vacío
+            isActive: true, // Actualiza según el estado real del appointment
+            comments: [
+              {
+                commentId: 0,
+                message: '',
+                isActive: true,
+                appointmentResultId: 0,
+                privacyTypeId: 1
+              },
+              {
+                commentId: 0,
+                message: '',
+                isActive: true,
+                appointmentResultId: 0,
+                privacyTypeId: 2
+              }
+            ]
+          },
+          studentId: cita.personId, // Actualiza con un ID real o deja 0 para no asignado
+          tutoringProgramId: cita.programId, // Actualiza con un ID real o deja 0 para no asignado
+          appointmentId: cita.appointmentId // Actualiza con un ID real o deja 0 para no asignado
+        });
+        console.log(resultadoCita);
+      }
+    }, [resultadoCita]);
+
     const fetchResultadoCita = async () => {
         try{
             const data = await getResultadoCita(cita);
             setResultadoCita(data);
-            setLoading(false);
+            setLoading(false); 
         }catch(error){
             setError("Error en useCita");
             setLoading(false);
@@ -33,6 +69,16 @@ function useResultadoCita(cita : ListCita): ResultadoCitaHooksReturn {
 
     return { resultadoCita, loading, error, fetchResultadoCita };
 
+}
+//insertarResultadoCita
+async function useInsertarResultadoCita(cita: InitialData) {
+  try {
+    const id_appointmentResult= await insertResultadoCita(cita);
+    console.log('Resultado Cita insertado con éxito');
+    return id_appointmentResult;
+  } catch (error) {
+    console.error('Error al actualizar el resultado de cita:', error);
+  }
 }
 
 function useUpdateResultadoCita(cita: InitialData) {
@@ -202,4 +248,4 @@ function useUnidadesDerivacion(): UnidadesDerivacionHookReturnType{
 
 export {useResultadoCita,useUpdateResultadoCita,useUpdateComentario,
   useEstudianteResultadoCita,useTutorResultadoCita,useUnidadesDerivacion,
-  useDerivacion};
+  useDerivacion,useInsertarResultadoCita};

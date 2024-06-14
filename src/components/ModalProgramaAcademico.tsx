@@ -6,7 +6,8 @@ interface ProgramData {
     tutoringProgramId: number;
     programName: string;
     programDescription: string;
-    tutorName: string;
+    tutorName?: string;
+    studentName?: string;
     lastName: string;
     secondLastName: string;
     nameFaculty: string;

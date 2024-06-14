@@ -66,6 +66,7 @@ const PageHistoricoDeCitas = () => {
             appointment={cita}
             tipo="historico"
             user="tutor"
+            flag={false}
           />
         ))}
 

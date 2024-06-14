@@ -11,79 +11,31 @@ import { useAppSelector } from '../../../store/hooks';
 
 type InputProps = {
   handleOnChangeFilters: (filter: any) => void;
+  rol: "estudiante" | "usuario";
 }
 
-export default function ListadoUsuariosSearchBar({ handleOnChangeFilters }: InputProps) {
+export default function ListadoUsuariosSearchBar({ handleOnChangeFilters, rol }: InputProps) {
   const navigate = useNavigate();
   const { specialityList, facultyList } = useAppSelector((state: RootState) => state.parameters)
-  const handleClickNuevaTutoria = () => {
-    //navigate("/programasDeTutoriaMaestro/nuevo");
-    navigate("/programasDeTutoriaMaestro/nuevo", { state: { programaTutoria: null } })
+  const handleClickNuevoUsuario = () => {
+    navigate(`/${rol}s/nuevo`, { state: { userData: null } });
   }
 
+  const capitalize = (s: string) => {
+    if (typeof s !== 'string') return '';
+    return s.charAt(0).toUpperCase() + s.slice(1);
+  }
 
-  /*const [filters,setFilters] = useState({
-      idSpeciality : null,
-      idFacultty : null,
-      name:null
-  });*/
+  const handleClickImportarMasivo = () => {
+    navigate(`/${rol}s/cargaMasiva`);
+  }
 
-
-
-  const [specialitySelected, setSpecialitySelected] = useState<Specialty | null>(null);
-  const [facultySelected, setFacultySelected] = useState<Faculty | null>(null);
-  const [searchQuery, setSearchQuery] = useState<string>("");
-
-  const specialityOptions = useMemo(() => {
-    if (!facultySelected?.id) {
-      return [...specialityList]
-    }
-    else return [...specialityList.filter(item => item.facultyId === facultySelected?.id)]
-    //: specialities.map((item)=>item)]
-  }, [facultySelected]);
-  const handleOnChangeQuery = (value: string | number) => {
-    if (typeof value === 'string') {
-      //console.log("Se cambia query");
-      //console.log(value);
-      setSearchQuery(value);
-    }
-  };
-
-  const handleOnChangeFaculty = (value: Faculty) => {
-    console.log(specialitySelected?.facultyId);
-    if ((facultySelected && facultySelected.id !== value.id) || (!facultySelected && specialitySelected?.facultyId !== value.id)) {
-      setSpecialitySelected(null);
-    }
-    setFacultySelected(value);
-  };
-
-  const filters = useMemo(() => {
-    return {
-      idSpeciality: specialitySelected?.id,
-      idFaculty: facultySelected?.id,
-      name: searchQuery
-    }
-  }, [specialitySelected, facultySelected, searchQuery]);
-
-  useEffect(() => {
-    handleOnChangeFilters(filters);
-  }, [filters])
-
-  const handleOnSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    //console.log(filters);
-  };
-
-  useEffect(() => {
-    //console.log(filters);
-
-  }, [filters]);
   return (
     <div className='flex w-full h-full flex-row py-0'>
       <div className='flex w-full h-12 justify-end space-x-4'>
-        <Button onClick={handleClickNuevaTutoria} text="Agregar Usuario" icon={UserPlus} />
-        <Button onClick={handleClickNuevaTutoria} text="Importar" variant='primario' icon={ArrowUpload} />
-        <Button onClick={handleClickNuevaTutoria} text="Descargar" variant='secundario' icon={ArrowDownload} />
+        <Button onClick={handleClickNuevoUsuario} text={`Agregar ${capitalize(rol)}`} icon={UserPlus} />
+        <Button onClick={handleClickImportarMasivo} text="Importar" variant='primario' icon={ArrowUpload} />
+        <Button onClick={handleClickNuevoUsuario} text="Descargar" variant='secundario' icon={ArrowDownload} />
       </div>
     </div>
 

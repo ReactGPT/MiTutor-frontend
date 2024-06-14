@@ -1,11 +1,11 @@
 import Button from '../../../components/Button';
 import { useNavigate } from 'react-router-dom';
 import CalendarioDisponibilidad from '../../../components/Calendar/CalendarioDisponibilidad';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useCitasPorTutor } from '../../../store/hooks/useCita';
 import { useAuth } from '../../../context';
 import { TutorRoleDetails } from '../../../store/types';
-import ProgramarCita from './ProgramarCita';
+import { SlotInfo } from 'react-big-calendar';
 
 const PageCalendarioTutor: React.FC = () => {
   const { userData } = useAuth();
@@ -13,15 +13,22 @@ const PageCalendarioTutor: React.FC = () => {
 
   const { cita, fetchCita } = useCitasPorTutor(tutorId);
 
+  const [programarCita, setProgramarCita] = useState<boolean>(false);
+  const [shouldFetch, setShouldFetch] = useState<boolean>(false);
+
   useEffect(() => {
     fetchCita();
-  }, []);
+  }, [shouldFetch]);
 
   //ir a disponibilidad
   const navigate = useNavigate();
 
   const goToDisponibilidad = () => {
     navigate('/calendario/agregarDisponibilidad');
+  };
+
+  const volverAFetchearCitas = () => {
+    setShouldFetch(prev => !prev);
   };
 
   return (
@@ -48,11 +55,16 @@ const PageCalendarioTutor: React.FC = () => {
           </div>
         </div>
         <div className="flex gap-5">
-          <Button text='Ver Disponibilidad' onClick={goToDisponibilidad} variant="primario" />
+          {programarCita ?
+            <Button text='Cancelar Programación' onClick={() => setProgramarCita(false)} variant="warning" />
+            :
+            <Button text='Programar Cita' onClick={() => setProgramarCita(true)} variant="primario" />
+          }
+          <Button text='Ver Disponibilidad' onClick={goToDisponibilidad} variant="primario" disabled={programarCita} />
         </div>
       </div>
       <div className="flex-1 w-full overflow-auto bg-white rounded-md p-4">
-        <CalendarioDisponibilidad citas={cita} />
+        <CalendarioDisponibilidad citas={cita} tipo='solicitar' programable={programarCita} refresh={volverAFetchearCitas} />
       </div>
     </div >
   );

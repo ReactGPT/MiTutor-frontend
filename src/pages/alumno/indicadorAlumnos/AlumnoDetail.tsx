@@ -3,16 +3,15 @@ import { useLocation } from 'react-router-dom';
 import { PieChart, Pie, Tooltip, Legend, ResponsiveContainer, BarChart, CartesianGrid, XAxis, YAxis, Bar, Sector, Cell } from 'recharts';
 import { IconSearch } from '../../../assets';
 import jsPDF from 'jspdf';
-interface Tutor {
-    tutorId: number;
-    userAccount: {
+
+interface Student {
+    id: number;
+    usuario: {
         institutionalEmail: string;
-        persona: {
-            name: string;
-            lastName: string;
-            secondLastName: string;
-        };
     };
+    name: string;
+    lastName: string;
+    secondLastName: string;
 }
 
 interface Program {
@@ -29,10 +28,10 @@ interface Appointment {
     creationDate: string;
     reason: string;
     studentCount: number;
-    tutorId: number;
-    tutorName: string;
-    tutorLastName: string;
-    tutorSecondLastName: string;
+    studentId: number;
+    studentName: string;
+    studentLastName: string;
+    studentSecondLastName: string;
     appointmentTutorId: number;
     appointmentStatusId: number;
     classroom: string;
@@ -49,7 +48,7 @@ interface Program {
     tutoringProgramId: number;
     programName: string;
     programDescription: string;
-    tutorName: string;
+    studentName: string;
     lastName: string;
     secondLastName: string;
     nameFaculty: string;
@@ -103,9 +102,9 @@ const renderActiveShape = (props: any) => {
 };
 const className = 'font-roboto bg-[rgba(235,236,250,1)] shadow-custom border border-solid border-[rgba(116,170,255,0.70)]';
 
-const TutorDetail: React.FC = () => {
+const AlumnoDetail: React.FC = () => {
     const location = useLocation();
-    const tutor = (location.state as { tutor: Tutor })?.tutor;
+    const student = (location.state as { student: Student })?.student;
 
     const [programs, setPrograms] = useState<Program[]>([]);
     const [startDate, setStartDate] = useState<string>('');
@@ -115,7 +114,7 @@ const TutorDetail: React.FC = () => {
     const [programVirtualFace, setProgramVirtualFace] = useState<ProgramVirtualFace[]>([]);
     const [activeIndex, setActiveIndex] = useState<number>(0);
 
-    const [programsTutor, setProgramsTutor] = useState<Program[]>([]);
+    const [programsStudent, setProgramsStudent] = useState<Program[]>([]);
     useEffect(() => {
         fetchData();
         fetchAppointments();
@@ -124,21 +123,21 @@ const TutorDetail: React.FC = () => {
     }, []);
     const fetchProgramaTutorias = async () => {
         try {
-            // Realiza la petición al servicio para obtener los programas de tutoría del tutor
-            const response = await fetch(`https://localhost:44369/listarProgramasDeTutoriaPorTutorId/${tutor?.tutorId}`);
+            // Realiza la petición al servicio para obtener los programas de tutoría del alumno
+            const response = await fetch(`https://localhost:44369/listarProgramasDeTutoriaPorStudentId/${student?.id}`);
             if (!response.ok) {
                 throw new Error('Failed to fetch data');
             }
             const data = await response.json();
             // Asigna los programas de tutoría al estado
-            setProgramsTutor(data.data);
+            setProgramsStudent(data.data);
         } catch (error) {
             console.error('Error fetching data:', error);
         }
     };
     const fetchData = async () => {
         try {
-            let url = `https://localhost:44369/listarProgramaFecha/${tutor?.tutorId}`;
+            let url = `https://localhost:44369/listarProgramaFechaStudent/${student?.id}`;
             if (startDate && endDate) {
                 url += `?startDate=${startDate}&endDate=${endDate}`;
             }
@@ -162,7 +161,7 @@ const TutorDetail: React.FC = () => {
 
     const fetchAppointments = async () => {
         try {
-            let url = `https://localhost:44369/listarAppointmentPorFecha/${tutor?.tutorId}`;
+            let url = `https://localhost:44369/listarAppointmentPorFecha/${student?.id}`;
             if (startDate && endDate) {
                 url += `?startDate=${startDate}&endDate=${endDate}`;
             }
@@ -181,7 +180,7 @@ const TutorDetail: React.FC = () => {
 
     const fetchProgramVirtualFace = async () => {
         try {
-            let url = `https://localhost:44369/listarProgramaVirtualFace/${tutor?.tutorId}`;
+            let url = `https://localhost:44369/listarProgramaVirtualFace/${student?.id}`;
             if (startDate && endDate) {
                 url += `?startDate=${startDate}&endDate=${endDate}`;
             }
@@ -203,7 +202,7 @@ const TutorDetail: React.FC = () => {
         fetchProgramVirtualFace();
     };
 
-    if (!tutor) {
+    if (!student) {
         return <div>No tutor data available.</div>;
     }
     const onPieEnter = (_: any, index: number) => {
@@ -232,53 +231,53 @@ const TutorDetail: React.FC = () => {
     ] : [];
 
     const handleExportClick = async () => {
-        if (programsTutor.length > 0) {
+        if (programsStudent.length > 0) {
             const doc = new jsPDF();
             doc.setFont('calibri');
             doc.setFontSize(12);
             doc.setTextColor(0);
-
+    
             // Definir márgenes
             const marginLeft = 20;
             const marginTop = 20;
             const marginRight = 20;
             const marginBottom = 20;
-
+    
             // Función para imprimir una cita
-            const printAppointment = (doc: any, appointment: any, x: any, y: any, height: any) => {
+            const printAppointment = (doc:any, appointment:any, x:any, y:any, height:any) => {
                 doc.setFontSize(12);
                 doc.setFont('calibri', 'normal');
-
+    
                 // Hora de inicio
                 const startTime = new Date(appointment.startTime);
                 const formattedStartTime = startTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
                 doc.text(`Hora de inicio: ${formattedStartTime}`, x, y);
                 y += 5;
-
+    
                 // Hora de fin
                 const endTime = new Date(appointment.endTime);
                 const formattedEndTime = endTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
                 doc.text(`Hora de fin: ${formattedEndTime}`, x, y);
                 y += 5;
-
+    
                 // Fecha de creación
                 const creationDate = new Date(appointment.creationDate);
                 const formattedCreationDate = creationDate.toLocaleDateString();
                 doc.text(`Fecha de creación: ${formattedCreationDate}`, x, y);
                 y += 5;
-
+    
                 // Razón
                 doc.text(`Razón: ${appointment.reason}`, x, y);
                 y += 5;
-
+    
                 // Cantidad de estudiantes
                 doc.text(`Cantidad de estudiantes: ${appointment.studentCount}`, x, y);
             };
-
+    
             // Agregar un fondo gris transparente
             doc.setFillColor(200, 200, 200);
             doc.rect(0, 0, 210, 297, 'F'); // 210x297 es el tamaño A4 en mm
-
+    
             // Agregar marca de agua "PUCP"
             doc.setTextColor(150);
             doc.setFontSize(20); // Reducir el tamaño del texto de la marca de agua
@@ -289,27 +288,27 @@ const TutorDetail: React.FC = () => {
                     doc.textWithLink('PUCP', j, i, { angle: 45, url: 'https://www.pucp.edu.pe/' });
                 }
             }
-
+    
             // Restablecer el color del texto y el tamaño
             doc.setTextColor(0);
             doc.setFontSize(12);
-
+    
             // Nombre del tutor
             doc.setFontSize(16);
             doc.setFont('calibri', 'bold');
-            doc.text(`${tutor.userAccount.persona.name} ${tutor.userAccount.persona.lastName} ${tutor.userAccount.persona.secondLastName}`, 105, marginTop + 10, { align: 'center' });
-
+            doc.text(`${student.name} ${student.lastName} ${student.secondLastName}`, 105, marginTop + 10, { align: 'center' });
+    
             // Detalles del tutor
             let y = marginTop + 30;
-
+    
             // Título de Programas
             doc.setFontSize(14);
             doc.setFont('calibri', 'bold');
             doc.text('Programas Académicos', 105, y, { align: 'center' });
             y += 10;
-
+    
             // Detalles de los programas académicos
-            programsTutor.forEach(program => {
+            programsStudent.forEach(program => {
                 // Nombre del programa
                 doc.setFontSize(12);
                 doc.setFont('calibri', 'bold');
@@ -317,15 +316,15 @@ const TutorDetail: React.FC = () => {
                 doc.setFont('calibri', 'normal');
                 doc.text(`${program.programName}`, marginLeft + 60, y); // Ajustamos la posición en x
                 y += 10;
-
+    
                 // Descripción del programa
                 const descriptionLines = doc.splitTextToSize(program.programDescription, 170);
                 descriptionLines.forEach((line: string) => {
                     doc.text(line, marginLeft, y);
                     y += 5;
                 });
-
-
+                
+    
                 // Facultad
                 doc.setFontSize(12);
                 doc.setFont('calibri', 'bold');
@@ -333,34 +332,34 @@ const TutorDetail: React.FC = () => {
                 doc.setFont('calibri', 'normal');
                 doc.text(`${program.nameFaculty}`, marginLeft + 20, y); // Ajustamos la posición en x
                 y += 10;
-
+    
                 // Separador
                 doc.line(marginLeft, y, 210 - marginRight, y);
                 y += 5;
             });
-
+    
             // Separador
             doc.line(marginLeft, y, 210 - marginRight, y);
             y += 10;
-
+    
             // Título de las citas
             doc.setFontSize(14);
             doc.setFont('calibri', 'bold');
-            doc.text('Citas del Tutor', 105, y, { align: 'center' });
+            doc.text('Citas del Alumno', 105, y, { align: 'center' });
             y += 10;
-
+    
             // Dividir las citas en dos columnas
             const halfAppointments = Math.ceil(appointments.length / 2);
             const firstColumnAppointments = appointments.slice(0, halfAppointments);
             const secondColumnAppointments = appointments.slice(halfAppointments);
-
+    
             // Determinar el espacio vertical disponible para cada columna
             const availableHeight = doc.internal.pageSize.height - y - marginBottom;
             const columnHeight = Math.max(firstColumnAppointments.length, secondColumnAppointments.length) * 60; // Asumiendo 60 unidades de altura por cita
-
+    
             // Calcular la altura de cada fila en función del espacio disponible
             const rowHeight = Math.min(availableHeight, columnHeight) / Math.max(firstColumnAppointments.length, secondColumnAppointments.length);
-
+    
             // Imprimir las citas en dos columnas
             let xFirstColumn = marginLeft;
             let xSecondColumn = 105 + marginRight; // Separación de columnas
@@ -371,59 +370,59 @@ const TutorDetail: React.FC = () => {
                     const appointment = firstColumnAppointments[index];
                     printAppointment(doc, appointment, xFirstColumn, y, rowHeight);
                 }
-
+    
                 // Segunda columna
                 if (index < secondColumnAppointments.length) {
                     const appointment = secondColumnAppointments[index];
                     printAppointment(doc, appointment, xSecondColumn, y, rowHeight);
                 }
-
-
+    
+                // Actualizar la posición Y
                 y += rowHeight;
-
+    
                 index++;
             }
-
-
-            doc.save('detalle_tutor.pdf');
+    
+            // Guardar el PDF
+            doc.save('detalle_alumno.pdf');
         }
     };
-
-
-
-    const printAppointment = (doc: any, appointment: any, x: any, y: any, height: any) => {
+    
+    
+     
+    const printAppointment = (doc:any, appointment:any, x:any, y:any, height:any) => {
         doc.setFontSize(12);
         doc.setFont('calibri', 'normal');
-
-
+    
+         
         const startTime = new Date(appointment.startTime);
         const formattedStartTime = startTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
         doc.text(`Hora de inicio: ${formattedStartTime}`, x, y);
         y += 5;
-
-
+    
+         
         const endTime = new Date(appointment.endTime);
         const formattedEndTime = endTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
         doc.text(`Hora de fin: ${formattedEndTime}`, x, y);
         y += 5;
-
-
+    
+        
         const creationDate = new Date(appointment.creationDate);
         const formattedCreationDate = creationDate.toLocaleDateString();
         doc.text(`Fecha de creación: ${formattedCreationDate}`, x, y);
         y += 5;
-
-
+    
+        
         doc.text(`Razón: ${appointment.reason}`, x, y);
         y += 5;
-
-
+    
+         
         doc.text(`Cantidad de estudiantes: ${appointment.studentCount}`, x, y);
     };
-
-
-
-
+    
+        
+    
+    
 
     return (
         <div>
@@ -454,7 +453,7 @@ const TutorDetail: React.FC = () => {
             </div>
             <div className="bg-gray-100 py-2 px-4 text-center">
                 <h1 className="font-montserrat text-2xl font-bold text-primary">
-                    {`${tutor.userAccount.persona.name} ${tutor.userAccount.persona.lastName} ${tutor.userAccount.persona.secondLastName}`}
+                    {`${student.name} ${student.lastName} ${student.secondLastName}`}
                 </h1>
             </div>
 
@@ -560,13 +559,13 @@ const TutorDetail: React.FC = () => {
                         </div>
                     </div>
                 </div>
-                <div className="w-1/3 bg-gray-200  h-screen ">
+                <div className="w-1/3 bg-gray-200  h-screen  ">
                     <div className="bg-primary py-2 px-4">
                         <h2 className="text-xl font-semibold text-white text-center">Consolidado de Programas</h2>
                     </div>
                     <div className="overflow-auto h-full">
                         <ul className="divide-y divide-gray-200">
-                            {programsTutor.map((program) => (
+                            {programsStudent.map((program) => (
                                 <li key={program.tutoringProgramId} className="px-4 py-2 font-montserrat">
                                     <h3 className="font-semibold font-montserrat underline">{program.programName}</h3>
                                     <p><span className="font-semibold font-montserrat">Descripción:</span> {program.programDescription}</p>
@@ -581,4 +580,4 @@ const TutorDetail: React.FC = () => {
     );
 };
 
-export default TutorDetail;
+export default AlumnoDetail;

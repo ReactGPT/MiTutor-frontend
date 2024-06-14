@@ -75,7 +75,7 @@ const TablaDetalle: React.FC<TablaDetalleProps> = ({
       cellStyle: { textAlign: 'left', justifyContent: 'left' }
     },
     {
-      headerName: 'Primer Apellido',
+      headerName: 'Segundo Apellido',
       field: 'secondLastName',
       minWidth: 100,
       maxWidth: 150,

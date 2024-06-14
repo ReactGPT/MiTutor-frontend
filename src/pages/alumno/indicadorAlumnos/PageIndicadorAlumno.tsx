@@ -7,58 +7,55 @@ import IconSearch from "../../../assets/svg/IconSearch";
 import { TrophyIcon } from '@heroicons/react/16/solid';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
-import ModalTutores from './ModalTutores';
+import ModalAlumnos from './ModalAlumnos';
 import noAvatar from '../../../assets/Tutor/no-avatar.webp';
 
-
-interface TutorData {
-    tutorId: number;
-    tutorName: string;
-    tutorLastName: string;
-    tutorSecondLastName: string;
+interface StudentData {
+    studentId: number;
+    studentName: string;
+    studentLastName: string;
+    studentSecondLastName: string;
     cantidadProgramas: number;
 }
 
 interface ChartData {
     name: string;
     programCount: number;
-    tutorId: number;
+    studentId: number;
 }
 
 interface ProgramData {
     tutoringProgramId: number;
     programName: string;
     programDescription: string;
-    tutorName: string;
+    studentName: string;
     lastName: string;
     secondLastName: string;
     nameFaculty: string;
 }
 
-interface TutorInfo {
-    tutorId: number;
-    tutorName: string;
-    tutorLastName: string;
-    tutorSecondLastName: string;
+interface StudentInfo {
+    studentId: number;
+    studentName: string;
+    studentLastName: string;
+    studentSecondLastName: string;
     totalAppointments: number;
     registeredCount: number;
     pendingResultCount: number;
     completedCount: number;
 }
 
-interface Tutor {
-    tutorId: number;
-    userAccount: {
+interface Student {
+    id: number;
+    usuario: {
         institutionalEmail: string;
-        persona: {
-            name: string;
-            lastName: string;
-            secondLastName: string;
-        };
     };
+    name: string;
+    lastName: string;
+    secondLastName: string;
 }
-interface IdsTutor {
-    tutorId: number;
+interface IdsStudent {
+    studentId: number;
 }
 const exportAsImage = () => {
     const chartContainer = document.getElementById('chart-container'); // Asegúrate de tener un contenedor con un id específico para tu gráfico
@@ -87,7 +84,7 @@ const IconTrophyBronze = () => (
 );
 
 const className = 'font-roboto bg-[rgba(235,236,250,1)] shadow-custom border border-solid border-[rgba(116,170,255,0.70)]';
-const generarPDF = (tutorData: TutorData) => {
+const generarPDF = (studentData: StudentData) => {
     const doc = new jsPDF();
 
     doc.setFont('calibri');
@@ -96,42 +93,42 @@ const generarPDF = (tutorData: TutorData) => {
 
     doc.text('FICHA DE DERIVACIÓN', 20, 10);
     doc.text('SERVICIOS DAES', 20, 15);
-    doc.text(`Nombre del tutor: ${tutorData.tutorName} ${tutorData.tutorLastName} ${tutorData.tutorSecondLastName}`, 20, 25);
-    doc.text(`Cantidad de programas: ${tutorData.cantidadProgramas}`, 20, 30);
+    doc.text(`Nombre del estudiante: ${studentData.studentName} ${studentData.studentLastName} ${studentData.studentSecondLastName}`, 20, 25);
+    doc.text(`Cantidad de programas: ${studentData.cantidadProgramas}`, 20, 30);
 
     doc.save('ficha_de_derivacion.pdf');
 };
-const PageIndicadorTutor: React.FC = () => {
+const PageIndicadorAlumno: React.FC = () => {
     const [data, setData] = useState<ChartData[]>([]);
-    const [topTutors, setTopTutors] = useState<ChartData[]>([]);
-    const [selectedTutorPrograms, setSelectedTutorPrograms] = useState<ProgramData[]>([]);
+    const [topStudents, setTopStudents] = useState<ChartData[]>([]);
+    const [selectedStudentPrograms, setSelectedStudentPrograms] = useState<ProgramData[]>([]);
     const [loading, setLoading] = useState(true);
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [data1, setData1] = useState<TutorInfo[]>([]);
+    const [data1, setData1] = useState<StudentInfo[]>([]);
     const [loading1, setLoading1] = useState(true);
 
-    const [isTutorModalOpen, setIsTutorModalOpen] = useState(false);
-    const [tutors, setTutors] = useState<Tutor[]>([]);
+    const [isStudentModalOpen, setIsStudentModalOpen] = useState(false);
+    const [students, setStudents] = useState<Student[]>([]);
 
-    const [idTutors, setIdTutor] = useState<IdsTutor[]>([]);
+    const [idStudents, setIdStudent] = useState<IdsStudent[]>([]);
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await axios.get<{ success: boolean, data: TutorData[] }>('https://localhost:44369/listarTutoresConCantidadDeProgramas');
+                const response = await axios.get<{ success: boolean, data: StudentData[] }>('https://localhost:44369/listarAlumnosConCantidadDeProgramas');
                 const responseData = response.data.data;
 
-                const transformedData: ChartData[] = responseData.map((tutor: TutorData) => ({
-                    name: `${tutor.tutorName} ${tutor.tutorLastName} ${tutor.tutorSecondLastName}`,
-                    programCount: tutor.cantidadProgramas,
-                    tutorId: tutor.tutorId
+                const transformedData: ChartData[] = responseData.map((student: StudentData) => ({
+                    name: `${student.studentName} ${student.studentLastName} ${student.studentSecondLastName}`,
+                    programCount: student.cantidadProgramas,
+                    studentId: student.studentId
                 }));
                 setData(transformedData);
 
                 // Ordenar los datos por cantidad de programas en orden descendente y seleccionar los primeros 3
-                const topTutorsData = transformedData.sort((a, b) => b.programCount - a.programCount).slice(0, 3);
-                setTopTutors(topTutorsData);
+                const topStudentsData = transformedData.sort((a, b) => b.programCount - a.programCount).slice(0, 3);
+                setTopStudents(topStudentsData);
             } catch (error) {
-                console.error("Error fetching tutor data:", error);
+                console.error("Error fetching student data:", error);
             } finally {
                 setLoading(false);
             }
@@ -143,7 +140,7 @@ const PageIndicadorTutor: React.FC = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await axios.get<{ success: boolean, data: TutorInfo[] }>('https://localhost:44369/listarCantidadAppointments');
+                const response = await axios.get<{ success: boolean, data: StudentInfo[] }>('https://localhost:44369/listarCantidadAppointmentsStudent');
                 const responseData = response.data.data;
                 setData1(responseData);
 
@@ -156,20 +153,20 @@ const PageIndicadorTutor: React.FC = () => {
 
         fetchData();
     }, []);
-    const fetchProgramsData = async (tutorId: number) => {
+    const fetchProgramsData = async (studentId: number) => {
         try {
-            const response = await axios.get<{ success: boolean, data: ProgramData[] }>(`https://localhost:44369/listarProgramasDeTutoriaPorTutorId/${tutorId}`);
+            const response = await axios.get<{ success: boolean, data: ProgramData[] }>(`https://localhost:44369/listarProgramasDeTutoriaPorStudentId/${studentId}`);
             return response.data.data;
         } catch (error) {
             console.error("Error fetching programs data:", error);
             return [];
         }
     };
-    const handleTutorClick = async (tutorId: number) => {
+    const handleTutorClick = async (studentId: number) => {
         try {
-            const response = await axios.get<{ success: boolean, data: ProgramData[] }>(`https://localhost:44369/listarProgramasDeTutoriaPorTutorId/${tutorId}`);
+            const response = await axios.get<{ success: boolean, data: ProgramData[] }>(`https://localhost:44369/listarProgramasDeTutoriaPorStudentId/${studentId}`);
             const programsData = response.data.data;
-            setSelectedTutorPrograms(programsData);
+            setSelectedStudentPrograms(programsData);
             setIsModalOpen(true);
         } catch (error) {
             console.error("Error fetching programs data:", error);
@@ -182,124 +179,124 @@ const PageIndicadorTutor: React.FC = () => {
             doc.setFont('calibri');
             doc.setFontSize(12);
             doc.setTextColor(0);
-
-
+    
+             
             doc.setFillColor(200, 200, 200);
-            doc.rect(0, 0, 210, 297, 'F');
-
-
+            doc.rect(0, 0, 210, 297, 'F');  
+    
+             
             doc.setTextColor(150);
-            doc.setFontSize(20);
+            doc.setFontSize(20);  
             doc.setFont('calibri', 'bold');
-            for (let i = -40; i < 297; i += 20) {
-                for (let j = -10; j < 210; j += 20) {
-                    doc.setFontSize(12);
+            for (let i = -40; i < 297; i += 20) {  
+                for (let j = -10; j < 210; j += 20) {  
+                    doc.setFontSize(12);  
                     doc.textWithLink('PUCP', j, i, { angle: 45, url: 'https://www.pucp.edu.pe/' });
                 }
             }
-
-
+    
+             
             doc.setTextColor(0);
             doc.setFontSize(12);
-
-
+    
+             
             doc.setFontSize(16);
             doc.setFont('calibri', 'bold');
-            doc.text('FICHA DE INDICADORES TUTORES', 105, 10, { align: 'center' });
+            doc.text('FICHA DE INDICADORES ALUMNOS', 105, 10, { align: 'center' });
             doc.text('SERVICIOS DAES', 105, 20, { align: 'center' });
-
+    
             let y = 30;
             doc.setFontSize(12);
             doc.setFont('calibri');
-
-            const underlineText = (text: any, x: any, y: any) => {
+    
+            const underlineText = (text:any, x:any, y:any) => {
                 doc.text(text, x, y);
                 const textWidth = doc.getTextWidth(text);
                 doc.line(x, y + 1, x + textWidth, y + 1);
             };
-
-            for (const tutor of data) {
+    
+            for (const student of data) {
                 doc.setFont('calibri', 'bold');
-                doc.text(`Nombre del tutor:`, 20, y);
+                doc.text(`Nombre del estudiante:`, 20, y);
                 doc.setFont('calibri', 'normal');
-                doc.text(`${tutor.name}`, 70, y);
-
+                doc.text(`${student.name}`, 70, y);   
+    
                 y += 5;
                 doc.setFont('calibri', 'bold');
                 doc.text(`Cantidad de programas:`, 20, y);
                 doc.setFont('calibri', 'normal');
-                doc.text(`${tutor.programCount}`, 70, y);
-
+                doc.text(`${student.programCount}`, 70, y);   
+    
                 y += 10;
                 doc.setFont('calibri', 'bold');
                 underlineText('Programas Académicos', 20, y);
-
-                const programsData = await fetchProgramsData(tutor.tutorId);
+    
+                const programsData = await fetchProgramsData(student.studentId);
                 let programY = y + 5;
                 programsData.forEach(program => {
                     doc.setFont('calibri', 'bold');
-                    const programNameLabelLines = doc.splitTextToSize(`Nombre del programa:`, 40);
+                    const programNameLabelLines = doc.splitTextToSize(`Nombre del programa:`, 40);  
                     doc.text(programNameLabelLines, 20, programY);
                     doc.setFont('calibri', 'normal');
-                    const programNameValueLines = doc.splitTextToSize(`${program.programName}`, 130);
-                    doc.text(programNameValueLines, 70, programY);
+                    const programNameValueLines = doc.splitTextToSize(`${program.programName}`, 130);  
+                    doc.text(programNameValueLines, 70, programY);  
                     programY += Math.max(programNameLabelLines.length, programNameValueLines.length) * 5;
-
+    
                     doc.setFont('calibri', 'bold');
-                    const programDescriptionLabelLines = doc.splitTextToSize(`Descripción:`, 40);
+                    const programDescriptionLabelLines = doc.splitTextToSize(`Descripción:`, 40);  
                     doc.text(programDescriptionLabelLines, 20, programY);
                     doc.setFont('calibri', 'normal');
-                    const programDescriptionValueLines = doc.splitTextToSize(`${program.programDescription}`, 130);
-                    doc.text(programDescriptionValueLines, 70, programY);
+                    const programDescriptionValueLines = doc.splitTextToSize(`${program.programDescription}`, 130);  
+                    doc.text(programDescriptionValueLines, 70, programY);  
                     programY += Math.max(programDescriptionLabelLines.length, programDescriptionValueLines.length) * 5 + 5;
                 });
-
+    
                 for (let i = 0; i < data1.length; i++) {
-                    if (tutor.tutorId == data1[i].tutorId) {
+                    if (student.studentId == data1[i].studentId) {
                         doc.setFont('calibri', 'bold');
                         doc.text(`Cantidad Total de Citas:`, 20, programY);
                         doc.setFont('calibri', 'normal');
-                        doc.text(`${data1[i].totalAppointments}`, 70, programY);
+                        doc.text(`${data1[i].totalAppointments}`, 70, programY);  
                         programY += 5;
-
+    
                         doc.setFont('calibri', 'bold');
                         doc.text(`Citas Registradas:`, 20, programY);
                         doc.setFont('calibri', 'normal');
-                        doc.text(`${data1[i].registeredCount}`, 70, programY);
+                        doc.text(`${data1[i].registeredCount}`, 70, programY);   
                         programY += 5;
-
+    
                         doc.setFont('calibri', 'bold');
                         doc.text(`Citas Pendientes:`, 20, programY);
                         doc.setFont('calibri', 'normal');
-                        doc.text(`${data1[i].pendingResultCount}`, 70, programY);
+                        doc.text(`${data1[i].pendingResultCount}`, 70, programY);   
                         programY += 5;
-
+    
                         doc.setFont('calibri', 'bold');
                         doc.text(`Citas Completadas:`, 20, programY);
                         doc.setFont('calibri', 'normal');
-                        doc.text(`${data1[i].completedCount}`, 70, programY);
-                        y = programY + 10;
+                        doc.text(`${data1[i].completedCount}`, 70, programY);   
+                        y = programY + 10;  
                         break;
                     }
                 }
-
-                y += 10;
+    
+                y += 10;  
             }
             doc.save('ficha_de_indicador.pdf');
         }
     };
+    
+    
 
 
-
-
-    const handleBuscarTutoresClick = async () => {
+    const handleBuscarAlumnosClick = async () => {
         try {
-            const response = await axios.get<{ success: boolean, data: Tutor[] }>('https://localhost:44369/listarTutores');
-            const tutorsData = response.data.data;
-            setTutors(tutorsData);
-            setIsTutorModalOpen(true);
+            const response = await axios.get<{ success: boolean, data: Student[] }>('https://localhost:44369/listarEstudiantes');
+            const studentData = response.data.data;
+            setStudents(studentData);
+            setIsStudentModalOpen(true);
         } catch (error) {
-            console.error("Error fetching tutors data:", error);
+            console.error("Error fetching students data:", error);
         }
     };
     if (loading) {
@@ -312,11 +309,11 @@ const PageIndicadorTutor: React.FC = () => {
                 <button className="bg-primary cursor-default rounded-xl rounded-xl text-white px-5 shadow-custom border border-solid border-[rgba(116,170,255,0.70)] active:bg-black hover:cursor-pointer ml-6" onClick={handleExportClick}>
                     Exportar
                 </button>
-                <button className="bg-primary cursor-default rounded-l-full rounded-r-full text-white px-5 shadow-custom border border-solid border-[rgba(116,170,255,0.70)] active:bg-black hover:cursor-pointer ml-6" onClick={handleBuscarTutoresClick}>
-                    Buscar Tutores
+                <button className="ml-[-590px] bg-primary cursor-default rounded-xl rounded-xl text-white px-5 shadow-custom border border-solid border-[rgba(116,170,255,0.70)] active:bg-black hover:cursor-pointer ml-6" onClick={handleBuscarAlumnosClick}>
+                    Buscar Alumnos
                 </button>
                 <div className="max-h-[40px] rounded-2xl flex">
-                    <p className={`text-center flex items-center justify-center w-36 ${className} border-r-0 rounded-l-full`}>Inicio:</p>
+                    <p className={`text-center flex items-center justify-center w-36 ${className} border-r-0 rounded-l-xl`}>Inicio:</p>
                     <input
                         type="date"
                         className={`${className} border-l-0`}
@@ -331,7 +328,7 @@ const PageIndicadorTutor: React.FC = () => {
                         id=""
                         onChange={(e) => console.log(e.target.value)}
                     />
-                    <button className="bg-primary cursor-default rounded-r-2xl text-white px-5 shadow-custom border border-solid border-[rgba(116,170,255,0.70)] active:bg-black hover:cursor-pointer">
+                    <button className="rounded-r-xl bg-primary cursor-default text-white px-5 shadow-custom border border-solid border-[rgba(116,170,255,0.70)] active:bg-black hover:cursor-pointer">
                         <IconSearch />
                     </button>
                 </div>
@@ -342,18 +339,18 @@ const PageIndicadorTutor: React.FC = () => {
                 <div className="w-1/3 h-screen">
                     <div className="bg-white shadow-md rounded-md overflow-hidden max-w-lg mx-auto">
                         <div className="bg-primary py-2 px-4">
-                            <h2 className="text-xl font-semibold text-white text-center">Top Tutores Programas Académicos</h2>
+                            <h2 className="text-xl font-semibold text-white text-center">Alumnos Destacados por Programas</h2>
                         </div>
 
                         <ul className="divide-y bg-gray-200">
-                            {topTutors.map((tutor, index) => (
-                                <li key={index} className="flex items-center py-4 px-6 cursor-pointer hover:bg-gradient-to-r from-secondary to-blue-300" onClick={() => handleTutorClick(tutor.tutorId)}>
+                            {topStudents.map((student, index) => (
+                                <li key={index} className="flex items-center py-4 px-6 cursor-pointer hover:bg-gradient-to-r from-secondary to-blue-300" onClick={() => handleTutorClick(student.studentId)}>
                                     <span className="text-gray-700 text-lg font-medium mr-4">{index + 1}.</span>
-                                    <img className="w-12 h-12 rounded-full object-cover mr-4" src={noAvatar} alt="User avatar" />
+                                    <img className="w-12 h-12 rounded-full object-cover mr-4" src={noAvatar} />
 
                                     <div className="flex-1">
-                                        <h3 className="text-lg font-medium text-gray-800">{tutor.name}</h3>
-                                        <p className="text-gray-600 text-base">{tutor.programCount} programas</p>
+                                        <h3 className="text-lg font-medium text-gray-800">{student.name}</h3>
+                                        <p className="text-gray-600 text-base">En {student.programCount} programas</p>
                                     </div>
 
                                     <div className="ml-auto">
@@ -368,8 +365,8 @@ const PageIndicadorTutor: React.FC = () => {
                 </div>
 
                 <div className="flex-grow bg-gray-200 flex flex-col shadow-md">
-                    <div className="bg-primary py-2 px-4">
-                        <h2 className="text-xl font-semibold text-white text-center">Tutores Programas</h2>
+                    <div className="bg-primary py-2 px-4 rounded-t-md">
+                        <h2 className="text-xl font-semibold text-white text-center">Cantidad de Programas Académicos por Alumno</h2>
                     </div>
                     <div className="h-1/3 m-4 shadow-md rounded-md overflow-hidden" id="chart-container">
                         <ResponsiveContainer width="100%" height="100%">
@@ -392,7 +389,7 @@ const PageIndicadorTutor: React.FC = () => {
                         </ResponsiveContainer>
                     </div>
                     <div className="bg-primary py-2 px-4">
-                        <h2 className="text-xl font-semibold text-white text-center">Citas Tutores</h2>
+                        <h2 className="text-xl font-semibold text-white text-center">Cantidad de Citas por Alumno</h2>
                     </div>
                     <div className="h-1/2 bg-white-300 m-4 flex-grow p-4 overflow-auto">
                         <ResponsiveContainer width="100%" height="100%">
@@ -407,7 +404,7 @@ const PageIndicadorTutor: React.FC = () => {
                             >
                                 <CartesianGrid strokeDasharray="3 3" />
                                 <XAxis
-                                    dataKey={(item) => `${item.tutorName} ${item.tutorLastName}`}
+                                    dataKey={(item) => `${item.studentName} ${item.studentLastName}`}
                                     tick={{ fontWeight: 'bold' }}
                                 />
                                 <YAxis />
@@ -420,13 +417,12 @@ const PageIndicadorTutor: React.FC = () => {
                         </ResponsiveContainer>
                     </div>
                 </div>
-
-                <ModalProgramaAcademico isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} programs={selectedTutorPrograms} />
-                <ModalTutores isOpen={isTutorModalOpen} onClose={() => setIsTutorModalOpen(false)} tutors={tutors}
+                <ModalProgramaAcademico isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} programs={selectedStudentPrograms} />
+                <ModalAlumnos isOpen={isStudentModalOpen} onClose={() => setIsStudentModalOpen(false)} students={students}
                 />
             </div>
         </>
     );
 };
 
-export default PageIndicadorTutor;
+export default PageIndicadorAlumno;

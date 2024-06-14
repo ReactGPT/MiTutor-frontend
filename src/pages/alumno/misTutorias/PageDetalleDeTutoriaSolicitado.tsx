@@ -87,6 +87,9 @@ const PageDetalleDeTutoriaSolicitado = () => {
             <Textarea className='min-h-16 max-h-16' value={data.programDescription} readOnly />
           </div>
         </div>
+        <div className="w-full flex items-center justify-center p-2">
+          <Button onClick={goToSolicitarCita} variant="primario" text="Solicitar cita" disabled={estado != Estado.TUTOR_ASIGNADO} />
+        </div>
       </div>
 
       <div className="w-full flex h-full gap-5">

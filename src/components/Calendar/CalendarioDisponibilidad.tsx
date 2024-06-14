@@ -241,7 +241,7 @@ const CalendarioDisponibilidad: React.FC<CalendarioDisponibilidadProps> = ({ cit
         selectable={programable}
       />
       <ModalModificarDisponibilidad slotInfo={selectedSlot} isOpen={showModalDisponibilidad} onClose={closeModalDisponibilidad} refreshCalendar={refreshCalendar} />
-      <ModalProgramarCitaTutor slotInfo={selectedSlot} isOpen={showModalProgramarCita} onClose={closeModalProgramarCita} />
+      <ModalProgramarCitaTutor slotInfo={selectedSlot} isOpen={showModalProgramarCita} onClose={closeModalProgramarCita} refreshCalendar={refreshCalendar} />
     </>
   );
 };

@@ -6,7 +6,6 @@ import { useCitasPorTutor } from '../../../store/hooks/useCita';
 import { useAuth } from '../../../context';
 import { TutorRoleDetails } from '../../../store/types';
 import { SlotInfo } from 'react-big-calendar';
-import ModalProgramarCita from './ModalProgramarCita';
 
 const PageCalendarioTutor: React.FC = () => {
   const { userData } = useAuth();
@@ -56,7 +55,7 @@ const PageCalendarioTutor: React.FC = () => {
             :
             <Button text='Programar Cita' onClick={() => setProgramarCita(true)} variant="primario" />
           }
-          <Button text='Ver Disponibilidad' onClick={goToDisponibilidad} variant="primario" />
+          <Button text='Ver Disponibilidad' onClick={goToDisponibilidad} variant="primario" disabled={programarCita} />
         </div>
       </div>
       <div className="flex-1 w-full overflow-auto bg-white rounded-md p-4">

@@ -378,13 +378,13 @@ const TutorDetail: React.FC = () => {
                     printAppointment(doc, appointment, xSecondColumn, y, rowHeight);
                 }
     
-                // Actualizar la posición Y
+                 
                 y += rowHeight;
     
                 index++;
             }
     
-            // Guardar el PDF
+             
             doc.save('detalle_tutor.pdf');
         }
     };

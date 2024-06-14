@@ -17,6 +17,7 @@ import { FaCheckCircle, FaRegTrashAlt } from "react-icons/fa";
 import { RiErrorWarningLine } from "react-icons/ri";
 import ModalAdvertencia from '../../../components/Tutor/ModalAdvertencia';
 import { useActionPlanById, useDeleteActionPlan, useUpdateActionPlan } from '../../../store/hooks/useActionPlan';
+import { Services as ServicesProperties } from '../../../config';
 
 
 const PageDetallePlanAccion = () => {
@@ -96,7 +97,7 @@ const PageDetallePlanAccion = () => {
         "creationDate": "2024-05-09T07:35:12.513Z",
         "modificationDate": "2024-05-09T07:35:12.513Z"
       };
-      console.log(newData);
+      console.log("Data guardar", newData);
       //await axios.put(`${ServicesProperties.BaseUrl}/actualizarActionPlan`, newData);
       useUpdateActionPlan(newData);
       seteditionModalOpen(true);
@@ -125,9 +126,10 @@ const PageDetallePlanAccion = () => {
         "tutorId": 0,
         "creationDate": "2024-05-10T04:39:19.094Z", //no necesita
         "modificationDate": "2024-05-10T04:39:19.094Z" //no necesita
-      };
-      //await axios.put(ServicesProperties.BaseUrl + '/actualizarActionPlan', data3);
-      useUpdateActionPlan(data3);
+      }
+      await axios.put(ServicesProperties.BaseUrl + '/actualizarActionPlan', data3);
+      console.log("data desactivar: ", data3);
+      //useUpdateActionPlan(data3);
       setdeleteActionPlanModalOpen(false);
       window.location.reload();
     } catch (error) {
@@ -146,9 +148,9 @@ const PageDetallePlanAccion = () => {
         "tutorId": 0,
         "creationDate": "2024-05-10T04:39:19.094Z", //no necesita
         "modificationDate": "2024-05-10T04:39:19.094Z" //no necesita
-      };
-      //await axios.put(ServicesProperties.BaseUrl + '/actualizarActionPlan', data3);
-      useUpdateActionPlan(data3);
+      }
+      await axios.put(ServicesProperties.BaseUrl + '/actualizarActionPlan', data3);
+      //useUpdateActionPlan(data3);
       setdeleteActionPlanModalOpen(false);
       window.location.reload();
     } catch (error) {

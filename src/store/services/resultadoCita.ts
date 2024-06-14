@@ -7,7 +7,7 @@ import { Services as ServicesProperties} from '../../config';
 import { Tutor } from '../types/Tutor';
 import { Derivation } from '../types/Derivation';
 
-async function getResultadoCita(cita : ListCita): Promise<InitialData> { 
+async function getResultadoCita(cita : ListCita): Promise<InitialData|null> { 
   try{
       const response = await axios.get(ServicesProperties.BaseUrl+`/consultarResultadoCita?appointmentId=${cita.appointmentId}&studentId=${cita.personId}&tutoringProgramId=${cita.programId}`);  
       console.log("resultado cira", response.data)
@@ -17,6 +17,27 @@ async function getResultadoCita(cita : ListCita): Promise<InitialData> {
   }
 
 } 
+
+async function insertResultadoCita(cita:InitialData) {
+  try {
+      const url = ServicesProperties.BaseUrl+`/agregarResultadoCitaOriginal?startTime=${cita.appointmentResult.startTime}&endTime=${cita.appointmentResult.endTime}`;
+
+      const response = await axios.post(url, cita);
+
+      console.log('Derivacion creada', response.data);
+
+      // Asignar el ID del resultado de cita devuelto a cita.appointmentResult.appointmentResultId
+      cita.appointmentResult.appointmentResultId = response.data.data[0];
+      cita.appointmentResult.comments[0].commentId = response.data.data[1];
+      cita.appointmentResult.comments[1].commentId = response.data.data[2];
+
+      return response.data.data[0];
+
+  } catch (error) {
+      console.error('Error:', error);
+  }
+}
+
 
 async function updateResultadoCita(cita: InitialData) {
   try {
@@ -103,4 +124,4 @@ async function getDerivacion(id_appointment: number): Promise<Derivation> {
 }
 
 export { getResultadoCita, updateResultadoCita, updateComentario, 
-  getEstudianteDatos, getTutorDatos, getUnidadesDerivacion, getDerivacion};
+  getEstudianteDatos, getTutorDatos, getUnidadesDerivacion, getDerivacion,insertResultadoCita};

@@ -55,7 +55,7 @@ const PageAgregarDisponibilidadTutor: React.FC = () => {
           </div>
         </div>
         <div className="flex-1 w-full overflow-auto bg-white rounded-md p-4">
-          <CalendarioDisponibilidad programable onSelectEvent={handleSelectEvent} refresh={refreshCalendar} />
+          <CalendarioDisponibilidad programable onSelectEvent={handleSelectEvent} tipo="disponibilidad" refrescar={refreshCalendar} />
         </div>
       </div >
       <ModalEliminarDisponibilidad isOpen={showModalEliminar} onClose={closeModal} eventInfo={eventInfo} onAvailabilityRemoved={refreshCalendarHandler} />

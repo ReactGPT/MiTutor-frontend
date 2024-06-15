@@ -58,7 +58,7 @@ const PageDetalleCitaGrupal: React.FC = () => {
         if (estudiantes[0].appointmentResultId === 0) {
           // Operación de guardar
           response = await axios.post(ServicesProperties.BaseUrl+`/guardarAsistenciasCitaGrupal`,estudiantes);
-          console.log('Datos guardados con éxito.');
+          
           // Obtener los IDs devueltos por la API
           const nuevosIds = response.data; // Suponiendo que la API devuelve la lista de IDs en response.data
     
@@ -75,10 +75,10 @@ const PageDetalleCitaGrupal: React.FC = () => {
 
 
         } else {
-          // Operación de actualizar:actualizarResultadoCitaGrupal
-          console.log('Datos a actualizar.',estudiantes);
+          // Operación de actualizar:actualizarResultadoCitaGrupal 
           response = await axios.put(ServicesProperties.BaseUrl+`/actualizarResultadoCitaGrupal`,estudiantes);
-          console.log('Datos actualizados con éxito.',estudiantes);
+          
+          setOriginalEstudiantes(estudiantes);
         }
         // Salir del modo de edición
         setEditMode(false);

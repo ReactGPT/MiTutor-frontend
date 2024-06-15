@@ -158,5 +158,9 @@ export const PageTitles = [
   {
     path: "/listaDeCitas/resultadoCitaGrupal",
     pageName: "Resultado de Cita Grupal"
-  } 
+  },
+  {
+    path: "/misTutorias/detalle/listadoPlanAccionAlumno/detalle",
+    pageName: "Detalle Plan de Acción"
+  }
 ];

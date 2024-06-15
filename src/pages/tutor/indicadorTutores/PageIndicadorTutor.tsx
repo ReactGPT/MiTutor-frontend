@@ -9,7 +9,7 @@ import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 import ModalTutores from './ModalTutores';
 import noAvatar from '../../../assets/Tutor/no-avatar.webp';
-
+import { Services as ServicesProperties } from '../../../config';
 
 interface TutorData {
     tutorId: number;
@@ -113,11 +113,16 @@ const PageIndicadorTutor: React.FC = () => {
     const [isTutorModalOpen, setIsTutorModalOpen] = useState(false);
     const [tutors, setTutors] = useState<Tutor[]>([]);
 
+    // Configura Axios para usar la URL base del backend
+    const api = axios.create({
+        baseURL: ServicesProperties.BaseUrl, // Asegúrate de que esta URL es correcta
+    });
+
     const [idTutors, setIdTutor] = useState<IdsTutor[]>([]);
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await axios.get<{ success: boolean, data: TutorData[] }>('https://localhost:44369/listarTutoresConCantidadDeProgramas');
+                const response = await api.get<{ success: boolean, data: TutorData[] }>('/listarTutoresConCantidadDeProgramas');
                 const responseData = response.data.data;
 
                 const transformedData: ChartData[] = responseData.map((tutor: TutorData) => ({
@@ -143,7 +148,7 @@ const PageIndicadorTutor: React.FC = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await axios.get<{ success: boolean, data: TutorInfo[] }>('https://localhost:44369/listarCantidadAppointments');
+                const response = await api.get<{ success: boolean, data: TutorInfo[] }>('/listarCantidadAppointments');
                 const responseData = response.data.data;
                 setData1(responseData);
 
@@ -158,7 +163,7 @@ const PageIndicadorTutor: React.FC = () => {
     }, []);
     const fetchProgramsData = async (tutorId: number) => {
         try {
-            const response = await axios.get<{ success: boolean, data: ProgramData[] }>(`https://localhost:44369/listarProgramasDeTutoriaPorTutorId/${tutorId}`);
+            const response = await api.get<{ success: boolean, data: ProgramData[] }>(`/listarProgramasDeTutoriaPorTutorId/${tutorId}`);
             return response.data.data;
         } catch (error) {
             console.error("Error fetching programs data:", error);
@@ -167,7 +172,7 @@ const PageIndicadorTutor: React.FC = () => {
     };
     const handleTutorClick = async (tutorId: number) => {
         try {
-            const response = await axios.get<{ success: boolean, data: ProgramData[] }>(`https://localhost:44369/listarProgramasDeTutoriaPorTutorId/${tutorId}`);
+            const response = await api.get<{ success: boolean, data: ProgramData[] }>(`/listarProgramasDeTutoriaPorTutorId/${tutorId}`);
             const programsData = response.data.data;
             setSelectedTutorPrograms(programsData);
             setIsModalOpen(true);
@@ -294,7 +299,7 @@ const PageIndicadorTutor: React.FC = () => {
 
     const handleBuscarTutoresClick = async () => {
         try {
-            const response = await axios.get<{ success: boolean, data: Tutor[] }>('https://localhost:44369/listarTutores');
+            const response = await api.get<{ success: boolean, data: Tutor[] }>('/listarTutores');
             const tutorsData = response.data.data;
             setTutors(tutorsData);
             setIsTutorModalOpen(true);
@@ -308,7 +313,7 @@ const PageIndicadorTutor: React.FC = () => {
 
     return (
         <>
-            <div className="ml-[-24px] mb-4 flex justify-between">
+            <div className="mb-4 flex justify-between">
                 <button className="bg-primary cursor-default rounded-xl rounded-xl text-white px-5 shadow-custom border border-solid border-[rgba(116,170,255,0.70)] active:bg-black hover:cursor-pointer ml-6" onClick={handleExportClick}>
                     Exportar
                 </button>

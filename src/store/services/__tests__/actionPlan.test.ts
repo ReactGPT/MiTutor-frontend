@@ -34,7 +34,7 @@ suite('ActionPlan Service Tests', () => {
     mock.reset();
   });
 
-  test('should fetch action plans', async () => {
+  test('deberia trae todo los planes de accion', async () => {
     const expectedData: ActionPlan[] = [mockActionPlan];
 
     mock.onGet(`${ServicesProperties.BaseUrl}/listarActionPlans`).reply(200, { data: expectedData });
@@ -48,7 +48,7 @@ suite('ActionPlan Service Tests', () => {
     expect(actionPlans).toEqual(expectedDataISO);
   });
 
-  test('should fetch action plans for a student', async () => {
+  test('debe traer todos los planes de accion para un alumno', async () => {
     const expectedData: ActionPlan[] = [mockActionPlan];
 
     mock.onGet(`${ServicesProperties.BaseUrl}/listarActionPlansStudent`).reply(200, { data: expectedData });
@@ -63,7 +63,7 @@ suite('ActionPlan Service Tests', () => {
   });
 
 
-  test('should fetch action plan by id', async () => {
+  test('debe traer el plan de accion por su id', async () => {
     const actionPlanId = 1;
     const expectedData: ActionPlan[] = [mockActionPlan];
 
@@ -78,7 +78,7 @@ suite('ActionPlan Service Tests', () => {
     expect(actionPlan).toEqual(expectedDataISO);
   });
 
-  test('should update an action plan', async () => {
+  test('debe actualizar el plan de accion', async () => {
     mock.onPut(`${ServicesProperties.BaseUrl}/actualizarActionPlan`).reply(200);
 
     await updateActionPlan(mockActionPlanUpdate);

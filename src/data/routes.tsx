@@ -6,6 +6,7 @@ import {
   BiHome,
   BiListUl,
   BiUser,
+  BiSolidLandmark,
   BiUserCheck,
   BiBarChart,
   BiBarChartAlt  
@@ -42,14 +43,16 @@ import PageIndicadorAlumno from "../pages/alumno/indicadorAlumnos/PageIndicadorA
 import PageIndicadorTutor from "../pages/tutor/indicadorTutores/PageIndicadorTutor.tsx";
 import PageListadoUsuarios from "../pages/administrador/gestionUsuarios/PageListadoUsuarios.tsx";
 import PageUsuario from "../pages/administrador/gestionUsuarios/PageUsuario.tsx";
+import PageUnidadFacultad from "../pages/administrador/gestionUnidad/PageUnidadFacultad.tsx";
+import PageEditarFacultad from "../pages/administrador/gestionUnidad/PageEditarFacultad.tsx";
+import PageEditarUnidadDerivacion from "../pages/administrador/gestionUnidad/PageEditarUnidadDerivacion.tsx";
+import PageAlumnosSeleccionados from "../pages/coordinador/programasDeTutoria/PageCargarAlumnos/PageAlumnosSeleccionados.tsx";
 import PageListadoEstudiantes from "../pages/administrador/gestionUsuarios/PageListadoEstudiantes.tsx";
 import PageEstudiante from "../pages/administrador/gestionUsuarios/PageEstudiante.tsx";
 import PageCargaMasiva from "../pages/administrador/gestionUsuarios/PageCargaMasiva.tsx";
 import TutorDetail from "../pages/tutor/indicadorTutores/TutorDetail.tsx";
 import PageResultadoCitaGrupal from '../pages/tutor/resultadoCita/PageResultadoCitaGrupal.tsx';
 import AlumnoDetail from "../pages/alumno/indicadorAlumnos/AlumnoDetail.tsx";
- 
- 
 
 type RouterDetail = {
   pages: RouteObject[];
@@ -199,10 +202,13 @@ export const Routes: RouterConfig = {
         element: <PageIndicadorTutor />
       },
       {
+        path: '/alumnosSeleccionados',
+        element: <PageAlumnosSeleccionados />,
+      },
+      {
         path: '*',
         element: <Navigate to="/" />
-      }
-      ,
+      },
       {
         path: '/tutor-detail',
         element:<TutorDetail/> 
@@ -369,6 +375,18 @@ export const Routes: RouterConfig = {
         element: <PageCargaMasiva/>
       },
       {
+        path: '/unidades',
+        element: <PageUnidadFacultad/>
+      },
+      {
+        path: '/unidades/editarFacultad',
+        element: <PageEditarFacultad/>
+      },
+      {
+        path: '/unidades/editarUnidadDerivacion',
+        element: <PageEditarUnidadDerivacion/>
+      },
+      {
         path: '*',
         element: <Navigate to="/" />
       }
@@ -389,8 +407,8 @@ export const Routes: RouterConfig = {
       {
         key: 'unidades',
         label: 'Unidades',
-        path: '/*',//Pendiente agregar
-        icon: <BiListUl fontSize={32} />,
+        path: '/unidades',//Pendiente agregar
+        icon: <BiSolidLandmark fontSize={32} />,
       },
       {
         key: 'alumnos',

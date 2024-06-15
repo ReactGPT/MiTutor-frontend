@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from 'react'
 import { useTutoringProgramContext } from '../../../context/ProgramaTutoriaNuevo';
 import { AgGridReact } from 'ag-grid-react';
@@ -15,6 +16,9 @@ import { Tutor } from '../../../store/types';
 import DeleteIcon from '../../../assets/svg/DeleteIcon';
 import { daysToWeeks } from 'date-fns';
 import ModalConfirmation from '../../../components/ModalConfirmation';
+import { useAppSelector,useAppDispatch } from '../../../store/hooks';
+import { RootState } from '../../../store/store';
+import { tutoringProgramSlice } from '../../../store/slices';
 
 const defaultColDef = {
     suppressHeaderMenuButton: true,
@@ -30,14 +34,20 @@ const defaultColDef = {
 };
 
 function DatosTutoresSeleccionados({className,openModal}:InputProps) {
-    //const {tutoringProgram,onChangeTutoringProgram} = useTutoringProgramContext();
+    const {tutoringProgram,onChangeTutoringProgram} = useTutoringProgramContext();
     // useEffect(()=>{
     //     console.log(tutoringProgram);
     // },[tutoringProgram])
+    //const dispatch= useAppDispatch();
+    //const {handleChangeTutoringProgram} = tutoringProgramSlice.actions;
     const {fetchTutoresByProgramaTutoria,tutorListByProgramId,isLoading} = useProgramaTutoria();
-    const {tutoringProgram,onChangeTutoringProgram}=useTutoringProgramContext();
+    //const { tutoringProgramSelected } = useAppSelector((state: RootState) => state.tutoringProgram);
+    //const {tutoringProgram,onChangeTutoringProgram}=useTutoringProgramContext();
     const [tutoresAEliminar,setTutoresAEliminar]= useState<Tutor[]>([]);
     const [isOpen,setIsOpen]=useState<boolean>(false);
+    // const handleLocalChangeTutoringProgram= (name:string,value:any)=>{
+    //     dispatch(handleChangeTutoringProgram({name:name,value:value}));
+    //   };
     const columnDefs: ColDef[] = [
         
         { headerName: 'Nombres Apellidos', field: 'fullname' },
@@ -70,13 +80,16 @@ function DatosTutoresSeleccionados({className,openModal}:InputProps) {
     ];
     useEffect(()=>{
         if(!!tutoringProgram.id){
+            //const idToSearch = tutoringProgramSelected.id;
             fetchTutoresByProgramaTutoria(tutoringProgram.id)
             .then((tutores)=>{
                 onChangeTutoringProgram("tutores",[...tutores])
+                // if(idToSearch===tutoringProgramSelected.id){
+                // }
             });
         }
         setTutoresAEliminar([]);
-    },[]);
+    },[tutoringProgram.id]);
 
     const handleOnClickDeleteIcon=()=>{
         if(tutoresAEliminar.length>0){

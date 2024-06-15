@@ -2,6 +2,9 @@ import React, { useEffect, useState } from 'react'
 import { Checkbox, Radial, Toogle,InputCell } from '../../../components'
 import { useTutoringProgramContext } from '../../../context/ProgramaTutoriaNuevo';
 import { AddCircleIcon } from '../../../assets';
+import { useAppSelector,useAppDispatch } from '../../../store/hooks';
+import { RootState } from '../../../store/store';
+import { tutoringProgramSlice } from '../../../store/slices';
 
 type InputProps= {
   className:string;
@@ -9,9 +12,13 @@ type InputProps= {
 
 function DatosTipoTutoria({className}:InputProps) {
   const {tutoringProgram,onChangeTutoringProgram,onChangeTutoringProgramObject} = useTutoringProgramContext();
+  //const { tutoringProgramSelected } = useAppSelector((state: RootState) => state.tutoringProgram);
   const [disabledCantIntegrantes,setDisabledCantIntegrante] = useState<boolean>(!tutoringProgram.grupal);
-
-  
+  //const {handleChangeTutoringProgram,setTutoringProgram}=tutoringProgramSlice.actions;
+  //const dispatch=useAppDispatch();
+  // const handleLocalChangeTutoringProgram= (name:string,value:any)=>{
+  //   dispatch(handleChangeTutoringProgram({name:name,value:value}));
+  // };
   const handleOnChangeCantMembers=(name:'Aumentar'|'Disminuir')=>{
     if(name==="Aumentar"){
       onChangeTutoringProgram('cant_integrantes',(tutoringProgram.cant_integrantes+1));

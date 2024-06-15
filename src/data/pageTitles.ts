@@ -92,7 +92,6 @@ export const PageTitles = [
     pageName: "Detalle de Cita"
   },
   {
-
     path: '/gestionSolicitudes',
     pageName: "Gestión de Solicitudes"
   },
@@ -119,6 +118,14 @@ export const PageTitles = [
   {
     path: "/usuarios",
     pageName: "Usuarios"
+  },
+  {
+    path: "/unidades/editarFacultad",
+    pageName: "Editar Facultad"
+  },
+  {
+    path: "/unidades/editarUnidadDerivacion",
+    pageName: "Editar Unidad de Derivación"
   },
   {
     path: "/usuarios/detalle",

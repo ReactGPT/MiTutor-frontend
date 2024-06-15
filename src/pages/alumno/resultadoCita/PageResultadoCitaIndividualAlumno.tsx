@@ -51,7 +51,17 @@ function PageResultadoCitaIndividualAlumno() {
   const dayBeforeAppointment = new Date(appointmentDate);
   dayBeforeAppointment.setDate(appointmentDate.getDate() - 1);
 
-  const shouldShowCancelButton = currentDate <= dayBeforeAppointment;
+  // Normalizar las fechas a medianoche
+  const normalizeToMidnight = (date: Date) => {
+    const normalizedDate = new Date(date);
+    normalizedDate.setHours(0, 0, 0, 0);
+    return normalizedDate;
+  };
+
+  const normalizedCurrentDate = normalizeToMidnight(currentDate);
+  const normalizedDayBeforeAppointment = normalizeToMidnight(dayBeforeAppointment);
+
+  const shouldShowCancelButton = normalizedCurrentDate <= normalizedDayBeforeAppointment;
 
   return (
     <div className='w-full h-full overflow-auto flex flex-col gap-5'>

@@ -4,4 +4,5 @@ export type Specialty = {
     acronym:string;
     numberStudents:number;
     facultyId:number;    
+    // COMPLETAR CON DATOS DEL RESPONSABLE
 }

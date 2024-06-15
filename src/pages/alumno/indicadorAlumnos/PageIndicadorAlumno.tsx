@@ -311,11 +311,11 @@ const PageIndicadorAlumno: React.FC = () => {
 
     return (
         <>
-            <div className="ml-[-24px] mb-4 flex justify-between">
+            <div className="mb-4 flex justify-between">
                 <button className="bg-primary cursor-default rounded-xl rounded-xl text-white px-5 shadow-custom border border-solid border-[rgba(116,170,255,0.70)] active:bg-black hover:cursor-pointer ml-6" onClick={handleExportClick}>
                     Exportar
                 </button>
-                <button className="ml-[-590px] bg-primary cursor-default rounded-xl rounded-xl text-white px-5 shadow-custom border border-solid border-[rgba(116,170,255,0.70)] active:bg-black hover:cursor-pointer ml-6" onClick={handleBuscarAlumnosClick}>
+                <button className="bg-primary cursor-default rounded-xl rounded-xl text-white px-5 shadow-custom border border-solid border-[rgba(116,170,255,0.70)] active:bg-black hover:cursor-pointer ml-6" onClick={handleBuscarAlumnosClick}>
                     Buscar Alumnos
                 </button>
                 <div className="max-h-[40px] rounded-2xl flex">

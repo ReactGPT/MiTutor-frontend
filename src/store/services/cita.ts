@@ -44,7 +44,8 @@ async function getListaDeCitasByTutorIdByStudentId(tutorId: number, studentId: n
     const response = await axios.get(`${ServicesProperties.BaseUrl}/listarCitasPorTutorPorAlumno/${tutorId}/${studentId}`);
     const listaDeCitas: ListCita[] = response.data.data.map((item: any) => {
       return {
-        appointmentId: item.appointmentId, //falta el programId
+        appointmentId: item.appointmentId, //falta el programId 
+        programId : item.programId,
         programName: item.programName,
         appointmentStatus: item.appointmentStatus,
         groupBased: item.groupBased,

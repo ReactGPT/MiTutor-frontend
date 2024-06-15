@@ -88,7 +88,7 @@ type ServiceResponse={
                 Students: programa.alumnos.map(alumno=>{
                   return {
                     Id:alumno.studentId,
-                    IdTutor:alumno.tutorId
+                    IdTutor:!!alumno.tutorId?alumno.tutorId:-1
                   }
                 }),
                 Faculty : {

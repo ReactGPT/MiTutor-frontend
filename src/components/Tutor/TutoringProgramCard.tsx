@@ -9,7 +9,6 @@ type TutoringProgramCardProps = {
 };
 
 const TutoringProgramCard: React.FC<TutoringProgramCardProps> = ({ data }) => {
-  console.log(data);
   const navigate = useNavigate();
 
   const goToProgramDetails = () => {

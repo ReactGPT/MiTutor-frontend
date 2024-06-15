@@ -99,9 +99,6 @@ async function getListaDeCitasByStudentId(studentId: number): Promise<listaRespo
         message: item.message
       };
     });
-
-    console.log(response.data);
-
     return { listaDeCitas: listaDeCitas };
   } catch (error) {
     throw new Error("Error en getListaDeCitasByStudentId");

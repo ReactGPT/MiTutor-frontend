@@ -9,6 +9,7 @@ import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 import ModalAlumnos from './ModalAlumnos';
 import noAvatar from '../../../assets/Tutor/no-avatar.webp';
+import { Services as ServicesProperties } from '../../../config';
 
 interface StudentData {
     studentId: number;
@@ -110,11 +111,16 @@ const PageIndicadorAlumno: React.FC = () => {
     const [isStudentModalOpen, setIsStudentModalOpen] = useState(false);
     const [students, setStudents] = useState<Student[]>([]);
 
+    // Configura Axios para usar la URL base del backend
+    const api = axios.create({
+        baseURL: ServicesProperties.BaseUrl, // Asegúrate de que esta URL es correcta
+    });
+
     const [idStudents, setIdStudent] = useState<IdsStudent[]>([]);
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await axios.get<{ success: boolean, data: StudentData[] }>('https://localhost:44369/listarAlumnosConCantidadDeProgramas');
+                const response = await api.get<{ success: boolean, data: StudentData[] }>('/listarAlumnosConCantidadDeProgramas');
                 const responseData = response.data.data;
 
                 const transformedData: ChartData[] = responseData.map((student: StudentData) => ({
@@ -140,7 +146,7 @@ const PageIndicadorAlumno: React.FC = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await axios.get<{ success: boolean, data: StudentInfo[] }>('https://localhost:44369/listarCantidadAppointmentsStudent');
+                const response = await api.get<{ success: boolean, data: StudentInfo[] }>('/listarCantidadAppointmentsStudent');
                 const responseData = response.data.data;
                 setData1(responseData);
 
@@ -155,7 +161,7 @@ const PageIndicadorAlumno: React.FC = () => {
     }, []);
     const fetchProgramsData = async (studentId: number) => {
         try {
-            const response = await axios.get<{ success: boolean, data: ProgramData[] }>(`https://localhost:44369/listarProgramasDeTutoriaPorStudentId/${studentId}`);
+            const response = await api.get<{ success: boolean, data: ProgramData[] }>(`/listarProgramasDeTutoriaPorStudentId/${studentId}`);
             return response.data.data;
         } catch (error) {
             console.error("Error fetching programs data:", error);
@@ -164,7 +170,7 @@ const PageIndicadorAlumno: React.FC = () => {
     };
     const handleTutorClick = async (studentId: number) => {
         try {
-            const response = await axios.get<{ success: boolean, data: ProgramData[] }>(`https://localhost:44369/listarProgramasDeTutoriaPorStudentId/${studentId}`);
+            const response = await api.get<{ success: boolean, data: ProgramData[] }>(`/listarProgramasDeTutoriaPorStudentId/${studentId}`);
             const programsData = response.data.data;
             setSelectedStudentPrograms(programsData);
             setIsModalOpen(true);
@@ -291,7 +297,7 @@ const PageIndicadorAlumno: React.FC = () => {
 
     const handleBuscarAlumnosClick = async () => {
         try {
-            const response = await axios.get<{ success: boolean, data: Student[] }>('https://localhost:44369/listarEstudiantes');
+            const response = await api.get<{ success: boolean, data: Student[] }>('/listarEstudiantes');
             const studentData = response.data.data;
             setStudents(studentData);
             setIsStudentModalOpen(true);

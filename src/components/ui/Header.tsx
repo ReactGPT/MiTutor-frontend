@@ -28,9 +28,7 @@ const Header: React.FC = () => {
       <span className="font-montserrat text-4xl font-bold text-primary">{title}</span>
 
       <div className="flex items-center justify-center">
-
-        <Notifications userAcountId={userAcountId} />
-
+        {/* <Notifications userAcountId={userAcountId} /> */}
       </div>
     </div>
   );

@@ -37,17 +37,19 @@ export default function PageProgTutoria() {
         <div id="DatosGeneralesTutoria" className='flex relative z-10 flex-col w-full h-fit border-custom drop-shadow-md p-4'>
           <DatosGeneralesTutoria />
         </div>
-        <div id="ProgramaTutoriaBox2" className='flex flex-row w-full h-fit gap-4 z-0 relative'>
-          <DatosTipoTutoria
-            className='flex flex-col border-custom drop-shadow-md w-fit min-w-[300px] h-full p-4 gap-3'
-          />
+        <div id="ProgramaTutoriaBox2" className='flex flex-row w-full h-fit gap-4'>
+          <div className='flex flex-col gap-4'>
+            <DatosTipoTutor className='flex relative z-10 flex-col w-full h-fit p-4 border-custom drop-shadow-md gap-4' />
+            <DatosTipoTutoria
+              className='flex flex-col border-custom drop-shadow-md w-fit min-w-[300px] h-full p-4 gap-3'
+            />
+          </div>
           <DatosTutoresSeleccionados
             className='flex flex-col border-custom drop-shadow-md w-full h-full p-4 gap-4'
             openModal={() => setIsOpenModalAgregarTutores(true)}
           />
         </div>
         <div id="ProgramaTutoriaBox3" className='flex flex-row w-full h-[20%] gap-4'>
-          <DatosTipoTutor className='flex flex-col w-fit h-fit p-4 border-custom drop-shadow-md gap-4' />
           <DatosAlumnosSeleccionados className='flex flex-row w-full h-full items-center p-4 border-custom drop-shadow-md' />
         </div>
         <ModalAgregarTutores isOpen={isOpenModalAgregarTutores} closeModal={() => { setIsOpenModalAgregarTutores(false); }} />

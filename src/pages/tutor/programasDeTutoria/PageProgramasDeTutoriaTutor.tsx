@@ -16,7 +16,6 @@ const PageProgramasDeTutoriaTutor: React.FC = () => {
     fetchProgramaDeTutoria();
   }, []);
 
-
   const [searchText, setSearchText] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 6;

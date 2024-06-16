@@ -16,7 +16,7 @@ const Header: React.FC = () => {
   const { title } = useTitle();
   const handleOnClickBack = ()=>{
     console.log(userAcountId);
-    //navigate(-1);
+    navigate(-1);
   }
   return (
     <div className="w-full h-full flex flex-row justify-between items-center bg-[rgba(255,_255,_255,_0.50)] border-custom drop-shadow-md p-5">

@@ -37,7 +37,7 @@ export const PageTitles = [
   },
   {
     path: '/programasDeTutoriaMaestro/nuevo',
-    pageName: "Nuevo programa de Tutoría",
+    pageName: "Nueva tutoría",
   },
   {
     path: '/listadoPlanAccion',
@@ -162,5 +162,9 @@ export const PageTitles = [
   {
     path: "/listaDeCitas/resultadoCitaGrupal",
     pageName: "Resultado de Cita Grupal"
-  } 
+  },
+  {
+    path: "/misTutorias/detalle/listadoPlanAccionAlumno/detalle",
+    pageName: "Detalle Plan de Acción"
+  }
 ];

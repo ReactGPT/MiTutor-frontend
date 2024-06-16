@@ -7,7 +7,7 @@ import { eliminarDisponibilidad, getAvailabilityByTutorId, insertarDisponibilida
 const mock = new MockAdapter(axios);
 
 suite('Availability Service Tests', () => {
-  test('should fetch availability by tutor ID', async () => {
+  test('debe traer las disponibilidad por tutor ID', async () => {
     const tutorId = 123;
     const mockAvailabilityResponse = [
       {
@@ -34,7 +34,7 @@ suite('Availability Service Tests', () => {
     return { expect: availabilityList === mockAvailabilityResponse };
   });
 
-  test('should insert availability', async () => {
+  test('deberia insertar una disponibilidad', async () => {
     const mockAvailability = {
       availabilityTutorId: 123,
       availabilityDate: '2024-06-03',
@@ -49,7 +49,7 @@ suite('Availability Service Tests', () => {
     return { expect: mock.history.post.length === 1 };
   });
 
-  test('should fail to insert availability due to missing data', async () => {
+  test('deberia fallar al insertar una disponibilidad por falta de datos', async () => {
     const mockAvailability = {
       availabilityTutorId: 123,
       availabilityDate: '',
@@ -68,7 +68,7 @@ suite('Availability Service Tests', () => {
     }
   });
 
-  test('should delete availability by tutor ID', async () => {
+  test('deberia eliminar una disponibilidad por su id', async () => {
     const tutorId = 123;
 
     mock.onDelete(`${ServicesProperties.BaseUrl}/eliminarDisponibilidad/${tutorId}`).reply(200);
@@ -77,7 +77,7 @@ suite('Availability Service Tests', () => {
     return { expect: mock.history.delete.length === 1 };
   });
 
-  test('should fail to delete availability due to invalid tutor ID', async () => {
+  test('deberia fallar al eliminar una disponibilidad debido al tutorid incorrecto', async () => {
     const tutorId = -1;
 
     mock.onDelete(`${ServicesProperties.BaseUrl}/eliminarDisponibilidad/${tutorId}`).reply(200);

@@ -8,7 +8,7 @@ import { addAppointment, cancelAppointment, getListaDeCitasByStudentId, getLista
 const mock = new MockAdapter(axios);
 
 suite('Citas Service Tests', () => {
-  test('should fetch appointments by tutor ID', async () => {
+  test('deberia listar las citas por el id del tutor', async () => {
     const tutorId = 123;
     const mockAppointmentResponse: ListCita[] = [{
       appointmentId: 1,
@@ -47,7 +47,7 @@ suite('Citas Service Tests', () => {
     }
   });
 
-  test('should fetch appointments by tutor ID and student ID', async () => {
+  test('deberia listar las citas por tutor ID y student ID', async () => {
     const tutorId = 123;
     const studentId = 456;
     const mockAppointmentResponse: ListCita[] = [{
@@ -87,7 +87,7 @@ suite('Citas Service Tests', () => {
     }
   });
 
-  test('should fetch appointments by student ID', async () => {
+  test('deberia listar las citas por student ID', async () => {
     const studentId = 456;
     const mockAppointmentResponse: ListCita[] = [{
       appointmentId: 1,
@@ -126,7 +126,7 @@ suite('Citas Service Tests', () => {
     }
   });
 
-  test('should add an appointment', async () => {
+  test('deberia agregar un cita exitosamente', async () => {
     const mockAppointmentData = {
       appointment: {
         startTime: '2024-06-01T10:00:00Z',
@@ -147,7 +147,7 @@ suite('Citas Service Tests', () => {
     return { expect: mock.history.post.length === 1 };
   });
 
-  test('should fail to add an appointment', async () => {
+  test('deberia fallar al agregar un cita', async () => {
     const mockAppointmentData = {
       appointment: {
         startTime: '2024-06-01T10:00:00Z',
@@ -172,7 +172,7 @@ suite('Citas Service Tests', () => {
     }
   });
 
-  test('should cancel an appointment', async () => {
+  test('deberia cancelar un cita', async () => {
     const appointmentId = 1;
 
     mock.onPut(`${ServicesProperties.BaseUrl}/cancelarCita/${appointmentId}`).reply(200, {
@@ -184,7 +184,7 @@ suite('Citas Service Tests', () => {
     return { expect: cancelResponse.success === true };
   });
 
-  test('should fail to cancel an appointment', async () => {
+  test('deberia fallar al cancelar un cita pir id incorrecto', async () => {
     const appointmentId = -1;
 
     mock.onPut(`${ServicesProperties.BaseUrl}/cancelarCita/${appointmentId}`).reply(404); // Simular que la cita no se encuentra

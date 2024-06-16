@@ -7,6 +7,13 @@ import { useAvailability } from '../../store/hooks/useAvailability';
 import { useAuth } from '../../context';
 import { TutorRoleDetails } from '../../store/types';
 
+const formatDate = (date: Date) => {
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  const year = date.getFullYear();
+  return `${month}/${day}/${year}`;
+};
+
 interface ModalModificarDisponibilidadProps {
   isOpen: boolean;
   onClose: () => void;
@@ -24,13 +31,13 @@ const ModalModificarDisponibilidad: React.FC<ModalModificarDisponibilidadProps> 
 
   const { addAvailability } = useAvailability(tutorId);
 
-  const [startTime, setStartTime] = useState<string>(slotInfo?.start.toTimeString().split(' ')[0] || '');
-  const [endTime, setEndTime] = useState<string>(slotInfo?.end.toTimeString().split(' ')[0] || '');
-  const [date, setDate] = useState<string>(slotInfo?.start.toLocaleDateString() || '');
+  const [startTime, setStartTime] = useState<string>("");
+  const [endTime, setEndTime] = useState<string>("");
+  const [date, setDate] = useState<string>("");
 
   useEffect(() => {
     if (slotInfo) {
-      setDate(slotInfo.start.toLocaleDateString());
+      setDate(formatDate(slotInfo.start));
       setStartTime(slotInfo.start.toTimeString().split(' ')[0]);
       setEndTime(slotInfo.end.toTimeString().split(' ')[0]);
     }

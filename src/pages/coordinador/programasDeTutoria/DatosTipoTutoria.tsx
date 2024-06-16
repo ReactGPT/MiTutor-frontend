@@ -74,12 +74,18 @@ function DatosTipoTutoria({ className }: InputProps) {
           <div className='flex flex-col w-[50%]'>
             <label className='me-2 text-sm font-medium text-primary dark:text-gray-300'>Max. Integrantes</label>
             <div className='flex flex-row gap-1'>
-              <button onClick={() => handleOnChangeCantMembers('Disminuir')}>
-                <AddCircleIcon size={6} />
+              <button
+                disabled={disabledCantIntegrantes}
+                onClick={() => handleOnChangeCantMembers('Disminuir')}
+              >
+                <AddCircleIcon size={6} className={disabledCantIntegrantes ? 'text-gray-500' : 'text-black'} />
               </button>
               <InputCell disabled={disabledCantIntegrantes} name='cant_integrantes' type='number' boxSize='w-12' onChange={{ tipo: 'object', onChange: onChangeTutoringProgram }} text={tutoringProgram.cant_integrantes}></InputCell>
-              <button onClick={() => handleOnChangeCantMembers('Aumentar')}>
-                <AddCircleIcon size={6} />
+              <button
+                disabled={disabledCantIntegrantes}
+                onClick={() => handleOnChangeCantMembers('Aumentar')}
+              >
+                <AddCircleIcon size={6} className={disabledCantIntegrantes ? 'text-gray-500' : 'text-black'} />
               </button>
             </div>
           </div>

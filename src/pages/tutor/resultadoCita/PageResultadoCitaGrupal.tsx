@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, ChangeEvent} from 'react'
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from 'axios';
 import { ColDef } from 'ag-grid-community';
@@ -7,7 +7,8 @@ import { Button } from '../../../components';
 import { DetailsIcon, EditIcon } from '../../../assets';
 import { Services as ServicesProperties } from '../../../config';
 import { ListStudent2 } from '../../../store/types/ListStudent';
-
+import ModalResultadoCita
+ from '../../../components/Tutor/ModalResultadoCita';
 const PageDetalleCitaGrupal: React.FC = () => {
   const navigate = useNavigate();
   const { state } = useLocation();
@@ -17,13 +18,19 @@ const PageDetalleCitaGrupal: React.FC = () => {
   const [editMode, setEditMode] = useState(false);
   const [originalEstudiantes, setOriginalEstudiantes] = useState<ListStudent2[]>([]); // Estado para guardar datos originales
 
+  const [commentValue, setCommentValue] = useState('');
+  const [commentValue2, setCommentValue2] = useState(''); 
+
+  const [isModalOpenGuardar, setIsModalOpenGuardar] = useState(false);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await axios.get(`${ServicesProperties.BaseUrl}/listarEstudiantePorIdCita/${cita.appointmentId}`);
         setEstudiantes(response.data.data);
-        setOriginalEstudiantes(response.data.data); // Guardar los datos originales
-        console.log("datos recibidos",response.data.data);
+        setCommentValue(response.data.data[0].message1);
+        setCommentValue2(response.data.data[0].message2);
+        setOriginalEstudiantes(response.data.data);  
       } catch (error) {
         console.error('Error al obtener datos:', error);
       }
@@ -36,7 +43,7 @@ const PageDetalleCitaGrupal: React.FC = () => {
     console.log("cargaron",estudiantes);
   },[estudiantes])
   const handleCheckboxChange = (studentId: number, checked: boolean) => {
-    if (!editMode) return; // No hacer nada si no está en modo de edición
+    if (!editMode) return; 
     setEstudiantes((prevData) =>
       prevData.map((student) => 
         student.studentId === studentId ? { ...student, asistio: checked } : student
@@ -47,15 +54,31 @@ const PageDetalleCitaGrupal: React.FC = () => {
   };
 
   const handleCancelar = () => {
+    setCommentValue2(estudiantes[0].message1);
+    setCommentValue(estudiantes[0].message2);
     setEstudiantes(originalEstudiantes); // Restaurar los datos originales
     setEditMode(false); // Salir del modo de edición
   };
+    
+  //Onchange
+  const handleCommentChange = (e:ChangeEvent<HTMLTextAreaElement>) => {
+    const { value } = e.target;
+    setCommentValue(value);
+  };
+  const handleCommentChange2 = (e:ChangeEvent<HTMLTextAreaElement>) => {
+      const { value } = e.target;
+      setCommentValue2(value);
+  };
 
   const handleGuardar = async () => {
+    setIsModalOpenGuardar(!isModalOpenGuardar); 
     try {
       if (estudiantes.length > 0) {
         let response;
-        if (estudiantes[0].appointmentResultId === 0) {
+        estudiantes[0].message1 = commentValue ?? '';
+        estudiantes[0].message2 = commentValue2 ?? '';
+        if (estudiantes[0].appointmentResultId === 0) { 
+          console.log(estudiantes[0].message1);
           // Operación de guardar
           response = await axios.post(ServicesProperties.BaseUrl+`/guardarAsistenciasCitaGrupal`,estudiantes);
           
@@ -90,6 +113,9 @@ const PageDetalleCitaGrupal: React.FC = () => {
     }
   };
   
+  const closeModal = () => {
+    setIsModalOpenGuardar(false);
+  };
     
   const toDetail = (student: ListStudent2) => {
     //Hacer una copia de appointment con los datos del alum y enviar a la pag sig
@@ -152,7 +178,9 @@ const PageDetalleCitaGrupal: React.FC = () => {
           />
         );
       },
-    },{
+    },
+  ];
+  /*,{
       headerName: 'Ver más',
       minWidth: 100, 
       cellStyle: { textAlign: 'left' },
@@ -161,9 +189,7 @@ const PageDetalleCitaGrupal: React.FC = () => {
           <Button icon={DetailsIcon} onClick={() => toDetail(params.data)} />
         );
       },
-    },
-  ];
-
+    }*/
   return (
     <div className="flex flex-col w-full h-full">
       <div className="flex flex-col w-full h-fit bg-[rgba(255,255,255,0.5)] border-custom drop-shadow-md p-5">
@@ -219,31 +245,70 @@ const PageDetalleCitaGrupal: React.FC = () => {
         </div>
       </div>
 
-      <div className="flex flex-col gap-5 w-full h-3/4 bg-[rgba(255,_255,_255,_0.50)] border-custom drop-shadow-md p-5 mt-4">
-        <div className="flex items-center justify-between">
-          <h1 className="text-3xl font-bold">Participantes</h1>
-          {!editMode ? (
-            <Button variant="primario" onClick={() => setEditMode(true)} text="Editar" />
-          ) : (
-            <>
+      <div className="flex h-full gap-5 py-5">
+        <div className="flex flex-col gap-5 w-1/3 h-full bg-[rgba(255,_255,_255,_0.50)] border-custom drop-shadow-md p-5 mt-4">
+          <div className="flex items-center justify-between">
+            <h1 className="text-3xl font-bold">Comentarios</h1> 
+          </div> 
+          <div className='flex flex-col w-full pb-5'>
+            <h3 className='font-montserrat text-lg font-bold text-primary w-full mb-2'>Comentario para los alumnos</h3>
+            <div className='w-full'>
+              <div className='relative w-full h-full'>
+                <textarea
+                  name='studentAnnotations'
+                  value={commentValue}
+                  placeholder='Comentario visible para el alumno'
+                  onChange={handleCommentChange}
+                  className='w-full h-full rounded-md resize-none outline-none px-3 py-2 mt-1 font-montserrat text-[90%] border-custom drop-shadow-md font-bold text-gray-500'
+                  disabled={!editMode}
+                />
+              </div>
+            </div>
+          </div>
+          <div className='flex flex-col w-full pb-5'>
+            <h3 className='font-montserrat text-lg font-bold text-primary w-full mb-2'>Comentario Privado</h3>
+            <div className='w-full'>
+              <div className='relative w-full h-full'>
+                <textarea
+                  name='studentAnnotations'
+                  value={commentValue2}
+                  placeholder='Comentario visible para el alumno'
+                  onChange={handleCommentChange2}
+                  className='w-full h-full rounded-md resize-none outline-none px-3 py-2 mt-1 font-montserrat text-[90%] border-custom drop-shadow-md font-bold text-gray-500'
+                  disabled={!editMode}
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+        <div className="flex flex-col gap-5 w-2/3 h-full bg-[rgba(255,_255,_255,_0.50)] border-custom drop-shadow-md p-5 mt-4">
+          <div className="flex items-center justify-between">
+            <h1 className="text-3xl font-bold">Asistencia</h1>
+            {!editMode ? (
+              <Button variant="primario" onClick={() => setEditMode(true)} text="Editar" />
+            ) : (
               <div className='flex'>
                 <Button variant="secundario" onClick={handleCancelar} text="Cancelar" className="mr-2"/>
                 <Button variant="primario" onClick={handleGuardar} text="Guardar" />
               </div>
-            </>
-          )}
-        </div>
-        <div className='w-full h-full'>
-          <div className="ag-theme-alpine w-full h-full">
-            <AgGridReact
-              defaultColDef={defaultColDef}
-              columnDefs={columnDefs}
-              rowData={estudiantes}
-              rowHeight={60}
-            />
+            )}
+            
+          </div>
+          <div className='w-full h-full'>
+            <div className="ag-theme-alpine w-full h-full">
+              <AgGridReact
+                defaultColDef={defaultColDef}
+                columnDefs={columnDefs}
+                rowData={estudiantes}
+                rowHeight={60}
+              />
+            </div>
           </div>
         </div>
       </div>
+      <div>{isModalOpenGuardar && <ModalResultadoCita onClose={closeModal} loading={false}/>}</div>
     </div>
   );
 };

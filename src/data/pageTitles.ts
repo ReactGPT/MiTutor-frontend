@@ -44,6 +44,18 @@ export const PageTitles = [
     pageName: "Plan de Acción",
   },
   {
+    path: '/especialidades',
+    pageName: "Especialidades",
+  },
+  {
+    path: '/maestroTutores',
+    pageName: "Maestro Tutores",
+  },
+  {
+    path: '/alumnosSeleccionados',
+    pageName: "Seleccionar alumnos",
+  },
+  {
     path: '/detallePlanAccion',
     pageName: "Detalle Plan de Acción",
   },

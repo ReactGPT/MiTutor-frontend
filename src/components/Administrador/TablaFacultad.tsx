@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import SearchInput from '../SearchInput';
 import DeleteIcon from '../../assets/svg/DeleteIcon';
@@ -30,9 +30,9 @@ type TablaProps = {
 const facultadInicial: Facultad = {
   id: 0,
   name: "",
-  acronym: "" ,
+  acronym: "",
   numberStudents: 0,
-  numberTutors:0,
+  numberTutors: 0,
   isActive: true,
   facultyManager: {
     id: 0,
@@ -53,13 +53,13 @@ const facultadInicial: Facultad = {
   },
   specialties: null,
   tutoringPrograms: null,
-}
+};
 
 const Tabla: React.FC<TablaProps> = ({
   titulo,
   abreviatura,
   defaultColDef,
-}:TablaProps) => {
+}: TablaProps) => {
   const navigate = useNavigate();
   const [searchValue, setSearchValue] = useState('');
   const handleSearch = (query: string) => {
@@ -69,12 +69,12 @@ const Tabla: React.FC<TablaProps> = ({
   const [isOpenModalSuccess, setIsOpenModalSuccess] = useState<boolean>(false);
   const [isOpenModalError, setIsOpenModalError] = useState<boolean>(false);
   const [isOpenModalInput, setIsOpenModalInput] = useState<boolean>(false);
-  
-  const {facultadData, fetchFacultadData, deleteFacultad} = useFacultades();
+
+  const { facultadData, fetchFacultadData, deleteFacultad } = useFacultades();
   const [facultadSelected, setFacultadSelected] = useState<FacultadDelete | null>(null);
-  
-  useEffect(() => {fetchFacultadData()}, [isOpenModalInput]);
-  
+
+  useEffect(() => { fetchFacultadData(); }, [isOpenModalInput]);
+
   const handleOnConfirmDeleteFacultad = () => {
     // console.log("uni selec nombre",facultadSelected?.nombre);
     if (facultadSelected && !!facultadSelected) {
@@ -87,10 +87,10 @@ const Tabla: React.FC<TablaProps> = ({
             setIsOpenModalError(true);
           }
           setIsOpen(false);
-        })
+        });
     }
-  };  
-  
+  };
+
   const handleOnSelectFacultad = (facultad: FacultadDelete) => {
     setFacultadSelected(facultad);
   };
@@ -100,60 +100,60 @@ const Tabla: React.FC<TablaProps> = ({
     }
   }, [facultadSelected]);
   const handleNavigationFacultad = (data: Facultad) => {
-    navigate("/unidades/editarFacultad",{state:{facultadEstado:data}});
+    navigate("/unidades/editarFacultad", { state: { facultadEstado: data } });
   };
   const getFacultadById = (id: number) => {
     let facultadNoNula = facultadData.find(facultad => facultad.id === id);
-    if(!facultadNoNula) facultadNoNula = facultadInicial;
+    if (!facultadNoNula) facultadNoNula = facultadInicial;
     return facultadNoNula;
   };
 
   const columnFac: ColDef[] = [
-    { headerName: 'Nombre', field: 'name',minWidth:240 },
-    { headerName: 'Acrónimo', field: 'acronym', minWidth:150, maxWidth:180},
-    { headerName: 'Núm. de Estudiantes', field: 'numberStudents', minWidth:130, maxWidth:180},
-    { headerName: 'Núm. de Tutores', field: 'numberTutors', minWidth:130, maxWidth:180},
-    { headerName: 'Administrador', valueGetter: p => p.data?.facultyManager?.persona ? p.data?.facultyManager?.persona?.name + " " + p.data?.facultyManager?.persona?.lastName : "No asignado", minWidth:200 },
-    { headerName: 'Email', valueGetter: p => p.data?.facultyManager?.institutionalEmail ? p.data?.facultyManager?.institutionalEmail : "No asignado", minWidth:250 },
-    { headerName: 'Estado', valueGetter: p => p.data?.isActive ? "Activo" : "Inactivo", minWidth:100,  maxWidth:100},
+    { headerName: 'Nombre', field: 'name', minWidth: 240 },
+    { headerName: 'Acrónimo', field: 'acronym', minWidth: 150, maxWidth: 180 },
+    { headerName: 'Núm. de Estudiantes', field: 'numberStudents', minWidth: 130, maxWidth: 180 },
+    { headerName: 'Núm. de Tutores', field: 'numberTutors', minWidth: 130, maxWidth: 180 },
+    { headerName: 'Administrador', valueGetter: p => p.data?.facultyManager?.persona ? p.data?.facultyManager?.persona?.name + " " + p.data?.facultyManager?.persona?.lastName : "No asignado", minWidth: 200 },
+    { headerName: 'Email', valueGetter: p => p.data?.facultyManager?.institutionalEmail ? p.data?.facultyManager?.institutionalEmail : "No asignado", minWidth: 250 },
+    { headerName: 'Estado', valueGetter: p => p.data?.isActive ? "Activo" : "Inactivo", minWidth: 100, maxWidth: 100 },
     {
-        headerName:'Modificar',
-        field:'',
-        maxWidth:100,
-        minWidth:80,
-        cellRenderer: (rowData:any)=>{
-          return(
-            <CustomUnidadGridButton 
-            icon={DetailsIcon} 
-            iconSize={4} 
-            onClick={()=>{
+      headerName: 'Modificar',
+      field: '',
+      maxWidth: 100,
+      minWidth: 80,
+      cellRenderer: (rowData: any) => {
+        return (
+          <CustomUnidadGridButton
+            icon={DetailsIcon}
+            iconSize={4}
+            onClick={() => {
               const facultad = getFacultadById(rowData.data.id);
-              if(facultad)
+              if (facultad)
                 handleNavigationFacultad(facultad);
               else
                 console.error("Facultad no encontrada");
-            }}/>
-          )
-        }
+            }} />
+        );
+      }
     },
     {
-        headerName:'Eliminar',
-        field:'',
-        maxWidth:100,
-        minWidth:80,
-        cellRenderer:(rowData:any)=>{
-            return(
-                <button className='text-primary' onClick={()=>{
-                  const facultad: FacultadDelete = {
-                    id: rowData.data.id,
-                    name: rowData.data.nombre
-                  };
-                  handleOnSelectFacultad(facultad);
-                }}>
-                    <DeleteIcon size={6}/>
-                </button>
-            )
-        }
+      headerName: 'Eliminar',
+      field: '',
+      maxWidth: 100,
+      minWidth: 80,
+      cellRenderer: (rowData: any) => {
+        return (
+          <button className='text-primary' onClick={() => {
+            const facultad: FacultadDelete = {
+              id: rowData.data.id,
+              name: rowData.data.nombre
+            };
+            handleOnSelectFacultad(facultad);
+          }}>
+            <DeleteIcon size={6} />
+          </button>
+        );
+      }
     }
 
   ];
@@ -164,37 +164,39 @@ const Tabla: React.FC<TablaProps> = ({
         <h1 className="text-[28px] font-bold text-[#2F2F2F]">
           {titulo}
         </h1>
-        <Button 
-          className="" 
-          onClick={() => {setIsOpenModalInput(true);}} 
+        <Button
+          className=""
+          onClick={() => { setIsOpenModalInput(true); }}
           text={`Agregar ${abreviatura}`} />
       </div>
 
       <div className="w-full mt-[1%]">
         <SearchInput
           onSearch={handleSearch}
-          handleOnChangeFilters={() => {}}
+          handleOnChangeFilters={() => { }}
           placeholder={`Siglas o nombre de la ${abreviatura}`}
           selectDisabled={true}
         />
       </div>
 
-      <div className="flex w-full h-[35%] flex-col mt-10">
+      <div className="flex w-full h-[35%] flex-col space-y-5 mt-5">
         <div className="flex w-full h-[85%] ag-theme-alpine items-center justify-center">
           <div className="w-full h-full">
             <AgGridReact
               defaultColDef={defaultColDef}
               columnDefs={columnFac}
               rowData={facultadData.filter((item) =>
-                  item.name.toLowerCase().includes(searchValue.toLowerCase()) || item.acronym.toLowerCase().includes(searchValue.toLowerCase())
-                )}
+                item.name.toLowerCase().includes(searchValue.toLowerCase()) || item.acronym.toLowerCase().includes(searchValue.toLowerCase())
+              )}
+              paginationAutoPageSize
+              suppressMovableColumns
             />
           </div>
         </div>
       </div>
 
-      <ModalInput 
-        isOpen={isOpenModalInput} 
+      <ModalInput
+        isOpen={isOpenModalInput}
         message={`¿Esta seguro de inhabilitar la unidad: ?`}
         onClose={() => {
           setIsOpenModalInput(false);
@@ -205,7 +207,7 @@ const Tabla: React.FC<TablaProps> = ({
           setIsOpenModalInput(false);
         }}
         isAcceptAction={true}
-      />        
+      />
       <ModalConfirmation isOpen={isOpen} message={`¿Esta seguro de inhabilitar la unidad: ${facultadSelected && facultadSelected.name}?`}
         onClose={() => {
           setIsOpen(false);
@@ -216,7 +218,7 @@ const Tabla: React.FC<TablaProps> = ({
         }}
         isAcceptAction={true}
       />
-      <ModalSuccess isOpen={isOpenModalSuccess} message={`Se elimino con éxito la unidad: ${facultadSelected &&facultadSelected.name}`}
+      <ModalSuccess isOpen={isOpenModalSuccess} message={`Se elimino con éxito la unidad: ${facultadSelected && facultadSelected.name}`}
         onClose={() => {
           setFacultadSelected(null);
           setIsOpenModalSuccess(false);
@@ -226,11 +228,11 @@ const Tabla: React.FC<TablaProps> = ({
       <ModalError isOpen={isOpenModalError} message='Ocurrió un problema inesperado. Intente nuevamente'
         onClose={() => {
           setFacultadSelected(null);
-          setIsOpenModalError(false)
+          setIsOpenModalError(false);
         }}
-      /> 
+      />
     </>
   );
-}
+};
 
 export default Tabla;

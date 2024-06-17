@@ -45,12 +45,12 @@ export default function PageListadoUsuarios() {
   };
   const handleOnSelectUser = (usuario: User) => {
     setUserSelected(usuario);
-  }
+  };
   useEffect(() => {
     if (userSelected) {
       setIsOpen(true);
     }
-  }, [userSelected])
+  }, [userSelected]);
   const handleOnConfirmDeleteUsuario = () => {
     if (userSelected && !!userSelected.id) {
       deleteUser(userSelected?.id)
@@ -63,9 +63,9 @@ export default function PageListadoUsuarios() {
           }
           setIsOpen(false);
           //setProgramaSelected(null);
-        })
+        });
     }
-  }
+  };
   const [filters, setFilters] = useState<any>({
     idSpeciality: null,
     idFaculty: null,
@@ -78,7 +78,7 @@ export default function PageListadoUsuarios() {
     return [...(userData).filter((item) =>
       item.persona.name.toLowerCase().includes(filters.name ? filters.name : "")
       //&&(filters.idSpeciality?filters.idSpeciality===item.especialidadId:true)&&(filters.idFaculty?filters.idFaculty===item.facultadId:true)
-    )]
+    )];
   }, [userData, filters]);
 
 
@@ -118,7 +118,7 @@ export default function PageListadoUsuarios() {
       cellRenderer: (rowData: any) => {
         return (
           <CustomUsuariosGridButton icon={DetailsIcon} iconSize={4} onClick={() => (handleNavigation(rowData.data))} />
-        )
+        );
       }
     },
     {
@@ -131,25 +131,25 @@ export default function PageListadoUsuarios() {
           <button className='text-primary' onClick={() => handleOnSelectUser(rowData.data)}>
             <DeleteIcon size={6} />
           </button>
-        )
+        );
       }
     }
 
   ];
   return (
-    <div className='flex w-full h-full flex-col space-y-10 mt-10'>
-      <div className='flex w-full h-[10%]'>
-        <ListadoUsuariosSearchBar handleOnChangeFilters={handleOnChangeFilters} rol='usuario'/>
+    <div className='flex w-full h-full flex-col'>
+      <div className='flex w-full h-fit'>
+        <ListadoUsuariosSearchBar handleOnChangeFilters={handleOnChangeFilters} rol='usuario' />
       </div>
-      <div className='flex w-full h-[80%] ag-theme-alpine items-center justify-center'>
+      <div className='flex w-full h-full ag-theme-alpine items-center justify-center'>
         {loading ? <Spinner size='lg' /> : <div className='w-full h-full'>
           <AgGridReact
             defaultColDef={defaultColDef}
             columnDefs={columnDefs}
             rowData={UserFiltered}
             pagination={true}
-            paginationPageSize={10}
-            paginationPageSizeSelector={[10, 15, 20]}
+            paginationAutoPageSize
+            suppressMovableColumns
           />
         </div>}
       </div>
@@ -173,9 +173,9 @@ export default function PageListadoUsuarios() {
       <ModalError isOpen={isOpenModalError} message='Ocurrió un problema inesperado. Intente nuevamente'
         onClose={() => {
           setUserSelected(null);
-          setIsOpenModalError(false)
+          setIsOpenModalError(false);
         }}
       />
     </div>
-  )
+  );
 }

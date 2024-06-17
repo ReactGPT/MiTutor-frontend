@@ -42,12 +42,12 @@ export default function PageListadoEstudiantes() {
   };
   const handleOnSelectStudent = (estudiante: User) => {
     setStudentSelected(estudiante);
-  }
+  };
   useEffect(() => {
     if (studentSelected) {
       setIsOpen(true);
     }
-  }, [studentSelected])
+  }, [studentSelected]);
   const handleOnConfirmDeleteUsuario = () => {
     if (studentSelected && !!studentSelected.id) {
       deleteUser(studentSelected?.id)
@@ -60,9 +60,9 @@ export default function PageListadoEstudiantes() {
           }
           setIsOpen(false);
           //setProgramaSelected(null);
-        })
+        });
     }
-  }
+  };
 
   const [filters, setFilters] = useState<any>({
     idSpeciality: null,
@@ -78,7 +78,7 @@ export default function PageListadoEstudiantes() {
     return [...(userData).filter((item) =>
       item.persona.name.toLowerCase().includes(filters.name ? filters.name : "")
       //&&(filters.idSpeciality?filters.idSpeciality===item.especialidadId:true)&&(filters.idFaculty?filters.idFaculty===item.facultadId:true)
-    )]
+    )];
   }, [userData, filters]);
 
 
@@ -118,7 +118,7 @@ export default function PageListadoEstudiantes() {
       cellRenderer: (rowData: any) => {
         return (
           <CustomUsuariosGridButton icon={DetailsIcon} iconSize={4} onClick={() => (handleNavigation(rowData.data))} />
-        )
+        );
       }
     },
     {
@@ -131,25 +131,25 @@ export default function PageListadoEstudiantes() {
           <button className='text-primary' onClick={() => handleOnSelectStudent(rowData.data)}>
             <DeleteIcon size={6} />
           </button>
-        )
+        );
       }
     }
 
   ];
   return (
-    <div className='flex w-full h-full flex-col space-y-10 mt-10'>
-      <div className='flex w-full h-[10%]'>
-        <ListadoUsuariosSearchBar handleOnChangeFilters={handleOnChangeFilters} rol='estudiante'/>
+    <div className='flex w-full h-full flex-col'>
+      <div className='flex w-full h-fit'>
+        <ListadoUsuariosSearchBar handleOnChangeFilters={handleOnChangeFilters} rol='estudiante' />
       </div>
-      <div className='flex w-full h-[80%] ag-theme-alpine items-center justify-center'>
+      <div className='flex w-full h-full ag-theme-alpine items-center justify-center'>
         {loading ? <Spinner size='lg' /> : <div className='w-full h-full'>
           <AgGridReact
             defaultColDef={defaultColDef}
             columnDefs={columnDefs}
             rowData={UserFiltered}
             pagination={true}
-            paginationPageSize={10}
-            paginationPageSizeSelector={[10, 15, 20]}
+            paginationAutoPageSize
+            suppressMovableColumns
           />
         </div>}
       </div>
@@ -173,9 +173,9 @@ export default function PageListadoEstudiantes() {
       <ModalError isOpen={isOpenModalError} message='Ocurrió un problema inesperado. Intente nuevamente'
         onClose={() => {
           setStudentSelected(null);
-          setIsOpenModalError(false)
+          setIsOpenModalError(false);
         }}
       />
     </div>
-  )
+  );
 }

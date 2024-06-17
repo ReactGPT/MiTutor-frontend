@@ -8,7 +8,7 @@ const PageUnidadFacultad = () => {
     suppressHeaderMenuButton: true,
     flex: 1,
     sortable: true,
-    resizable: true,        
+    resizable: true,
     cellStyle: {
       textAlign: 'center',
       justifyContent: 'center',
@@ -16,7 +16,7 @@ const PageUnidadFacultad = () => {
       display: 'flex',
     },
   };
-  
+
   return (
     <div className="w-full h-full">
       <TablaFacultad
@@ -31,6 +31,6 @@ const PageUnidadFacultad = () => {
       />
     </div>
   );
-}
+};
 
 export default PageUnidadFacultad;

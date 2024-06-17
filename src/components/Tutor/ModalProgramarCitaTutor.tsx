@@ -261,6 +261,8 @@ const ModalProgramarCitaTutor: React.FC<ProgramarCitaTutorProps> = ({ isOpen, on
                 </div>
                 <Textarea className="max-h-[105px] min-h-[50px]" onChange={(e) => setAppointment({ ...appointment, reason: e.target.value })} disabled={selectedProgram == null} />
 
+                {/*<div>{JSON.stringify(selectedProgram?.data)}</div>*/}
+
                 {/* Modalidad */}
                 <div className="block">
                   <Label value="Modalidad" className='font-roboto text-primary' />

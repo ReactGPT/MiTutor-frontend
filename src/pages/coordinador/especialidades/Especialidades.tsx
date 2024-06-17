@@ -127,7 +127,7 @@ const EspecialidadesPage = () => {
                   <div className="flex w-full justify-center items-center">
                     <button
                       onClick={() => {
-                        navigate(`/especialidades/${params.data.specialtyId}`,{state:{especialidadEspecifica:params.data}});
+                        navigate(`/especialidades/${params.data.id}`,{state:{especialidadEspecifica:params.data}});
                       }}
                       className="rounded-2xl"
                     >

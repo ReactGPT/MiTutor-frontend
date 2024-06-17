@@ -31,7 +31,7 @@ function DatosPersona() {
               <InputAdmin titulo="Segundo Apellido" name="persona.secondLastName" text={user?.persona.secondLastName} placeholder='Ingresa el segundo apellido' enable={true} onChange={{tipo: 'object', onChange: onChangeUser }}/>
             </div>
             <InputAdmin titulo="Teléfono" name="persona.phone" placeholder='Ingresa el número de teléfono' text={user?.persona.phone} enable={true} onChange={{tipo: 'object', onChange: onChangeUser }} type='number'/>
-            <button onClick={handleClick}> HolA</button>
+            
           </div>
         </div>
       </div>
@@ -40,3 +40,7 @@ function DatosPersona() {
 }
 
 export default DatosPersona
+
+/*
+<button onClick={handleClick}> HolA</button>
+*/

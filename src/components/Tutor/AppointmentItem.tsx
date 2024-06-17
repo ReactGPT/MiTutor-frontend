@@ -87,7 +87,11 @@ const AppointmentItem: React.FC<AppointmentItemProps> = ({ appointment, tipo, us
 
   const goToDetalleCita = () => {
     if (user === 'tutor' && appointment.appointmentStatus!="registrada") {
-      navigate("/listaDeCitas/resultadoCitaIndividual", { state: { cita: appointment } });
+      if(appointment.groupBased==false){
+        navigate("/listaDeCitas/resultadoCitaIndividual", { state: { cita: appointment } });
+      }else{
+        navigate("/listaDeCitas/resultadoCitaGrupal", { state: { cita: appointment } });
+      }
     } else if (user === 'alumno') {
       navigate("/listaDeCitasAlumno/detalleCitaAlumno", { state: { cita: appointment } });
     } else if (user === 'tutor' && appointment.appointmentStatus=="registrada"){
@@ -135,7 +139,9 @@ const AppointmentItem: React.FC<AppointmentItemProps> = ({ appointment, tipo, us
                     user === "tutor" && (
                       <>
                         <span className="text-black font-semibold">Participante:</span>
-                        <span className="text-primary">{`${appointment.name} ${appointment.lastName} ${appointment.secondLastName}`}</span>
+                        <span className="text-primary">
+                          {appointment.groupBased === false ? `${appointment.name} ${appointment.lastName} ${appointment.secondLastName}` : appointment.name}
+                        </span>
                       </>
                     )
                   }

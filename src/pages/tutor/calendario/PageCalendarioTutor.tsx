@@ -5,7 +5,6 @@ import { useEffect, useState } from 'react';
 import { useCitasPorTutor } from '../../../store/hooks/useCita';
 import { useAuth } from '../../../context';
 import { TutorRoleDetails } from '../../../store/types';
-import { SlotInfo } from 'react-big-calendar';
 
 const PageCalendarioTutor: React.FC = () => {
   const { userData } = useAuth();

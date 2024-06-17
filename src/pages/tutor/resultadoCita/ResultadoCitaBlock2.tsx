@@ -200,7 +200,7 @@ function ResultadoCitaBlock2({className,cita}:InputProps) {
       if (resultadoCita && resultadoCita.appointmentResult) {  
         setCommentValue2(resultadoCita.appointmentResult.comments[1].message);
         setCommentValue(resultadoCita.appointmentResult.comments[0].message); 
-        setSelectOption(resultadoCita.appointmentResult.asistio ?? false);
+        setSelectOption(resultadoCita.appointmentResult.asistio ?? false); //chequear el asistio cuando cancela un nulo
         if (!resultadoCita.appointmentResult.startTime){
           setStartTime(dayjs('00:00:00', 'HH:mm:ss')); 
         }else{

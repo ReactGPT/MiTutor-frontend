@@ -32,7 +32,7 @@ type Facultad = {
 }
 
 export type Specialty = {
-    specialtyId:number;
+    id:number;
     name:string;
     acronym:string;
     numberOfStudents:number;  
@@ -43,4 +43,7 @@ export type Specialty = {
     modificationDate: string;
     students: any[] | null;
     tutoringPrograms: any[] | null;
+    numberStudents:number;
+    facultyId:number;    
+    // COMPLETAR CON DATOS DEL RESPONSABLE
 }

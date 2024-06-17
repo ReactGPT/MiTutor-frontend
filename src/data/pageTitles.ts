@@ -37,7 +37,7 @@ export const PageTitles = [
   },
   {
     path: '/programasDeTutoriaMaestro/nuevo',
-    pageName: "Nuevo programa de Tutoría",
+    pageName: "Nueva tutoría",
   },
   {
     path: '/listadoPlanAccion',
@@ -92,7 +92,6 @@ export const PageTitles = [
     pageName: "Detalle de Cita"
   },
   {
-
     path: '/gestionSolicitudes',
     pageName: "Gestión de Solicitudes"
   },
@@ -121,6 +120,14 @@ export const PageTitles = [
     pageName: "Usuarios"
   },
   {
+    path: "/unidades/editarFacultad",
+    pageName: "Editar Facultad"
+  },
+  {
+    path: "/unidades/editarUnidadDerivacion",
+    pageName: "Editar Unidad de Derivación"
+  },
+  {
     path: "/usuarios/detalle",
     pageName: "Detalle de Usuario"
   },
@@ -147,5 +154,13 @@ export const PageTitles = [
   {
     path: "/tutor-detail",
     pageName: "Indicador Tutor Detalle"
+  },
+  {
+    path: "/listaDeCitas/resultadoCitaGrupal",
+    pageName: "Resultado de Cita Grupal"
+  },
+  {
+    path: "/misTutorias/detalle/listadoPlanAccionAlumno/detalle",
+    pageName: "Detalle Plan de Acción"
   }
 ];

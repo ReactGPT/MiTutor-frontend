@@ -4,9 +4,61 @@ import { Services } from '../../config';
 
 type EspecialidadDetailResponse = {
     especialidadList: Specialty[];
-}
+};
 
 async function getEspecialidadInfo(): Promise<EspecialidadDetailResponse> {
+    try {
+        const response = await axios({
+            method: 'GET',
+            url: `${Services.BaseUrl}/listarEspecialidad`,
+        });
+        if (response.data.success === false) {
+            return { especialidadList: [] };
+        }
+        const especialidadList: Specialty[] = response.data.data.map((item: any) => {
+            return {
+                specialtyId: item.specialtyId,
+                name: item.name,
+                acronym: item.acronym,
+                numberStudents: item.numberOfStudents,
+                facultyId: item.facultyId,
+                // COMPLETAR CON DATOS DEL RESPONSABLE
+            };
+        });
+        return { especialidadList };
+    }
+    catch (error) {
+        return { especialidadList: [] };
+    }
+}
+
+async function getEspecialidadPorFacultadInfo(idFacultad: number): Promise<EspecialidadDetailResponse> {
+    try {
+        const response = await axios({
+            method: 'GET',
+            url: `${Services.BaseUrl}/api/Specialty/listarEspecialidadPorFacultad?FacultyId=${idFacultad}`,
+        });
+        if (response.data.success === false) {
+            return { especialidadList: [] };
+        }
+        const especialidadList: Specialty[] = response.data.data.map((item: any) => {
+            return {
+                specialtyId: item.specialtyId,
+                name: item.name,
+                acronym: item.acronym,
+                numberStudents: item.numberOfStudents,
+                facultyId: item.facultyId,
+                // COMPLETAR CON DATOS DEL RESPONSABLE
+            };
+        });
+        return { especialidadList };
+    }
+    catch (error) {
+        return { especialidadList: [] };
+    }
+}
+
+async function getEspecialidadInfo2(): Promise<EspecialidadDetailResponse> {
     try {
         const response = await axios({
             method: 'GET',
@@ -79,4 +131,5 @@ async function getEspecialidadByNameInfo(name:string): Promise<EspecialidadDetai
         return { especialidadList: [] };
     }
 }
-export { getEspecialidadInfo,getEspecialidadByNameInfo }
+
+export { getEspecialidadInfo, getEspecialidadPorFacultadInfo, getEspecialidadInfo2,getEspecialidadByNameInfo };

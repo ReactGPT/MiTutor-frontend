@@ -33,39 +33,214 @@ type TutorType={
 const initialState:ParametersState={
     specialityList : [
         {
-            id:1,
-            name:"Ingeniería Informática",
-            acronym:"INF",
-            numberStudents:5,
-            facultyId:2
+            id: 1,
+            name: "Ingeniería Informática",
+            acronym: "INF",
+            numberStudents: 5,
+            facultyId: 2,
+            numberOfStudents: 0,
+            isActive: false,
+            faculty: {
+                facultyId: 0,
+                name: '',
+                acronym: '',
+                numberOfStudents: 0,
+                numberOfTutors: 0,
+                isActive: false,
+                facultyManager: undefined,
+                specialties: null
+            },
+            specialtyManager: {
+                id: 0,
+                institutionalEmail: '',
+                pucpCode: '',
+                isActive: false,
+                persona: {
+                    id: 0,
+                    name: '',
+                    lastName: '',
+                    secondLastName: null,
+                    phone: null,
+                    isActive: false,
+                    usuario: undefined
+                },
+                roles: null,
+                isVerified: false,
+                creationDate: '',
+                modificationDate: ''
+            },
+            creationDate: '',
+            modificationDate: '',
+            students: null,
+            tutoringPrograms: null
         },
         {
-            id:2,
-            name:"Ingeniería Electronica",
-            acronym:"INF",
-            numberStudents:5,
-            facultyId:2
+            id: 2,
+            name: "Ingeniería Electronica",
+            acronym: "INF",
+            numberStudents: 5,
+            facultyId: 2,
+            numberOfStudents: 0,
+            isActive: false,
+            faculty: {
+                facultyId: 0,
+                name: '',
+                acronym: '',
+                numberOfStudents: 0,
+                numberOfTutors: 0,
+                isActive: false,
+                facultyManager: undefined,
+                specialties: null
+            },
+            specialtyManager: {
+                id: 0,
+                institutionalEmail: '',
+                pucpCode: '',
+                isActive: false,
+                persona: {
+                    id: 0,
+                    name: '',
+                    lastName: '',
+                    secondLastName: null,
+                    phone: null,
+                    isActive: false,
+                    usuario: undefined
+                },
+                roles: null,
+                isVerified: false,
+                creationDate: '',
+                modificationDate: ''
+            },
+            creationDate: '',
+            modificationDate: '',
+            students: null,
+            tutoringPrograms: null
         },
         {
-            id:3,
-            name:"Artes Plasticas",
-            acronym:"INF",
-            numberStudents:5,
-            facultyId:1
+            id: 3,
+            name: "Artes Plasticas",
+            acronym: "INF",
+            numberStudents: 5,
+            facultyId: 1,
+            numberOfStudents: 0,
+            isActive: false,
+            faculty: {
+                facultyId: 0,
+                name: '',
+                acronym: '',
+                numberOfStudents: 0,
+                numberOfTutors: 0,
+                isActive: false,
+                facultyManager: undefined,
+                specialties: null
+            },
+            specialtyManager: {
+                id: 0,
+                institutionalEmail: '',
+                pucpCode: '',
+                isActive: false,
+                persona: {
+                    id: 0,
+                    name: '',
+                    lastName: '',
+                    secondLastName: null,
+                    phone: null,
+                    isActive: false,
+                    usuario: undefined
+                },
+                roles: null,
+                isVerified: false,
+                creationDate: '',
+                modificationDate: ''
+            },
+            creationDate: '',
+            modificationDate: '',
+            students: null,
+            tutoringPrograms: null
         },
         {
-            id:5,
-            name:"Artes Modernas",
-            acronym:"INF",
-            numberStudents:5,
-            facultyId:1
+            id: 5,
+            name: "Artes Modernas",
+            acronym: "INF",
+            numberStudents: 5,
+            facultyId: 1,
+            numberOfStudents: 0,
+            isActive: false,
+            faculty: {
+                facultyId: 0,
+                name: '',
+                acronym: '',
+                numberOfStudents: 0,
+                numberOfTutors: 0,
+                isActive: false,
+                facultyManager: undefined,
+                specialties: null
+            },
+            specialtyManager: {
+                id: 0,
+                institutionalEmail: '',
+                pucpCode: '',
+                isActive: false,
+                persona: {
+                    id: 0,
+                    name: '',
+                    lastName: '',
+                    secondLastName: null,
+                    phone: null,
+                    isActive: false,
+                    usuario: undefined
+                },
+                roles: null,
+                isVerified: false,
+                creationDate: '',
+                modificationDate: ''
+            },
+            creationDate: '',
+            modificationDate: '',
+            students: null,
+            tutoringPrograms: null
         },
         {
-            id:6,
-            name:"Ingeniería Industrial",
-            acronym:"INF",
-            numberStudents:5,
-            facultyId:2
+            id: 6,
+            name: "Ingeniería Industrial",
+            acronym: "INF",
+            numberStudents: 5,
+            facultyId: 2,
+            numberOfStudents: 0,
+            isActive: false,
+            faculty: {
+                facultyId: 0,
+                name: '',
+                acronym: '',
+                numberOfStudents: 0,
+                numberOfTutors: 0,
+                isActive: false,
+                facultyManager: undefined,
+                specialties: null
+            },
+            specialtyManager: {
+                id: 0,
+                institutionalEmail: '',
+                pucpCode: '',
+                isActive: false,
+                persona: {
+                    id: 0,
+                    name: '',
+                    lastName: '',
+                    secondLastName: null,
+                    phone: null,
+                    isActive: false,
+                    usuario: undefined
+                },
+                roles: null,
+                isVerified: false,
+                creationDate: '',
+                modificationDate: ''
+            },
+            creationDate: '',
+            modificationDate: '',
+            students: null,
+            tutoringPrograms: null
         }
         
     ],
@@ -118,15 +293,15 @@ const initialState:ParametersState={
     tutorTypeList:[
         {
             id:1,
-            name:"Fijo Asignado"
+            name:"Tutor Fijo Solicitado"
         },
         {
             id:2,
-            name:"Fijo Solicitado"
+            name:"Tutor Fijo Asignado"
         },
         {
             id:3,
-            name:"Variable"
+            name:"Tutor Variable"
         }
     ]
 

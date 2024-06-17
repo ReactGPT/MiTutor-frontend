@@ -19,6 +19,11 @@ import IconTime from './svg/IconTime';
 import UserPlus from './svg/UserPlus';
 import ArrowDownload from './svg/ArrowDown';
 import ArrowUpload from './svg/ArrowUp';
+import AddSquareIcon from './svg/AddSquareIcon';
+import ArrowIcon from './svg/ArrowIcon';
+import FileIcon from './svg/FileIcon';
+import TrashIcon2 from './svg/TrashIcon';
+import RefreshIcon from './svg/RefreshIcon';
 
 export{
     DetailsIcon,
@@ -41,5 +46,10 @@ export{
     IconTime,
     UserPlus,
     ArrowDownload,
-    ArrowUpload
+    ArrowUpload,
+    AddSquareIcon,
+    ArrowIcon,
+    FileIcon,
+    TrashIcon2,
+    RefreshIcon
 }

@@ -5,7 +5,7 @@ import {
   useEffect,
   useState,
 } from 'react';
-import { UnidadDerivacion } from "../store/types/UnidadDerivacion";
+import UnidadDerivacion from "../store/types/UnidadDerivacion";
 
 type ContextProps = {
   children: ReactElement; // Componentes hijos envueltos por el proveedor

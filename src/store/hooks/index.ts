@@ -4,3 +4,4 @@ export * from './useParameters'
 export * from './useFaculties';
 export * from './useUserAccount';
 export * from './useStudent';
+export * from './useTutor';

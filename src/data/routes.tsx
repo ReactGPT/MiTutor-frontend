@@ -53,6 +53,8 @@ import PageCargaMasiva from "../pages/administrador/gestionUsuarios/PageCargaMas
 import TutorDetail from "../pages/tutor/indicadorTutores/TutorDetail.tsx";
 import PageResultadoCitaGrupal from '../pages/tutor/resultadoCita/PageResultadoCitaGrupal.tsx';
 import AlumnoDetail from "../pages/alumno/indicadorAlumnos/AlumnoDetail.tsx";
+import PageMaestroTutores from "../pages/coordinador/MaestroTutores/PageMaestroTutores.tsx";
+import { UserPlus } from "../assets/index.ts";
 import EspecialidadesPage from "../pages/coordinador/especialidades/Especialidades.tsx";
 import EspecialidadSingularPage from "../pages/coordinador/especialidades/EspecialidadSingular.tsx";
 
@@ -222,6 +224,10 @@ export const Routes: RouterConfig = {
         element:<AlumnoDetail/> 
       },
       {
+        path: '/maestroTutores',
+        element:<PageMaestroTutores/>
+      },
+      {
         path: '/especialidades',
         element: <EspecialidadesPage/>
       },
@@ -266,6 +272,12 @@ export const Routes: RouterConfig = {
         label: 'Indicador Tutor',
         path: '/indicadorTutor',
         icon: <BiBarChartAlt fontSize={32} />,
+      },
+      {
+        key:'maestroTutores',
+        label:'Maestro Tutores',
+        path:'/maestroTutores',
+        icon: <UserPlus size={6}/>
       }
     ]
   },

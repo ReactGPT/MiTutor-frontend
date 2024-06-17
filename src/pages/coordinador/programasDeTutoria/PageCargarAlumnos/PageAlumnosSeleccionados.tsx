@@ -46,7 +46,15 @@ const PageAlumnosSeleccionados = () => {
   const [searchValue, setSearchValue] = useState('');
   const profesores : Tutor[] =tutoringProgramSelected.tutores;
   //const esFijo=tutoringProgram;
-  useEffect(()=>{fetchStudentData(!!tutoringProgramSelected.id?tutoringProgramSelected.id:-1)},[])
+  useEffect(()=>{
+    fetchStudentData(!!tutoringProgramSelected.id?tutoringProgramSelected.id:-1)
+    
+  },[]);
+  useEffect(()=>{
+    if(tutoringProgramSelected.alumnos.length<=0){
+      dispatch(handleChangeTutoringProgram({name:'alumnos',value:studentData}));
+    }
+  },[studentData]);
   useEffect(()=>{setStudentDataModified(studentData)},[studentData])
   const esFijo:boolean = useMemo(()=>{
     return tutoringProgramSelected.tutorTypeId===2;

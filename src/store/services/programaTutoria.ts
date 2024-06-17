@@ -134,15 +134,18 @@ type ServiceResponse={
         return {sucess:true,data:[]}
       }
       const tutorList: Tutor[] = response.data.data.map((item: any) => {
-        
+        //console.log(response);
         return {
             idTutor:item.tutorId,
             nombre:item.userAccount.persona.name,
             apellido_paterno:item.userAccount.persona.lastName,
             apellido_materno:item.userAccount.persona.secondLastName,
+            pucpCode:item.userAccount.pucpCode,
             meetingRoom:item.meetingRoom,
             email:item.userAccount.institutionalEmail,
-            fullname:`${item.userAccount.persona.name} ${item.userAccount.persona.lastName} ${item.userAccount.persona.secondLastName}`
+            fullname:`${item.userAccount.persona.name} ${item.userAccount.persona.lastName} ${item.userAccount.persona.secondLastName}`,
+            modificationDate:item.modificationDate.toString().split(' ')[0],
+            userAccountId: item.userAccount.id
           };
         });
        

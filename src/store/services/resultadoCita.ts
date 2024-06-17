@@ -15,7 +15,6 @@ async function getResultadoCita(cita : ListCita): Promise<InitialData|null> {
   }catch(error){
       throw new Error("Error en getListaDeCitasByTutorId");
   }
-
 } 
 
 async function insertResultadoCita(cita:InitialData) {

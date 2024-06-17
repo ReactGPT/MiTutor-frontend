@@ -1,5 +1,7 @@
 import {useState} from 'react';
-import { crearEditarUsuario, eliminarUsuario, getUsuarios, getStudents, getUsuariosSinEstudiantes, crearEditarAlumno } from '../services/User';
+
+import { crearEditarUsuario, eliminarUsuario, getUsuarios, getStudents, crearEditarAlumno,getUsuariosSinEstudiantes } from '../services/User';
+
 import { User } from '../types/User';
 
 
@@ -13,6 +15,8 @@ type UserHookReturnType = {
     postStudent: (user:User) => Promise<boolean>;
     deleteUser: (id:number) => Promise<boolean>;
     fetchStudents: () => Promise<void>;
+    fetchStudentsSingleSet:()=> Promise<User[]>;
+    fetchUsersSingleSet:()=> Promise<User[]>;
 };
     
 function useUser(): UserHookReturnType {
@@ -33,6 +37,7 @@ function useUser(): UserHookReturnType {
         }
     }
 
+
     const fetchUsersNoStudents = async () => {
         setLoading(true);
         try {
@@ -45,7 +50,6 @@ function useUser(): UserHookReturnType {
             setLoading(false);
         }
     }
-
     const fetchStudents = async () => {
         setLoading(true);
         try {
@@ -54,6 +58,35 @@ function useUser(): UserHookReturnType {
         } catch (err:any) {
             setError(err);
             setUserData([]);
+        } finally {
+            setLoading(false);
+        }
+    }
+    const fetchStudentsSingleSet=async ()=>{
+        setLoading(true);
+        try {
+            const response = await getStudents();
+            //setUserData(response.userList);     
+            return response.userList;       
+        } catch (err:any) {
+            setError(err);
+            //setUserData([]);
+            return [];
+        } finally {
+            setLoading(false);
+        }
+    }
+    const fetchUsersSingleSet = async () => {
+        setLoading(true);
+        try {
+            const response = await getUsuarios();
+            //setUserData(response.userList);   
+            
+            return response.userList;         
+        } catch (err:any) {
+            setError(err);
+            //setUserData([]);
+            return [];
         } finally {
             setLoading(false);
         }
@@ -109,7 +142,8 @@ function useUser(): UserHookReturnType {
         }
     }
 
-    return { userData, loading, error, fetchUsers, postUser, deleteUser, fetchStudents, fetchUsersNoStudents, postStudent };
+    return { userData, loading, error, fetchUsers,fetchUsersNoStudents, postUser,postStudent, deleteUser, fetchStudents,fetchStudentsSingleSet, fetchUsersSingleSet };
+
 }
 
 export {useUser}

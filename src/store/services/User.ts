@@ -259,4 +259,6 @@ async function eliminarUsuario(id: number): Promise<ServiceResponse> {
   }
 }
 
+
 export { getUsuarios, getUsuariosSinEstudiantes, crearEditarUsuario, eliminarUsuario, getStudents, crearEditarAlumno }
+

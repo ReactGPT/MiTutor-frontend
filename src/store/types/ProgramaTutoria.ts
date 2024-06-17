@@ -5,12 +5,15 @@ export type Tutor={
     nombre:string;
     apellido_paterno:string;
     apellido_materno:string;
+    pucpCode:string;
+    userAccountId:number;
     //id_tipo:number;
     //descripcion_tipo:string;
     meetingRoom:string;
     email:string;
     fullname:string;
     toAdd?:boolean;
+    modificationDate?: string;
 }
 type Alumno={
     codigo:number;

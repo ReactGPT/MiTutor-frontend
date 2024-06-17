@@ -56,13 +56,17 @@
    
     --ag-header-height: 30px;
     /* --ag-list-item-height: 40px; */
-    --ag-row-height: 35px;
+    --ag-row-height: 30px;
     --ag-font-size: 11px;
     --ag-font-family: Mulish, sans-serif;
     --ag-row-border-width: none;
     --ag-row-border-color: white;
     --ag-checkbox-checked-color: #672779;
     --ag-checkbox-unchecked-color: #672779;
+  }
+  .ag-small-row{
+    --ag-row-height: 25px!important;
+    --ag-font-size: 11px!important;
   }
   
   .ag-icon-columns::before {

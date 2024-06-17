@@ -12,6 +12,8 @@ type UserHookReturnType = {
     postStudent: (user:User) => Promise<boolean>;
     deleteUser: (id:number) => Promise<boolean>;
     fetchStudents: () => Promise<void>;
+    fetchStudentsSingleSet:()=> Promise<User[]>;
+    fetchUsersSingleSet:()=> Promise<User[]>;
 };
     
 function useUser(): UserHookReturnType {
@@ -40,6 +42,35 @@ function useUser(): UserHookReturnType {
         } catch (err:any) {
             setError(err);
             setUserData([]);
+        } finally {
+            setLoading(false);
+        }
+    }
+    const fetchStudentsSingleSet=async ()=>{
+        setLoading(true);
+        try {
+            const response = await getStudents();
+            //setUserData(response.userList);     
+            return response.userList;       
+        } catch (err:any) {
+            setError(err);
+            //setUserData([]);
+            return [];
+        } finally {
+            setLoading(false);
+        }
+    }
+    const fetchUsersSingleSet = async () => {
+        setLoading(true);
+        try {
+            const response = await getUsuarios();
+            //setUserData(response.userList);   
+            
+            return response.userList;         
+        } catch (err:any) {
+            setError(err);
+            //setUserData([]);
+            return [];
         } finally {
             setLoading(false);
         }
@@ -95,7 +126,7 @@ function useUser(): UserHookReturnType {
         }
     }
 
-    return { userData, loading, error, fetchUsers, postUser, deleteUser, fetchStudents, postStudent };
+    return { userData, loading, error, fetchUsers, postUser, deleteUser, fetchStudents, postStudent,fetchStudentsSingleSet, fetchUsersSingleSet };
 }
 
 export {useUser}

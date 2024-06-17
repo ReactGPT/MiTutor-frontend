@@ -36,9 +36,9 @@ export default function SolicitudGestionSearchBar({ handleOnChangeFilters }: Inp
         setFacultySelected({ id: value.id as number, name: value.name, acronym: "", numberStudents: 0, numberTutors: 0 });
     };
 
-    const handleOnChangeSpeciality = (value: { id: number | string; name: string; }) => {
+    /*const handleOnChangeSpeciality = (value: { id: number | string; name: string; }) => {
         setSpecialitySelected({ id: value.id as number, name: value.name, acronym: "", numberStudents: 0, facultyId: 0 });
-    };
+    };*/
 
     const handleOnChangeStatus = (value: { id: number | string; name: string; }) => {
         setStatusSelected({ id: value.id as number, name: value.name });
@@ -66,13 +66,13 @@ export default function SolicitudGestionSearchBar({ handleOnChangeFilters }: Inp
                     icon={AcademicUnit}
                     value={facultySelected ? facultySelected.name : "Facultad"}
                 />
-                <DropdownSolicitud
+                {/*<DropdownSolicitud
                     options={specialityOptions.map(speciality => ({ id: speciality.id, name: speciality.name }))}
                     onSelect={handleOnChangeSpeciality}
                     defaultOption="Especialidad"
                     icon={Program}
                     value={specialitySelected ? specialitySelected.name : "Especialidad"}
-                />
+                />*/}
             </div>
         </div>
     );

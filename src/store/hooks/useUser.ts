@@ -1,5 +1,5 @@
 import {useState} from 'react';
-import { crearEditarUsuario, eliminarUsuario, getUsuarios, getStudents, crearEditarAlumno } from '../services/User';
+import { crearEditarUsuario, eliminarUsuario, getUsuarios, getStudents, getUsuariosSinEstudiantes, crearEditarAlumno } from '../services/User';
 import { User } from '../types/User';
 
 
@@ -8,6 +8,7 @@ type UserHookReturnType = {
     loading: boolean;
     error: any;
     fetchUsers: () => Promise<void>;
+    fetchUsersNoStudents: () => Promise<void>;
     postUser: (user:User) => Promise<boolean>;
     postStudent: (user:User) => Promise<boolean>;
     deleteUser: (id:number) => Promise<boolean>;
@@ -23,6 +24,19 @@ function useUser(): UserHookReturnType {
         setLoading(true);
         try {
             const response = await getUsuarios();
+            setUserData(response.userList);            
+        } catch (err:any) {
+            setError(err);
+            setUserData([]);
+        } finally {
+            setLoading(false);
+        }
+    }
+
+    const fetchUsersNoStudents = async () => {
+        setLoading(true);
+        try {
+            const response = await getUsuariosSinEstudiantes();
             setUserData(response.userList);            
         } catch (err:any) {
             setError(err);
@@ -95,7 +109,7 @@ function useUser(): UserHookReturnType {
         }
     }
 
-    return { userData, loading, error, fetchUsers, postUser, deleteUser, fetchStudents, postStudent };
+    return { userData, loading, error, fetchUsers, postUser, deleteUser, fetchStudents, fetchUsersNoStudents, postStudent };
 }
 
 export {useUser}

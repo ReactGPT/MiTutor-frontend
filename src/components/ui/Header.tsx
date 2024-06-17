@@ -14,6 +14,7 @@ const Header: React.FC = () => {
 
   const navigate = useNavigate();
   const { title } = useTitle();
+
   const handleOnClickBack = () => {
     navigate(-1);
   };

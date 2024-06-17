@@ -1,4 +1,4 @@
-export type UnidadDerivacion = {
+type UnidadDerivacion = {
     unidadDerivacionId: number;
     nombre: string;
     siglas: string;
@@ -8,4 +8,7 @@ export type UnidadDerivacion = {
     estado: boolean;
     esPadre: boolean;
     fechaCreacion: string;
+    parentId?: number;
 };
+
+export default UnidadDerivacion;

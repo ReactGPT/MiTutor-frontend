@@ -120,6 +120,10 @@ export const PageTitles = [
     pageName: "Usuarios"
   },
   {
+    path: "/unidades",
+    pageName: "Unidades"
+  },
+  {
     path: "/unidades/editarFacultad",
     pageName: "Editar Facultad"
   },

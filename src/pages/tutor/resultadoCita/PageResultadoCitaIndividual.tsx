@@ -14,7 +14,7 @@ const PageResultadoCitaIndividual: React.FC = () =>{
     //const {userData}=useAuth();
      
     const handleClickVerPerfil= ()=>{
-        navigate("/listaDeCitas/resultadoCitaIndividual/alumno",{state: {cita}});
+        navigate("/PerfilAlumno",{state: {studentId: cita?.personId}});
     };
     const handleClickPlanAccion=()=>{
         navigate("/listadoPlanAccion", {state: {studentId: cita?.personId, programId: cita?.programId}});

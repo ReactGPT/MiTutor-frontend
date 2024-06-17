@@ -257,7 +257,7 @@ function FormularioDerivacion({className,cita}:InputProps){
     doc.text(`A QUÉ SERVICIO SE LE DERIVA:`, 20, 110);
     const servicio = doc.getTextWidth(`A QUÉ SERVICIO SE LE DERIVA:`);
     doc.setFont('calibri','normal');
-    //doc.text(`${unidadesDerivacion[formData.unidadDerivada-1].unitName}`, 20 + servicio + 2, 110); // Ajusta la posición x en función del ancho del texto "Nombre de Alumno:"
+    doc.text(`${unidadesDerivacion[formData.unidadDerivada-1].unitName}`, 20 + servicio + 2, 110); // Ajusta la posición x en función del ancho del texto "Nombre de Alumno:"
     
     doc.setFont('calibri', 'bold');
     doc.text(`MOTIVO DE DERIVACIÓN:`, 20, 120);

@@ -55,7 +55,7 @@ import PageResultadoCitaGrupal from '../pages/tutor/resultadoCita/PageResultadoC
 import AlumnoDetail from "../pages/alumno/indicadorAlumnos/AlumnoDetail.tsx";
 import EspecialidadesPage from "../pages/coordinador/especialidades/Especialidades.tsx";
 import EspecialidadSingularPage from "../pages/coordinador/especialidades/EspecialidadSingular.tsx";
-import PagePerfilAlumnoResultado from "../pages/tutor/resultadoCita/PerfilAlumnoResultado.tsx";
+
 
 type RouterDetail = {
   pages: RouteObject[];
@@ -132,10 +132,6 @@ export const Routes: RouterConfig = {
         path: '/listaDeCitas/resultadoCitaGrupal',
         element: <PageResultadoCitaGrupal />
         //PageDetalleCitaGrupal
-      },
-      {
-        path: '/listaDeCitas/resultadoCitaIndividual/alumno',
-        element: <PagePerfilAlumnoResultado />
       },
 
       {

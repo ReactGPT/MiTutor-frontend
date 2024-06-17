@@ -24,6 +24,10 @@ const PagePerfilAlumnoTutor = () => {
     navigate('/programasDeTutoria/detalle-programa/alumno/historicoCitas', { state: { data } });
   };
 
+  const handleClickPlanAccion=()=>{
+    //navigate("/listadoPlanAccion", {state: {studentId: data.studentId, programId: data. cita?.programId}});
+  }
+
   return (
     <div className="flex w-full h-full justify-center items-center">
 
@@ -42,12 +46,12 @@ const PagePerfilAlumnoTutor = () => {
         <div className="flex flex-col gap-5">
           <img src={image} alt="Imagen Alumno" className="w-[200px] h-[200px] rounded-full" />
           <ul className="flex flex-col items-center w-full">
-            <li className='mb-4'>
+            {/*<li className='mb-4'>
               <Button onClick={openModal} variant="call-to-action" text="Plan de Acción" />
-            </li>
-            <li className='mb-4'>
+            </li>*/}
+            {/*<li className='mb-4'>
               <Button onClick={() => { }} variant="call-to-action" text="Archivos" />
-            </li>
+            </li>*/}
             <li className='mb-4'>
               <Button onClick={goToHistoricoCitas} variant="call-to-action" text="Historico de Citas" />
             </li>

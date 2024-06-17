@@ -58,8 +58,6 @@ export default function ListadoUsuariosSearchBar({ handleOnChangeFilters, rol }:
     <div className='flex w-full h-full flex-row py-0'>
       <div className='flex w-full h-12 justify-end space-x-4'>
         <Button onClick={handleClickNuevoUsuario} text={`Agregar ${capitalize(rol)}`} icon={UserPlus} />
-        <Button onClick={handleClickImportarMasivo} text="Importar" variant='primario' icon={ArrowUpload} />
-        <Button onClick={handleClickDescargar} text="Descargar" variant='secundario' icon={ArrowDownload} />
       </div>
     </div>
 
@@ -67,6 +65,10 @@ export default function ListadoUsuariosSearchBar({ handleOnChangeFilters, rol }:
 }
 
 /*
+        <Button onClick={handleClickImportarMasivo} text="Importar" variant='primario' icon={ArrowUpload} />
+        <Button onClick={handleClickDescargar} text="Descargar" variant='secundario' icon={ArrowDownload} />
+
+
 <form className="w-[70%] max-w-[70%] min-w-[70%] h-full flex flex-row gap-4" onSubmit={handleOnSubmit}>
 
         <Combobox className='w-[250px] ' text='Seleccione una Facultad' options={facultyList} onChange={handleOnChangeFaculty} value={facultySelected} />

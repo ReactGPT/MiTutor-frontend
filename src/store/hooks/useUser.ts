@@ -1,5 +1,6 @@
 import {useState} from 'react';
-import { crearEditarUsuario, eliminarUsuario, getUsuarios, getStudents, crearEditarAlumno,getUsuariosSinEstudiantes } from '../services/User';
+
+import { crearEditarUsuario, eliminarUsuario, getUsuarios, getStudents, getUsuariosSinEstudiantes, crearEditarAlumno } from '../services/User';
 import { User } from '../types/User';
 
 
@@ -34,6 +35,19 @@ function useUser(): UserHookReturnType {
             setLoading(false);
         }
     }
+    const fetchUsersNoStudents = async () => {
+        setLoading(true);
+        try {
+            const response = await getUsuariosSinEstudiantes();
+            setUserData(response.userList);            
+        } catch (err:any) {
+            setError(err);
+            setUserData([]);
+        } finally {
+            setLoading(false);
+        }
+    }
+
     const fetchUsersNoStudents = async () => {
         setLoading(true);
         try {
@@ -139,7 +153,9 @@ function useUser(): UserHookReturnType {
         }
     }
 
-    return { userData, loading, error, fetchUsers,fetchUsersNoStudents, postUser, deleteUser, fetchStudents, postStudent,fetchStudentsSingleSet, fetchUsersSingleSet };
+
+    return { userData, loading, error, fetchUsers,fetchUsersNoStudents, postUser,postStudent, deleteUser, fetchStudents,fetchStudentsSingleSet, fetchUsersSingleSet };
+
 }
 
 export {useUser}

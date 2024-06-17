@@ -26,7 +26,7 @@ function ResultadoCitaBlockAlumno({className,nombreAlumno,onClickVerPerfil,onCli
                 </NavLink> 
         </div>
         <div className='flex w-[50%] h-full justify-end px-2 gap-4'>
-            <Button icon={EyeIcon} iconSize={4} variant='primario' text='Ver Perfil' onClick={onClickVerPerfil}/>
+            {/*<Button icon={EyeIcon} iconSize={4} variant='primario' text='Ver Perfil' onClick={onClickVerPerfil}/>*/}
             <Button icon={FaSearch} iconSize={10} variant='call-to-action' text='Plan de Acción' onClick={onClickPlanAccion}/>
         </div>
     </div>

@@ -1,10 +1,10 @@
 import InputTutor from '../../../components/Tutor/InputTutor';
 import image from '../../../assets/Tutor/no-avatar.webp';
 import { useAuth } from '../../../context';
+import { StudentRoleDetails } from '../../../store/types';
 
 const PageMiPerfilAlumno = () => {
   const { userData } = useAuth();
-
   return (
     <div className="flex w-full h-full justify-center items-center">
 
@@ -14,8 +14,8 @@ const PageMiPerfilAlumno = () => {
           <InputTutor titulo="Código" texto={userData?.userInfo?.pucpCode} enable={false} />
           <InputTutor titulo="Correo Electrónico" texto={userData?.email} enable={false} />
           <InputTutor titulo="Telefono" texto={userData?.userInfo?.personInfo.phone} enable={false} />
-          <InputTutor titulo="Facultad" texto="Facultad de Ciencias e Ingeniería" enable={false} />
-          <InputTutor titulo="Especialidad" texto="Ingeniería Informática" enable={false} />
+          <InputTutor titulo="Facultad" texto={(userData?.userInfo?.roles[0].details as StudentRoleDetails).facultyName} enable={false} />
+          <InputTutor titulo="Especialidad" texto={(userData?.userInfo?.roles[0].details as StudentRoleDetails).specialtyName} enable={false} />
         </div>
       </div>
 

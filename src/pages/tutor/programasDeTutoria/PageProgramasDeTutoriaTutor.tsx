@@ -16,7 +16,6 @@ const PageProgramasDeTutoriaTutor: React.FC = () => {
     fetchProgramaDeTutoria();
   }, []);
 
-
   const [searchText, setSearchText] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 6;
@@ -40,8 +39,6 @@ const PageProgramasDeTutoriaTutor: React.FC = () => {
   const filteredPrograms = programaTutoria?.filter(program =>
     program.programName.toLowerCase().includes(searchText.toLowerCase())
   );
-
-  //const filtro1 = Array.from(new Set(programaTutoria.map(obj => obj.facultyName)));
 
   const indexOfLastProgram = currentPage * itemsPerPage;
   const indexOfFirstProgram = indexOfLastProgram - itemsPerPage;

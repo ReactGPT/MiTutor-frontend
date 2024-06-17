@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useState, useEffect,useMemo } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import ProgramaTutoríaSearchBar from './ProgramaTutoríaSearchBar';
 import { AgGridReact } from 'ag-grid-react';
 import 'ag-grid-community/styles/ag-grid.css';
@@ -21,92 +21,92 @@ import ModalError from '../../../components/ModalError';
 
 
 type ProgramSelectedNotification = {
-    program:ProgramaTutoria;
-    type: 'Delete'|'DeleteStudent';
-    onConfirmEffect : ()=>void;
-}
+    program: ProgramaTutoria;
+    type: 'Delete' | 'DeleteStudent';
+    onConfirmEffect: () => void;
+};
 
 export default function PageProgramasTutoriaMaestro() {
-    const navigate=useNavigate();
+    const navigate = useNavigate();
     //const history = useHistory();
-    const [isOpen,setIsOpen] = useState<boolean>(false);
-    const [isOpenModalSuccess,setIsOpenModalSuccess] = useState<boolean>(false);
-    const [isOpenModalError,setIsOpenModalError] = useState<boolean>(false);
+    const [isOpen, setIsOpen] = useState<boolean>(false);
+    const [isOpenModalSuccess, setIsOpenModalSuccess] = useState<boolean>(false);
+    const [isOpenModalError, setIsOpenModalError] = useState<boolean>(false);
     //const [isOpenDeleteStudent,setIsOpenDeleteStudent] = useState<boolean>(false);
-    const {isLoading,programaTutoriaData,fetchProgramaTutorias,postEliminarProgramaTutoria,postEliminarEstudiantesPrograma} = useProgramaTutoria();
-    const [programaSelectedDelete,setProgramaSelectedDelete] = useState<ProgramSelectedNotification|null>(null);
+    const { isLoading, programaTutoriaData, fetchProgramaTutorias, postEliminarProgramaTutoria, postEliminarEstudiantesPrograma } = useProgramaTutoria();
+    const [programaSelectedDelete, setProgramaSelectedDelete] = useState<ProgramSelectedNotification | null>(null);
     //const [programSelectedDeleteStudents,setProgramSelectedDeleteStudents] = useState<ProgramaTutoria|null>(null);
-    useEffect(()=>{
+    useEffect(() => {
         fetchProgramaTutorias();
-    },[]);
-    
-    const handleNavigation=(data:ProgramaTutoria)=>{
+    }, []);
+
+    const handleNavigation = (data: ProgramaTutoria) => {
         //console.log(data);
-        navigate("/programasDeTutoriaMaestro/editar",{state:{programaTutoria:data}});
+        navigate("/programasDeTutoriaMaestro/editar", { state: { programaTutoria: data } });
     };
-    const handleOnSelectProgramaTutoria=(programaDelete: ProgramSelectedNotification)=>{
+    const handleOnSelectProgramaTutoria = (programaDelete: ProgramSelectedNotification) => {
         setProgramaSelectedDelete(programaDelete);
     };
 
-    useEffect(()=>{
-        if(programaSelectedDelete){
+    useEffect(() => {
+        if (programaSelectedDelete) {
             setIsOpen(true);
         }
-    },[programaSelectedDelete]);
+    }, [programaSelectedDelete]);
 
-    const handleOnConfirmDeleteProgramaTutoria=()=>{
-        if(programaSelectedDelete&&!!programaSelectedDelete.program.id){
+    const handleOnConfirmDeleteProgramaTutoria = () => {
+        if (programaSelectedDelete && !!programaSelectedDelete.program.id) {
             postEliminarProgramaTutoria(programaSelectedDelete?.program.id)
-            .then((result)=>{
-                if(result){
-                    setIsOpenModalSuccess(true);
-                }
-                else{
-                    setIsOpenModalError(true);
-                }
-                setIsOpen(false);
-                //setProgramaSelected(null);
-            })
+                .then((result) => {
+                    if (result) {
+                        setIsOpenModalSuccess(true);
+                    }
+                    else {
+                        setIsOpenModalError(true);
+                    }
+                    setIsOpen(false);
+                    //setProgramaSelected(null);
+                });
         }
     };
-    const handleOnConfirmDeleteStudents=()=>{
+    const handleOnConfirmDeleteStudents = () => {
         console.log("Intento eliminar studiantes");
         console.log(programaSelectedDelete);
-        if(programaSelectedDelete&&!!programaSelectedDelete.program.id){
+        if (programaSelectedDelete && !!programaSelectedDelete.program.id) {
             postEliminarEstudiantesPrograma(programaSelectedDelete?.program.id)
-            .then((result)=>{
-                if(result){
-                    setIsOpenModalSuccess(true);
-                }
-                else{
-                    setIsOpenModalError(true);
-                }
-                setIsOpen(false);
-                //setProgramaSelected(null);
-            })
+                .then((result) => {
+                    if (result) {
+                        setIsOpenModalSuccess(true);
+                    }
+                    else {
+                        setIsOpenModalError(true);
+                    }
+                    setIsOpen(false);
+                    //setProgramaSelected(null);
+                });
         }
-    }
+    };
 
-    const [filters,setFilters]=useState<any>({
-        idSpeciality:null,
-        idFaculty:null,
-        name:null
+    const [filters, setFilters] = useState<any>({
+        idSpeciality: null,
+        idFaculty: null,
+        name: null
     });
-    const handleOnChangeFilters = (filter:any)=>{
+    const handleOnChangeFilters = (filter: any) => {
         setFilters(filter);
     };
-    const programaTutoriaFiltered : ProgramaTutoria[]=  useMemo(()=>{
-        return [...(programaTutoriaData).filter((item)=>
-            item.nombre.toLowerCase().includes(filters.name?filters.name.toString().toLowerCase():"")&&(filters.idSpeciality?filters.idSpeciality===item.especialidadId:true)&&(filters.idFaculty?filters.idFaculty===item.facultadId:true)
-    )]
-    },[programaTutoriaData,filters]);
-    
-    
+    const programaTutoriaFiltered: ProgramaTutoria[] = useMemo(() => {
+        return [...(programaTutoriaData).filter((item) =>
+            item.nombre.toLowerCase().includes(filters.name ? filters.name.toString().toLowerCase() : "") && (filters.idSpeciality ? filters.idSpeciality === item.especialidadId : true) && (filters.idFaculty ? filters.idFaculty === item.facultadId : true)
+        )];
+    }, [programaTutoriaData, filters]);
+
+
     const defaultColDef = {
         suppressHeaderMenuButton: true,
         flex: 1,
         sortable: true,
-        resizable: true,        
+        resizable: true,
         cellStyle: {
             textAlign: 'center',
             justifyContent: 'center',
@@ -115,113 +115,114 @@ export default function PageProgramasTutoriaMaestro() {
         },
     };
     const columnDefs: ColDef[] = [
-        
-        { headerName: 'Nombre', field: 'nombre', minWidth:150},
-        { headerName: 'Facultad', field: 'facultadNombre',minWidth:240 },
-        { headerName: 'Especialidad', field: 'especialidadNombre', minWidth:200 },
+
+        { headerName: 'Nombre', field: 'nombre', minWidth: 250 },
+        { headerName: 'Facultad', field: 'facultadNombre', minWidth: 280 },
+        { headerName: 'Especialidad', field: 'especialidadNombre', minWidth: 180 },
         {
-          headerName: 'Tutores',
-          field: 'cant_tutores',
-          minWidth:100,maxWidth:100
+            headerName: 'Tutores',
+            field: 'cant_tutores',
+            minWidth: 100, maxWidth: 100
         },
         {
             headerName: 'Alumnos',
             field: 'cant_alumnos',
-            minWidth:100,maxWidth:100
+            minWidth: 100, maxWidth: 100
         },
         {
-            headerName:'',
-            field:'',
-            maxWidth:40,
-            minWidth:20,
-            cellRenderer: (rowData:any)=>{
-                return(
-                    <CustomProgramaTutoriaGridButton icon={DetailsIcon} iconSize={4} onClick={()=>(handleNavigation(rowData.data))}/>
-                )
+            headerName: '',
+            field: '',
+            maxWidth: 40,
+            minWidth: 20,
+            cellRenderer: (rowData: any) => {
+                return (
+                    <CustomProgramaTutoriaGridButton icon={DetailsIcon} iconSize={4} onClick={() => (handleNavigation(rowData.data))} />
+                );
             }
         },
         {
-            headerName:'',
-            field:'',
-            maxWidth:40,
-            minWidth:20,
-            cellRenderer:(rowData:any)=>{
-                return(
-                    rowData.data.cant_alumnos>0?<button  className='text-primary' onClick={()=>handleOnSelectProgramaTutoria({
-                        program:rowData.data,
-                        type:'DeleteStudent',
-                        onConfirmEffect:handleOnConfirmDeleteStudents
+            headerName: '',
+            field: '',
+            maxWidth: 40,
+            minWidth: 20,
+            cellRenderer: (rowData: any) => {
+                return (
+                    rowData.data.cant_alumnos > 0 ? <button className='text-primary' onClick={() => handleOnSelectProgramaTutoria({
+                        program: rowData.data,
+                        type: 'DeleteStudent',
+                        onConfirmEffect: handleOnConfirmDeleteStudents
                     })}>
-                        <RefreshIcon size={4}/>
-                    </button>:<></>
-                )
+                        <RefreshIcon size={4} />
+                    </button> : <></>
+                );
             }
         },
         {
-            headerName:'',
-            field:'',
-            maxWidth:40,
-            minWidth:20,
-            cellRenderer:(rowData:any)=>{
-                return(
-                    <button className='text-primary' onClick={()=>handleOnSelectProgramaTutoria({
-                        program:rowData.data,
-                        type:'Delete',
-                        onConfirmEffect:handleOnConfirmDeleteProgramaTutoria
+            headerName: '',
+            field: '',
+            maxWidth: 40,
+            minWidth: 20,
+            cellRenderer: (rowData: any) => {
+                return (
+                    <button className='text-primary' onClick={() => handleOnSelectProgramaTutoria({
+                        program: rowData.data,
+                        type: 'Delete',
+                        onConfirmEffect: handleOnConfirmDeleteProgramaTutoria
                     })}>
-                        <DeleteIcon size={6}/>
+                        <DeleteIcon size={6} />
                     </button>
-                )
+                );
             }
         }
 
     ];
     return (
-    <div className='flex w-full h-full flex-col space-y-10 mt-10'>
-        <div className='flex w-full h-[10%]'>
-            <ProgramaTutoríaSearchBar handleOnChangeFilters={handleOnChangeFilters}/>
+        <div className='flex w-full h-full flex-col gap-5'>
+            <div className='flex w-full h-fit'>
+                <ProgramaTutoríaSearchBar handleOnChangeFilters={handleOnChangeFilters} />
+            </div>
+            <div className='flex w-full h-full ag-theme-alpine items-center justify-center'>
+                {isLoading ? <Spinner size='lg' /> : <div className='w-full h-full'>
+                    <AgGridReact
+                        defaultColDef={defaultColDef}
+                        columnDefs={columnDefs}
+                        rowData={programaTutoriaFiltered}
+                        suppressMovableColumns
+                    />
+                </div>}
+            </div>
+            <ModalConfirmation isOpen={isOpen}
+                message={programaSelectedDelete?.type === 'Delete' ?
+                    `¿Esta seguro de eliminar el programa de tutoría : ${programaSelectedDelete && programaSelectedDelete.program.nombre}?` :
+                    `¿Esta seguro de eliminar los ${programaSelectedDelete && programaSelectedDelete?.program.cant_alumnos} alumnos del programa : ${programaSelectedDelete && programaSelectedDelete.program.nombre}?`}
+                onClose={() => {
+                    setIsOpen(false);
+                }}
+                onConfirm={() => {
+                    setIsOpen(false);
+                    const onConfirmEffect = programaSelectedDelete?.type === 'Delete' ? handleOnConfirmDeleteProgramaTutoria : handleOnConfirmDeleteStudents;
+
+                    onConfirmEffect();
+
+                }}
+                isAcceptAction={true}
+            />
+            <ModalSuccess isOpen={isOpenModalSuccess}
+                message={programaSelectedDelete?.type === 'Delete' ?
+                    `Se elimino con éxito el programa : ${programaSelectedDelete && programaSelectedDelete.program.nombre}` :
+                    `Se eliminaron los ${programaSelectedDelete && programaSelectedDelete.program.cant_alumnos} alumnos del programa : ${programaSelectedDelete && programaSelectedDelete.program.nombre}`}
+                onClose={() => {
+                    setIsOpenModalSuccess(false);
+                    setProgramaSelectedDelete(null);
+                    fetchProgramaTutorias();
+                }}
+            />
+            <ModalError isOpen={isOpenModalError} message='Ocurrió un problema inesperado. Intente nuevamente'
+                onClose={() => {
+                    setIsOpenModalError(false);
+                    setProgramaSelectedDelete(null);
+                }}
+            />
         </div>
-        <div className='flex w-full h-[80%] ag-theme-alpine items-center justify-center'>
-            {isLoading?<Spinner size='lg'/>:<div className='w-full h-full'>
-                <AgGridReact
-                    defaultColDef={defaultColDef}
-                    columnDefs={columnDefs}
-                    rowData={programaTutoriaFiltered}
-                />
-            </div>}            
-        </div>
-        <ModalConfirmation isOpen={isOpen} 
-                            message={programaSelectedDelete?.type==='Delete'?
-                            `¿Esta seguro de eliminar el programa de tutoría : ${programaSelectedDelete&&programaSelectedDelete.program.nombre}?`:
-                            `¿Esta seguro de eliminar los ${programaSelectedDelete&&programaSelectedDelete?.program.cant_alumnos} alumnos del programa : ${programaSelectedDelete&&programaSelectedDelete.program.nombre}?`} 
-                            onClose={()=>{
-                                setIsOpen(false);
-                            }}
-                            onConfirm={()=>{
-                                setIsOpen(false);
-                                const onConfirmEffect = programaSelectedDelete?.type==='Delete'? handleOnConfirmDeleteProgramaTutoria:handleOnConfirmDeleteStudents;
-                                
-                                onConfirmEffect();
-                                
-                            }}
-                            isAcceptAction={true}
-                            />
-        <ModalSuccess isOpen={isOpenModalSuccess} 
-                        message={programaSelectedDelete?.type==='Delete'?
-                        `Se elimino con éxito el programa : ${programaSelectedDelete&&programaSelectedDelete.program.nombre}`:
-                        `Se eliminaron los ${programaSelectedDelete&&programaSelectedDelete.program.cant_alumnos} alumnos del programa : ${programaSelectedDelete&&programaSelectedDelete.program.nombre}`}
-                        onClose={()=>{
-                            setIsOpenModalSuccess(false);
-                            setProgramaSelectedDelete(null);
-                            fetchProgramaTutorias();
-                        }}
-                        />
-        <ModalError isOpen={isOpenModalError} message='Ocurrió un problema inesperado. Intente nuevamente'
-                    onClose={()=>{
-                        setIsOpenModalError(false);
-                        setProgramaSelectedDelete(null);
-                    }}
-                    />     
-    </div>
-  )
+    );
 }

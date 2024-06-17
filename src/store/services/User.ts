@@ -178,7 +178,7 @@ async function crearEditarUsuario(user: User): Promise<ServiceResponse> {
     return {
       sucess: response?.data.success,
       message: response?.data.message
-    };;
+    };
 
   } catch (err: any) {
     console.error(err);
@@ -251,7 +251,7 @@ async function eliminarUsuario(id: number): Promise<ServiceResponse> {
     return {
       sucess: response?.data.success,
       message: response?.data.message
-    };;
+    };
 
   } catch (err: any) {
     console.error(err);
@@ -259,4 +259,6 @@ async function eliminarUsuario(id: number): Promise<ServiceResponse> {
   }
 }
 
-export { getUsuarios, crearEditarUsuario, eliminarUsuario, getStudents, crearEditarAlumno,getUsuariosSinEstudiantes }
+
+export { getUsuarios, getUsuariosSinEstudiantes, crearEditarUsuario, eliminarUsuario, getStudents, crearEditarAlumno }
+

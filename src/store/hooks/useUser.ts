@@ -34,19 +34,7 @@ function useUser(): UserHookReturnType {
             setLoading(false);
         }
     }
-    const fetchUsersNoStudents = async () => {
-        setLoading(true);
-        try {
-            const response = await getUsuariosSinEstudiantes();
-            setUserData(response.userList);            
-        } catch (err:any) {
-            setError(err);
-            setUserData([]);
-        } finally {
-            setLoading(false);
-        }
-    }
-
+    
     const fetchStudents = async () => {
         setLoading(true);
         try {

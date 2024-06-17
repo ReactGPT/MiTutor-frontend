@@ -1,17 +1,29 @@
 import axios from 'axios';
 import { Services as ServicesProperties } from '../../config';
 
+// Define la interfaz para los datos de la persona
+export interface Persona {
+  Name: string;
+  LastName: string;
+}
+
+// Define la interfaz para los datos del administrador de facultad
+export interface FacultyManager {
+  FacultyManagerId: number;
+  InstitutionalEmail: string;
+  PUCPCode: string;
+  Persona: Persona;
+}
+
 // Define la interfaz para los datos de la facultad
 export interface Faculty {
   FacultyId: number;
   Name: string;
   Acronym: string;
-  FacultyManagerId: number;
   NumberOfStudents: number;
   NumberOfTutors: number;
-  InstitutionalEmail: string;
-  PUCPCode: string;
-  IsActive: boolean;
+  FacultyManager: FacultyManager;
+  // IsActive: boolean;
 }
 
 // Define la interfaz para la respuesta del servidor
@@ -28,7 +40,7 @@ const api = axios.create({
 async function listarFacultades(): Promise<Faculty[]> {
   try {
     // Realiza la solicitud HTTP para obtener la lista de facultades
-    const response = await api.get<ApiResponse>('/faculty/listarFacultades');
+    const response = await api.get<ApiResponse>('/Faculty/listarFacultades');
     // Devuelve los datos de las facultades desde la respuesta
     return response.data.data;
   } catch (error) {

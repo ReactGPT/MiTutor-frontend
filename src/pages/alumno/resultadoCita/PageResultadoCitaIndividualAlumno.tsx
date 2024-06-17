@@ -1,14 +1,12 @@
 import { useEffect, useState } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import ResultadoCardInformacionAlumno from './ResultadoCardInformacionAlumno.tsx';
-import InputAlumno from '../InputAlumno.tsx';
 import { useResultadoCita } from "../../../store/hooks/useResultadoCita";
 import { useArchivosDB } from '../../../store/hooks/useArchivos';
 import { ExtendedFile } from '../../../store/types/Archivo.ts';
 import { FaDownload } from 'react-icons/fa';
 import ClipLoader from 'react-spinners/ClipLoader';
 import { Label, TextInput } from 'flowbite-react';
-import Button from '../../../components/Button.tsx';
 import SimpleCard from '../../../components/Tutor/SimpleCard.tsx';
 import ButtonModalCancelarCita from '../../../components/ButtonModalCancelarCita.tsx';
 
@@ -51,7 +49,17 @@ function PageResultadoCitaIndividualAlumno() {
   const dayBeforeAppointment = new Date(appointmentDate);
   dayBeforeAppointment.setDate(appointmentDate.getDate() - 1);
 
-  const shouldShowCancelButton = currentDate <= dayBeforeAppointment;
+  // Normalizar las fechas a medianoche
+  const normalizeToMidnight = (date: Date) => {
+    const normalizedDate = new Date(date);
+    normalizedDate.setHours(0, 0, 0, 0);
+    return normalizedDate;
+  };
+
+  const normalizedCurrentDate = normalizeToMidnight(currentDate);
+  const normalizedDayBeforeAppointment = normalizeToMidnight(dayBeforeAppointment);
+
+  const shouldShowCancelButton = normalizedCurrentDate <= normalizedDayBeforeAppointment;
 
   return (
     <div className='w-full h-full overflow-auto flex flex-col gap-5'>
@@ -91,7 +99,7 @@ function PageResultadoCitaIndividualAlumno() {
               <div className='w-full'>
               </div>
               <div className='w-full flex items-end justify-end'>
-                {shouldShowCancelButton && <ButtonModalCancelarCita appointmentId={cita.appointmentId} redirectUrl="/listaDeCitasAlumno" />}
+                {shouldShowCancelButton && cita.appointmentStatus === "registrada" && <ButtonModalCancelarCita appointmentId={cita.appointmentId} redirectUrl="/listaDeCitasAlumno" />}
               </div>
             </div>
           </div>

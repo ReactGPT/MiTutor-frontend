@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
-import CalendarioDisponibilidad from '../../../components/Calendar/CalendarioDisponibilidad';
 import { useAuth } from '../../../context';
 import { useCitasPorAlumno } from '../../../store/hooks/useCita';
+import CalendarioAlumno from '../../../components/Calendar/CalendarioAlumno';
 
 const PageCalendarioAlumno: React.FC = () => {
   const { userData } = useAuth();
@@ -34,7 +34,7 @@ const PageCalendarioAlumno: React.FC = () => {
         </div>
       </div>
       <div className="flex-1 w-full overflow-auto bg-white rounded-md p-4">
-        <CalendarioDisponibilidad citas={cita} tipo='solicitar' />
+        <CalendarioAlumno citas={cita} />
       </div>
     </div >
   );

@@ -21,4 +21,6 @@ export type ListStudent2 = {
   appointmentResultId : number;
   tutoringProgramId : number;
   appointmentId : number;
+  message1: string;
+  message2:string;
 };

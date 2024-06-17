@@ -46,6 +46,13 @@ function convertToSelectOptions(programs: ListTutoringProgram[]): SelectOption[]
   }));
 }
 
+const formatDate = (date: Date) => {
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  const year = date.getFullYear();
+  return `${month}/${day}/${year}`;
+};
+
 interface ProgramarCitaTutorProps {
   isOpen: boolean;
   onClose: () => void;
@@ -84,7 +91,7 @@ const ModalProgramarCitaTutor: React.FC<ProgramarCitaTutorProps> = ({ isOpen, on
         ...prevAppointment,
         startTime: slotInfo?.start.toTimeString().split(' ')[0] || '',
         endTime: slotInfo?.end.toTimeString().split(' ')[0] || '',
-        creationDate: slotInfo?.start.toLocaleDateString() || '',
+        creationDate: formatDate(slotInfo?.start) || '',
       }));
     }
   }, [slotInfo]);

@@ -5,6 +5,8 @@ import TextAreaTutor from './TextAreaTutor';
 import Button from '../Button';
 import axios from 'axios';
 import { Services as ServicesProperties } from '../../config';
+import { useAuth } from '../../context';
+import { TutorRoleDetails } from '../../store/types';
 
 interface ModalNuevoPlanAccionProps {
   isOpen: boolean;
@@ -19,7 +21,8 @@ export default function ModalNuevoPlanAccion({ isOpen, onClose, updatePage,stude
     name: '',
     description: ''
   });
-
+  const { userData } = useAuth();
+  const tutorId = (userData?.userInfo?.roles[0].details as TutorRoleDetails).tutorId;
   // Estado para el mensaje de error del nombre del plan de acción
   const [nameError, setNameError] = useState('');
 
@@ -55,7 +58,7 @@ export default function ModalNuevoPlanAccion({ isOpen, onClose, updatePage,stude
         description: planData.description,
         studentId: studentId, // Asigna el valor correspondiente para studentId
         programId: programId, // Asigna el valor correspondiente para programId 
-        tutorId: 1, // Asigna el valor correspondiente para tutorId
+        tutorId: tutorId, // Asigna el valor correspondiente para tutorId
       };
   
       const response = await axios.post(ServicesProperties.BaseUrl+'/crearActionPlan', newData);

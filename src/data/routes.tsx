@@ -393,12 +393,6 @@ export const Routes: RouterConfig = {
     ],
     navBarLink: [
       {
-        key: 'inicio',
-        label: 'Inicio',
-        path: '/',
-        icon: <BiHome fontSize={32} />,
-      },
-      {
         key: 'general',
         label: 'General',
         path: '/*',//Pendiente agregar

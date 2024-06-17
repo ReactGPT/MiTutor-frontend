@@ -5,7 +5,7 @@ import {
   useEffect,
   useState,
 } from 'react';
-import { Facultad } from "../store/types/Facultad";
+import Facultad from "../store/types/Facultad";
 
 type ContextProps = {
   children: ReactElement; // Componentes hijos envueltos por el proveedor
@@ -36,12 +36,12 @@ function FacultadProvider({children,facultad:inputFacultad}:ContextProps){
     numberTutors: 0,
     isActive: true,
     facultyManager: {
-        managerId: 0,
+        id: 0,
         institutionalEmail: "",
         pucpCode: "",
         isActive: true,
         persona: {
-            personaId: 0,
+            id: 0,
             name: "",
             lastName: "",
             secondLastName: "",

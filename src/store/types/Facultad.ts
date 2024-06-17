@@ -1,18 +1,17 @@
 import { Specialty, TutoringProgram } from ".";
 
 type Persona = {
-    personaId: number;
+    id: number;
     name: string;
     lastName: string;
-    secondLastName: string | null;
-    phone: string | null;
+    secondLastName?: string | null;
+    phone?: string | null;
     isActive: boolean;
-    usuario: any | null;
-
+    usuario?: any | null;
 }
 
 type FacultyManager = {
-    managerId: number;
+    id: number;
     institutionalEmail: string;
     pucpCode: string;
     isActive: boolean;
@@ -21,14 +20,16 @@ type FacultyManager = {
     isVerified: boolean;
 }
 
-export type Facultad = {
+type Facultad = {
     id:number;
     name:string;
     acronym:string;
     numberStudents:number;
     numberTutors:number;
     isActive?:boolean | null;
-    facultyManager:FacultyManager;
+    facultyManager:FacultyManager | null;
     specialties?:Specialty[] | null;
     tutoringPrograms?:TutoringProgram[] | null;
 }
+
+export default Facultad;

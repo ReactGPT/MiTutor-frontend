@@ -53,6 +53,9 @@ import PageCargaMasiva from "../pages/administrador/gestionUsuarios/PageCargaMas
 import TutorDetail from "../pages/tutor/indicadorTutores/TutorDetail.tsx";
 import PageResultadoCitaGrupal from '../pages/tutor/resultadoCita/PageResultadoCitaGrupal.tsx';
 import AlumnoDetail from "../pages/alumno/indicadorAlumnos/AlumnoDetail.tsx";
+import EspecialidadesPage from "../pages/coordinador/especialidades/Especialidades.tsx";
+import EspecialidadSingularPage from "../pages/coordinador/especialidades/EspecialidadSingular.tsx";
+
 
 type RouterDetail = {
   pages: RouteObject[];
@@ -217,7 +220,15 @@ export const Routes: RouterConfig = {
       {
         path: '/alumno-detail',
         element:<AlumnoDetail/> 
-      }
+      },
+      {
+        path: '/especialidades',
+        element: <EspecialidadesPage/>
+      },
+      {
+        path: '/especialidades/:id',
+        element: <EspecialidadSingularPage/>
+      },
     ],
     navBarLink: [
       {

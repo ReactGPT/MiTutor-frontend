@@ -59,7 +59,7 @@ async function updateActionPlan(actionPlan: ActionPlanUpdate) {
 async function deleteActionPlan(actionPlanId: number) {
     try {
         console.log(actionPlanId)
-        const response = await axios.delete(ServicesProperties.BaseUrl + '/eliminarActionPlan?actionPlanId=' + actionPlanId);
+        const response = await axios.put(ServicesProperties.BaseUrl + '/eliminarActionPlan?actionPlanId=' + actionPlanId);
         console.log(actionPlanId, response)
     } catch (error) {
         console.error('Error deleting action plan:', error);

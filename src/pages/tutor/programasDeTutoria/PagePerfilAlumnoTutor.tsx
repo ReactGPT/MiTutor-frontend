@@ -46,9 +46,9 @@ const PagePerfilAlumnoTutor = () => {
         <div className="flex flex-col gap-5">
           <img src={image} alt="Imagen Alumno" className="w-[200px] h-[200px] rounded-full" />
           <ul className="flex flex-col items-center w-full">
-            <li className='mb-4'>
+            {/*<li className='mb-4'>
               <Button onClick={openModal} variant="call-to-action" text="Plan de Acción" />
-            </li>
+            </li>*/}
             {/*<li className='mb-4'>
               <Button onClick={() => { }} variant="call-to-action" text="Archivos" />
             </li>*/}

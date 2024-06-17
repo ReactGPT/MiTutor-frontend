@@ -8,6 +8,13 @@ import ModalSuccess from '../ModalSuccess';
 import ModalError from '../ModalError';
 import { useAuth } from '../../context';
 
+const formatDate = (date: Date) => {
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  const year = date.getFullYear();
+  return `${month}/${day}/${year}`;
+};
+
 type MakeAppointment = {
   startTime: string;
   endTime: string;
@@ -52,7 +59,7 @@ const ModalSolicitarCita: React.FC<ModalSolicitarCitaProps> = (
     startTime: "",
     endTime: "",
     creationDate: "",
-    reason: "Razon Generica",
+    reason: "Solicitado por alumno",
     isInPerson: true,
     classroom: "",
   });
@@ -71,7 +78,7 @@ const ModalSolicitarCita: React.FC<ModalSolicitarCitaProps> = (
         ...prevAppointment,
         startTime: slotInfo?.start.toTimeString().split(' ')[0] || '',
         endTime: slotInfo?.end.toTimeString().split(' ')[0] || '',
-        creationDate: slotInfo?.start.toLocaleDateString() || '',
+        creationDate: formatDate(slotInfo?.start) || '',
       }));
     }
   }, [slotInfo]);

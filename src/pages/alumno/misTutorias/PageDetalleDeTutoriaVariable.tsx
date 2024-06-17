@@ -69,7 +69,7 @@ const PageDetalleDeTutoriaVariable = () => {
               :
               currentTutors.map((Tutor, index) => (
                 <div key={index} className="w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/5">
-                  <SimpleCard onClick={() => goToSolicitarCita(Tutor)} title={`${Tutor.tutorName} ${Tutor.tutorLastName} ${Tutor.tutorSecondLastName}`} content="Docente a tiempo completo" subContent={Tutor.state} />
+                  <SimpleCard onClick={() => goToSolicitarCita(Tutor)} title={`${Tutor.tutorName} ${Tutor.tutorLastName} ${Tutor.tutorSecondLastName}`} content="Docente a tiempo completo" subContent={"Solicitar cita"} />
                 </div>
               ))
           }

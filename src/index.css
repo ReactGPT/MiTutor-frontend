@@ -5,7 +5,9 @@
 @tailwind components;
 @tailwind utilities;
 
-
+.react-dropdown-select-dropdown-position-bottom {
+  min-width: 265px;
+}
 
 .letter-spacing-title {
     letter-spacing: 2px;

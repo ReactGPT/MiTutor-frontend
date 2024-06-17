@@ -44,7 +44,8 @@ async function getListaDeCitasByTutorIdByStudentId(tutorId: number, studentId: n
     const response = await axios.get(`${ServicesProperties.BaseUrl}/listarCitasPorTutorPorAlumno/${tutorId}/${studentId}`);
     const listaDeCitas: ListCita[] = response.data.data.map((item: any) => {
       return {
-        appointmentId: item.appointmentId,
+        appointmentId: item.appointmentId, //falta el programId 
+        programId : item.programId,
         programName: item.programName,
         appointmentStatus: item.appointmentStatus,
         groupBased: item.groupBased,
@@ -99,9 +100,6 @@ async function getListaDeCitasByStudentId(studentId: number): Promise<listaRespo
         message: item.message
       };
     });
-
-    console.log(response.data);
-
     return { listaDeCitas: listaDeCitas };
   } catch (error) {
     throw new Error("Error en getListaDeCitasByStudentId");

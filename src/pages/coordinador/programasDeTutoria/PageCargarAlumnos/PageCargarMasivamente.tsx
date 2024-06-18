@@ -4,7 +4,7 @@ import { AgGridReact } from "ag-grid-react";
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-alpine.css";
 import { ColDef } from "ag-grid-community";
-import { AddIcon,TrashIcon2 as TrashIcon,ArrowIcon,FileIcon } from "../../../../assets";
+import { AddIcon, TrashIcon2 as TrashIcon, ArrowIcon, FileIcon } from "../../../../assets";
 import Papa from 'papaparse';
 import * as XLSX from "xlsx";
 import { useStudent } from '../../../../store/hooks/useStudent';
@@ -43,13 +43,13 @@ const rowDataKeys: string[] = [
 ];
 //El papaParse para la cosa esa
 
-type Props ={
-  setStudentDataModified: (state:(studentData: Student[])=>Student[]) => void,
-  setPopout: (state:boolean) => void
-}
+type Props = {
+  setStudentDataModified: (state: (studentData: Student[]) => Student[]) => void,
+  setPopout: (state: boolean) => void;
+};
 
 const PageCargarMasivamente = (
-  {setStudentDataModified, setPopout}:Props
+  { setStudentDataModified, setPopout }: Props
 ) => {
   const inputFileRef = useRef<HTMLInputElement>(null);
   const [file, setFile] = useState<InputFile>(initialFileState);
@@ -77,13 +77,13 @@ const PageCargarMasivamente = (
     );
   }, [rowData]);
   const handleAgregar = () => {
-    setStudentDataModified((prevData) =>{
-      return [...prevData, ...studentData.filter((student) => 
+    setStudentDataModified((prevData) => {
+      return [...prevData, ...studentData.filter((student) =>
         student.studentId !== 0 && !prevData.some((prevStudent) => prevStudent.pucpCode === student.pucpCode))
-      ]
+      ];
     });
     setPopout(false);
-  }
+  };
 
   const handleUploadFile = () => {
     inputFileRef.current?.click();
@@ -113,6 +113,7 @@ const PageCargarMasivamente = (
       const validFiles = [
         "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
         "text/csv",
+        "application/vnd.ms-excel",
       ];
       if (validFiles.includes(type)) {
         setInputState("success");
@@ -145,7 +146,7 @@ const PageCargarMasivamente = (
         if (file.name.endsWith(".csv")) {
           const results = Papa.parse(contenido, { header: true });
           const header = results.meta.fields;
-          if(header !== undefined){
+          if (header !== undefined) {
             if (!compareFieldsInFile(header, rowDataKeys)) {
               setHeaderOk(false);
               return;
@@ -190,7 +191,7 @@ const PageCargarMasivamente = (
             setHeaderOk(false);
             return;
           }
-          else{
+          else {
             const dictCabecera: any[] = cabeceras.map(
               (item: string, index: number) => {
                 return {
@@ -209,41 +210,41 @@ const PageCargarMasivamente = (
                     Codigo:
                       String(
                         row[
-                          dictCabecera.find(
-                            (item: any) => item.field === "Codigo"
-                          ).position
+                        dictCabecera.find(
+                          (item: any) => item.field === "Codigo"
+                        ).position
                         ]
                       ) || "",
                     Nombres:
                       String(
                         row[
-                          dictCabecera.find(
-                            (item: any) => item.field === "Nombres"
-                          ).position
+                        dictCabecera.find(
+                          (item: any) => item.field === "Nombres"
+                        ).position
                         ]
                       ) || "",
                     Apellidos:
                       String(
                         row[
-                          dictCabecera.find(
-                            (item: any) => item.field === "Apellidos"
-                          ).position
+                        dictCabecera.find(
+                          (item: any) => item.field === "Apellidos"
+                        ).position
                         ]
                       ) || "",
                     Correos:
                       String(
                         row[
-                          dictCabecera.find(
-                            (item: any) => item.field === "Correos"
-                          ).position
+                        dictCabecera.find(
+                          (item: any) => item.field === "Correos"
+                        ).position
                         ]
                       ) || "",
                     Facultades:
                       String(
                         row[
-                          dictCabecera.find(
-                            (item: any) => item.field === "Facultades"
-                          ).position
+                        dictCabecera.find(
+                          (item: any) => item.field === "Facultades"
+                        ).position
                         ]
                       ) || "",
                   };
@@ -285,7 +286,7 @@ const PageCargarMasivamente = (
   };
   const columnDefs: ColDef[] = [
     { headerName: "Código", field: "pucpCode", maxWidth: 120 },
-    { headerName: "Nombres", field: "name" , maxWidth: 150 },
+    { headerName: "Nombres", field: "name", maxWidth: 150 },
     { headerName: "Apellidos", field: "lastName" },
     { headerName: "Correos", field: "institutionalEmail" },
     { headerName: "Facultades", field: "facultyName" },
@@ -320,9 +321,8 @@ const PageCargarMasivamente = (
           <button
             disabled={inputState !== "success"}
             onClick={handleReadFile}
-            className={`flex justify-center items-center px-3 gap-[10px] border border-primary rounded-[10px] h-[42px] ${
-              inputState !== "success" ? "opacity-50" : ""
-            }`}
+            className={`flex justify-center items-center px-3 gap-[10px] border border-primary rounded-[10px] h-[42px] ${inputState !== "success" ? "opacity-50" : ""
+              }`}
           >
             <FileIcon width={16} height={20}></FileIcon>
             <p>Cargar</p>
@@ -332,20 +332,18 @@ const PageCargarMasivamente = (
           <button
             onClick={handleClearInput}
             disabled={file.name === ""}
-            className={`flex justify-center items-center px-3 gap-[10px] border rounded-[10px] h-[42px] ${
-              inputState === "success" || inputState === "error"
-                ? "bg-file-error"
-                : "border-primary"
-            } ${file.name === "" ? "opacity-50" : ""}`}
+            className={`flex justify-center items-center px-3 gap-[10px] border rounded-[10px] h-[42px] ${inputState === "success" || inputState === "error"
+              ? "bg-file-error"
+              : "border-primary"
+              } ${file.name === "" ? "opacity-50" : ""}`}
           >
             <TrashIcon
               width={18}
               height={20}
-              color={`${
-                inputState === "success" || inputState === "error"
-                  ? "red"
-                  : "#042354"
-              }`}
+              color={`${inputState === "success" || inputState === "error"
+                ? "red"
+                : "#042354"
+                }`}
             ></TrashIcon>
           </button>
         </div>
@@ -358,8 +356,8 @@ const PageCargarMasivamente = (
           accept=".csv, .xlsx"
         />
         <button className={`flex justify-center items-center border rounded-[10px] h-[42px]`}
-          onClick={()=>setPopout(false)}>
-            <CloseIcon className=""/>
+          onClick={() => setPopout(false)}>
+          <CloseIcon className="" />
         </button>
       </div>
       {/* Fin input file */}
@@ -369,16 +367,15 @@ const PageCargarMasivamente = (
         <h1 className="text-[28px] font-bold text-[#2F2F2F]">Vista previa</h1>
         <div className="flex flex-row justify-end gap-[10px] m-[15px]">
           <div className="w-full justify-items-center">
-            <p className={`mt-4 ${ headerOk===false ? "text-red-600":"hidden" }`}>
+            <p className={`mt-4 ${headerOk === false ? "text-red-600" : "hidden"}`}>
               Las columnas del archivo no cumplen con el formato
             </p>
           </div>
           <button
             onClick={handleAgregar}
             disabled={studentData.length === 0}
-            className={`flex justify-center items-center px-3 gap-[10px] border border-primary rounded-[10px] h-[42px] ${
-              studentData.length === 0 ? "opacity-50" : ""
-            }`}
+            className={`flex justify-center items-center px-3 gap-[10px] border border-primary rounded-[10px] h-[42px] ${studentData.length === 0 ? "opacity-50" : ""
+              }`}
           >
             <AddIcon size={16}></AddIcon>
             <p className="text-primary">Agregar</p>
@@ -386,9 +383,8 @@ const PageCargarMasivamente = (
           <button
             onClick={handleClearVerifiedData}
             disabled={studentData.length === 0}
-            className={`flex justify-center items-center px-3 gap-[10px] border border-primary rounded-[10px] h-[42px] ${
-              studentData.length === 0 ? "opacity-50" : ""
-            }`}
+            className={`flex justify-center items-center px-3 gap-[10px] border border-primary rounded-[10px] h-[42px] ${studentData.length === 0 ? "opacity-50" : ""
+              }`}
           >
             <TrashIcon height={18} width={20}></TrashIcon>
             <p className="text-primary">Limpiar</p>
@@ -411,8 +407,8 @@ const PageCargarMasivamente = (
                     student.studentId == 0
                       ? "No encontrado"
                       : student.isActive
-                      ? "Activo"
-                      : "Inactivo",
+                        ? "Activo"
+                        : "Inactivo",
                 };
               })}
             />

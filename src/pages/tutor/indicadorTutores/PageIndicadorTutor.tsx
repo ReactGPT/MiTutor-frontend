@@ -183,8 +183,8 @@ const PageIndicadorTutor: React.FC = () => {
 
     const applyBackgroundAndWatermark = (doc: jsPDF) => {
         doc.setFillColor(255, 255, 255);
-        doc.rect(0, 0, 210, 297, 'F');
-
+        doc.rect(0, 0, 210, 297, 'F'); // 210x297 is the A4 size in mm
+    
         doc.setTextColor(220);
         doc.setFontSize(20);
         doc.setFont('helvetica', 'bold');
@@ -194,7 +194,7 @@ const PageIndicadorTutor: React.FC = () => {
                 doc.textWithLink('PUCP', j, i, { angle: 45, url: 'https://www.pucp.edu.pe/' });
             }
         }
-
+    
         doc.setTextColor(0);
         doc.setFontSize(10);
     };
@@ -214,11 +214,13 @@ const PageIndicadorTutor: React.FC = () => {
 
             doc.setFontSize(20);
             doc.setFont('helvetica', 'bold');
-            doc.text('FICHA DE INDICADORES TUTORES', 105, y, { align: 'center' });
-            y += 10;
-            doc.text('SERVICIOS DAES', 105, y, { align: 'center' });
-            y += 10;
+            doc.text('FICHA DE INDICADORES TUTORES', 105, 10, { align: 'center' });
+            doc.setFontSize(8);
+            doc.text('SERVICIOS DAES', 105, 14, { align: 'center' });    
+            
+            y = 30;
             doc.setFontSize(10);
+            doc.setFont('helvetica');
 
             const underlineText = (text: string, x: number, y: number) => {
                 doc.text(text, x, y);

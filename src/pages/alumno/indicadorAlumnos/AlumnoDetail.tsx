@@ -3,6 +3,7 @@ import { useLocation } from 'react-router-dom';
 import { PieChart, Pie, Tooltip, Legend, ResponsiveContainer, BarChart, CartesianGrid, XAxis, YAxis, Bar, Sector, Cell } from 'recharts';
 import { IconSearch } from '../../../assets';
 import jsPDF from 'jspdf';
+import { Services as ServicesProperties } from '../../../config';
 
 interface Student {
     id: number;
@@ -124,7 +125,7 @@ const AlumnoDetail: React.FC = () => {
     const fetchProgramaTutorias = async () => {
         try {
             // Realiza la petición al servicio para obtener los programas de tutoría del alumno
-            const response = await fetch(`https://api.daoch.me/listarProgramasDeTutoriaPorStudentId/${student?.id}`);
+            const response = await fetch(`${ServicesProperties.BaseUrl}/listarProgramasDeTutoriaPorStudentId/${student?.id}`);
             if (!response.ok) {
                 throw new Error('Failed to fetch data');
             }
@@ -137,7 +138,7 @@ const AlumnoDetail: React.FC = () => {
     };
     const fetchData = async () => {
         try {
-            let url = `https://api.daoch.me/listarProgramaFechaStudent/${student?.id}`;
+            let url = `${ServicesProperties.BaseUrl}/listarProgramaFechaStudent/${student?.id}`;
             if (startDate && endDate) {
                 url += `?startDate=${startDate}&endDate=${endDate}`;
             }
@@ -161,7 +162,7 @@ const AlumnoDetail: React.FC = () => {
 
     const fetchAppointments = async () => {
         try {
-            let url = `https://api.daoch.me/listarAppointmentPorFecha/${student?.id}`;
+            let url = `${ServicesProperties.BaseUrl}/listarAppointmentPorFecha/${student?.id}`;
             if (startDate && endDate) {
                 url += `?startDate=${startDate}&endDate=${endDate}`;
             }
@@ -180,7 +181,7 @@ const AlumnoDetail: React.FC = () => {
 
     const fetchProgramVirtualFace = async () => {
         try {
-            let url = `https://api.daoch.me/listarProgramaVirtualFace/${student?.id}`;
+            let url = `${ServicesProperties.BaseUrl}/listarProgramaVirtualFace/${student?.id}`;
             if (startDate && endDate) {
                 url += `?startDate=${startDate}&endDate=${endDate}`;
             }
@@ -233,7 +234,7 @@ const AlumnoDetail: React.FC = () => {
     const handleExportClick = async () => {
         if (programsStudent.length > 0) {
             const doc = new jsPDF();
-            doc.setFont('calibri');
+            doc.setFont('helvetica');
             doc.setFontSize(12);
             doc.setTextColor(0);
     
@@ -242,84 +243,116 @@ const AlumnoDetail: React.FC = () => {
             const marginTop = 20;
             const marginRight = 20;
             const marginBottom = 20;
+            const pageHeight = doc.internal.pageSize.height;
     
             // Función para imprimir una cita
-            const printAppointment = (doc:any, appointment:any, x:any, y:any, height:any) => {
+            const printAppointment = (doc: any, appointment: any, x: number, y: number): number => {
+                const lineHeight = 5; // Altura entre líneas
+                const sectionHeight = lineHeight * 6; // Espacio que ocupará una cita
+
+                if (y + sectionHeight > pageHeight - marginBottom) {
+                    doc.addPage();
+                    addWatermarkAndBackground(doc);
+                    y = marginTop;
+                }
+
                 doc.setFontSize(12);
-                doc.setFont('calibri', 'normal');
+                doc.setFont('helvetica', 'normal');
     
                 // Hora de inicio
                 const startTime = new Date(appointment.startTime);
                 const formattedStartTime = startTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
                 doc.text(`Hora de inicio: ${formattedStartTime}`, x, y);
-                y += 5;
+                y += lineHeight;
     
                 // Hora de fin
                 const endTime = new Date(appointment.endTime);
                 const formattedEndTime = endTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
                 doc.text(`Hora de fin: ${formattedEndTime}`, x, y);
-                y += 5;
+                y += lineHeight;
     
                 // Fecha de creación
                 const creationDate = new Date(appointment.creationDate);
                 const formattedCreationDate = creationDate.toLocaleDateString();
                 doc.text(`Fecha de creación: ${formattedCreationDate}`, x, y);
-                y += 5;
+                y += lineHeight;
     
                 // Razón
                 doc.text(`Razón: ${appointment.reason}`, x, y);
-                y += 5;
+                y += lineHeight;
     
                 // Cantidad de estudiantes
                 doc.text(`Cantidad de estudiantes: ${appointment.studentCount}`, x, y);
+                y += lineHeight + 5; // Espacio adicional entre citas
+
+                return y
+            };
+
+            // Función para agregar marca de agua y fondo
+            const addWatermarkAndBackground = (doc: any) => {
+                doc.setFillColor(255, 255, 255);
+                doc.rect(0, 0, 210, 297, 'F'); // 210x297 es el tamaño A4 en mm
+    
+                doc.setTextColor(220);
+                doc.setFontSize(20);
+                doc.setFont('helvetica', 'bold');
+                for (let i = -40; i < 297; i += 20) {
+                    for (let j = -10; j < 210; j += 20) {
+                        doc.setFontSize(12);
+                        doc.textWithLink('PUCP', j, i, { angle: 45, url: 'https://www.pucp.edu.pe/' });
+                    }
+                }
+    
+                doc.setTextColor(0);
+                doc.setFontSize(12);
             };
     
-            // Agregar un fondo gris transparente
-            doc.setFillColor(200, 200, 200);
-            doc.rect(0, 0, 210, 297, 'F'); // 210x297 es el tamaño A4 en mm
-    
-            // Agregar marca de agua "PUCP"
-            doc.setTextColor(150);
-            doc.setFontSize(20); // Reducir el tamaño del texto de la marca de agua
-            doc.setFont('calibri', 'bold');
-            for (let i = -40; i < 297; i += 20) { // Reducir el espaciado vertical
-                for (let j = -10; j < 210; j += 20) { // Reducir el espaciado horizontal
-                    doc.setFontSize(12); // Tamaño más pequeño para "PUCP"
-                    doc.textWithLink('PUCP', j, i, { angle: 45, url: 'https://www.pucp.edu.pe/' });
+            const addHeader = (doc: any, marginTop: number, includeTutorName: boolean) => {
+                if (includeTutorName) {
+                    doc.setFontSize(20);
+                    doc.setFont('helvetica', 'bold');
+                    doc.text(`${student.name.toUpperCase()} ${student.lastName.toUpperCase()} ${student.secondLastName.toUpperCase()}`, 105, marginTop + 10, { align: 'center' });
                 }
-            }
-    
-            // Restablecer el color del texto y el tamaño
-            doc.setTextColor(0);
-            doc.setFontSize(12);
-    
-            // Nombre del tutor
-            doc.setFontSize(16);
-            doc.setFont('calibri', 'bold');
-            doc.text(`${student.name} ${student.lastName} ${student.secondLastName}`, 105, marginTop + 10, { align: 'center' });
-    
-            // Detalles del tutor
-            let y = marginTop + 30;
-    
-            // Título de Programas
-            doc.setFontSize(14);
-            doc.setFont('calibri', 'bold');
-            doc.text('Programas Académicos', 105, y, { align: 'center' });
-            y += 10;
+            
+                let y = marginTop + (includeTutorName ? 30 : 10);
+            
+                doc.setFontSize(14);
+                doc.setFont('helvetica', 'bold');
+                doc.text('Programas Académicos', 105, y, { align: 'center' });
+                y += 10;
+                doc.line(marginLeft, y, 210 - marginRight, y);
+                return y + 5;
+            };
+
+
+            addWatermarkAndBackground(doc);
+
+            let y = addHeader(doc, marginTop, true);
     
             // Detalles de los programas académicos
             programsStudent.forEach(program => {
+                if (y + 30 > pageHeight - marginBottom) {
+                    doc.addPage();
+                    addWatermarkAndBackground(doc);
+                    y = addHeader(doc, marginTop, false); // Cambiado a false
+                }         
+
                 // Nombre del programa
                 doc.setFontSize(12);
-                doc.setFont('calibri', 'bold');
+                doc.setFont('helvetica', 'bold');
                 doc.text(`Nombre del programa:`, marginLeft, y);
-                doc.setFont('calibri', 'normal');
+                doc.setFont('helvetica', 'normal');
                 doc.text(`${program.programName}`, marginLeft + 60, y); // Ajustamos la posición en x
                 y += 10;
     
                 // Descripción del programa
                 const descriptionLines = doc.splitTextToSize(program.programDescription, 170);
                 descriptionLines.forEach((line: string) => {
+                    if (y + 5 > pageHeight - marginBottom) {
+                        doc.addPage();
+                        addWatermarkAndBackground(doc);
+                        y = marginTop;
+                    }
                     doc.text(line, marginLeft, y);
                     y += 5;
                 });
@@ -327,11 +360,12 @@ const AlumnoDetail: React.FC = () => {
     
                 // Facultad
                 doc.setFontSize(12);
-                doc.setFont('calibri', 'bold');
+                doc.setFont('helvetica', 'bold');
+                y += 5;
                 doc.text(`Facultad:`, marginLeft, y);
-                doc.setFont('calibri', 'normal');
+                doc.setFont('helvetica', 'normal');
                 doc.text(`${program.nameFaculty}`, marginLeft + 20, y); // Ajustamos la posición en x
-                y += 10;
+                y += 7;
     
                 // Separador
                 doc.line(marginLeft, y, 210 - marginRight, y);
@@ -339,60 +373,72 @@ const AlumnoDetail: React.FC = () => {
             });
     
             // Separador
-            doc.line(marginLeft, y, 210 - marginRight, y);
+            if (y + 10 > pageHeight - marginBottom) {
+                doc.addPage();
+                addWatermarkAndBackground(doc);
+                y = marginTop;
+            }
             y += 10;
+
+            // Añadir un salto de página antes de las citas
+            doc.addPage();
+            addWatermarkAndBackground(doc);
+            y = marginTop;
     
             // Título de las citas
             doc.setFontSize(14);
-            doc.setFont('calibri', 'bold');
+            doc.setFont('helvetica', 'bold');
             doc.text('Citas del Alumno', 105, y, { align: 'center' });
             y += 10;
-    
+            doc.line(marginLeft, y, 210 - marginRight, y);
+            y += 10;
+            
             // Dividir las citas en dos columnas
             const halfAppointments = Math.ceil(appointments.length / 2);
             const firstColumnAppointments = appointments.slice(0, halfAppointments);
             const secondColumnAppointments = appointments.slice(halfAppointments);
     
-            // Determinar el espacio vertical disponible para cada columna
-            const availableHeight = doc.internal.pageSize.height - y - marginBottom;
-            const columnHeight = Math.max(firstColumnAppointments.length, secondColumnAppointments.length) * 60; // Asumiendo 60 unidades de altura por cita
-    
             // Calcular la altura de cada fila en función del espacio disponible
-            const rowHeight = Math.min(availableHeight, columnHeight) / Math.max(firstColumnAppointments.length, secondColumnAppointments.length);
-    
-            // Imprimir las citas en dos columnas
+            const rowHeight = 30; // Altura estimada para cada cita
+        
             let xFirstColumn = marginLeft;
             let xSecondColumn = 105 + marginRight; // Separación de columnas
             let index = 0;
+            let yFirstColumn = y;
+            let ySecondColumn = y;
             while (index < Math.max(firstColumnAppointments.length, secondColumnAppointments.length)) {
+                if (yFirstColumn + rowHeight > pageHeight - marginBottom || ySecondColumn + rowHeight > pageHeight - marginBottom) {
+                    doc.addPage();
+                    addWatermarkAndBackground(doc);
+                    yFirstColumn = marginTop;
+                    ySecondColumn = marginTop;
+                }
+    
                 // Primera columna
                 if (index < firstColumnAppointments.length) {
                     const appointment = firstColumnAppointments[index];
-                    printAppointment(doc, appointment, xFirstColumn, y, rowHeight);
+                    yFirstColumn = printAppointment(doc, appointment, xFirstColumn, yFirstColumn);
                 }
     
                 // Segunda columna
                 if (index < secondColumnAppointments.length) {
                     const appointment = secondColumnAppointments[index];
-                    printAppointment(doc, appointment, xSecondColumn, y, rowHeight);
+                    ySecondColumn = printAppointment(doc, appointment, xSecondColumn, ySecondColumn);
                 }
-    
-                // Actualizar la posición Y
-                y += rowHeight;
     
                 index++;
             }
     
             // Guardar el PDF
-            doc.save('detalle_alumno.pdf');
+            doc.save(`detalle_${student.name}_${student.lastName}_${student.secondLastName}.pdf`);
         }
     };
     
     
      
-    const printAppointment = (doc:any, appointment:any, x:any, y:any, height:any) => {
+    const printAppointment = (doc: any, appointment: any, x: any, y: any, height: any) => {
         doc.setFontSize(12);
-        doc.setFont('calibri', 'normal');
+        doc.setFont('helvetica', 'normal');
     
          
         const startTime = new Date(appointment.startTime);

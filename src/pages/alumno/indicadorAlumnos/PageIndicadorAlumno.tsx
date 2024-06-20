@@ -88,8 +88,8 @@ const className = 'font-roboto bg-[rgba(235,236,250,1)] shadow-custom border bor
 const generarPDF = (studentData: StudentData) => {
     const doc = new jsPDF();
 
-    doc.setFont('calibri');
-    doc.setFontSize(12);
+    doc.setFont('helvetica');
+    doc.setFontSize(10);
     doc.setTextColor(0);
 
     doc.text('FICHA DE DERIVACIÓN', 20, 10);
@@ -179,79 +179,100 @@ const PageIndicadorAlumno: React.FC = () => {
         }
     };
 
+    const applyBackgroundAndWatermark = (doc: jsPDF) => {
+        doc.setFillColor(255, 255, 255);
+        doc.rect(0, 0, 210, 297, 'F'); // 210x297 is the A4 size in mm
+    
+        doc.setTextColor(220);
+        doc.setFontSize(20);
+        doc.setFont('helvetica', 'bold');
+        for (let i = -40; i < 297; i += 20) {
+            for (let j = -10; j < 210; j += 20) {
+                doc.setFontSize(10);
+                doc.textWithLink('PUCP', j, i, { angle: 45, url: 'https://www.pucp.edu.pe/' });
+            }
+        }
+    
+        doc.setTextColor(0);
+        doc.setFontSize(10);
+    };
+
     const handleExportClick = async () => {
         if (data.length > 0) {
             const doc = new jsPDF();
-            doc.setFont('calibri');
-            doc.setFontSize(12);
+            const pageHeight = doc.internal.pageSize.height;
+            let y = 20; // Start position for content
+            const marginLeft = 20;
+            const marginRight = 20;
+
+            doc.setFont('helvetica');
+            doc.setFontSize(10);
             doc.setTextColor(0);
     
-             
-            doc.setFillColor(200, 200, 200);
-            doc.rect(0, 0, 210, 297, 'F');  
-    
-             
-            doc.setTextColor(150);
-            doc.setFontSize(20);  
-            doc.setFont('calibri', 'bold');
-            for (let i = -40; i < 297; i += 20) {  
-                for (let j = -10; j < 210; j += 20) {  
-                    doc.setFontSize(12);  
-                    doc.textWithLink('PUCP', j, i, { angle: 45, url: 'https://www.pucp.edu.pe/' });
-                }
-            }
-    
-             
-            doc.setTextColor(0);
-            doc.setFontSize(12);
-    
+            // Apply background and watermark for the first page
+            applyBackgroundAndWatermark(doc);    
              
             doc.setFontSize(16);
-            doc.setFont('calibri', 'bold');
+            doc.setFont('helvetica', 'bold');
             doc.text('FICHA DE INDICADORES ALUMNOS', 105, 10, { align: 'center' });
-            doc.text('SERVICIOS DAES', 105, 20, { align: 'center' });
+            doc.setFontSize(8);
+            doc.text('SERVICIOS DAES', 105, 14, { align: 'center' });    
+            
+            y = 20;
+            doc.setFontSize(10);
+            doc.setFont('helvetica');
     
-            let y = 30;
-            doc.setFontSize(12);
-            doc.setFont('calibri');
-    
-            const underlineText = (text:any, x:any, y:any) => {
+            const underlineText = (text: string, x: number, y: number) => {
                 doc.text(text, x, y);
                 const textWidth = doc.getTextWidth(text);
                 doc.line(x, y + 1, x + textWidth, y + 1);
             };
     
             for (const student of data) {
-                doc.setFont('calibri', 'bold');
+                if (y + 30 > pageHeight) {
+                    doc.addPage();
+                    y = 20; // Reset y position for the new page
+                    applyBackgroundAndWatermark(doc); // Apply background and watermark for the new page
+                }
+                // Separador
+                doc.line(marginLeft, y, 210 - marginRight, y);
+                y += 10;
+
+                doc.setFont('helvetica', 'bold');
                 doc.text(`Nombre del estudiante:`, 20, y);
-                doc.setFont('calibri', 'normal');
+                doc.setFont('helvetica', 'normal');
                 doc.text(`${student.name}`, 70, y);   
     
                 y += 5;
-                doc.setFont('calibri', 'bold');
+                doc.setFont('helvetica', 'bold');
                 doc.text(`Cantidad de programas:`, 20, y);
-                doc.setFont('calibri', 'normal');
+                doc.setFont('helvetica', 'normal');
                 doc.text(`${student.programCount}`, 70, y);   
     
                 y += 10;
-                doc.setFont('calibri', 'bold');
+                doc.setFont('helvetica', 'bold');
                 underlineText('Programas Académicos', 20, y);
     
                 const programsData = await fetchProgramsData(student.studentId);
                 let programY = y + 5;
                 programsData.forEach(program => {
-                    doc.setFont('calibri', 'bold');
+                    if (programY + 30 > pageHeight) {
+                        doc.addPage();
+                        programY = 20; // Reset y position for the new page
+                        applyBackgroundAndWatermark(doc); // Apply background and watermark for the new page
+                    }                    
+                    doc.setFont('helvetica', 'bold');
                     const programNameLabelLines = doc.splitTextToSize(`Nombre del programa:`, 40);  
                     doc.text(programNameLabelLines, 20, programY);
-                    doc.setFont('calibri', 'normal');
+                    doc.setFont('helvetica', 'normal');
                     const programNameValueLines = doc.splitTextToSize(`${program.programName}`, 130);  
                     doc.text(programNameValueLines, 70, programY);  
                     programY += Math.max(programNameLabelLines.length, programNameValueLines.length) * 5;
     
-                    doc.setFont('calibri', 'bold');
+                    doc.setFont('helvetica', 'bold');
                     const programDescriptionLabelLines = doc.splitTextToSize(`Descripción:`, 40);  
                     doc.text(programDescriptionLabelLines, 20, programY);
-                    doc.setFont('calibri', 'normal');
+                    doc.setFont('helvetica', 'normal');
                     const programDescriptionValueLines = doc.splitTextToSize(`${program.programDescription}`, 130);  
                     doc.text(programDescriptionValueLines, 70, programY);  
                     programY += Math.max(programDescriptionLabelLines.length, programDescriptionValueLines.length) * 5 + 5;
@@ -259,29 +280,34 @@ const PageIndicadorAlumno: React.FC = () => {
     
                 for (let i = 0; i < data1.length; i++) {
                     if (student.studentId == data1[i].studentId) {
-                        doc.setFont('calibri', 'bold');
+                        if (programY + 30 > pageHeight) {
+                            doc.addPage();
+                            programY = 20; // Reset y position for the new page
+                            applyBackgroundAndWatermark(doc); // Apply background and watermark for the new page
+                        }
+                        doc.setFont('helvetica', 'bold');
                         doc.text(`Cantidad Total de Citas:`, 20, programY);
-                        doc.setFont('calibri', 'normal');
+                        doc.setFont('helvetica', 'normal');
                         doc.text(`${data1[i].totalAppointments}`, 70, programY);  
                         programY += 5;
     
-                        doc.setFont('calibri', 'bold');
+                        doc.setFont('helvetica', 'bold');
                         doc.text(`Citas Registradas:`, 20, programY);
-                        doc.setFont('calibri', 'normal');
+                        doc.setFont('helvetica', 'normal');
                         doc.text(`${data1[i].registeredCount}`, 70, programY);   
                         programY += 5;
     
-                        doc.setFont('calibri', 'bold');
+                        doc.setFont('helvetica', 'bold');
                         doc.text(`Citas Pendientes:`, 20, programY);
-                        doc.setFont('calibri', 'normal');
+                        doc.setFont('helvetica', 'normal');
                         doc.text(`${data1[i].pendingResultCount}`, 70, programY);   
                         programY += 5;
     
-                        doc.setFont('calibri', 'bold');
+                        doc.setFont('helvetica', 'bold');
                         doc.text(`Citas Completadas:`, 20, programY);
-                        doc.setFont('calibri', 'normal');
+                        doc.setFont('helvetica', 'normal');
                         doc.text(`${data1[i].completedCount}`, 70, programY);   
-                        y = programY + 10;  
+                        y = programY;  
                         break;
                     }
                 }

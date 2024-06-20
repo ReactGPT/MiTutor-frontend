@@ -6,3 +6,4 @@ export * from './Appointment';
 export * from './ProgramaTutoria';
 export * from './store';
 export * from './UserAccount';
+export * from './Student';

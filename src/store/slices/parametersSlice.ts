@@ -1,6 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 //import { Finance } from '../../models/entities';
-import { Specialty,Faculty } from '../types';
+
+import { Specialty,Faculty,Tutor,Student } from '../types';
 
 type AppointmentStatus = {
     id:number;
@@ -23,6 +24,8 @@ type ParametersState={
     appointmentStatusList: AppointmentStatus[];
     unitDerivationList: UnitDerivation[];
     tutorTypeList:TutorType[];
+    tutorList: Tutor[];
+    studentList: Student[];
 }
 
 type TutorType={
@@ -303,8 +306,33 @@ const initialState:ParametersState={
             id:3,
             name:"Tutor Variable"
         }
-    ]
-
+    ],
+    tutorList : [
+        {
+            idTutor: 1,
+            nombre: "Juan",
+            apellido_paterno: "Perez",
+            apellido_materno: "Gomez",
+            email: "juanperez@gmail.com",
+            userAccountId: 1,
+            pucpCode: "20112345",
+            meetingRoom: "1A",
+            fullname: "Juan Perez Gomez",
+        }
+    ],
+    studentList : [
+        {
+            studentId: 1,
+            name: "Alonso",
+            lastName: "Gomez",
+            secondLastName: "Gutierrez",
+            isActive: true,
+            pucpCode: "20203340",
+            institutionalEmail: "agomez@gmail.com",
+            facultyName: "Ingeniería Mecatrónica",
+            isRegistered: true,            
+        }
+    ],
 };
 export const parametersSlice = createSlice({
     name : 'parameters',
@@ -322,6 +350,20 @@ export const parametersSlice = createSlice({
             
             if(payload.length!==0){
                 state.facultyList = payload;
+            }
+        },
+        setTutor : (state,action:{payload : any})=>{
+            const { payload  } = action;
+            
+            if(payload.length!==0){
+                state.tutorList = payload;
+            }
+        },
+        setStudent : (state,action:{payload : any})=>{
+            const { payload  } = action;
+            
+            if(payload.length!==0){
+                state.studentList = payload;
             }
         },
         setAppointmentStatuses: (state,action:{payload : any})=>{
@@ -354,4 +396,4 @@ export const parametersSlice = createSlice({
     }
 });
 
-export const { setSpecialities,setFaculties,setAppointmentStatuses,setUnitDerivations } = parametersSlice.actions;
+export const { setSpecialities,setFaculties,setTutor,setStudent,setAppointmentStatuses,setUnitDerivations } = parametersSlice.actions;

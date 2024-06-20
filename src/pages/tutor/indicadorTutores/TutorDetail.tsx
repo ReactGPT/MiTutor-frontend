@@ -125,7 +125,8 @@ const TutorDetail: React.FC = () => {
     const fetchProgramaTutorias = async () => {
         try {
             // Realiza la petición al servicio para obtener los programas de tutoría del tutor
-            const response = await fetch(`https://api.daoch.me/listarProgramasDeTutoriaPorTutorId/${tutor?.tutorId}`);
+            //const response = await fetch(`https://api.daoch.me/listarProgramasDeTutoriaPorTutorId/${tutor?.tutorId}`);
+            const response = await fetch(`https://localhost:44369/listarProgramasDeTutoriaPorTutorId/${tutor?.tutorId}`);
             if (!response.ok) {
                 throw new Error('Failed to fetch data');
             }
@@ -138,7 +139,8 @@ const TutorDetail: React.FC = () => {
     };
     const fetchData = async () => {
         try {
-            let url = `https://api.daoch.me/listarProgramaFecha/${tutor?.tutorId}`;
+            //let url = `https://api.daoch.me/listarProgramaFecha/${tutor?.tutorId}`;
+            let url = `https://localhost:44369/listarProgramaFecha/${tutor?.tutorId}`;
             if (startDate && endDate) {
                 url += `?startDate=${startDate}&endDate=${endDate}`;
             }
@@ -148,7 +150,11 @@ const TutorDetail: React.FC = () => {
             }
             const data = await response.json();
             // Añadir colores únicos a cada programa
-            const colors = ['#ffc658', '#8884d8', '#82ca9d', '#ff8042', '#0088fe'];
+            const colors = [
+                '#ffc658', '#8884d8', '#82ca9d', '#ff8042', '#0088fe',
+                '#ffcc00', '#6699CC', '#E4A032', '#329065', '#B3CC57',
+                '#D2691E', '#736AFF', '#6B8E23', '#C23B22', '#6495ED'
+            ];
             const programsWithColors = data.data.map((program: Program, index: number) => ({
                 ...program,
                 color: colors[index % colors.length],
@@ -162,7 +168,8 @@ const TutorDetail: React.FC = () => {
 
     const fetchAppointments = async () => {
         try {
-            let url = `https://api.daoch.me/listarAppointmentPorFecha/${tutor?.tutorId}`;
+            //let url = `https://api.daoch.me/listarAppointmentPorFecha/${tutor?.tutorId}`;
+            let url = `https://localhost:44369/listarAppointmentPorFecha/${tutor?.tutorId}`;
             if (startDate && endDate) {
                 url += `?startDate=${startDate}&endDate=${endDate}`;
             }
@@ -181,7 +188,8 @@ const TutorDetail: React.FC = () => {
 
     const fetchProgramVirtualFace = async () => {
         try {
-            let url = `https://api.daoch.me/listarProgramaVirtualFace/${tutor?.tutorId}`;
+            //let url = `https://api.daoch.me/listarProgramaVirtualFace/${tutor?.tutorId}`;
+            let url = `https://localhost:44369/listarProgramaVirtualFace/${tutor?.tutorId}`;
             if (startDate && endDate) {
                 url += `?startDate=${startDate}&endDate=${endDate}`;
             }
@@ -229,7 +237,12 @@ const TutorDetail: React.FC = () => {
     const pieData = programVirtualFace.length > 0 ? [
         { name: 'Presencial', value: programVirtualFace[0].cantidadPresenciales, fill: '#8884d8' },
         { name: 'Virtual', value: programVirtualFace[0].cantidadVirtuales, fill: '#82ca9d' }
-    ] : [];
+    ] : [{ name: 'Presencial', value: 0, fill: '#8884d8' }, { name: 'Virtual', value: 0, fill: '#82ca9d' }];
+    
+    // Verificar si appointments está vacío
+    if (appointments.length === 0) {
+        pieData.forEach((data) => (data.value = 0)); // Reset both values to 0%
+    }
 
     const handleExportClick = async () => {
         if (programsTutor.length > 0) {
@@ -237,79 +250,104 @@ const TutorDetail: React.FC = () => {
             doc.setFont('calibri');
             doc.setFontSize(12);
             doc.setTextColor(0);
-
+    
             // Definir márgenes
             const marginLeft = 20;
             const marginTop = 20;
             const marginRight = 20;
             const marginBottom = 20;
-
+            const pageHeight = doc.internal.pageSize.height;
+    
             // Función para imprimir una cita
-            const printAppointment = (doc: any, appointment: any, x: any, y: any, height: any) => {
+            const printAppointment = (doc: any, appointment: any, x: number, y: number): number => {
+                const lineHeight = 5; // Altura entre líneas
+                const sectionHeight = lineHeight * 6; // Espacio que ocupará una cita
+    
+                if (y + sectionHeight > pageHeight - marginBottom) {
+                    doc.addPage();
+                    addWatermarkAndBackground(doc);
+                    y = marginTop;
+                }
+    
                 doc.setFontSize(12);
                 doc.setFont('calibri', 'normal');
-
+    
                 // Hora de inicio
                 const startTime = new Date(appointment.startTime);
                 const formattedStartTime = startTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
                 doc.text(`Hora de inicio: ${formattedStartTime}`, x, y);
-                y += 5;
-
+                y += lineHeight;
+    
                 // Hora de fin
                 const endTime = new Date(appointment.endTime);
                 const formattedEndTime = endTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
                 doc.text(`Hora de fin: ${formattedEndTime}`, x, y);
-                y += 5;
-
+                y += lineHeight;
+    
                 // Fecha de creación
                 const creationDate = new Date(appointment.creationDate);
                 const formattedCreationDate = creationDate.toLocaleDateString();
                 doc.text(`Fecha de creación: ${formattedCreationDate}`, x, y);
-                y += 5;
-
+                y += lineHeight;
+    
                 // Razón
                 doc.text(`Razón: ${appointment.reason}`, x, y);
-                y += 5;
-
+                y += lineHeight;
+    
                 // Cantidad de estudiantes
                 doc.text(`Cantidad de estudiantes: ${appointment.studentCount}`, x, y);
+                y += lineHeight + 5; // Espacio adicional entre citas
+    
+                return y;
             };
-
-            // Agregar un fondo gris transparente
-            doc.setFillColor(200, 200, 200);
-            doc.rect(0, 0, 210, 297, 'F'); // 210x297 es el tamaño A4 en mm
-
-            // Agregar marca de agua "PUCP"
-            doc.setTextColor(150);
-            doc.setFontSize(20); // Reducir el tamaño del texto de la marca de agua
-            doc.setFont('calibri', 'bold');
-            for (let i = -40; i < 297; i += 20) { // Reducir el espaciado vertical
-                for (let j = -10; j < 210; j += 20) { // Reducir el espaciado horizontal
-                    doc.setFontSize(12); // Tamaño más pequeño para "PUCP"
-                    doc.textWithLink('PUCP', j, i, { angle: 45, url: 'https://www.pucp.edu.pe/' });
+    
+            // Función para agregar marca de agua y fondo
+            const addWatermarkAndBackground = (doc: any) => {
+                doc.setFillColor(200, 200, 200);
+                doc.rect(0, 0, 210, 297, 'F'); // 210x297 es el tamaño A4 en mm
+    
+                doc.setTextColor(150);
+                doc.setFontSize(20);
+                doc.setFont('calibri', 'bold');
+                for (let i = -40; i < 297; i += 20) {
+                    for (let j = -10; j < 210; j += 20) {
+                        doc.setFontSize(12);
+                        doc.textWithLink('PUCP', j, i, { angle: 45, url: 'https://www.pucp.edu.pe/' });
+                    }
                 }
-            }
-
-            // Restablecer el color del texto y el tamaño
-            doc.setTextColor(0);
-            doc.setFontSize(12);
-
-            // Nombre del tutor
-            doc.setFontSize(16);
-            doc.setFont('calibri', 'bold');
-            doc.text(`${tutor.userAccount.persona.name} ${tutor.userAccount.persona.lastName} ${tutor.userAccount.persona.secondLastName}`, 105, marginTop + 10, { align: 'center' });
-
-            // Detalles del tutor
-            let y = marginTop + 30;
-
-            // Título de Programas
-            doc.setFontSize(14);
-            doc.setFont('calibri', 'bold');
-            doc.text('Programas Académicos', 105, y, { align: 'center' });
-            y += 10;
-
+    
+                doc.setTextColor(0);
+                doc.setFontSize(12);
+            };
+    
+            const addHeader = (doc: any, marginTop: number) => {
+                // Nombre del tutor
+                doc.setFontSize(16);
+                doc.setFont('calibri', 'bold');
+                doc.text(`${tutor.userAccount.persona.name} ${tutor.userAccount.persona.lastName} ${tutor.userAccount.persona.secondLastName}`, 105, marginTop + 10, { align: 'center' });
+    
+                // Detalles del tutor
+                let y = marginTop + 30;
+    
+                // Título de Programas
+                doc.setFontSize(14);
+                doc.setFont('calibri', 'bold');
+                doc.text('Programas Académicos', 105, y, { align: 'center' });
+                return y + 10;
+            };
+    
+            addWatermarkAndBackground(doc);
+    
+            let y = addHeader(doc, marginTop);
+    
             // Detalles de los programas académicos
             programsTutor.forEach(program => {
+                if (y + 30 > pageHeight - marginBottom) {
+                    doc.addPage();
+                    addWatermarkAndBackground(doc);
+                    y = addHeader(doc, marginTop);
+                }
+    
                 // Nombre del programa
                 doc.setFontSize(12);
                 doc.setFont('calibri', 'bold');
@@ -317,15 +355,19 @@ const TutorDetail: React.FC = () => {
                 doc.setFont('calibri', 'normal');
                 doc.text(`${program.programName}`, marginLeft + 60, y); // Ajustamos la posición en x
                 y += 10;
-
+    
                 // Descripción del programa
                 const descriptionLines = doc.splitTextToSize(program.programDescription, 170);
                 descriptionLines.forEach((line: string) => {
+                    if (y + 5 > pageHeight - marginBottom) {
+                        doc.addPage();
+                        addWatermarkAndBackground(doc);
+                        y = marginTop;
+                    }
                     doc.text(line, marginLeft, y);
                     y += 5;
                 });
-
-
+    
                 // Facultad
                 doc.setFontSize(12);
                 doc.setFont('calibri', 'bold');
@@ -333,58 +375,67 @@ const TutorDetail: React.FC = () => {
                 doc.setFont('calibri', 'normal');
                 doc.text(`${program.nameFaculty}`, marginLeft + 20, y); // Ajustamos la posición en x
                 y += 10;
-
+    
                 // Separador
                 doc.line(marginLeft, y, 210 - marginRight, y);
                 y += 5;
             });
-
+    
             // Separador
+            if (y + 10 > pageHeight - marginBottom) {
+                doc.addPage();
+                addWatermarkAndBackground(doc);
+                y = marginTop;
+            }
             doc.line(marginLeft, y, 210 - marginRight, y);
             y += 10;
-
+    
+            // Añadir un salto de página antes de las citas
+            doc.addPage();
+            addWatermarkAndBackground(doc);
+            y = marginTop;
+    
             // Título de las citas
             doc.setFontSize(14);
             doc.setFont('calibri', 'bold');
             doc.text('Citas del Tutor', 105, y, { align: 'center' });
             y += 10;
-
+    
             // Dividir las citas en dos columnas
             const halfAppointments = Math.ceil(appointments.length / 2);
             const firstColumnAppointments = appointments.slice(0, halfAppointments);
             const secondColumnAppointments = appointments.slice(halfAppointments);
-
-            // Determinar el espacio vertical disponible para cada columna
-            const availableHeight = doc.internal.pageSize.height - y - marginBottom;
-            const columnHeight = Math.max(firstColumnAppointments.length, secondColumnAppointments.length) * 60; // Asumiendo 60 unidades de altura por cita
-
-            // Calcular la altura de cada fila en función del espacio disponible
-            const rowHeight = Math.min(availableHeight, columnHeight) / Math.max(firstColumnAppointments.length, secondColumnAppointments.length);
-
-            // Imprimir las citas en dos columnas
+    
+            const rowHeight = 30; // Altura estimada para cada cita
+    
             let xFirstColumn = marginLeft;
             let xSecondColumn = 105 + marginRight; // Separación de columnas
             let index = 0;
+            let yFirstColumn = y;
+            let ySecondColumn = y;
             while (index < Math.max(firstColumnAppointments.length, secondColumnAppointments.length)) {
+                if (yFirstColumn + rowHeight > pageHeight - marginBottom || ySecondColumn + rowHeight > pageHeight - marginBottom) {
+                    doc.addPage();
+                    addWatermarkAndBackground(doc);
+                    yFirstColumn = marginTop;
+                    ySecondColumn = marginTop;
+                }
+    
                 // Primera columna
                 if (index < firstColumnAppointments.length) {
                     const appointment = firstColumnAppointments[index];
-                    printAppointment(doc, appointment, xFirstColumn, y, rowHeight);
+                    yFirstColumn = printAppointment(doc, appointment, xFirstColumn, yFirstColumn);
                 }
-
+    
                 // Segunda columna
                 if (index < secondColumnAppointments.length) {
                     const appointment = secondColumnAppointments[index];
-                    printAppointment(doc, appointment, xSecondColumn, y, rowHeight);
+                    ySecondColumn = printAppointment(doc, appointment, xSecondColumn, ySecondColumn);
                 }
-
-
-                y += rowHeight;
-
+    
                 index++;
             }
-
-
+    
             doc.save('detalle_tutor.pdf');
         }
     };
@@ -564,7 +615,7 @@ const TutorDetail: React.FC = () => {
                     <div className="bg-primary py-2 px-4">
                         <h2 className="text-xl font-semibold text-white text-center">Consolidado de Programas</h2>
                     </div>
-                    <div className="overflow-auto h-full">
+                    <div className="overflow-auto h-full max-h-[calc(100vh-4rem)] mb-4">
                         <ul className="divide-y divide-gray-200">
                             {programsTutor.map((program) => (
                                 <li key={program.tutoringProgramId} className="px-4 py-2 font-montserrat">

@@ -9,7 +9,7 @@ import {
   BiSolidLandmark,
   BiUserCheck,
   BiBarChart,
-  BiBarChartAlt  
+  BiBarChartAlt
 } from "react-icons/bi";
 import { PiStudent } from "react-icons/pi";
 
@@ -57,6 +57,7 @@ import PageMaestroTutores from "../pages/coordinador/MaestroTutores/PageMaestroT
 import { UserPlus } from "../assets/index.ts";
 import EspecialidadesPage from "../pages/coordinador/especialidades/Especialidades.tsx";
 import EspecialidadSingularPage from "../pages/coordinador/especialidades/EspecialidadSingular.tsx";
+import PageSolicitudGestionTutor from "../pages/tutor/gestionSolicitudes/PageSolicitudGestion.tsx";
 
 
 type RouterDetail = {
@@ -85,6 +86,10 @@ export const Routes: RouterConfig = {
       {
         path: '/programasDeTutoria',
         element: <PageProgramasDeTutoriaTutor />,
+      },
+      {
+        path: '/gestionSolicitudes',
+        element: <PageSolicitudGestionTutor />,
       },
       {
         path: '/listaDeCitas',
@@ -128,7 +133,7 @@ export const Routes: RouterConfig = {
       },
       {
         path: '/listaDeCitas/resultadoCitaIndividual',
-        element: <PageResultadoCitaIndividual /> 
+        element: <PageResultadoCitaIndividual />
       },
       {
         path: '/listaDeCitas/resultadoCitaGrupal',
@@ -160,6 +165,12 @@ export const Routes: RouterConfig = {
         label: 'Tipos de Tutoria',
         path: '/programasDeTutoria',
         icon: <BiCabinet fontSize={32} />,
+      },
+      {
+        key: 'gestionDeSolicitudes',
+        label: 'Gestion de Solicitudes',
+        path: '/gestionSolicitudes',
+        icon: <BiUserCheck fontSize={32} />,
       },
       {
         key: 'listaDeCitas',
@@ -216,24 +227,24 @@ export const Routes: RouterConfig = {
       },
       {
         path: '/tutor-detail',
-        element:<TutorDetail/> 
+        element: <TutorDetail />
       }
       ,
       {
         path: '/alumno-detail',
-        element:<AlumnoDetail/> 
+        element: <AlumnoDetail />
       },
       {
         path: '/maestroTutores',
-        element:<PageMaestroTutores/>
+        element: <PageMaestroTutores />
       },
       {
         path: '/especialidades',
-        element: <EspecialidadesPage/>
+        element: <EspecialidadesPage />
       },
       {
         path: '/especialidades/:id',
-        element: <EspecialidadSingularPage/>
+        element: <EspecialidadSingularPage />
       },
     ],
     navBarLink: [
@@ -274,10 +285,10 @@ export const Routes: RouterConfig = {
         icon: <BiBarChartAlt fontSize={32} />,
       },
       {
-        key:'maestroTutores',
-        label:'Maestro Tutores',
-        path:'/maestroTutores',
-        icon: <UserPlus size={6}/>
+        key: 'maestroTutores',
+        label: 'Maestro Tutores',
+        path: '/maestroTutores',
+        icon: <UserPlus size={6} />
       }
     ]
   },
@@ -395,19 +406,19 @@ export const Routes: RouterConfig = {
       },
       {
         path: '/usuarios/cargaMasiva',
-        element: <PageCargaMasiva/>
+        element: <PageCargaMasiva />
       },
       {
         path: '/unidades',
-        element: <PageUnidadFacultad/>
+        element: <PageUnidadFacultad />
       },
       {
         path: '/unidades/editarFacultad',
-        element: <PageEditarFacultad/>
+        element: <PageEditarFacultad />
       },
       {
         path: '/unidades/editarUnidadDerivacion',
-        element: <PageEditarUnidadDerivacion/>
+        element: <PageEditarUnidadDerivacion />
       },
       {
         path: '*',

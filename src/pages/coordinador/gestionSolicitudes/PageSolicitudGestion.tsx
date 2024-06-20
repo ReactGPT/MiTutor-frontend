@@ -134,6 +134,7 @@ const PageSolicitudGestion: React.FC = () => {
             field: "TutorStudentProgramId",
             hide: true,
         },
+        { headerName: "Motivo", field: "Motivo"},
     ];
 
     const filteredRowData = useMemo(() => {
@@ -202,6 +203,7 @@ const PageSolicitudGestion: React.FC = () => {
             TutorFullName: `${program.tutor.userAccount.persona.name} ${program.tutor.userAccount.persona.lastName} ${program.tutor.userAccount.persona.secondLastName}`,
             State: `${program.state}`,
             TutorStudentProgramId: program.tutorStudentProgramId,
+            Motivo: program.motivo,
         }));
     }, [tutorStudentPrograms, filters]);
 

@@ -3,6 +3,8 @@ import { useLocation } from 'react-router-dom';
 import { PieChart, Pie, Tooltip, Legend, ResponsiveContainer, BarChart, CartesianGrid, XAxis, YAxis, Bar, Sector, Cell } from 'recharts';
 import { IconSearch } from '../../../assets';
 import jsPDF from 'jspdf';
+import { Services as ServicesProperties } from '../../../config';
+
 interface Tutor {
     tutorId: number;
     userAccount: {
@@ -116,6 +118,7 @@ const TutorDetail: React.FC = () => {
     const [activeIndex, setActiveIndex] = useState<number>(0);
 
     const [programsTutor, setProgramsTutor] = useState<Program[]>([]);
+
     useEffect(() => {
         fetchData();
         fetchAppointments();
@@ -125,8 +128,8 @@ const TutorDetail: React.FC = () => {
     const fetchProgramaTutorias = async () => {
         try {
             // Realiza la petición al servicio para obtener los programas de tutoría del tutor
-            //const response = await fetch(`https://api.daoch.me/listarProgramasDeTutoriaPorTutorId/${tutor?.tutorId}`);
-            const response = await fetch(`https://localhost:44369/listarProgramasDeTutoriaPorTutorId/${tutor?.tutorId}`);
+            //const response = await fetch(`http://api.daoch.me/listarProgramasDeTutoriaPorTutorId/${tutor?.tutorId}`);
+            const response = await fetch(`${ServicesProperties.BaseUrl}/listarProgramasDeTutoriaPorTutorId/${tutor?.tutorId}`);
             if (!response.ok) {
                 throw new Error('Failed to fetch data');
             }
@@ -139,8 +142,8 @@ const TutorDetail: React.FC = () => {
     };
     const fetchData = async () => {
         try {
-            //let url = `https://api.daoch.me/listarProgramaFecha/${tutor?.tutorId}`;
-            let url = `https://localhost:44369/listarProgramaFecha/${tutor?.tutorId}`;
+            //let url = `http://api.daoch.me/listarProgramaFecha/${tutor?.tutorId}`;
+            let url = `${ServicesProperties.BaseUrl}/listarProgramaFecha/${tutor?.tutorId}`;
             if (startDate && endDate) {
                 url += `?startDate=${startDate}&endDate=${endDate}`;
             }
@@ -168,8 +171,8 @@ const TutorDetail: React.FC = () => {
 
     const fetchAppointments = async () => {
         try {
-            //let url = `https://api.daoch.me/listarAppointmentPorFecha/${tutor?.tutorId}`;
-            let url = `https://localhost:44369/listarAppointmentPorFecha/${tutor?.tutorId}`;
+            //let url = `http://api.daoch.me/listarAppointmentPorFecha/${tutor?.tutorId}`;
+            let url = `${ServicesProperties.BaseUrl}/listarAppointmentPorFecha/${tutor?.tutorId}`;
             if (startDate && endDate) {
                 url += `?startDate=${startDate}&endDate=${endDate}`;
             }
@@ -188,8 +191,8 @@ const TutorDetail: React.FC = () => {
 
     const fetchProgramVirtualFace = async () => {
         try {
-            //let url = `https://api.daoch.me/listarProgramaVirtualFace/${tutor?.tutorId}`;
-            let url = `https://localhost:44369/listarProgramaVirtualFace/${tutor?.tutorId}`;
+            //let url = `http://api.daoch.me/listarProgramaVirtualFace/${tutor?.tutorId}`;
+            let url = `${ServicesProperties.BaseUrl}/listarProgramaVirtualFace/${tutor?.tutorId}`;
             if (startDate && endDate) {
                 url += `?startDate=${startDate}&endDate=${endDate}`;
             }
@@ -247,7 +250,7 @@ const TutorDetail: React.FC = () => {
     const handleExportClick = async () => {
         if (programsTutor.length > 0) {
             const doc = new jsPDF();
-            doc.setFont('calibri');
+            doc.setFont('helvetica');
             doc.setFontSize(12);
             doc.setTextColor(0);
     
@@ -270,7 +273,7 @@ const TutorDetail: React.FC = () => {
                 }
     
                 doc.setFontSize(12);
-                doc.setFont('calibri', 'normal');
+                doc.setFont('helvetica', 'normal');
     
                 // Hora de inicio
                 const startTime = new Date(appointment.startTime);
@@ -303,12 +306,12 @@ const TutorDetail: React.FC = () => {
     
             // Función para agregar marca de agua y fondo
             const addWatermarkAndBackground = (doc: any) => {
-                doc.setFillColor(200, 200, 200);
+                doc.setFillColor(255, 255, 255);
                 doc.rect(0, 0, 210, 297, 'F'); // 210x297 es el tamaño A4 en mm
     
-                doc.setTextColor(150);
+                doc.setTextColor(220);
                 doc.setFontSize(20);
-                doc.setFont('calibri', 'bold');
+                doc.setFont('helvetica', 'bold');
                 for (let i = -40; i < 297; i += 20) {
                     for (let j = -10; j < 210; j += 20) {
                         doc.setFontSize(12);
@@ -320,39 +323,42 @@ const TutorDetail: React.FC = () => {
                 doc.setFontSize(12);
             };
     
-            const addHeader = (doc: any, marginTop: number) => {
-                // Nombre del tutor
-                doc.setFontSize(16);
-                doc.setFont('calibri', 'bold');
-                doc.text(`${tutor.userAccount.persona.name} ${tutor.userAccount.persona.lastName} ${tutor.userAccount.persona.secondLastName}`, 105, marginTop + 10, { align: 'center' });
-    
-                // Detalles del tutor
-                let y = marginTop + 30;
-    
-                // Título de Programas
+            const addHeader = (doc: any, marginTop: number, includeTutorName: boolean) => {
+                if (includeTutorName) {
+                    doc.setFontSize(20);
+                    doc.setFont('helvetica', 'bold');
+                    doc.text(`${tutor.userAccount.persona.name.toUpperCase()} ${tutor.userAccount.persona.lastName.toUpperCase()} ${tutor.userAccount.persona.secondLastName.toUpperCase()}`, 105, marginTop + 10, { align: 'center' });
+                }
+            
+                let y = marginTop + (includeTutorName ? 30 : 10);
+            
                 doc.setFontSize(14);
-                doc.setFont('calibri', 'bold');
+                doc.setFont('helvetica', 'bold');
                 doc.text('Programas Académicos', 105, y, { align: 'center' });
-                return y + 10;
+                y += 10;
+                doc.line(marginLeft, y, 210 - marginRight, y);
+                return y + 5;
             };
+            
     
             addWatermarkAndBackground(doc);
     
-            let y = addHeader(doc, marginTop);
+            let y = addHeader(doc, marginTop, true);
     
             // Detalles de los programas académicos
             programsTutor.forEach(program => {
                 if (y + 30 > pageHeight - marginBottom) {
                     doc.addPage();
                     addWatermarkAndBackground(doc);
-                    y = addHeader(doc, marginTop);
-                }
+                    y = addHeader(doc, marginTop, false); // Cambiado a false
+                }                
     
                 // Nombre del programa
                 doc.setFontSize(12);
-                doc.setFont('calibri', 'bold');
+                doc.setFont('helvetica', 'bold');
+                y += 5;
                 doc.text(`Nombre del programa:`, marginLeft, y);
-                doc.setFont('calibri', 'normal');
+                doc.setFont('helvetica', 'normal');
                 doc.text(`${program.programName}`, marginLeft + 60, y); // Ajustamos la posición en x
                 y += 10;
     
@@ -370,11 +376,12 @@ const TutorDetail: React.FC = () => {
     
                 // Facultad
                 doc.setFontSize(12);
-                doc.setFont('calibri', 'bold');
+                doc.setFont('helvetica', 'bold');
+                y += 5;
                 doc.text(`Facultad:`, marginLeft, y);
-                doc.setFont('calibri', 'normal');
+                doc.setFont('helvetica', 'normal');
                 doc.text(`${program.nameFaculty}`, marginLeft + 20, y); // Ajustamos la posición en x
-                y += 10;
+                y += 7;
     
                 // Separador
                 doc.line(marginLeft, y, 210 - marginRight, y);
@@ -387,7 +394,6 @@ const TutorDetail: React.FC = () => {
                 addWatermarkAndBackground(doc);
                 y = marginTop;
             }
-            doc.line(marginLeft, y, 210 - marginRight, y);
             y += 10;
     
             // Añadir un salto de página antes de las citas
@@ -397,8 +403,10 @@ const TutorDetail: React.FC = () => {
     
             // Título de las citas
             doc.setFontSize(14);
-            doc.setFont('calibri', 'bold');
+            doc.setFont('helvetica', 'bold');
             doc.text('Citas del Tutor', 105, y, { align: 'center' });
+            y += 10;
+            doc.line(marginLeft, y, 210 - marginRight, y);
             y += 10;
     
             // Dividir las citas en dos columnas
@@ -436,15 +444,13 @@ const TutorDetail: React.FC = () => {
                 index++;
             }
     
-            doc.save('detalle_tutor.pdf');
+            doc.save(`detalle_${tutor.userAccount.persona.name}_${tutor.userAccount.persona.lastName}_${tutor.userAccount.persona.secondLastName}.pdf`);
         }
     };
 
-
-
     const printAppointment = (doc: any, appointment: any, x: any, y: any, height: any) => {
         doc.setFontSize(12);
-        doc.setFont('calibri', 'normal');
+        doc.setFont('helvetica', 'normal');
 
 
         const startTime = new Date(appointment.startTime);

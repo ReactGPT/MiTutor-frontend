@@ -109,13 +109,11 @@ const Tabla: React.FC<TablaProps> = ({
   };
 
   const columnFac: ColDef[] = [
+    { headerName: 'Acrónimo', field: 'acronym', minWidth: 120, maxWidth: 120 },
     { headerName: 'Nombre', field: 'name', minWidth: 240 },
-    { headerName: 'Acrónimo', field: 'acronym', minWidth: 150, maxWidth: 180 },
-    { headerName: 'Núm. de Estudiantes', field: 'numberStudents', minWidth: 130, maxWidth: 180 },
-    { headerName: 'Núm. de Tutores', field: 'numberTutors', minWidth: 130, maxWidth: 180 },
-    { headerName: 'Administrador', valueGetter: p => p.data?.facultyManager?.persona ? p.data?.facultyManager?.persona?.name + " " + p.data?.facultyManager?.persona?.lastName : "No asignado", minWidth: 200 },
+    // { headerName: 'Núm. de Estudiantes', field: 'numberStudents', minWidth: 130, maxWidth: 180 },
+    { headerName: 'Coordinador', valueGetter: p => p.data?.facultyManager?.persona ? p.data?.facultyManager?.persona?.name + " " + p.data?.facultyManager?.persona?.lastName : "No asignado", minWidth: 200 },
     { headerName: 'Email', valueGetter: p => p.data?.facultyManager?.institutionalEmail ? p.data?.facultyManager?.institutionalEmail : "No asignado", minWidth: 250 },
-    { headerName: 'Estado', valueGetter: p => p.data?.isActive ? "Activo" : "Inactivo", minWidth: 100, maxWidth: 100 },
     {
       headerName: 'Modificar',
       field: '',

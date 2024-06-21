@@ -70,13 +70,11 @@ const TablaUnidad: React.FC<TablaProps> = ({
   }, [unidadSelected]);
 
   const columnUni: ColDef[] = [
-    { headerName: 'Siglas', field: 'siglas', minWidth: 150 },
+    { headerName: 'Siglas', field: 'siglas', minWidth: 120, maxWidth: 120 },
     { headerName: 'Nombre', field: 'nombre', minWidth: 240 },
     { headerName: 'Responsable', field: 'responsable', minWidth: 200 },
     { headerName: 'Email', field: 'email', minWidth: 200 },
-    { headerName: 'Teléfono', field: 'telefono', minWidth: 200 },
-    { headerName: 'Estado', valueGetter: p => p.data?.estado ? "Activo" : "Inactivo", minWidth: 100, maxWidth: 100 },
-    { headerName: 'Fecha de Creacion', field: 'fechaCreacion', minWidth: 100, maxWidth: 100 },
+    //{ headerName: 'Teléfono', field: 'telefono', minWidth: 200 },
     {
       headerName: 'Modificar',
       field: '',

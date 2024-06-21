@@ -4,6 +4,14 @@ export const PageTitles = [
     pageName: "Inicio",
   },
   {
+    path: '/facultades',
+    pageName: "Facultades",
+  },
+  {
+    path: '/general',
+    pageName: "General",
+  },
+  {
     path: '/calendario',
     pageName: "Calendario",
   },
@@ -133,10 +141,10 @@ export const PageTitles = [
   },
   {
     path: "/unidades",
-    pageName: "Unidades"
+    pageName: "Unidades de derivación"
   },
   {
-    path: "/unidades/editarFacultad",
+    path: "/facultades/editarFacultad",
     pageName: "Editar Facultad"
   },
   {

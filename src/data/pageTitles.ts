@@ -113,7 +113,7 @@ export const PageTitles = [
   },
   {
     path: '/gestionSolicitudes',
-    pageName: "Gestión de Solicitudes"
+    pageName: "Gestión de Solicitudes de Tutor"
   },
   {
     path: "/misTutorias",

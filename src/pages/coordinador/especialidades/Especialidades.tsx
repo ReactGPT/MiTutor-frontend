@@ -19,20 +19,17 @@ const EspecialidadesPage = () => {
     fetchEspecialidadData(search);
   }, []);
 
-  const {userData} = useAuth();
+  const { userData } = useAuth();
   const userInfo = userData?.userInfo;
   const departmentId = useMemo(() => {
-    let departmentId:number=0;  
-    userInfo?.roles.forEach((role:any) => {
-      if(role.type === "MANAGER"){
+    let departmentId: number = 0;
+    userInfo?.roles.forEach((role: any) => {
+      if (role.type === "MANAGER") {
         departmentId = role.details.departmentId;
       }
     });
     return departmentId;
   }, [userInfo]);
-  
-  
-  
 
   const onSearch = () => {
     console.log(`Searching for... '${search}'`);
@@ -41,8 +38,8 @@ const EspecialidadesPage = () => {
 
   return (
     <>
-      <div>
-        <div className="flex gap-2 flex-wrap justify-between items-center pb-10">
+      <div className="w-full h-full flex flex-col gap-5">
+        <div className="flex gap-2 flex-wrap justify-between items-center">
           <h2 className="text-primary text-3xl font-bold">
             Listado de especialidades
           </h2>
@@ -54,7 +51,7 @@ const EspecialidadesPage = () => {
             className="rounded-2xl "
           />
         </div>
-        <div className="border border-terciary shadow-lg rounded-2xl w-full  bg-white flex overflow-clip mb-5">
+        <div className="border border-terciary shadow-lg rounded-2xl w-full  bg-white flex overflow-clip">
           <input
             type="text"
             placeholder="Buscar especialidad"
@@ -102,7 +99,7 @@ const EspecialidadesPage = () => {
               sortable: true,
               filter: true,
             },
-            {
+            /*{
               headerName: "Estado",
               field: "isActive",
               sortable: true,
@@ -119,15 +116,15 @@ const EspecialidadesPage = () => {
               field: "modificationDate",
               sortable: true,
               filter: true,
-            },
+            }, */
             {
               headerName: "Ver mas",
-              cellRenderer: (params: { data: (typeof especialidadData)[0] }) => {
+              cellRenderer: (params: { data: (typeof especialidadData)[0]; }) => {
                 return (
                   <div className="flex w-full justify-center items-center">
                     <button
                       onClick={() => {
-                        navigate(`/especialidades/${params.data.id}`,{state:{especialidadEspecifica:params.data}});
+                        navigate(`/especialidades/${params.data.id}`, { state: { especialidadEspecifica: params.data } });
                       }}
                       className="rounded-2xl"
                     >
@@ -152,10 +149,9 @@ const EspecialidadesPage = () => {
             },
           }}
           animateRows={true}
-          className="ag-theme-alpine"
+          className="ag-theme-alpine w-full h-full"
           pagination={true}
-          paginationPageSize={5}
-          domLayout="autoHeight"
+          paginationAutoPageSize
         />
       </div>
       <NuevaEspecialidad
@@ -165,7 +161,7 @@ const EspecialidadesPage = () => {
         }}
         onConfirm={() => {
           fetchEspecialidadData(search).then(() => {
-            console.log("Especialidad creada exitosamente")
+            console.log("Especialidad creada exitosamente");
           });
         }}
       />

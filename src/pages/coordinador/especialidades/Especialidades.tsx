@@ -9,15 +9,60 @@ import { AgGridReact } from "ag-grid-react";
 import { getEspecialidades } from "../../../store/services";
 import { useEspecialidad, useEspecialidadByName } from "../../../store/hooks/useEspecialidad";
 import { useAuth } from "../../../context";
+import { ColDef } from "ag-grid-community";
+import CustomUnidadGridButton from "../../administrador/gestionUnidad/CustomUnidadGridButton";
+import { DetailsIcon } from "../../../assets";
+import DeleteIcon from "../../../assets/svg/DeleteIcon";
 
 const EspecialidadesPage = () => {
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = React.useState(false);
   const [search, setSearch] = React.useState<string>("");
   const { especialidadData, fetchEspecialidadData } = useEspecialidadByName();
+
   useEffect(() => {
     fetchEspecialidadData(search);
   }, []);
+
+  const columnFac: ColDef[] = [
+    { headerName: 'Acrónimo', field: 'acronym', minWidth: 120, maxWidth: 120 },
+    { headerName: 'Nombre', field: 'name', minWidth: 240 },
+    { headerName: 'Coordinador', valueGetter: p => p.data?.specialtyManager?.persona ? p.data?.specialtyManager?.persona?.name + " " + p.data?.specialtyManager?.persona?.lastName : "No asignado", minWidth: 200 },
+    { headerName: 'Email', valueGetter: p => p.data?.specialtyManager?.institutionalEmail ? p.data?.specialtyManager?.institutionalEmail : "No asignado", minWidth: 250 },
+    {
+      headerName: 'Modificar',
+      field: '',
+      maxWidth: 100,
+      minWidth: 80,
+      cellRenderer: (params: { data: (typeof especialidadData)[0]; }) => {
+        return (
+          <CustomUnidadGridButton
+            icon={DetailsIcon}
+            iconSize={4}
+            onClick={() => {
+              navigate(`/especialidades/editar`, { state: { especialidadEspecifica: params.data } });
+            }}
+          />
+        );
+      }
+    },
+    {
+      headerName: 'Eliminar',
+      field: '',
+      maxWidth: 100,
+      minWidth: 80,
+      cellRenderer: (rowData: any) => {
+        return (
+          <button
+            className='text-primary'
+            onClick={() => { }}
+          >
+            <DeleteIcon size={6} />
+          </button>
+        );
+      }
+    }
+  ];
 
   const { userData } = useAuth();
   const userInfo = userData?.userInfo;
@@ -68,73 +113,7 @@ const EspecialidadesPage = () => {
         </div>
         <AgGridReact
           rowData={especialidadData.filter((especialidad) => especialidad.faculty.facultyId === departmentId)}
-          columnDefs={[
-            {
-              headerName: "Siglas",
-              field: "acronym",
-              sortable: true,
-              filter: true,
-            },
-            {
-              headerName: "Nombre",
-              field: "name",
-              sortable: true,
-              filter: true,
-            },
-            {
-              headerName: "Responsable",
-              field: "specialtyManager.persona.name",
-              sortable: true,
-              filter: true,
-            },
-            {
-              headerName: "Telefono",
-              field: "specialtyManager.persona.phone",
-              sortable: true,
-              filter: true,
-            },
-            {
-              headerName: "Correo",
-              field: "specialtyManager.institutionalEmail",
-              sortable: true,
-              filter: true,
-            },
-            /*{
-              headerName: "Estado",
-              field: "isActive",
-              sortable: true,
-              filter: true,
-            },
-            {
-              headerName: "Fecha de Creacion",
-              field: "creationDate",
-              sortable: true,
-              filter: true,
-            },
-            {
-              headerName: "Fecha ultima modificacion",
-              field: "modificationDate",
-              sortable: true,
-              filter: true,
-            }, */
-            {
-              headerName: "Ver mas",
-              cellRenderer: (params: { data: (typeof especialidadData)[0]; }) => {
-                return (
-                  <div className="flex w-full justify-center items-center">
-                    <button
-                      onClick={() => {
-                        navigate(`/especialidades/${params.data.id}`, { state: { especialidadEspecifica: params.data } });
-                      }}
-                      className="rounded-2xl"
-                    >
-                      <BiMenuAltLeft className="w-fit" />
-                    </button>
-                  </div>
-                );
-              },
-            },
-          ]}
+          columnDefs={columnFac}
           rowSelection="multiple"
           defaultColDef={{
             suppressHeaderMenuButton: true,

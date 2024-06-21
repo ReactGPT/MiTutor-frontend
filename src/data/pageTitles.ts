@@ -56,6 +56,10 @@ export const PageTitles = [
     pageName: "Especialidades",
   },
   {
+    path: '/especialidades/editar',
+    pageName: "Editar especialidad",
+  },
+  {
     path: '/maestroTutores',
     pageName: "Maestro Tutores",
   },

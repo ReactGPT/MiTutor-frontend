@@ -234,7 +234,7 @@ export const Routes: RouterConfig = {
         element: <EspecialidadesPage />
       },
       {
-        path: '/especialidades/:id',
+        path: '/especialidades/editar',
         element: <EspecialidadSingularPage />
       },
     ],

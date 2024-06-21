@@ -42,44 +42,52 @@ const PageAlumnosSeleccionados = () => {
   const [popoutIsOpen,setPopoutIsOpen]=useState(false);
   //const [rowData, setRowData] = useState<Student[]>([]);
   const [studentDataModified, setStudentDataModified] = useState<Student[]>([]);
-  const {studentData, fetchStudentData} = useStudent();
+  const {studentData, setStudentData, fetchStudentData} = useStudent();
   const [searchValue, setSearchValue] = useState('');
   const profesores : Tutor[] =tutoringProgramSelected.tutores;
   //const esFijo=tutoringProgram;
+  
   useEffect(()=>{
-    fetchStudentData(!!tutoringProgramSelected.id?tutoringProgramSelected.id:-1)
-    
-  },[]);
+    //fetchStudentData(!!tutoringProgramSelected.id?tutoringProgramSelected.id:-1)
+    setStudentData(tutoringProgramSelected.alumnos);
+    //handleClickSaveAlumnos();
+    //console.log("ssss",tutoringProgramSelected.alumnos);
+  },[]); 
+
   useEffect(()=>{
     if(tutoringProgramSelected.alumnos.length<=0){
-      dispatch(handleChangeTutoringProgram({name:'alumnos',value:studentData}));
+      dispatch(handleChangeTutoringProgram({ name: 'alumnos', value: studentDataModified }));
     }
-  },[studentData]);
+  },[studentDataModified]);
+
   useEffect(()=>{setStudentDataModified(studentData)},[studentData])
   const esFijo:boolean = useMemo(()=>{
     return tutoringProgramSelected.tutorTypeId===2;
   },[tutoringProgramSelected])
-  //console.log(studentDataModified)
+  
   const handleClickSubirMasivamente = ()=>{
     setPopoutIsOpen(true);
     //navigate("/alumnosSeleccionados/cargarAlumnos");
-    //navigate("/alumnosSeleccionados/cargarAlumnos", {state: {setStudentDataModified: setStudentDataModified}});
+    //navigate("/alumnosSeleccionados/cargarAlumnos", {state: {setStudentDataModified: setStudentDataModified}}); 
   }
   
   const handleSearch = (query: string) => {
     setSearchValue(query);
   }
   const handleClickSaveAlumnos= ()=>{
-    //console.log(studentDataModified);
+    console.log(studentDataModified);
+    console.log("los alumnos:",tutoringProgramSelected.alumnos);
     dispatch(handleChangeTutoringProgram({name:'alumnos',value:[...studentDataModified]}));
     if(!!tutoringProgramSelected.id){
-      navigate("/programasDeTutoriaMaestro/editar",{state:{programaTutoria:{...tutoringProgramSelected,
+      navigate("/programasDeTutoriaMaestro/editar",{
+        state:{programaTutoria:{...tutoringProgramSelected,
         'alumnos' : [...studentDataModified],
         'cant_alumnos': studentDataModified.length
       }}});
     }
     else{
-      navigate("/programasDeTutoriaMaestro/nuevo",{state:{programaTutoria:{...tutoringProgramSelected,
+      navigate("/programasDeTutoriaMaestro/nuevo",{
+        state:{programaTutoria:{...tutoringProgramSelected,
         'alumnos' : [...studentDataModified],
         'cant_alumnos':studentDataModified.length
       }}});

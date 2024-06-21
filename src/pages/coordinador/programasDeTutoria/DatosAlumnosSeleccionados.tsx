@@ -4,16 +4,39 @@ import { Button } from '../../../components';
 import { useNavigate } from 'react-router-dom';
 import { useAppSelector } from '../../../store/hooks';
 import { RootState } from '../../../store/store';
+import { useStudent } from '../../../store/hooks';
+import { useState, useEffect, useMemo } from 'react';
 
 type InputProps = {
   className: string;
 };
 
 function DatosAlumnosSeleccionados({ className }: InputProps) {
-  const { tutoringProgram, onChangeTutoringProgram } = useTutoringProgramContext();
+  const { tutoringProgram, updateAlumnos } = useTutoringProgramContext();
   //const { tutoringProgramSelected } = useAppSelector((state: RootState) => state.tutoringProgram);
   const navigate = useNavigate();
+  const {studentData, fetchStudentData} = useStudent();
+
+  /*useEffect(()=>{
+    fetchStudentData(!!tutoringProgram.id?tutoringProgram.id:-1) 
+  },[]);
+
+  useEffect(()=>{ 
+    tutoringProgram.alumnos=studentData;
+    console.log(tutoringProgram.alumnos);
+  },[studentData]); */
+
+  useEffect(() => {
+    if (tutoringProgram.id) {
+      fetchStudentData(tutoringProgram.id)
+        .then((alumnos) => {
+          updateAlumnos(alumnos);
+        });
+    } 
+  }, [tutoringProgram.id,updateAlumnos]);
+
   const handleOnClickVerAlumnos = () => {
+    console.log("son esos Alumnos:",tutoringProgram.alumnos);
     navigate("/alumnosSeleccionados");
   };
   return (

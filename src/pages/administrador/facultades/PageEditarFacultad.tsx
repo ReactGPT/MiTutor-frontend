@@ -53,7 +53,6 @@ const PageEditarFacultad = () => {
     { headerName: 'Nombre', field: 'name', minWidth: 240 },
     { headerName: 'Acrónimo', field: 'acronym', minWidth: 150, maxWidth: 180 },
     { headerName: 'Numero de Estudiantes', field: 'numberStudents', minWidth: 130, maxWidth: 180 },
-    //{ headerName: 'Numero de Tutores', field: 'numeroTutores', minWidth:130, maxWidth:180},
   ];
 
   const handleEditSaveButton = () => {
@@ -85,23 +84,13 @@ const PageEditarFacultad = () => {
   return (
     <FacultadProvider facultad={facultadBorrador}>
       <div className="w-full h-full">
-        <div className="mt-1 mb-3">
-          <p className="text-primary font-semibold">
-            <span
-              className="cursor-pointer hover:underline"
-              onClick={handleNavigation}>
-              Facultades
-            </span>
-            &nbsp;&gt; {`${facultadBorrador?.name}`}
-          </p>
-        </div>
-        <div className="w-full flex justify-between items-center">
+        <div className="w-full h-fit flex justify-between items-center">
           <h1 className="text-4xl font-bold text-[#2F2F2F]">
             {`${facultadBorrador?.name}`}
           </h1>
           <Button className="" onClick={() => { handleEditSaveButton(); }} text={`${editable ? "Guardar" : "Editar"}`} />
         </div>
-        <div className="grid grid-cols-2 gap-4 p-4">
+        <div className="h-fit grid grid-cols-2 gap-4 p-4">
           <div className='grid grid-cols-1'>
             <InputAdmin2
               titulo="Nombre de la Facultad"
@@ -142,13 +131,13 @@ const PageEditarFacultad = () => {
           </div>
         </div>
 
-        <div className="w-full flex justify-between items-center mt-6">
+        <div className="w-full h-fit flex justify-between items-center mt-6">
           <h1 className="text-4xl font-bold text-[#2F2F2F]">
             Especialidades
           </h1>
         </div>
 
-        <div className="w-full mt-[1%]">
+        <div className="w-full h-fit mt-[1%]">
           <SearchInput
             onSearch={handleSearch}
             handleOnChangeFilters={() => { }}

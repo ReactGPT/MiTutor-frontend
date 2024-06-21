@@ -76,7 +76,6 @@ const Tabla: React.FC<TablaProps> = ({
   useEffect(() => { fetchFacultadData(); }, [isOpenModalInput]);
 
   const handleOnConfirmDeleteFacultad = () => {
-    // console.log("uni selec nombre",facultadSelected?.nombre);
     if (facultadSelected && !!facultadSelected) {
       deleteFacultad(facultadSelected.id)
         .then((result) => {
@@ -193,7 +192,7 @@ const Tabla: React.FC<TablaProps> = ({
 
       <ModalInput
         isOpen={isOpenModalInput}
-        message={`¿Esta seguro de inhabilitar la unidad: ?`}
+        message={`¿Está seguro de eliminar esta facultad: ?`}
         onClose={() => {
           setIsOpenModalInput(false);
         }}
@@ -204,7 +203,7 @@ const Tabla: React.FC<TablaProps> = ({
         }}
         isAcceptAction={true}
       />
-      <ModalConfirmation isOpen={isOpen} message={`¿Esta seguro de inhabilitar la unidad: ${facultadSelected && facultadSelected.name}?`}
+      <ModalConfirmation isOpen={isOpen} message="¿Está seguro de eliminar esta facultad?"
         onClose={() => {
           setIsOpen(false);
         }}
@@ -214,7 +213,7 @@ const Tabla: React.FC<TablaProps> = ({
         }}
         isAcceptAction={true}
       />
-      <ModalSuccess isOpen={isOpenModalSuccess} message={`Se elimino con éxito la unidad: ${facultadSelected && facultadSelected.name}`}
+      <ModalSuccess isOpen={isOpenModalSuccess} message="Se eliminó con éxito"
         onClose={() => {
           setFacultadSelected(null);
           setIsOpenModalSuccess(false);

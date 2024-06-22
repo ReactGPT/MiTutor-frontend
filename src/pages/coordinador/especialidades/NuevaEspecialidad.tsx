@@ -1,6 +1,5 @@
 import { Dialog, Transition } from "@headlessui/react";
 import React, { Fragment, useState, useMemo } from "react";
-import { FaPlus } from "react-icons/fa";
 import { FaX } from "react-icons/fa6";
 import { MdOutlineEdit } from "react-icons/md";
 import { Button } from "../../../components";
@@ -9,6 +8,7 @@ import ModalSuccess from "../../../components/ModalSuccess";
 import AsignarResponsable from "./AsignarResponsable";
 import { insertartEspecialidad } from "../../../store/services/insertarEspecialidad";
 import { useAuth } from "../../../context";
+import IconAdd from "../../../assets/svg/IconAdd";
 
 interface NuevaEspecialidadProps {
   isOpen: boolean;
@@ -21,17 +21,17 @@ const NuevaEspecialidad = ({
   onClose,
   onConfirm,
 }: NuevaEspecialidadProps) => {
-  const {userData} = useAuth();
+  const { userData } = useAuth();
   const userInfo = userData?.userInfo;
   const departmentId = useMemo(() => {
-    let departmentId:number=0;  
-    userInfo?.roles.forEach((role:any) => {
-      if(role.type === "MANAGER"){
+    let departmentId: number = 0;
+    userInfo?.roles.forEach((role: any) => {
+      if (role.type === "MANAGER") {
         departmentId = role.details.departmentId;
       }
     });
     return departmentId;
-}, [userInfo]);
+  }, [userInfo]);
   const [isOpenError, setIsOpenError] = React.useState(false);
   const [isOpenSuccess, setIsOpenSuccess] = React.useState(false);
   const [isOpenAsignarResponsable, setIsOpenAsignarResponsable] = React.useState(false);
@@ -42,8 +42,7 @@ const NuevaEspecialidad = ({
   const [correoResponsable, setCorreoResponsable] = useState("");
   const [responsableId, setResponsableId] = useState(-1);
 
-  const saveEspecialidad =async () => {
-    
+  const saveEspecialidad = async () => {
     await insertartEspecialidad({
       name: nombre,
       acronym: siglas,
@@ -60,7 +59,7 @@ const NuevaEspecialidad = ({
       return false;
     }
     return true;
-  }
+  };
 
   const onError = () => {
     setIsOpenError(true);
@@ -108,19 +107,10 @@ const NuevaEspecialidad = ({
                   <div className="pb-5">
                     <Dialog.Title
                       as="h3"
-                      className="text-xl leading-6 text-left  font-bold text-gray-900"
+                      className="text-2xl leading-6 text-left  font-bold text-gray-900"
                     >
                       Nueva Especialidad
                     </Dialog.Title>
-                    <div className="absolute top-0 right-0 p-2">
-                      <button
-                        onClick={() => {
-                          onClose();
-                        }}
-                      >
-                        <FaX />
-                      </button>
-                    </div>
                   </div>
                   <div className="px-12 pb-5">
                     <div>
@@ -132,7 +122,7 @@ const NuevaEspecialidad = ({
                         placeholder="Nombre"
                         className="border border-terciary rounded-lg  w-full p-2 text-sm ring-0"
                         onChange={(e) => { setNombre(e.target.value); }}
-                        value={nombre}  
+                        value={nombre}
                       />
                     </div>
                     <div>
@@ -154,7 +144,7 @@ const NuevaEspecialidad = ({
                       <div className="relative">
                         <input
                           type="text"
-                          placeholder="Responsable"
+                          placeholder="-"
                           className="border border-terciary rounded-lg  w-full p-2 text-sm ring-0"
                           value={responsable}
                           disabled
@@ -174,23 +164,11 @@ const NuevaEspecialidad = ({
                     </div>
                     <div>
                       <label className="text-primary text-sm font-medium">
-                        Teléfono Responsable
-                      </label>
-                      <input
-                        type="text"
-                        placeholder="telefono"
-                        className="border border-terciary rounded-lg  w-full p-2 text-sm ring-0"
-                        value={telefonoResponsable}
-                        disabled
-                      />
-                    </div>
-                    <div>
-                      <label className="text-primary text-sm font-medium">
                         Correo responsable
                       </label>
                       <input
                         type="text"
-                        placeholder="Nombre"
+                        placeholder="-"
                         className="border border-terciary rounded-lg  w-full p-2 text-sm ring-0"
                         value={correoResponsable}
                         disabled
@@ -198,10 +176,10 @@ const NuevaEspecialidad = ({
                     </div>
                   </div>
                 </div>
-                <div className="flex items-center justify-around pt-5 space-x-4 pb-10">
+                <div className="flex items-center justify-around">
                   <Button
                     text="Añadir"
-                    icon={FaPlus}
+                    icon={IconAdd}
                     onClick={async () => {
                       await saveEspecialidad();
                     }}
@@ -238,7 +216,7 @@ const NuevaEspecialidad = ({
                     setIsOpenAsignarResponsable(false);
                   }}
                   onSelect={(User) => {
-                    console.log(`User selected: ${JSON.stringify(User,null,5)}`)
+                    console.log(`User selected: ${JSON.stringify(User, null, 5)}`);
                     setResponsable(User.persona.name);
                     setTelefonoResponsable((User.persona.phone));
                     setCorreoResponsable(User.institutionalEmail);

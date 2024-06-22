@@ -98,18 +98,11 @@ export default function PageListadoUsuarios() {
   };
   const columnDefs: ColDef[] = [
 
-    { headerName: 'Código', field: 'pucpCode', filter: 'agNumberColumnFilter', minWidth: 100 },
+    { headerName: 'Código', field: 'pucpCode', filter: 'agTextColumnFilter', minWidth: 100, maxWidth: 120 },
     { headerName: 'Nombres', field: 'persona.name', filter: 'agTextColumnFilter', minWidth: 150 },
     { headerName: 'Primer Apellido', field: 'persona.lastName', filter: 'agTextColumnFilter', minWidth: 150 },
     { headerName: 'Segundo Apellido', field: 'persona.secondLastName', filter: 'agTextColumnFilter', minWidth: 150 },
     { headerName: 'Correo', field: 'institutionalEmail', filter: 'agTextColumnFilter', minWidth: 300, maxWidth: 300 },
-    { headerName: 'Teléfono', field: 'persona.phone', filter: 'agNumberColumnFilter', minWidth: 100, maxWidth: 100 },
-    {
-      headerName: 'Activo',
-      field: 'isActive',
-      filter: 'agSetColumnFilter',
-      minWidth: 80, maxWidth: 80
-    },
     {
       headerName: '',
       field: '',

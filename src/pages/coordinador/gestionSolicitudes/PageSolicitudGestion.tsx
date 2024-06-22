@@ -132,10 +132,11 @@ const PageSolicitudGestion: React.FC = () => {
 
   return (
     <div className='flex flex-col w-full h-full gap-5 justify-between'>
+      {/*
       <div>
         <SolicitudGestionSearchBar handleOnChangeFilters={handleOnChangeFilters} />
       </div>
-      {/* <div className="mb-2">
+       <div className="mb-2">
             <h2 className="font-montserrat text-[26px] font-bold text-lg mb-2 mt-[-12px]">
               Tutor
             </h2>

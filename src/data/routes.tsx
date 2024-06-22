@@ -44,7 +44,7 @@ import PageIndicadorTutor from "../pages/tutor/indicadorTutores/PageIndicadorTut
 import PageListadoUsuarios from "../pages/administrador/gestionUsuarios/PageListadoUsuarios.tsx";
 import PageUsuario from "../pages/administrador/gestionUsuarios/PageUsuario.tsx";
 import PageUnidadFacultad from "../pages/administrador/gestionUnidad/PageUnidadFacultad.tsx";
-import PageEditarFacultad from "../pages/administrador/gestionUnidad/PageEditarFacultad.tsx";
+import PageEditarFacultad from "../pages/administrador/facultades/PageEditarFacultad.tsx";
 import PageEditarUnidadDerivacion from "../pages/administrador/gestionUnidad/PageEditarUnidadDerivacion.tsx";
 import PageAlumnosSeleccionados from "../pages/coordinador/programasDeTutoria/PageCargarAlumnos/PageAlumnosSeleccionados.tsx";
 import PageListadoEstudiantes from "../pages/administrador/gestionUsuarios/PageListadoEstudiantes.tsx";
@@ -56,9 +56,10 @@ import AlumnoDetail from "../pages/alumno/indicadorAlumnos/AlumnoDetail.tsx";
 import PageMaestroTutores from "../pages/coordinador/MaestroTutores/PageMaestroTutores.tsx";
 import { UserPlus } from "../assets/index.ts";
 import EspecialidadesPage from "../pages/coordinador/especialidades/Especialidades.tsx";
-import EspecialidadSingularPage from "../pages/coordinador/especialidades/EspecialidadSingular.tsx";
 import PageSolicitudGestionTutor from "../pages/tutor/gestionSolicitudes/PageSolicitudGestion.tsx";
-
+import EspecialidadSingular from "../pages/coordinador/especialidades/EspecialidadSingular.tsx";
+import PageGeneralAdmin from "../pages/administrador/general/PageGeneralAdmin.tsx";
+import PageFacultadesAdmin from "../pages/administrador/facultades/PageFacultadesAdmin.tsx";
 
 type RouterDetail = {
   pages: RouteObject[];
@@ -243,8 +244,8 @@ export const Routes: RouterConfig = {
         element: <EspecialidadesPage />
       },
       {
-        path: '/especialidades/:id',
-        element: <EspecialidadSingularPage />
+        path: '/especialidades/editar',
+        element: <EspecialidadSingular />
       },
     ],
     navBarLink: [
@@ -381,6 +382,14 @@ export const Routes: RouterConfig = {
   administrador: {
     pages: [
       {
+        path: '/general',
+        element: <PageGeneralAdmin />
+      },
+      {
+        path: '/facultades',
+        element: <PageFacultadesAdmin />
+      },
+      {
         path: '/usuarios',
         element: <PageListadoUsuarios />
       },
@@ -409,11 +418,15 @@ export const Routes: RouterConfig = {
         element: <PageCargaMasiva />
       },
       {
+        path: '/estudiantes/cargaMasiva',
+        element: <PageCargaMasiva />
+      },
+      {
         path: '/unidades',
         element: <PageUnidadFacultad />
       },
       {
-        path: '/unidades/editarFacultad',
+        path: '/facultades/editarFacultad',
         element: <PageEditarFacultad />
       },
       {
@@ -429,8 +442,14 @@ export const Routes: RouterConfig = {
       {
         key: 'general',
         label: 'General',
-        path: '/*',//Pendiente agregar
+        path: '/general',//Pendiente agregar
         icon: <BiCabinet fontSize={32} />,
+      },
+      {
+        key: 'facultades',
+        label: 'Facultades',
+        path: '/facultades',
+        icon: <BiSolidLandmark fontSize={32} />,
       },
       {
         key: 'unidades',

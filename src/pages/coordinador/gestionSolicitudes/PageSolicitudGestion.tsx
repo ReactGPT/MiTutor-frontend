@@ -206,7 +206,6 @@ const PageSolicitudGestion: React.FC = () => {
             Motivo: program.motivo,
         }));
     }, [tutorStudentPrograms, filters]);
-
     return (
         <div className="flex flex-col w-full h-full gap-5 justify-between">
             <div>

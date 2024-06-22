@@ -9,40 +9,111 @@ import { AgGridReact } from "ag-grid-react";
 import { getEspecialidades } from "../../../store/services";
 import { useEspecialidad, useEspecialidadByName } from "../../../store/hooks/useEspecialidad";
 import { useAuth } from "../../../context";
+import { ColDef } from "ag-grid-community";
+import CustomUnidadGridButton from "../../administrador/gestionUnidad/CustomUnidadGridButton";
+import { DetailsIcon } from "../../../assets";
+import DeleteIcon from "../../../assets/svg/DeleteIcon";
+import ModalConfirmation from "../../../components/ModalConfirmation";
+import ModalSuccess from "../../../components/ModalSuccess";
+import ModalError from "../../../components/ModalError";
+import { eliminarEspecialidad } from "../../../store/services/actualizarEspecialidad";
 
 const EspecialidadesPage = () => {
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = React.useState(false);
   const [search, setSearch] = React.useState<string>("");
   const { especialidadData, fetchEspecialidadData } = useEspecialidadByName();
+
   useEffect(() => {
     fetchEspecialidadData(search);
   }, []);
 
-  const {userData} = useAuth();
+  const columnFac: ColDef[] = [
+    { headerName: 'Acrónimo', field: 'acronym', minWidth: 120, maxWidth: 120 },
+    { headerName: 'Nombre', field: 'name', minWidth: 240 },
+    { headerName: 'Coordinador', valueGetter: p => p.data?.specialtyManager?.persona ? p.data?.specialtyManager?.persona?.name + " " + p.data?.specialtyManager?.persona?.lastName : "No asignado", minWidth: 200 },
+    { headerName: 'Email', valueGetter: p => p.data?.specialtyManager?.institutionalEmail ? p.data?.specialtyManager?.institutionalEmail : "No asignado", minWidth: 250 },
+    {
+      headerName: 'Modificar',
+      field: '',
+      maxWidth: 100,
+      minWidth: 80,
+      cellRenderer: (params: { data: (typeof especialidadData)[0]; }) => {
+        return (
+          <CustomUnidadGridButton
+            icon={DetailsIcon}
+            iconSize={4}
+            onClick={() => {
+              navigate(`/especialidades/editar`, { state: { especialidadEspecifica: params.data } });
+            }}
+          />
+        );
+      }
+    },
+    {
+      headerName: 'Eliminar',
+      field: '',
+      maxWidth: 100,
+      minWidth: 80,
+      cellRenderer: (rowData: any) => {
+        return (
+          <button
+            className='text-primary'
+            onClick={() => {
+              setSelectedEspecialidadId(rowData.data.specialtyId);
+              setIsOpenConfirmation(true);
+            }}
+          >
+            <DeleteIcon size={6} />
+          </button>
+        );
+      }
+    }
+  ];
+
+  const { userData } = useAuth();
   const userInfo = userData?.userInfo;
   const departmentId = useMemo(() => {
-    let departmentId:number=0;  
-    userInfo?.roles.forEach((role:any) => {
-      if(role.type === "MANAGER"){
+    let departmentId: number = 0;
+    userInfo?.roles.forEach((role: any) => {
+      if (role.type === "MANAGER") {
         departmentId = role.details.departmentId;
       }
     });
     return departmentId;
   }, [userInfo]);
-  
-  
-  
 
   const onSearch = () => {
     console.log(`Searching for... '${search}'`);
     fetchEspecialidadData(search);
   };
 
+  const [isOpenConfirmation, setIsOpenConfirmation] = useState<boolean>(false);
+  const [selectedEspecialidadId, setSelectedEspecialidadId] = useState<number | null>(null);
+  const [isOpenModalSuccess, setIsOpenModalSuccess] = useState<boolean>(false);
+  const [isOpenModalError, setIsOpenModalError] = useState<boolean>(false);
+
+  const handleOnConfirmDeleteEspecialidad = async () => {
+    console.log("Eliminando");
+
+    if (selectedEspecialidadId !== null) {
+      try {
+        await eliminarEspecialidad(selectedEspecialidadId);
+        setIsOpenModalSuccess(true);
+        fetchEspecialidadData(search);
+      } catch (error) {
+        setIsOpenModalError(true);
+      } finally {
+        setIsOpenConfirmation(false);
+        setSelectedEspecialidadId(null);
+      }
+    }
+  };
+
   return (
     <>
-      <div>
-        <div className="flex gap-2 flex-wrap justify-between items-center pb-10">
+      <div className="w-full h-full flex flex-col gap-5">
+        <div className="flex gap-2 flex-wrap justify-between items-center">
           <h2 className="text-primary text-3xl font-bold">
             Listado de especialidades
           </h2>
@@ -54,7 +125,7 @@ const EspecialidadesPage = () => {
             className="rounded-2xl "
           />
         </div>
-        <div className="border border-terciary shadow-lg rounded-2xl w-full  bg-white flex overflow-clip mb-5">
+        <div className="border border-terciary shadow-lg rounded-2xl w-full  bg-white flex overflow-clip">
           <input
             type="text"
             placeholder="Buscar especialidad"
@@ -71,73 +142,7 @@ const EspecialidadesPage = () => {
         </div>
         <AgGridReact
           rowData={especialidadData.filter((especialidad) => especialidad.faculty.facultyId === departmentId)}
-          columnDefs={[
-            {
-              headerName: "Siglas",
-              field: "acronym",
-              sortable: true,
-              filter: true,
-            },
-            {
-              headerName: "Nombre",
-              field: "name",
-              sortable: true,
-              filter: true,
-            },
-            {
-              headerName: "Responsable",
-              field: "specialtyManager.persona.name",
-              sortable: true,
-              filter: true,
-            },
-            {
-              headerName: "Telefono",
-              field: "specialtyManager.persona.phone",
-              sortable: true,
-              filter: true,
-            },
-            {
-              headerName: "Correo",
-              field: "specialtyManager.institutionalEmail",
-              sortable: true,
-              filter: true,
-            },
-            {
-              headerName: "Estado",
-              field: "isActive",
-              sortable: true,
-              filter: true,
-            },
-            {
-              headerName: "Fecha de Creacion",
-              field: "creationDate",
-              sortable: true,
-              filter: true,
-            },
-            {
-              headerName: "Fecha ultima modificacion",
-              field: "modificationDate",
-              sortable: true,
-              filter: true,
-            },
-            {
-              headerName: "Ver mas",
-              cellRenderer: (params: { data: (typeof especialidadData)[0] }) => {
-                return (
-                  <div className="flex w-full justify-center items-center">
-                    <button
-                      onClick={() => {
-                        navigate(`/especialidades/${params.data.id}`,{state:{especialidadEspecifica:params.data}});
-                      }}
-                      className="rounded-2xl"
-                    >
-                      <BiMenuAltLeft className="w-fit" />
-                    </button>
-                  </div>
-                );
-              },
-            },
-          ]}
+          columnDefs={columnFac}
           rowSelection="multiple"
           defaultColDef={{
             suppressHeaderMenuButton: true,
@@ -152,10 +157,9 @@ const EspecialidadesPage = () => {
             },
           }}
           animateRows={true}
-          className="ag-theme-alpine"
+          className="ag-theme-alpine w-full h-full"
           pagination={true}
-          paginationPageSize={5}
-          domLayout="autoHeight"
+          paginationAutoPageSize
         />
       </div>
       <NuevaEspecialidad
@@ -165,8 +169,31 @@ const EspecialidadesPage = () => {
         }}
         onConfirm={() => {
           fetchEspecialidadData(search).then(() => {
-            console.log("Especialidad creada exitosamente")
+            console.log("Especialidad creada exitosamente");
           });
+        }}
+      />
+      <ModalConfirmation isOpen={isOpenConfirmation} message="¿Está seguro de eliminar esta especialidad?"
+        onClose={() => {
+          setIsOpenConfirmation(false);
+        }}
+        onConfirm={() => {
+          handleOnConfirmDeleteEspecialidad();
+          setIsOpenConfirmation(false);
+        }}
+        isAcceptAction={true}
+      />
+      <ModalSuccess isOpen={isOpenModalSuccess} message="Se eliminó con éxito"
+        onClose={() => {
+          setSelectedEspecialidadId(null);
+          setIsOpenModalSuccess(false);
+          //fetchFacultadData();
+        }}
+      />
+      <ModalError isOpen={isOpenModalError} message='Ocurrió un problema inesperado. Intente nuevamente'
+        onClose={() => {
+          setSelectedEspecialidadId(null);
+          setIsOpenModalError(false);
         }}
       />
     </>

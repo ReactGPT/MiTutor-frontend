@@ -70,13 +70,11 @@ const TablaUnidad: React.FC<TablaProps> = ({
   }, [unidadSelected]);
 
   const columnUni: ColDef[] = [
-    { headerName: 'Siglas', field: 'siglas', minWidth: 150 },
+    { headerName: 'Siglas', field: 'siglas', minWidth: 120, maxWidth: 120 },
     { headerName: 'Nombre', field: 'nombre', minWidth: 240 },
     { headerName: 'Responsable', field: 'responsable', minWidth: 200 },
     { headerName: 'Email', field: 'email', minWidth: 200 },
-    { headerName: 'Teléfono', field: 'telefono', minWidth: 200 },
-    { headerName: 'Estado', valueGetter: p => p.data?.estado ? "Activo" : "Inactivo", minWidth: 100, maxWidth: 100 },
-    { headerName: 'Fecha de Creacion', field: 'fechaCreacion', minWidth: 100, maxWidth: 100 },
+    //{ headerName: 'Teléfono', field: 'telefono', minWidth: 200 },
     {
       headerName: 'Modificar',
       field: '',
@@ -109,7 +107,7 @@ const TablaUnidad: React.FC<TablaProps> = ({
   ];
 
   return (
-    <>
+    <div className='w-full h-full flex flex-col'>
       <div className="w-full flex justify-between items-center">
         <h1 className="text-[28px] font-bold text-[#2F2F2F]">
           {titulo}
@@ -126,19 +124,17 @@ const TablaUnidad: React.FC<TablaProps> = ({
         />
       </div>
 
-      <div className="flex w-full h-[35%] flex-col space-y-5 mt-5">
-        <div className="flex w-full h-[85%] ag-theme-alpine items-center justify-center">
-          <div className="w-full h-full">
-            <AgGridReact
-              defaultColDef={defaultColDef}
-              columnDefs={columnUni}
-              rowData={unidadData.filter((item) =>
-                item.nombre.toLowerCase().includes(searchValue.toLowerCase()) || item.siglas.toLowerCase().includes(searchValue.toLowerCase())
-              )}
-              paginationAutoPageSize
-              suppressMovableColumns
-            />
-          </div>
+      <div className="flex w-full h-full flex-col space-y-5 mt-5 ag-theme-alpine items-center">
+        <div className="w-full h-full ag-theme-alpine items-center">
+          <AgGridReact
+            defaultColDef={defaultColDef}
+            columnDefs={columnUni}
+            rowData={unidadData.filter((item) =>
+              item.nombre.toLowerCase().includes(searchValue.toLowerCase()) || item.siglas.toLowerCase().includes(searchValue.toLowerCase())
+            )}
+            paginationAutoPageSize
+            suppressMovableColumns
+          />
         </div>
       </div>
 
@@ -178,7 +174,7 @@ const TablaUnidad: React.FC<TablaProps> = ({
           setIsOpenModalError(false);
         }}
       />
-    </>
+    </div>
   );
 };
 

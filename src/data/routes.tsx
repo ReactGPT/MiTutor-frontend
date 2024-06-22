@@ -408,6 +408,10 @@ export const Routes: RouterConfig = {
         element: <PageCargaMasiva />
       },
       {
+        path: '/estudiantes/cargaMasiva',
+        element: <PageCargaMasiva />
+      },
+      {
         path: '/unidades',
         element: <PageUnidadFacultad />
       },

@@ -180,6 +180,10 @@ export const PageTitles = [
     pageName: "Carga Masiva de Usuarios"
   },
   {
+    path: "/estudiantes/cargaMasiva",
+    pageName: "Carga Masiva de Alumnos"
+  },
+  {
     path: "/tutor-detail",
     pageName: "Indicador Tutor Detalle"
   },

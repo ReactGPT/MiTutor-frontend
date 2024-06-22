@@ -5,19 +5,21 @@ import 'ag-grid-community/styles/ag-theme-alpine.css';
 import CargaMasivaSearchBar from './CargaMasivaSearchBar';
 import { DataGridProvider } from '../../../context/UsersDataGridContext';
 import TablaCargaMasiva from './TablaCargaMasiva';
+import { useLocation } from 'react-router-dom';
 
 export default function PageCargaMasiva() {
 
-  useEffect(() => {
-  }, []);
+  const { state } = useLocation();
+  const { rol } = state?state:"usuario";
+  console.log(rol);
 
   return (
     <DataGridProvider >
       <div className='flex w-full h-full flex-col space-y-10'>
         <div className='flex w-full h-[25%]'>
-          <CargaMasivaSearchBar rol='usuario' />
+          <CargaMasivaSearchBar rol={rol} />
         </div>
-        <TablaCargaMasiva />
+        <TablaCargaMasiva rol={rol}/>
       </div>
     </DataGridProvider>
   )

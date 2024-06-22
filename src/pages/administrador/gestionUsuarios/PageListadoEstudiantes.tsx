@@ -139,7 +139,7 @@ export default function PageListadoEstudiantes() {
   return (
     <div className='flex w-full h-full flex-col'>
       <div className='flex w-full h-fit'>
-        <ListadoUsuariosSearchBar handleOnChangeFilters={handleOnChangeFilters} rol='estudiante' />
+        <ListadoUsuariosSearchBar rol='estudiante' />
       </div>
       <div className='flex w-full h-full ag-theme-alpine items-center justify-center'>
         {loading ? <Spinner size='lg' /> : <div className='w-full h-full'>
@@ -153,7 +153,7 @@ export default function PageListadoEstudiantes() {
           />
         </div>}
       </div>
-      <ModalConfirmation isOpen={isOpen} message={`¿Esta seguro de eliminar definitivamente el usuario : ${studentSelected && studentSelected.institutionalEmail}?`}
+      <ModalConfirmation isOpen={isOpen} message={`¿Está seguro de eliminar definitivamente el usuario : ${studentSelected && studentSelected.institutionalEmail}?`}
         onClose={() => {
           setIsOpen(false);
         }}
@@ -163,7 +163,7 @@ export default function PageListadoEstudiantes() {
         }}
         isAcceptAction={true}
       />
-      <ModalSuccess isOpen={isOpenModalSuccess} message={`Se elimino con éxito el usuario : ${studentSelected && studentSelected.institutionalEmail}`}
+      <ModalSuccess isOpen={isOpenModalSuccess} message={`Se eliminó con éxito el usuario : ${studentSelected && studentSelected.institutionalEmail}`}
         onClose={() => {
           setStudentSelected(null);
           setIsOpenModalSuccess(false);

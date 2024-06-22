@@ -8,7 +8,11 @@ import { Spinner } from '../../../components';
 import CargaMasivaSearchBar from './CargaMasivaSearchBar';
 import { useDataGrid } from '../../../context/UsersDataGridContext';
 
-export default function TablaCargaMasiva() {
+type InputProps = {
+  rol: "estudiante" | "usuario";
+}
+
+export default function TablaCargaMasiva({ rol }: InputProps) {
   const { rowData, loading } = useDataGrid();
 
   useEffect(() => {
@@ -41,12 +45,8 @@ export default function TablaCargaMasiva() {
     { headerName: 'Segundo Apellido', field: 'persona.secondLastName', filter: 'agTextColumnFilter', minWidth: 150 },
     { headerName: 'Correo', field: 'institutionalEmail', filter: 'agTextColumnFilter', minWidth: 300, maxWidth: 300 },
     { headerName: 'Teléfono', field: 'persona.phone', filter: 'agNumberColumnFilter', minWidth: 100, maxWidth: 100 },
-    {
-      headerName: 'Activo',
-      field: 'isActive',
-      filter: 'agSetColumnFilter',
-      minWidth: 80, maxWidth: 80
-    }
+    // Si el rol es estudiante, agregar columna de Especialidad
+    ...(rol === 'estudiante' ? [{ headerName: 'Especialidad', field: 'estudiante.specialtyName', filter: 'agTextColumnFilter', minWidth: 150 }] : [])
   ];
 
   return (
@@ -57,8 +57,8 @@ export default function TablaCargaMasiva() {
           columnDefs={columnDefs}
           rowData={rowData}
           pagination={true}
-          paginationPageSize={10}
-          paginationPageSizeSelector={[10, 15, 20]}
+          paginationAutoPageSize
+          suppressMovableColumns
         />
       </div>}
     </div>

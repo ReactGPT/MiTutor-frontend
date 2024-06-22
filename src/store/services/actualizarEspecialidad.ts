@@ -6,7 +6,7 @@ interface ActualizarEspecialidadRequest {
   Name: string;
   Acronym: string;
   IsActive: boolean;
-  SpecialtyManager: { Id: number; };
+  SpecialtyManager: { Id: number | null; };
 }
 
 async function actualizarEspecialidad(data: ActualizarEspecialidadRequest): Promise<void> {

@@ -1,7 +1,6 @@
 import { Dialog, Transition } from "@headlessui/react";
 import React, { Fragment, useEffect } from "react";
 import { Button } from "../../../components";
-import ModalSuccess from "../../../components/ModalSuccess";
 import { FaFloppyDisk, FaX } from "react-icons/fa6";
 import { AgGridReact } from "ag-grid-react";
 import { FaSearch } from "react-icons/fa";
@@ -15,13 +14,11 @@ interface AsignarResponsableProps {
   onSelect: (user: User) => void;
 }
 
-
 const AsignarResponsable = ({
   isOpen,
   onClose,
   onSelect,
 }: AsignarResponsableProps) => {
-  const [isOpenSuccess, setIsOpenSuccess] = React.useState(false);
   const [selectedUser, setSelectedUser] = React.useState<User | null>(null);
 
   const [usuarios, setUsuarios] = React.useState<User[]>([]);
@@ -39,10 +36,8 @@ const AsignarResponsable = ({
     }
   };
 
-
   useEffect(() => {
     cargarUsuarios(search).then(() => {
-
     });
   }, [search]);
   return (
@@ -91,7 +86,7 @@ const AsignarResponsable = ({
                     >
                       Asignar Responsable
                     </Dialog.Title>
-                    {/* x button to close on the top right */}
+
                     <div className="absolute top-0 right-0 p-2">
                       <button
                         onClick={() => {
@@ -101,6 +96,7 @@ const AsignarResponsable = ({
                         <FaX />
                       </button>
                     </div>
+
                   </div>
                   {/* searcher*/}
                   <div className="flex  rounded-lg border overflow-hidden mb-5">
@@ -120,7 +116,6 @@ const AsignarResponsable = ({
                       className="ag-theme-alpine w-full "
                       rowData={usuarios}
                       onSelectionChanged={
-
                         (event) => {
                           const selectedNodes = event.api.getSelectedNodes();
                           const selectedData = selectedNodes.map((node) => node.data);
@@ -134,15 +129,18 @@ const AsignarResponsable = ({
                       }
                       defaultColDef={{
                         sortable: true,
-                        filter: true,
                         resizable: true,
                         flex: 1,
                       }}
                       columnDefs={[
                         {
-
-                          field: "persona.name",
                           headerName: "Nombre",
+                          valueGetter: (params) => {
+                            if (params.data) {
+                              return `${params.data.persona?.name ?? ''} ${params.data.persona?.lastName ?? ''}`;
+                            }
+                            return '';
+                          },
                           resizable: false,
                         },
                         {
@@ -150,18 +148,16 @@ const AsignarResponsable = ({
                           headerName: "Correo",
                           resizable: false,
                         },
-                        // check box to select the responsable
                         {
                           headerName: "",
                           checkboxSelection: true,
                           headerCheckboxSelection: true,
-
                           width: 10,
-
                           maxWidth: 50,
                           resizable: false,
                         },
                       ]}
+                      suppressMovableColumns={true}
                       domLayout="autoHeight"
                     />
                   </div>
@@ -171,23 +167,13 @@ const AsignarResponsable = ({
                     text="Agregar"
                     icon={FaFloppyDisk}
                     onClick={() => {
-                      setIsOpenSuccess(true);
+                      if (selectedUser == null) return;
+                      onClose();
+                      onSelect(selectedUser);
                     }}
                     disabled={!userIsSelected}
                   />
                 </div>
-                <ModalSuccess
-                  isOpen={isOpenSuccess}
-                  onClose={() => {
-
-                    if (selectedUser == null) return;
-
-                    setIsOpenSuccess(false);
-                    onClose();
-                    onSelect(selectedUser);
-                  }}
-                  message="Se asignó el responsable correctamente."
-                />
               </div>
             </Transition.Child>
           </div>

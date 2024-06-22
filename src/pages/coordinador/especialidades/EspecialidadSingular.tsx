@@ -2,7 +2,7 @@ import { useLocation } from 'react-router-dom';
 import { Button } from '../../../components';
 import { actualizarEspecialidad } from '../../../store/services/actualizarEspecialidad';
 import React, { useState } from "react";
-import { MdOutlineEdit } from "react-icons/md";
+import { MdDeleteOutline, MdOutlineEdit } from "react-icons/md";
 import AsignarResponsable from "./AsignarResponsable";
 
 const EspecialidadSingular = () => {
@@ -25,7 +25,12 @@ const EspecialidadSingular = () => {
     especialidadEspecifica?.specialtyManager ? especialidadEspecifica.specialtyManager.institutionalEmail : "-"
   );
   //
-
+  const handleClearResponsable = () => {
+    setResponsableId(-1);
+    setResponsable("-");
+    setCorreoResponsable("-");
+  };
+  //
   return (
     <div className="w-full h-full flex flex-col gap-5">
       <div className='flex gap-2 items-center justify-between'>
@@ -126,15 +131,24 @@ const EspecialidadSingular = () => {
                 }
                 className="grow border text-sm border-secondary rounded-xl shadow-md shadow-terciary text-primary py-1 px-5 bg-blue-100"
               />
-              <button
-                className={`rounded-lg ${editable ? 'bg-white' : 'bg-secondary'} shadow p-2`}
-                onClick={() => {
-                  setIsOpenAsignarResponsable(true);
-                }}
-                disabled={!editable}
-              >
-                <MdOutlineEdit />
-              </button>
+              <>
+                <button
+                  className={`rounded-lg ${editable ? 'bg-white' : 'bg-secondary'} shadow p-2`}
+                  onClick={() => {
+                    setIsOpenAsignarResponsable(true);
+                  }}
+                  disabled={!editable}
+                >
+                  <MdOutlineEdit />
+                </button>
+                <button
+                  className={`rounded-lg ${editable ? 'bg-white' : 'bg-secondary'} shadow p-2`}
+                  onClick={handleClearResponsable}
+                  disabled={!editable}
+                >
+                  <MdDeleteOutline />
+                </button>
+              </>
             </div>
           </div>
 

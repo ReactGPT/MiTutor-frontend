@@ -56,10 +56,10 @@ import AlumnoDetail from "../pages/alumno/indicadorAlumnos/AlumnoDetail.tsx";
 import PageMaestroTutores from "../pages/coordinador/MaestroTutores/PageMaestroTutores.tsx";
 import { UserPlus } from "../assets/index.ts";
 import EspecialidadesPage from "../pages/coordinador/especialidades/Especialidades.tsx";
+import PageSolicitudGestionTutor from "../pages/tutor/gestionSolicitudes/PageSolicitudGestion.tsx";
 import EspecialidadSingular from "../pages/coordinador/especialidades/EspecialidadSingular.tsx";
 import PageGeneralAdmin from "../pages/administrador/general/PageGeneralAdmin.tsx";
 import PageFacultadesAdmin from "../pages/administrador/facultades/PageFacultadesAdmin.tsx";
-
 
 type RouterDetail = {
   pages: RouteObject[];
@@ -87,6 +87,10 @@ export const Routes: RouterConfig = {
       {
         path: '/programasDeTutoria',
         element: <PageProgramasDeTutoriaTutor />,
+      },
+      {
+        path: '/gestionSolicitudes',
+        element: <PageSolicitudGestionTutor />,
       },
       {
         path: '/listaDeCitas',
@@ -162,6 +166,12 @@ export const Routes: RouterConfig = {
         label: 'Tipos de Tutoria',
         path: '/programasDeTutoria',
         icon: <BiCabinet fontSize={32} />,
+      },
+      {
+        key: 'gestionDeSolicitudes',
+        label: 'Gestion de Solicitudes',
+        path: '/gestionSolicitudes',
+        icon: <BiUserCheck fontSize={32} />,
       },
       {
         key: 'listaDeCitas',

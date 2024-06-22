@@ -1,20 +1,25 @@
-import React from 'react';
+import React from "react";
 
 interface SimpleSearchInputProps {
     placeholder: string;
     onSearch: (query: string) => void;
+    value: string;
+    onChange: (value: string) => void;
 }
 
-const SimpleSearchInput: React.FC<SimpleSearchInputProps> = ({ placeholder, onSearch }) => {
-    const [value, setValue] = React.useState('');
-
+const SimpleSearchInput: React.FC<SimpleSearchInputProps> = ({
+    placeholder,
+    onSearch,
+    value,
+    onChange,
+}) => {
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setValue(event.target.value);
+        onChange(event.target.value); // Actualiza el valor sin realizar la búsqueda
     };
 
     const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
-        if (event.key === 'Enter') {
-            onSearch(value);
+        if (event.key === "Enter") {
+            onSearch(value); // Realiza la búsqueda al presionar Enter
         }
     };
 
@@ -26,7 +31,7 @@ const SimpleSearchInput: React.FC<SimpleSearchInputProps> = ({ placeholder, onSe
                 value={value}
                 onChange={handleChange}
                 onKeyPress={handleKeyPress}
-                className="w-full p-3 rounded-l-2xl focus:outline-none font-roboto bg-[rgba(235,236,250,1)] shadow-custom border border-solid border-[rgba(116,170,255,0.70)]"
+                className="w-full p-3 rounded-xl focus:outline-none font-roboto bg-[rgba(235,236,250,1)] shadow-custom border border-solid border-[rgba(116,170,255,0.70)]"
             />
         </div>
     );

@@ -13,6 +13,10 @@ import { ColDef } from "ag-grid-community";
 import CustomUnidadGridButton from "../../administrador/gestionUnidad/CustomUnidadGridButton";
 import { DetailsIcon } from "../../../assets";
 import DeleteIcon from "../../../assets/svg/DeleteIcon";
+import ModalConfirmation from "../../../components/ModalConfirmation";
+import ModalSuccess from "../../../components/ModalSuccess";
+import ModalError from "../../../components/ModalError";
+import { eliminarEspecialidad } from "../../../store/services/actualizarEspecialidad";
 
 const EspecialidadesPage = () => {
   const navigate = useNavigate();
@@ -55,7 +59,10 @@ const EspecialidadesPage = () => {
         return (
           <button
             className='text-primary'
-            onClick={() => { }}
+            onClick={() => {
+              setSelectedEspecialidadId(rowData.data.specialtyId);
+              setIsOpenConfirmation(true);
+            }}
           >
             <DeleteIcon size={6} />
           </button>
@@ -79,6 +86,28 @@ const EspecialidadesPage = () => {
   const onSearch = () => {
     console.log(`Searching for... '${search}'`);
     fetchEspecialidadData(search);
+  };
+
+  const [isOpenConfirmation, setIsOpenConfirmation] = useState<boolean>(false);
+  const [selectedEspecialidadId, setSelectedEspecialidadId] = useState<number | null>(null);
+  const [isOpenModalSuccess, setIsOpenModalSuccess] = useState<boolean>(false);
+  const [isOpenModalError, setIsOpenModalError] = useState<boolean>(false);
+
+  const handleOnConfirmDeleteEspecialidad = async () => {
+    console.log("Eliminando");
+
+    if (selectedEspecialidadId !== null) {
+      try {
+        await eliminarEspecialidad(selectedEspecialidadId);
+        setIsOpenModalSuccess(true);
+        fetchEspecialidadData(search);
+      } catch (error) {
+        setIsOpenModalError(true);
+      } finally {
+        setIsOpenConfirmation(false);
+        setSelectedEspecialidadId(null);
+      }
+    }
   };
 
   return (
@@ -142,6 +171,29 @@ const EspecialidadesPage = () => {
           fetchEspecialidadData(search).then(() => {
             console.log("Especialidad creada exitosamente");
           });
+        }}
+      />
+      <ModalConfirmation isOpen={isOpenConfirmation} message="¿Está seguro de eliminar esta especialidad?"
+        onClose={() => {
+          setIsOpenConfirmation(false);
+        }}
+        onConfirm={() => {
+          handleOnConfirmDeleteEspecialidad();
+          setIsOpenConfirmation(false);
+        }}
+        isAcceptAction={true}
+      />
+      <ModalSuccess isOpen={isOpenModalSuccess} message="Se eliminó con éxito"
+        onClose={() => {
+          setSelectedEspecialidadId(null);
+          setIsOpenModalSuccess(false);
+          //fetchFacultadData();
+        }}
+      />
+      <ModalError isOpen={isOpenModalError} message='Ocurrió un problema inesperado. Intente nuevamente'
+        onClose={() => {
+          setSelectedEspecialidadId(null);
+          setIsOpenModalError(false);
         }}
       />
     </>

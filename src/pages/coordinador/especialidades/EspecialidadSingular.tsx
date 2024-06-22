@@ -6,8 +6,9 @@ import { MdOutlineEdit } from "react-icons/md";
 import ModalError from "../../../components/ModalError";
 import ModalSuccess from "../../../components/ModalSuccess";
 import AsignarResponsable from "./AsignarResponsable";
+import ModalConfirmation from '../../../components/ModalConfirmation';
 
-const EspecialidadSingularPage = () => {
+const EspecialidadSingular = () => {
   const [editable, setEditable] = React.useState(false);
   const { state } = useLocation();
   const { especialidadEspecifica } = state;
@@ -17,7 +18,6 @@ const EspecialidadSingularPage = () => {
   const [isActive, setIsActive] = React.useState(especialidadEspecifica?.IsActive);
   const [isOpenAsignarResponsable, setIsOpenAsignarResponsable] = React.useState(false);
   const [responsable, setResponsable] = useState("");
-  const [telefonoResponsable, setTelefonoResponsable] = useState("");
   const [correoResponsable, setCorreoResponsable] = useState("");
   const [responsableId, setResponsableId] = useState(-1);
 
@@ -91,30 +91,15 @@ const EspecialidadSingularPage = () => {
             </div>
           </div>
           <div className='grid-cols-2 grid gap-4 max-w-[700px]'>
-            <label className='text-lg text-gray-500'>Teléfono responsable</label>
-            <input
-              disabled
-              type="text"
-              value={
-                responsable
-                  ? telefonoResponsable
-                  : especialidadEspecifica?.specialtyManager?.persona.phone
-                    ? especialidadEspecifica.specialtyManager.persona.phone
-                    : "-"
-              }
-              className="grow border text-sm border-secondary rounded-xl shadow-md shadow-terciary text-primary py-1 px-5 bg-blue-100"
-            />
-          </div>
-          <div className='grid-cols-2 grid gap-4 max-w-[700px]'>
             <label className='text-lg text-gray-500'>Correo responsable</label>
             <input
               disabled
               type="text"
               value={
                 responsable
-                  ? telefonoResponsable
-                  : especialidadEspecifica?.specialtyManager?.persona.phone
-                    ? especialidadEspecifica.specialtyManager.persona.phone
+                  ? correoResponsable
+                  : especialidadEspecifica?.specialtyManager?.institutionalEmail
+                    ? especialidadEspecifica.specialtyManager?.institutionalEmail
                     : "-"
               }
               className="grow border text-sm border-secondary rounded-xl shadow-md shadow-terciary text-primary py-1 px-5 bg-blue-100"
@@ -150,7 +135,6 @@ const EspecialidadSingularPage = () => {
         onSelect={(User) => {
           console.log(`User selected: ${JSON.stringify(User, null, 5)}`);
           setResponsable(User.persona.name);
-          setTelefonoResponsable((User.persona.phone));
           setCorreoResponsable(User.institutionalEmail);
           setResponsableId(User.id);
         }}
@@ -159,4 +143,4 @@ const EspecialidadSingularPage = () => {
   );
 };
 
-export default EspecialidadSingularPage;
+export default EspecialidadSingular;

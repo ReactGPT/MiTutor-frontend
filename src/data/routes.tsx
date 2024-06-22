@@ -56,7 +56,7 @@ import AlumnoDetail from "../pages/alumno/indicadorAlumnos/AlumnoDetail.tsx";
 import PageMaestroTutores from "../pages/coordinador/MaestroTutores/PageMaestroTutores.tsx";
 import { UserPlus } from "../assets/index.ts";
 import EspecialidadesPage from "../pages/coordinador/especialidades/Especialidades.tsx";
-import EspecialidadSingularPage from "../pages/coordinador/especialidades/EspecialidadSingular.tsx";
+import EspecialidadSingular from "../pages/coordinador/especialidades/EspecialidadSingular.tsx";
 import PageGeneralAdmin from "../pages/administrador/general/PageGeneralAdmin.tsx";
 import PageFacultadesAdmin from "../pages/administrador/facultades/PageFacultadesAdmin.tsx";
 
@@ -235,7 +235,7 @@ export const Routes: RouterConfig = {
       },
       {
         path: '/especialidades/editar',
-        element: <EspecialidadSingularPage />
+        element: <EspecialidadSingular />
       },
     ],
     navBarLink: [

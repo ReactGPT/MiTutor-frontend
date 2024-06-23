@@ -34,7 +34,7 @@ function Login() {
 
               <div className="flex items-center justify-center">
                 {isLoading ? <Spinner color="primary" size='md' /> :
-                  <GoogleLogin useOneTap onSuccess={handleSuccess} onError={handleError} />}
+                  <GoogleLogin onSuccess={handleSuccess} onError={handleError} />}
               </div>
 
             </div>

@@ -1,11 +1,9 @@
-import React, { ReactElement, createContext, useContext, useEffect, useMemo, useState } from "react";
+import React, { ReactElement, createContext, useContext, useEffect, useState } from "react";
 import { CredentialResponse, googleLogout } from "@react-oauth/google";
 import googleCredentialDecode from "../utils/googleCredentialDecode";
-//import { useNavigate } from "react-router-dom";
 import { useUserAccountAuth } from "../store/hooks";
 import { UserAccount } from "../store/types";
-import { useRouter } from "./RouterContext";
-import { Routes } from "../data/routes";
+
 type UserData = {
   username: string;
   email: string;
@@ -17,6 +15,7 @@ type UserData = {
 
 type AuthContextType = {
   userData: UserData | null;
+  error: boolean;
   handleSuccessLogin: (credentialResponse: CredentialResponse) => void;
   handleError: () => void;
   handleLogout: () => void;
@@ -37,13 +36,12 @@ type AuthProviderProps = {
 };
 
 const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
-
-  //const [credential,setCredentials] = useState<any>(null);
   const { fetchUserInfo, userInfo, resetUserInfo } = useUserAccountAuth();
   const [user, setUser] = useState<UserData | null>(() => {
     const storedUser = localStorage.getItem("authCredential");
     return storedUser ? JSON.parse(storedUser) : null;
   });
+  const [error, setError] = useState<boolean>(false);
 
   /* const handleSuccess = (credentialResponse: CredentialResponse) => {
     console.log("ejecutando handleSuccess");
@@ -81,6 +79,7 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   }; */
 
   const handleSuccess = async (credentialResponse: CredentialResponse) => {
+    setError(false);
     //console.log("ejecutando handleSuccess");
     if (credentialResponse.credential) {
       const { payload } = googleCredentialDecode(credentialResponse.credential);
@@ -104,93 +103,36 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
           //console.log(newUser);
           setUser(newUser);
           localStorage.setItem("authCredential", JSON.stringify(newUser));
+          //setError(false);
         } else {
           setUser(null);
+          setError(true);
         }
       } catch (error) {
         //console.error("Error fetching user info: ", error);
         setUser(null);
+        setError(true);
       }
     }
   };
 
   const handleLogout = () => {
     //console.log("ejecutando LogOut!");
-    //setCredentials(null);
     setUser(null);
-    //resetUserInfo();
     googleLogout();
     localStorage.removeItem("authCredential");
   };
 
-  // const storedCredential = useMemo(()=>{
-  //   return localStorage.getItem("authCredential");
-  // },[]);
-
-  // useEffect(()=>{
-
-  //   if (storedCredential) {
-  //       const parsedCredential = JSON.parse(storedCredential);
-  //       setCredentials(parsedCredential);
-  //       console.log("Paso 1 Fetch User");  
-  //       fetchUserInfo(parsedCredential.email.toString());
-  //     }
-  //     else{
-  //       setCredentials(null);
-  //       resetUserInfo();
-  //     }
-  // },[]);
-
-
   const handleError = () => {
-    //console.log("ejecutando HandleError!");
     try {
       googleLogout();
     }
     catch {
 
     }
-    //setCredentials(null);
     resetUserInfo();
     localStorage.removeItem("authCredential");
   };
-
-
-  // const userData:UserData = useMemo(()=>{
-  //   console.log("Actualiza user data");  
-  //   return {
-  //         username: credential? credential.name:'',
-  //         email:credential?credential.email:'',
-  //         imageUrl:credential?credential.picture:'',
-  //         //domainEmail:storedCredential?JSON.parse(storedCredential).hd:'',
-  //         isLogged:credential?true:false,
-  //         token:'',
-  //         userInfo:userInfo
-  //     }
-  // },[userInfo]);
-  // useEffect(()=>{
-  //   if(userData.isLogged){
-  //     localStorage.setItem("authCredential", JSON.stringify(userData));
-  //   }
-  //   else{
-  //     localStorage.removeItem("authCredential");
-  //   }
-  // },[userData.userInfo])
-  // useEffect(()=>{
-  //     //console.log(userData);
-  //     if(userData.isAuthenticated){
-  //       fetchUserInfo("tutortest@pucp.edu.pe")
-  //       .then(()=>{
-  //         console.log("USER INFO: ",userInfo)
-  //       });
-  //     }
-  // },[userData]);
-  // useEffect(()=>{
-  //   console.log("USER INFO: ",userData);
-  //   if(userInfo && userInfo.isVerified){
-  //     handleSetRoutes(userInfo.roles);
-  //   }
-  // },[userInfo])
 
   useEffect(() => {
     const storedUser = localStorage.getItem("authCredential");
@@ -203,7 +145,7 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   }, []);
 
   return (
-    <AuthContext.Provider value={{ userData: user, handleSuccessLogin: handleSuccess, handleError: handleError, handleLogout: handleLogout }}>
+    <AuthContext.Provider value={{ userData: user, error: error, handleSuccessLogin: handleSuccess, handleError: handleError, handleLogout: handleLogout }}>
       {children}
     </AuthContext.Provider>
   );

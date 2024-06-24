@@ -81,15 +81,15 @@ export const Routes: RouterConfig = {
         element: <PageInicioTutor />,
       },
       {
-        path: '/calendario',
+        path: '/calendarioTutor',
         element: <PageCalendarioTutor />,
       },
       {
-        path: '/programasDeTutoria',
+        path: '/programasDeTutoriaTutor',
         element: <PageProgramasDeTutoriaTutor />,
       },
       {
-        path: '/gestionSolicitudes',
+        path: '/gestionSolicitudesTutor',
         element: <PageSolicitudGestionTutor />,
       },
       {
@@ -97,7 +97,7 @@ export const Routes: RouterConfig = {
         element: <PageListaDeCitas />,
       },
       {
-        path: '/miPerfil',
+        path: '/miPerfilTutor',
         element: <PageMiPerfilTutor />,
       },
       {
@@ -129,7 +129,7 @@ export const Routes: RouterConfig = {
         element: <PageAgregarDisponibilidadTutor />,
       },
       {
-        path: '/miPerfil/derivaciones',
+        path: '/miPerfilTutor/derivaciones',
         element: <PageDerivacionesHechas />
       },
       {
@@ -140,11 +140,6 @@ export const Routes: RouterConfig = {
         path: '/listaDeCitas/resultadoCitaGrupal',
         element: <PageResultadoCitaGrupal />
         //PageDetalleCitaGrupal
-      },
-
-      {
-        path: '*',
-        element: <Navigate to="/" />
       }
 
     ],
@@ -158,19 +153,19 @@ export const Routes: RouterConfig = {
       {
         key: 'calendario',
         label: 'Calendario',//Pendiente
-        path: '/calendario',
+        path: '/calendarioTutor',
         icon: <BiCalendar fontSize={32} />,
       },
       {
         key: 'programasDeTutoria',
         label: 'Tipos de Tutoria',
-        path: '/programasDeTutoria',
+        path: '/programasDeTutoriaTutor',
         icon: <BiCabinet fontSize={32} />,
       },
       {
         key: 'gestionDeSolicitudes',
         label: 'Gestion de Solicitudes',
-        path: '/gestionSolicitudes',
+        path: '/gestionSolicitudesTutor',
         icon: <BiUserCheck fontSize={32} />,
       },
       {
@@ -182,7 +177,7 @@ export const Routes: RouterConfig = {
       {
         key: 'miPerfil',
         label: 'Mi Perfil',
-        path: '/miPerfil',
+        path: '/miPerfilTutor',
         icon: <BiUser fontSize={32} />,
       },
 
@@ -221,10 +216,6 @@ export const Routes: RouterConfig = {
       {
         path: '/alumnosSeleccionados',
         element: <PageAlumnosSeleccionados />,
-      },
-      {
-        path: '*',
-        element: <Navigate to="/" />
       },
       {
         path: '/tutor-detail',
@@ -340,11 +331,7 @@ export const Routes: RouterConfig = {
       {
         path: '/listaDeCitasAlumno/detalleCitaAlumno',
         element: <PageResultadoCitaIndividualAlumno />
-      }, {
-        path: '*',
-        element: <Navigate to="/" />
       }
-
     ],
     navBarLink: [
       {
@@ -381,6 +368,10 @@ export const Routes: RouterConfig = {
   },
   administrador: {
     pages: [
+      {
+        path: '/',
+        element: <PageGeneralAdmin />
+      },
       {
         path: '/general',
         element: <PageGeneralAdmin />
@@ -436,10 +427,6 @@ export const Routes: RouterConfig = {
       {
         path: '/unidades/editarUnidadDerivacion',
         element: <PageEditarUnidadDerivacion />
-      },
-      {
-        path: '*',
-        element: <Navigate to="/" />
       }
     ],
     navBarLink: [

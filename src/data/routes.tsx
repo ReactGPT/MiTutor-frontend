@@ -390,6 +390,14 @@ export const Routes: RouterConfig = {
         element: <PageFacultadesAdmin />
       },
       {
+        path: '/facultades/editarFacultad',
+        element: <PageEditarFacultad />
+      },
+      {
+        path: '/facultades/editarFacultad/especialidades/editar',
+        element: <EspecialidadSingular />
+      },
+      {
         path: '/usuarios',
         element: <PageListadoUsuarios />
       },
@@ -424,10 +432,6 @@ export const Routes: RouterConfig = {
       {
         path: '/unidades',
         element: <PageUnidadFacultad />
-      },
-      {
-        path: '/facultades/editarFacultad',
-        element: <PageEditarFacultad />
       },
       {
         path: '/unidades/editarUnidadDerivacion',

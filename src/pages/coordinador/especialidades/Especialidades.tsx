@@ -18,7 +18,12 @@ import ModalSuccess from "../../../components/ModalSuccess";
 import ModalError from "../../../components/ModalError";
 import { eliminarEspecialidad } from "../../../store/services/actualizarEspecialidad";
 
-const EspecialidadesPage = () => {
+type EspecialidadesPageProps = {
+  Facultyid?: number;
+  disableAgregarEspecialidad?: boolean;
+};
+
+const EspecialidadesPage: React.FC<EspecialidadesPageProps> = ({ Facultyid, disableAgregarEspecialidad }) => {
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = React.useState(false);
   const [search, setSearch] = React.useState<string>("");
@@ -44,6 +49,10 @@ const EspecialidadesPage = () => {
             icon={DetailsIcon}
             iconSize={4}
             onClick={() => {
+              if (Facultyid) {
+                navigate(`/facultades/editarFacultad/especialidades/editar`, { state: { especialidadEspecifica: params.data } });
+                return;
+              }
               navigate(`/especialidades/editar`, { state: { especialidadEspecifica: params.data } });
             }}
           />
@@ -73,8 +82,12 @@ const EspecialidadesPage = () => {
 
   const { userData } = useAuth();
   const userInfo = userData?.userInfo;
+
   const departmentId = useMemo(() => {
     let departmentId: number = 0;
+    if (Facultyid) {
+      return Facultyid;
+    }
     userInfo?.roles.forEach((role: any) => {
       if (role.type === "MANAGER") {
         departmentId = role.details.departmentId;
@@ -115,14 +128,15 @@ const EspecialidadesPage = () => {
       <div className="w-full h-full flex flex-col gap-5">
         <div className="flex gap-2 flex-wrap justify-between items-center">
           <h2 className="text-primary text-3xl font-bold">
-            Listado de especialidades
+            Especialidades
           </h2>
           <Button
             text="Agregar especialidad"
             onClick={() => {
               setIsOpen(true);
             }}
-            className="rounded-2xl "
+            className="rounded-2xl"
+            disabled={disableAgregarEspecialidad}
           />
         </div>
         <div className="border border-terciary shadow-lg rounded-2xl w-full  bg-white flex overflow-clip">
@@ -160,9 +174,11 @@ const EspecialidadesPage = () => {
           className="ag-theme-alpine w-full h-full"
           pagination={true}
           paginationAutoPageSize
+          suppressMovableColumns
         />
       </div>
       <NuevaEspecialidad
+        FacultyId={departmentId}
         isOpen={isOpen}
         onClose={() => {
           setIsOpen(false);

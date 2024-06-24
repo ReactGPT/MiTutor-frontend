@@ -13,18 +13,23 @@ interface NuevaEspecialidadProps {
   isOpen: boolean;
   onClose: () => void;
   onConfirm: () => void;
+  FacultyId?: number;
 }
 
 const NuevaEspecialidad = ({
   isOpen,
   onClose,
   onConfirm,
+  FacultyId
 }: NuevaEspecialidadProps) => {
   const { userData } = useAuth();
   const userInfo = userData?.userInfo;
 
   const departmentId = useMemo(() => {
     let departmentId: number = 0;
+    if (FacultyId) {
+      return FacultyId;
+    }
     userInfo?.roles.forEach((role: any) => {
       if (role.type === "MANAGER") {
         departmentId = role.details.departmentId;

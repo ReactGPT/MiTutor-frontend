@@ -13,6 +13,8 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import InputAdmin2 from '../../../components/Administrador/InputAdmin2';
 import ModalSearch from '../../../components/Administrador/ModalSearch';
 import { useFacultades } from '../../../store/hooks/useFacultades';
+import EspecialidadesPage from '../../coordinador/especialidades/Especialidades';
+import { useAuth } from '../../../context';
 
 const circleButtonStyles = 'bg-[rgba(235,236,250,1)]';
 
@@ -156,13 +158,15 @@ const PageEditarFacultad = () => {
 
         </div>
 
-        <div className="w-full h-fit flex justify-between items-center">
+        {/* <div className="w-full h-fit flex justify-between items-center">
           <h1 className="text-2xl font-bold text-[#2F2F2F]">
             Especialidades
           </h1>
-        </div>
+        </div> */}
 
-        <div className="w-full h-fit">
+        <EspecialidadesPage Facultyid={facultadEstado.id} disableAgregarEspecialidad={editable} />
+
+        {/* <div className="w-full h-fit">
           <SearchInput
             onSearch={handleSearch}
             handleOnChangeFilters={() => { }}
@@ -185,7 +189,8 @@ const PageEditarFacultad = () => {
               />
             </div>
           </div>
-        </div>
+        </div> */}
+
         <ModalSearch
           isOpen={isOpenModalSearch}
           message={`¿Esta seguro de inhabilitar la unidad: ?`}

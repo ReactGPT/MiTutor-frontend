@@ -15,7 +15,9 @@ import ModalError from "../../../components/ModalError";
 import ModalConfirmation from "../../../components/ModalConfirmation";
 import ModalSuccess from "../../../components/ModalSuccess";
 import { useAuth } from "../../../context";
-import { ManagerRoleDetails } from "../../../store/types";
+import { ManagerRoleDetails, Specialty } from "../../../store/types";
+import { useAppSelector } from "../../../store/hooks";
+import { RootState } from "../../../store/store";
 
 const PageSolicitudGestion: React.FC = () => {
   const {
@@ -150,12 +152,20 @@ const PageSolicitudGestion: React.FC = () => {
   };
 
   const { userData } = useAuth();
+  const specialityList = useAppSelector((state: RootState) => state.parameters.specialityList);
 
   const filteredRowData = useMemo(() => {
-
+    
     let filteredData = [...tutorStudentPrograms];
 
     if (rolEspecifico == 'Coordinador de Facultad') {
+
+      filteredData = filteredData.filter(item => 
+        userData?.userInfo?.roles.some(role => 
+          role.details && 'departmentName' in role.details && role.details.departmentName === item.studentProgram.student.specialty.faculty.name
+        )
+      );
+
       if (filters.faculty != undefined) {
         filteredData = filteredData.filter(
           (program) =>
@@ -228,10 +238,8 @@ const PageSolicitudGestion: React.FC = () => {
     else if (rolEspecifico == 'Coordinador de Especialidad') {
 
       const rolEspecialidad = userData?.userInfo?.roles.find(rol => rol.rolName === 'Responsable de Especialidad');
-      console.log(rolEspecialidad);
       if (rolEspecialidad != undefined && rolEspecialidad.details && 'departmentName' in rolEspecialidad.details) {
         const specialtyName = (rolEspecialidad.details as ManagerRoleDetails).departmentName;
-        console.log(specialtyName)
         filteredData = filteredData.filter(
           (program) =>
             program.studentProgram.student.specialty.name === specialtyName
@@ -241,10 +249,8 @@ const PageSolicitudGestion: React.FC = () => {
       if (filters.specialty != undefined) {
         if (filters.specialty === "Todos") {
           const rolEspecialidad = userData?.userInfo?.roles.find(rol => rol.rolName === 'Responsable de Especialidad');
-          console.log(rolEspecialidad);
           if (rolEspecialidad != undefined && rolEspecialidad.details && 'departmentName' in rolEspecialidad.details) {
             const specialtyName = (rolEspecialidad.details as ManagerRoleDetails).departmentName;
-            console.log(specialtyName)
             filteredData = filteredData.filter(
               (program) =>
                 program.studentProgram.student.specialty.name === specialtyName
@@ -317,6 +323,7 @@ const PageSolicitudGestion: React.FC = () => {
         <SolicitudGestionSearchBar
           handleOnChangeFilters={handleOnChangeFilters}
           onRolEspecificoChange={handleRolEspecificoChange}
+          specialityList={specialityList}
         />
       </div>
       <h2 className="font-montserrat text-[26px] font-bold text-lg mb-[-8px]">

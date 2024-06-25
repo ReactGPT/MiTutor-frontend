@@ -14,6 +14,7 @@ import { useAuth } from '../../../context';
 type InputProps = {
   handleOnChangeFilters: (filter: any) => void;
   onRolEspecificoChange: (rol: string) => void;
+  specialityList: Specialty[];
 };
 
 export default function SolicitudGestionSearchBar({
@@ -22,9 +23,8 @@ export default function SolicitudGestionSearchBar({
 }: InputProps) {
   const { userData } = useAuth();
   const navigate = useNavigate();
-  let { specialityList, facultyList, tutorList } = useAppSelector(
-    (state: RootState) => state.parameters
-  );
+
+  let { facultyList, tutorList } = useAppSelector((state: RootState) => state.parameters);
 
   const [specialitySelected, setSpecialitySelected] =
     useState<Specialty | null>(null);
@@ -47,6 +47,8 @@ export default function SolicitudGestionSearchBar({
   // 1. Si es coordinador de Facultad: Puede ver todas las especialidades de esa facultad                     CASO 1
   // 2. Si es coordinador de Especialidad: Puede ver solo la especialidad a la que pertenece                  CASO 2
   // 3. Si es coordinador de Facultad y Especialidad: Puede ver todas las especialidades de esa facultad      CASO 1
+
+  let specialityList = useAppSelector((state: RootState) => state.parameters.specialityList);
 
   if (roles) {
     const iFaculty = roles.findIndex(rol => rol.rolName === 'Responsable de Facultad');

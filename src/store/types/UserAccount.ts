@@ -32,11 +32,15 @@ export type AdminRoleDetails={
     isAdmin:boolean;
 }
 
+export type DerivationRoleDetails={
+    isDerivationCoord:boolean;
+}
+
 export type Role ={
     accountTypeId:number;
     rolName:string;
     type:string;
-    details:TutorRoleDetails|StudentRoleDetails|ManagerRoleDetails|AdminRoleDetails
+    details:TutorRoleDetails|StudentRoleDetails|ManagerRoleDetails|AdminRoleDetails|DerivationRoleDetails
 }
 
 export type UserAccount={

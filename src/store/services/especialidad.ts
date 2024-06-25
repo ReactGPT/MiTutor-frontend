@@ -80,8 +80,7 @@ async function getEspecialidadInfo2(): Promise<EspecialidadDetailResponse> {
                 specialtyManager: item.specialtyManager,
                 students: item.students,
                 tutoringPrograms: item.tutoringPrograms,
-
-                
+                id: item.specialtyId, //el id del type Specialty                 
                 // COMPLETAR CON DATOS DEL RESPONSABLE
             }
         });

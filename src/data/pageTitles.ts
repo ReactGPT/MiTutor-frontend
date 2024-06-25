@@ -4,6 +4,14 @@ export const PageTitles = [
     pageName: "Inicio",
   },
   {
+    path: '/facultades',
+    pageName: "Facultades",
+  },
+  {
+    path: '/general',
+    pageName: "General",
+  },
+  {
     path: '/calendario',
     pageName: "Calendario",
   },
@@ -46,6 +54,10 @@ export const PageTitles = [
   {
     path: '/especialidades',
     pageName: "Especialidades",
+  },
+  {
+    path: '/especialidades/editar',
+    pageName: "Editar especialidad",
   },
   {
     path: '/maestroTutores',
@@ -105,7 +117,7 @@ export const PageTitles = [
   },
   {
     path: '/gestionSolicitudes',
-    pageName: "Gestión de Solicitudes"
+    pageName: "Gestión de Solicitudes de Tutor"
   },
   {
     path: "/misTutorias",
@@ -133,10 +145,10 @@ export const PageTitles = [
   },
   {
     path: "/unidades",
-    pageName: "Unidades"
+    pageName: "Unidades de derivación"
   },
   {
-    path: "/unidades/editarFacultad",
+    path: "/facultades/editarFacultad",
     pageName: "Editar Facultad"
   },
   {
@@ -166,6 +178,10 @@ export const PageTitles = [
   {
     path: "/usuarios/cargaMasiva",
     pageName: "Carga Masiva de Usuarios"
+  },
+  {
+    path: "/estudiantes/cargaMasiva",
+    pageName: "Carga Masiva de Alumnos"
   },
   {
     path: "/tutor-detail",

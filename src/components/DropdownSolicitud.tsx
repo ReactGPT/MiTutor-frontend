@@ -6,9 +6,10 @@ interface DropdownSolicitudProps {
   onSelect: (value: { id: number | string; name: string }) => void;
   icon?: React.ComponentType<{ className?: string; size?: number }>;
   value?: string;
+  disabled?: boolean;
 }
 
-const DropdownSolicitud: React.FC<DropdownSolicitudProps> = ({ options, defaultOption, onSelect, icon: Icon, value }) => {
+const DropdownSolicitud: React.FC<DropdownSolicitudProps> = ({ options, defaultOption, onSelect, icon: Icon, value, disabled }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const handleSelectOption = (option: { id: number | string; name: string }) => {
@@ -20,6 +21,7 @@ const DropdownSolicitud: React.FC<DropdownSolicitudProps> = ({ options, defaultO
     <div className="relative h-[42px]">
       <button
         onClick={() => setIsOpen(!isOpen)}
+        disabled={disabled}
         className="inline-flex justify-center items-center w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
       >
         {Icon && <Icon className="mr-2" size={5} />}
@@ -38,7 +40,7 @@ const DropdownSolicitud: React.FC<DropdownSolicitudProps> = ({ options, defaultO
           />
         </svg>
       </button>
-      {isOpen && (
+      {isOpen && !disabled && (
         <div className="absolute z-10 mt-2 w-56 origin-top-right bg-white rounded-md shadow-lg ring-1 ring-black ring-opacity-5">
           <div
             className="py-1"

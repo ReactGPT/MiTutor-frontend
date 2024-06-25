@@ -13,7 +13,7 @@ type RouterChildren = {
 };
 
 type NavBarOption = {
-    rol : "STUDENT"|"MANAGER"|"ADMIN"|"TUTOR";
+    rol : "STUDENT"|"MANAGER"|"ADMIN"|"TUTOR"|"DERIVATION";
     title: string;
     links: SidebarLink[];
   }
@@ -86,6 +86,16 @@ const RouterContextProvider = () => {
                             rol:"ADMIN",
                             title:"Administrador",
                             links:Routes.administrador.navBarLink
+                        });
+                    }
+                    break;
+                case "DERIVATION":
+                    childrenArrayFound = childrenArrayFound.concat(Routes.derivation.pages);
+                    if(! (sideBarOptionsFound.some((item)=>item.rol==="ADMIN"))){
+                        sideBarOptionsFound = sideBarOptionsFound.concat({
+                            rol:"DERIVATION",
+                            title:"Derivación",
+                            links:Routes.derivation.navBarLink
                         });
                     }
                     break;

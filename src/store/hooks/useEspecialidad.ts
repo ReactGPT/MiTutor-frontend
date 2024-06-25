@@ -50,7 +50,7 @@ function useEspecialidad(): EspecialidadHookReturnType {
     const fetchEspecialidadData2 = async () => {
         setIsLoading(true);
         try {
-            const especialidadData = await getEspecialidadInfo();
+            const especialidadData = await getEspecialidadInfo2();
             setEspecialidadData(especialidadData.especialidadList);
         } catch (error: any) {
             setError(error);

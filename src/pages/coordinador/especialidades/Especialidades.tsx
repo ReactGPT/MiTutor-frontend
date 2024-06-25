@@ -13,8 +13,17 @@ import { ColDef } from "ag-grid-community";
 import CustomUnidadGridButton from "../../administrador/gestionUnidad/CustomUnidadGridButton";
 import { DetailsIcon } from "../../../assets";
 import DeleteIcon from "../../../assets/svg/DeleteIcon";
+import ModalConfirmation from "../../../components/ModalConfirmation";
+import ModalSuccess from "../../../components/ModalSuccess";
+import ModalError from "../../../components/ModalError";
+import { eliminarEspecialidad } from "../../../store/services/actualizarEspecialidad";
 
-const EspecialidadesPage = () => {
+type EspecialidadesPageProps = {
+  Facultyid?: number;
+  disableAgregarEspecialidad?: boolean;
+};
+
+const EspecialidadesPage: React.FC<EspecialidadesPageProps> = ({ Facultyid, disableAgregarEspecialidad }) => {
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = React.useState(false);
   const [search, setSearch] = React.useState<string>("");
@@ -40,6 +49,10 @@ const EspecialidadesPage = () => {
             icon={DetailsIcon}
             iconSize={4}
             onClick={() => {
+              if (Facultyid) {
+                navigate(`/facultades/editarFacultad/especialidades/editar`, { state: { especialidadEspecifica: params.data } });
+                return;
+              }
               navigate(`/especialidades/editar`, { state: { especialidadEspecifica: params.data } });
             }}
           />
@@ -55,7 +68,10 @@ const EspecialidadesPage = () => {
         return (
           <button
             className='text-primary'
-            onClick={() => { }}
+            onClick={() => {
+              setSelectedEspecialidadId(rowData.data.specialtyId);
+              setIsOpenConfirmation(true);
+            }}
           >
             <DeleteIcon size={6} />
           </button>
@@ -66,8 +82,12 @@ const EspecialidadesPage = () => {
 
   const { userData } = useAuth();
   const userInfo = userData?.userInfo;
+
   const departmentId = useMemo(() => {
     let departmentId: number = 0;
+    if (Facultyid) {
+      return Facultyid;
+    }
     userInfo?.roles.forEach((role: any) => {
       if (role.type === "MANAGER") {
         departmentId = role.details.departmentId;
@@ -81,19 +101,42 @@ const EspecialidadesPage = () => {
     fetchEspecialidadData(search);
   };
 
+  const [isOpenConfirmation, setIsOpenConfirmation] = useState<boolean>(false);
+  const [selectedEspecialidadId, setSelectedEspecialidadId] = useState<number | null>(null);
+  const [isOpenModalSuccess, setIsOpenModalSuccess] = useState<boolean>(false);
+  const [isOpenModalError, setIsOpenModalError] = useState<boolean>(false);
+
+  const handleOnConfirmDeleteEspecialidad = async () => {
+    console.log("Eliminando");
+
+    if (selectedEspecialidadId !== null) {
+      try {
+        await eliminarEspecialidad(selectedEspecialidadId);
+        setIsOpenModalSuccess(true);
+        fetchEspecialidadData(search);
+      } catch (error) {
+        setIsOpenModalError(true);
+      } finally {
+        setIsOpenConfirmation(false);
+        setSelectedEspecialidadId(null);
+      }
+    }
+  };
+
   return (
     <>
       <div className="w-full h-full flex flex-col gap-5">
         <div className="flex gap-2 flex-wrap justify-between items-center">
           <h2 className="text-primary text-3xl font-bold">
-            Listado de especialidades
+            Especialidades
           </h2>
           <Button
             text="Agregar especialidad"
             onClick={() => {
               setIsOpen(true);
             }}
-            className="rounded-2xl "
+            className="rounded-2xl"
+            disabled={disableAgregarEspecialidad}
           />
         </div>
         <div className="border border-terciary shadow-lg rounded-2xl w-full  bg-white flex overflow-clip">
@@ -131,9 +174,11 @@ const EspecialidadesPage = () => {
           className="ag-theme-alpine w-full h-full"
           pagination={true}
           paginationAutoPageSize
+          suppressMovableColumns
         />
       </div>
       <NuevaEspecialidad
+        FacultyId={departmentId}
         isOpen={isOpen}
         onClose={() => {
           setIsOpen(false);
@@ -142,6 +187,29 @@ const EspecialidadesPage = () => {
           fetchEspecialidadData(search).then(() => {
             console.log("Especialidad creada exitosamente");
           });
+        }}
+      />
+      <ModalConfirmation isOpen={isOpenConfirmation} message="¿Está seguro de eliminar esta especialidad?"
+        onClose={() => {
+          setIsOpenConfirmation(false);
+        }}
+        onConfirm={() => {
+          handleOnConfirmDeleteEspecialidad();
+          setIsOpenConfirmation(false);
+        }}
+        isAcceptAction={true}
+      />
+      <ModalSuccess isOpen={isOpenModalSuccess} message="Se eliminó con éxito"
+        onClose={() => {
+          setSelectedEspecialidadId(null);
+          setIsOpenModalSuccess(false);
+          //fetchFacultadData();
+        }}
+      />
+      <ModalError isOpen={isOpenModalError} message='Ocurrió un problema inesperado. Intente nuevamente'
+        onClose={() => {
+          setSelectedEspecialidadId(null);
+          setIsOpenModalError(false);
         }}
       />
     </>

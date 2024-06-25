@@ -93,14 +93,17 @@ const Tabla: React.FC<TablaProps> = ({
   const handleOnSelectFacultad = (facultad: FacultadDelete) => {
     setFacultadSelected(facultad);
   };
+
   useEffect(() => {
     if (facultadSelected) {
       setIsOpen(true);
     }
   }, [facultadSelected]);
+
   const handleNavigationFacultad = (data: Facultad) => {
     navigate("/facultades/editarFacultad", { state: { facultadEstado: data } });
   };
+
   const getFacultadById = (id: number) => {
     let facultadNoNula = facultadData.find(facultad => facultad.id === id);
     if (!facultadNoNula) facultadNoNula = facultadInicial;
@@ -139,13 +142,16 @@ const Tabla: React.FC<TablaProps> = ({
       minWidth: 80,
       cellRenderer: (rowData: any) => {
         return (
-          <button className='text-primary' onClick={() => {
-            const facultad: FacultadDelete = {
-              id: rowData.data.id,
-              name: rowData.data.nombre
-            };
-            handleOnSelectFacultad(facultad);
-          }}>
+          <button
+            className='text-primary'
+            onClick={() => {
+              const facultad: FacultadDelete = {
+                id: rowData.data.id,
+                name: rowData.data.nombre
+              };
+              handleOnSelectFacultad(facultad);
+            }}
+          >
             <DeleteIcon size={6} />
           </button>
         );

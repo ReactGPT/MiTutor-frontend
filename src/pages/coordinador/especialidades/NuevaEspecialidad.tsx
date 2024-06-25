@@ -3,7 +3,6 @@ import React, { Fragment, useState, useMemo } from "react";
 import { FaX } from "react-icons/fa6";
 import { MdOutlineEdit } from "react-icons/md";
 import { Button } from "../../../components";
-import ModalError from "../../../components/ModalError";
 import ModalSuccess from "../../../components/ModalSuccess";
 import AsignarResponsable from "./AsignarResponsable";
 import { insertartEspecialidad } from "../../../store/services/insertarEspecialidad";
@@ -14,17 +13,23 @@ interface NuevaEspecialidadProps {
   isOpen: boolean;
   onClose: () => void;
   onConfirm: () => void;
+  FacultyId?: number;
 }
 
 const NuevaEspecialidad = ({
   isOpen,
   onClose,
   onConfirm,
+  FacultyId
 }: NuevaEspecialidadProps) => {
   const { userData } = useAuth();
   const userInfo = userData?.userInfo;
+
   const departmentId = useMemo(() => {
     let departmentId: number = 0;
+    if (FacultyId) {
+      return FacultyId;
+    }
     userInfo?.roles.forEach((role: any) => {
       if (role.type === "MANAGER") {
         departmentId = role.details.departmentId;
@@ -32,37 +37,52 @@ const NuevaEspecialidad = ({
     });
     return departmentId;
   }, [userInfo]);
-  const [isOpenError, setIsOpenError] = React.useState(false);
+
+  //Modals
   const [isOpenSuccess, setIsOpenSuccess] = React.useState(false);
   const [isOpenAsignarResponsable, setIsOpenAsignarResponsable] = React.useState(false);
+  //
+
+  // Datos Form
   const [nombre, setNombre] = useState("");
   const [siglas, setSiglas] = useState("");
-  const [responsable, setResponsable] = useState("");
-  const [telefonoResponsable, setTelefonoResponsable] = useState("");
-  const [correoResponsable, setCorreoResponsable] = useState("");
+  const [responsable, setResponsable] = useState("-");
+  const [correoResponsable, setCorreoResponsable] = useState("-");
   const [responsableId, setResponsableId] = useState(-1);
+  //
 
+  const limpiarDatos = () => {
+    setNombre("");
+    setSiglas("");
+    setResponsableId(-1);
+    setResponsable("-");
+    setCorreoResponsable("-");
+  };
+
+  //Crear Especialidad
   const saveEspecialidad = async () => {
     await insertartEspecialidad({
       name: nombre,
       acronym: siglas,
       studentCount: 0,
       Faculty: { FacultyId: departmentId },
-      SpecialtyManager: { Id: responsableId },
+      SpecialtyManager: { Id: responsableId === -1 ? null : responsableId },
     });
     onConfirm();
     setIsOpenSuccess(true);
   };
 
+  //validar inputs
   const validateInputs = () => {
-    if (nombre === "" || siglas === "" || responsable === "") {
+    if (nombre === "" || siglas === "") {
       return false;
     }
     return true;
   };
 
-  const onError = () => {
-    setIsOpenError(true);
+  const handleClose = () => {
+    onClose();
+    limpiarDatos();
   };
 
   return (
@@ -71,7 +91,7 @@ const NuevaEspecialidad = ({
         <Dialog
           as="div"
           className="fixed z-10 inset-0 overflow-y-auto"
-          onClose={onClose}
+          onClose={handleClose}
         >
           <div className="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0 ">
             <Transition.Child
@@ -144,7 +164,6 @@ const NuevaEspecialidad = ({
                       <div className="relative">
                         <input
                           type="text"
-                          placeholder="-"
                           className="border border-terciary rounded-lg  w-full p-2 text-sm ring-0"
                           value={responsable}
                           disabled
@@ -168,7 +187,6 @@ const NuevaEspecialidad = ({
                       </label>
                       <input
                         type="text"
-                        placeholder="-"
                         className="border border-terciary rounded-lg  w-full p-2 text-sm ring-0"
                         value={correoResponsable}
                         disabled
@@ -189,24 +207,14 @@ const NuevaEspecialidad = ({
                     variant="secundario"
                     text="Cancelar"
                     icon={FaX}
-                    onClick={() => {
-                      onError();
-                    }}
+                    onClick={handleClose}
                   />
                 </div>
-                <ModalError
-                  isOpen={isOpenError}
-                  onClose={() => {
-                    setIsOpenError(false);
-                    onClose();
-                  }}
-                  message="No se guardaran los datos ingresados para esta Especialidad."
-                />
                 <ModalSuccess
                   isOpen={isOpenSuccess}
                   onClose={() => {
                     setIsOpenSuccess(false);
-                    onClose();
+                    handleClose();
                   }}
                   message="Puede visualizar la nueva Especialidad en su lista de Especialidades."
                 />
@@ -218,7 +226,6 @@ const NuevaEspecialidad = ({
                   onSelect={(User) => {
                     console.log(`User selected: ${JSON.stringify(User, null, 5)}`);
                     setResponsable(User.persona.name);
-                    setTelefonoResponsable((User.persona.phone));
                     setCorreoResponsable(User.institutionalEmail);
                     setResponsableId(User.id);
                   }}

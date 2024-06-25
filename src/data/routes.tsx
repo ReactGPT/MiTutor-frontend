@@ -56,10 +56,10 @@ import AlumnoDetail from "../pages/alumno/indicadorAlumnos/AlumnoDetail.tsx";
 import PageMaestroTutores from "../pages/coordinador/MaestroTutores/PageMaestroTutores.tsx";
 import { UserPlus } from "../assets/index.ts";
 import EspecialidadesPage from "../pages/coordinador/especialidades/Especialidades.tsx";
-import EspecialidadSingularPage from "../pages/coordinador/especialidades/EspecialidadSingular.tsx";
+import PageSolicitudGestionTutor from "../pages/tutor/gestionSolicitudes/PageSolicitudGestion.tsx";
+import EspecialidadSingular from "../pages/coordinador/especialidades/EspecialidadSingular.tsx";
 import PageGeneralAdmin from "../pages/administrador/general/PageGeneralAdmin.tsx";
 import PageFacultadesAdmin from "../pages/administrador/facultades/PageFacultadesAdmin.tsx";
-
 
 type RouterDetail = {
   pages: RouteObject[];
@@ -81,19 +81,23 @@ export const Routes: RouterConfig = {
         element: <PageInicioTutor />,
       },
       {
-        path: '/calendario',
+        path: '/calendarioTutor',
         element: <PageCalendarioTutor />,
       },
       {
-        path: '/programasDeTutoria',
+        path: '/programasDeTutoriaTutor',
         element: <PageProgramasDeTutoriaTutor />,
+      },
+      {
+        path: '/gestionSolicitudesTutor',
+        element: <PageSolicitudGestionTutor />,
       },
       {
         path: '/listaDeCitas',
         element: <PageListaDeCitas />,
       },
       {
-        path: '/miPerfil',
+        path: '/miPerfilTutor',
         element: <PageMiPerfilTutor />,
       },
       {
@@ -125,7 +129,7 @@ export const Routes: RouterConfig = {
         element: <PageAgregarDisponibilidadTutor />,
       },
       {
-        path: '/miPerfil/derivaciones',
+        path: '/miPerfilTutor/derivaciones',
         element: <PageDerivacionesHechas />
       },
       {
@@ -136,11 +140,6 @@ export const Routes: RouterConfig = {
         path: '/listaDeCitas/resultadoCitaGrupal',
         element: <PageResultadoCitaGrupal />
         //PageDetalleCitaGrupal
-      },
-
-      {
-        path: '*',
-        element: <Navigate to="/" />
       }
 
     ],
@@ -154,14 +153,20 @@ export const Routes: RouterConfig = {
       {
         key: 'calendario',
         label: 'Calendario',//Pendiente
-        path: '/calendario',
+        path: '/calendarioTutor',
         icon: <BiCalendar fontSize={32} />,
       },
       {
         key: 'programasDeTutoria',
         label: 'Tipos de Tutoria',
-        path: '/programasDeTutoria',
+        path: '/programasDeTutoriaTutor',
         icon: <BiCabinet fontSize={32} />,
+      },
+      {
+        key: 'gestionDeSolicitudes',
+        label: 'Gestion de Solicitudes',
+        path: '/gestionSolicitudesTutor',
+        icon: <BiUserCheck fontSize={32} />,
       },
       {
         key: 'listaDeCitas',
@@ -172,7 +177,7 @@ export const Routes: RouterConfig = {
       {
         key: 'miPerfil',
         label: 'Mi Perfil',
-        path: '/miPerfil',
+        path: '/miPerfilTutor',
         icon: <BiUser fontSize={32} />,
       },
 
@@ -213,10 +218,6 @@ export const Routes: RouterConfig = {
         element: <PageAlumnosSeleccionados />,
       },
       {
-        path: '*',
-        element: <Navigate to="/" />
-      },
-      {
         path: '/tutor-detail',
         element: <TutorDetail />
       }
@@ -235,7 +236,7 @@ export const Routes: RouterConfig = {
       },
       {
         path: '/especialidades/editar',
-        element: <EspecialidadSingularPage />
+        element: <EspecialidadSingular />
       },
     ],
     navBarLink: [
@@ -330,11 +331,7 @@ export const Routes: RouterConfig = {
       {
         path: '/listaDeCitasAlumno/detalleCitaAlumno',
         element: <PageResultadoCitaIndividualAlumno />
-      }, {
-        path: '*',
-        element: <Navigate to="/" />
       }
-
     ],
     navBarLink: [
       {
@@ -372,12 +369,24 @@ export const Routes: RouterConfig = {
   administrador: {
     pages: [
       {
+        path: '/',
+        element: <PageGeneralAdmin />
+      },
+      {
         path: '/general',
         element: <PageGeneralAdmin />
       },
       {
         path: '/facultades',
         element: <PageFacultadesAdmin />
+      },
+      {
+        path: '/facultades/editarFacultad',
+        element: <PageEditarFacultad />
+      },
+      {
+        path: '/facultades/editarFacultad/especialidades/editar',
+        element: <EspecialidadSingular />
       },
       {
         path: '/usuarios',
@@ -408,20 +417,16 @@ export const Routes: RouterConfig = {
         element: <PageCargaMasiva />
       },
       {
+        path: '/estudiantes/cargaMasiva',
+        element: <PageCargaMasiva />
+      },
+      {
         path: '/unidades',
         element: <PageUnidadFacultad />
       },
       {
-        path: '/facultades/editarFacultad',
-        element: <PageEditarFacultad />
-      },
-      {
         path: '/unidades/editarUnidadDerivacion',
         element: <PageEditarUnidadDerivacion />
-      },
-      {
-        path: '*',
-        element: <Navigate to="/" />
       }
     ],
     navBarLink: [

@@ -1,7 +1,7 @@
 import React from 'react';
 import TablaFacultad from '../../../components/Administrador/TablaFacultad';
 
-const PageFacultadesAdmin = () => {
+const PageFacultadesAdmin: React.FC = () => {
   const defaultColDef = {
     suppressHeaderMenuButton: true,
     flex: 1,

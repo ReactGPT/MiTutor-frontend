@@ -1,18 +1,18 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import { Button, Dropdown } from '../../../components'
-import { AddCircleIcon, UserPlus, ArrowDown, ArrowDownload,ArrowUpload, AddIcon } from '../../../assets'
+import { AddCircleIcon, UserPlus, ArrowDown, ArrowDownload, ArrowUpload, AddIcon } from '../../../assets'
 import { useNavigate } from 'react-router-dom';
 import { useUser } from '../../../store/hooks/useUser';
 import { writeFile, utils } from 'xlsx';
 
 type InputProps = {
-  handleOnChangeFilters: (filter: any) => void;
   rol: "estudiante" | "usuario";
 }
 
-export default function ListadoUsuariosSearchBar({ handleOnChangeFilters, rol }: InputProps) {
+export default function ListadoUsuariosSearchBar({ rol }: InputProps) {
   const navigate = useNavigate();
-  const { loading,  userData, fetchUsers } = useUser();
+  const { loading, userData, fetchUsers } = useUser();
+  const [triggerDownload, setTriggerDownload] = useState(false); // Estado para controlar la descarga
 
   const handleClickNuevoUsuario = () => {
     navigate(`/${rol}s/nuevo`, { state: { userData: null } });
@@ -24,40 +24,50 @@ export default function ListadoUsuariosSearchBar({ handleOnChangeFilters, rol }:
   }
 
   const handleClickImportarMasivo = () => {
-    navigate(`/${rol}s/cargaMasiva`);
+    navigate(`/${rol}s/cargaMasiva`, { state: {rol: rol} });
   }
 
   const handleClickDescargar = async () => {
-    await fetchUsers();
-    while(loading);
-    // Filtrar y transformar los datos
-    const filteredData = userData.map(user => ({
-      CorreoInstitucional: user.institutionalEmail,
-      CodigoPUCP: user.pucpCode,
-      Nombres: user.persona.name,
-      PrimerApellido: user.persona.lastName,
-      SegundoApellido: user.persona.secondLastName,
-      Telefono: user.persona.phone,
-      Activo: user.isActive,
-      CreationDate: user.creationDate,
-      ModificationDate: user.modificationDate
-    }));
+    await fetchUsers(); // Espera a que se carguen los datos en userData
 
-    // Crear una hoja de trabajo
-    const hoja = utils.json_to_sheet(filteredData);
+    // pequeño retraso para aseguraR que datos estén disponibles
+    await new Promise(resolve => setTimeout(resolve, 500));
 
-    // Crear un libro de trabajo
-    const libro = utils.book_new();
-    utils.book_append_sheet(libro, hoja, 'Usuarios');
+    // Indicar que se debe iniciar la descarga
+    setTriggerDownload(true);
+  };
 
-    // Descargar el archivo
-    writeFile(libro, 'usuarios.xlsx');
-  }
+  useEffect(() => {
+    if (userData.length > 0 && triggerDownload) {
+      // Procesar userData para filtrar y descargar el archivo
+      const filteredData = userData.map(user => ({
+        CorreoInstitucional: user.institutionalEmail,
+        CodigoPUCP: user.pucpCode,
+        Nombres: user.persona.name,
+        PrimerApellido: user.persona.lastName,
+        SegundoApellido: user.persona.secondLastName,
+        Telefono: user.persona.phone,
+        Activo: user.isActive,
+        CreationDate: user.creationDate,
+        ModificationDate: user.modificationDate
+      }));
+
+      const hoja = utils.json_to_sheet(filteredData);
+      const libro = utils.book_new();
+      utils.book_append_sheet(libro, hoja, `${rol}s`);
+      writeFile(libro, `${rol}s.xlsx`);
+
+      // Reiniciar el estado de triggerDownload después de la descarga
+      setTriggerDownload(false);
+    }
+  }, [userData, triggerDownload]); // Dependencias: userData y triggerDownload
 
   return (
     <div className='flex w-full h-full flex-row py-0'>
       <div className='flex w-full h-12 justify-end space-x-4'>
         <Button onClick={handleClickNuevoUsuario} text={`Agregar ${capitalize(rol)}`} icon={UserPlus} />
+        <Button onClick={handleClickImportarMasivo} text="Importar" variant='primario' icon={ArrowUpload} />
+        <Button onClick={handleClickDescargar} text="Descargar" variant='secundario' icon={ArrowDownload} />
       </div>
     </div>
 
@@ -65,8 +75,7 @@ export default function ListadoUsuariosSearchBar({ handleOnChangeFilters, rol }:
 }
 
 /*
-        <Button onClick={handleClickImportarMasivo} text="Importar" variant='primario' icon={ArrowUpload} />
-        <Button onClick={handleClickDescargar} text="Descargar" variant='secundario' icon={ArrowDownload} />
+        
 
 
 <form className="w-[70%] max-w-[70%] min-w-[70%] h-full flex flex-row gap-4" onSubmit={handleOnSubmit}>

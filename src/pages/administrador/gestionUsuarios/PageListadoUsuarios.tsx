@@ -104,6 +104,12 @@ export default function PageListadoUsuarios() {
     { headerName: 'Segundo Apellido', field: 'persona.secondLastName', filter: 'agTextColumnFilter', minWidth: 150 },
     { headerName: 'Correo', field: 'institutionalEmail', filter: 'agTextColumnFilter', minWidth: 300, maxWidth: 300 },
     {
+      headerName: 'Activo',
+      field: 'isActive',
+      filter: 'agSetColumnFilter',
+      minWidth: 80, maxWidth: 80
+    },
+    {
       headerName: '',
       field: '',
       maxWidth: 60,
@@ -132,14 +138,14 @@ export default function PageListadoUsuarios() {
   return (
     <div className='flex w-full h-full flex-col'>
       <div className='flex w-full h-fit'>
-        <ListadoUsuariosSearchBar handleOnChangeFilters={handleOnChangeFilters} rol='usuario' />
+        <ListadoUsuariosSearchBar rol='usuario' />
       </div>
       <div className='flex w-full h-full ag-theme-alpine items-center justify-center'>
         {loading ? <Spinner size='lg' /> : <div className='w-full h-full'>
           <AgGridReact
             defaultColDef={defaultColDef}
             columnDefs={columnDefs}
-            rowData={UserFiltered}
+            rowData={userData}
             pagination={true}
             paginationAutoPageSize
             suppressMovableColumns

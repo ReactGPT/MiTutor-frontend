@@ -5,40 +5,38 @@ import { useNavigate } from 'react-router-dom';
 import { useAppSelector } from '../../../store/hooks';
 import { RootState } from '../../../store/store';
 import { useStudent } from '../../../store/hooks';
-import { useState, useEffect, useMemo } from 'react';
-
+import { useState, useEffect, useMemo, useCallback, useRef } from 'react';
+import PageAlumnosSeleccionados from './PageCargarAlumnos/PageAlumnosSeleccionados';
+import ModalAlumnosSeleccionados from './PageCargarAlumnos/ModalAlumnosSeleccionados';
+import { TbUTurnRight } from 'react-icons/tb';
 type InputProps = {
   className: string;
 };
 
 function DatosAlumnosSeleccionados({ className }: InputProps) {
-  const { tutoringProgram, updateAlumnos } = useTutoringProgramContext();
+  const { tutoringProgram, updateAlumnos, onChangeTutoringProgram } = useTutoringProgramContext();
   //const { tutoringProgramSelected } = useAppSelector((state: RootState) => state.tutoringProgram);
   const navigate = useNavigate();
   const {studentData, fetchStudentData} = useStudent();
 
-  /*useEffect(()=>{
+  useEffect(()=>{
     fetchStudentData(!!tutoringProgram.id?tutoringProgram.id:-1) 
   },[]);
 
   useEffect(()=>{ 
-    tutoringProgram.alumnos=studentData;
+    updateAlumnos(studentData);
     console.log(tutoringProgram.alumnos);
-  },[studentData]); */
+  },[studentData]); 
 
-  useEffect(() => {
-    console.log("programa",tutoringProgram);
-    if (tutoringProgram.id) {
-      fetchStudentData(tutoringProgram.id)
-        .then((alumnos) => {
-          updateAlumnos(alumnos);
-        });
-    } 
-  }, [tutoringProgram.id,updateAlumnos]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
   const handleOnClickVerAlumnos = () => {
     console.log("son esos Alumnos:",tutoringProgram.alumnos);
-    navigate("/alumnosSeleccionados");
+    //navigate("/alumnosSeleccionados");
+    setIsModalOpen(true);
   };
   return (
     <div className={className}>
@@ -48,6 +46,8 @@ function DatosAlumnosSeleccionados({ className }: InputProps) {
         </div>
         <Button text='Ver Alumnos' onClick={handleOnClickVerAlumnos} />
       </div>
+      <PageAlumnosSeleccionados isOpen={isModalOpen} closeModal={() => { setIsModalOpen(false); }} />
+      {/*<ModalAlumnosSeleccionados isOpen={isModalOpen} closeModal={() => { setIsModalOpen(false); }}/>*/}
     </div>
   );
 }

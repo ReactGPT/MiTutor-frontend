@@ -79,6 +79,7 @@ function DatosTutoresSeleccionados({ className, openModal }: InputProps) {
 
     ];
     useEffect(() => {
+        console.log("ddsssss",tutoringProgram);
         if (!!tutoringProgram.id) {
             //const idToSearch = tutoringProgramSelected.id;
             fetchTutoresByProgramaTutoria(tutoringProgram.id)

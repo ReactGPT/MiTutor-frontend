@@ -55,6 +55,10 @@ async function getUserInfo(email: string = '', codigoPUCP: string = ''): Promise
             return {
               isAdmin: true
             };
+          case "DERIVATION":
+            return {
+              isDerivationCoord:true
+            }
         }
       };
       return {

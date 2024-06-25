@@ -16,18 +16,6 @@ import { tutoringProgramSlice } from '../../../store/slices';
 export default function PageProgTutoria() {
   const { state } = useLocation();
   const { programaTutoria } = state;
-  //const dispatch = useAppDispatch();
-  //const {setTutoringProgramDefault,setTutoringProgram}=tutoringProgramSlice.actions
-  //const {isNew,tutoringProgram}=state;
-
-  // useEffect(()=>{
-  //   if(isNew){
-  //     dispatch(setTutoringProgramDefault());
-  //   }
-  //   else{
-  //     dispatch(setTutoringProgram(tutoringProgram));
-  //   }
-  // },[]);
 
   const [isOpenModalAgregarTutores, setIsOpenModalAgregarTutores] = useState<boolean>(false);
   //const [isOpenModalConfirmation,setisOpenModalConfirmation]= useState<boolean>(false);

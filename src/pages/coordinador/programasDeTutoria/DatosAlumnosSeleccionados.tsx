@@ -27,6 +27,7 @@ function DatosAlumnosSeleccionados({ className }: InputProps) {
   },[studentData]); */
 
   useEffect(() => {
+    console.log("programa",tutoringProgram);
     if (tutoringProgram.id) {
       fetchStudentData(tutoringProgram.id)
         .then((alumnos) => {

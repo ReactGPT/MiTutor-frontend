@@ -8,7 +8,7 @@ type Persona = {
     usuario: any | null;
 
 }
- type SpecialtyManager = {
+export type SpecialtyManager = {
     id: number;
     institutionalEmail: string;
     pucpCode: string;
@@ -35,15 +35,15 @@ export type Specialty = {
     id:number;
     name:string;
     acronym:string;
-    numberOfStudents:number;  
-    isActive: boolean;
-    faculty: Facultad;
-    specialtyManager: SpecialtyManager;
-    creationDate: string;
-    modificationDate: string;
-    students: any[] | null;
-    tutoringPrograms: any[] | null;
-    numberStudents:number;
+    numberOfStudents?:number;  
+    isActive?: boolean;
+    faculty?: Facultad;
+    specialtyManager?: SpecialtyManager;
+    creationDate?: string;
+    modificationDate?: string;
+    students?: any[] | null;
+    tutoringPrograms?: any[] | null;
+    numberStudents?:number;
     facultyId:number;    
     // COMPLETAR CON DATOS DEL RESPONSABLE
 }

@@ -5,20 +5,24 @@ import AcademicUnit from "../../../assets/svg/AcademicUnit";
 import Program from "../../../assets/svg/Program";
 import State from "../../../assets/svg/State";
 import { useNavigate } from "react-router-dom";
-import { Faculty, Specialty, Tutor } from "../../../store/types";
+import { Faculty, ManagerRoleDetails, Specialty, SpecialtyManager, Tutor } from "../../../store/types";
 import { RootState } from "../../../store/store";
 import { useAppSelector } from "../../../store/hooks";
 import SimpleSearchInput from "../../../components/SimpleSearchInput";
+import { useAuth } from '../../../context';
 
 type InputProps = {
     handleOnChangeFilters: (filter: any) => void;
+    onRolEspecificoChange: (rol: string) => void;
 };
 
 export default function SolicitudGestionSearchBar({
     handleOnChangeFilters,
+    onRolEspecificoChange,
 }: InputProps) {
+    const { userData } = useAuth();
     const navigate = useNavigate();
-    const { specialityList, facultyList, tutorList } = useAppSelector(
+    let { specialityList, facultyList, tutorList } = useAppSelector(
         (state: RootState) => state.parameters
     );
 
@@ -36,6 +40,37 @@ export default function SolicitudGestionSearchBar({
         name: string;
     } | null>(null);
 
+    let selectedFaculty: Faculty | undefined;
+    const roles = userData?.userInfo?.roles;
+    let rolEspecifico = '';
+
+    // 1. Si es coordinador de Facultad: Puede ver todas las especialidades de esa facultad                     CASO 1
+    // 2. Si es coordinador de Especialidad: Puede ver solo la especialidad a la que pertenece                  CASO 2
+    // 3. Si es coordinador de Facultad y Especialidad: Puede ver todas las especialidades de esa facultad      CASO 1
+
+    if (roles) {
+        const iFaculty = roles.findIndex(rol => rol.rolName === 'Responsable de Facultad');
+        if (iFaculty != -1) {
+            if (userData?.userInfo?.roles[iFaculty].details && 'departmentName' in userData.userInfo.roles[iFaculty].details) {
+                const facultyName = (userData.userInfo.roles[iFaculty].details as ManagerRoleDetails).departmentName;
+                selectedFaculty = facultyList.find(faculty => faculty.name === facultyName);
+                specialityList = specialityList.filter(speciality => speciality.facultyId === selectedFaculty?.id);
+                rolEspecifico = 'Coordinador de Facultad';
+            }
+        } else {
+            const iSpecialty = roles.findIndex(rol => rol.rolName === 'Responsable de Especialidad');
+            if (iSpecialty != -1) {
+                if (userData?.userInfo?.roles[iSpecialty].details && 'departmentName' in userData.userInfo.roles[iSpecialty].details) {
+                    const specialtyName = (userData.userInfo.roles[iSpecialty].details as ManagerRoleDetails).departmentName;
+                    specialityList = specialityList.filter(speciality => speciality.name === specialtyName);
+                    rolEspecifico = 'Coordinador de Especialidad';
+                }
+            }
+        }
+    }
+
+    onRolEspecificoChange(rolEspecifico);
+
     const specialityOptions = useMemo(() => {
         if (!facultySelected?.id) {
             return [...specialityList];
@@ -48,28 +83,9 @@ export default function SolicitudGestionSearchBar({
         }
     }, [facultySelected, specialityList]);
 
-    const handleOnChangeFaculty = (value: {
-        id: number | string;
-        name: string;
-    }) => {
-        if (
-            (facultySelected && facultySelected.id !== value.id) ||
-            (!facultySelected && specialitySelected?.facultyId !== value.id)
-        ) {
-            setSpecialitySelected(null);
-        }
-        setFacultySelected({
-            id: value.id as number,
-            name: value.name,
-            acronym: "",
-            numberStudents: 0,
-            numberTutors: 0,
-        });
-    };
-
-    /*const handleOnChangeSpeciality = (value: { id: number | string; name: string; }) => {
+    const handleOnChangeSpeciality = (value: { id: number | string; name: string; }) => {
         setSpecialitySelected({ id: value.id as number, name: value.name, acronym: "", numberStudents: 0, facultyId: 0 });
-    };*/
+    };
 
     const handleOnChangeStatus = (value: {
         id: number | string;
@@ -122,24 +138,36 @@ export default function SolicitudGestionSearchBar({
             <div className="flex w-full h-full flex-row">
                 <div className="w-[70%] max-w-[70%] min-w-[70%] h-full flex flex-row gap-4 mb-7">
                     <DropdownSolicitud
-                        options={facultyList.map((faculty) => ({
-                            id: faculty.id,
-                            name: faculty.name,
-                        }))}
-                        onSelect={handleOnChangeFaculty}
+                        options={[
+                            { id: 0, name: "Todos" },
+                            ...facultyList.map((faculty) => ({
+                                id: faculty.id,
+                                name: faculty.name,
+                            })),
+                        ]}
+                        onSelect={() => { }} // Función vacía para evitar cambios
                         defaultOption="Facultad"
                         icon={AcademicUnit}
+                        value={selectedFaculty ? selectedFaculty.name : "Facultad"}
+                        disabled={true}
+                    />
+                    <DropdownSolicitud
+                        options={[
+                            { id: 0, name: "Todos" },
+                            ...specialityOptions.map((speciality) => ({
+                                id: speciality.id,
+                                name: speciality.name,
+                            })),
+                        ]}
+                        onSelect={handleOnChangeSpeciality}
+                        defaultOption="Especialidad"
+                        icon={Program}
                         value={
-                            facultySelected ? facultySelected.name : "Facultad"
+                            specialitySelected
+                                ? specialitySelected.name
+                                : "Especialidad"
                         }
                     />
-                    {/*<DropdownSolicitud
-                    options={specialityOptions.map(speciality => ({ id: speciality.id, name: speciality.name }))}
-                    onSelect={handleOnChangeSpeciality}
-                    defaultOption="Especialidad"
-                    icon={Program}
-                    value={specialitySelected ? specialitySelected.name : "Especialidad"}
-                />*/}
                 </div>
             </div>
 

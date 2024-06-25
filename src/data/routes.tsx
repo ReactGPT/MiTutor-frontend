@@ -71,7 +71,7 @@ type RouterConfig = {
   coordinador: RouterDetail;
   alumno: RouterDetail;
   administrador: RouterDetail;
-  derivation:RouterDetail;
+  derivation: RouterDetail;
 };
 
 export const Routes: RouterConfig = {
@@ -432,6 +432,12 @@ export const Routes: RouterConfig = {
     ],
     navBarLink: [
       {
+        key: 'inicio',
+        label: 'Inicio',
+        path: '/',
+        icon: <BiHome fontSize={32} />,
+      },
+      {
         key: 'general',
         label: 'General',
         path: '/general',//Pendiente agregar
@@ -463,11 +469,11 @@ export const Routes: RouterConfig = {
       }
     ]
   },
-  derivation:{
-    pages:[
+  derivation: {
+    pages: [
 
     ],
-    navBarLink:[
+    navBarLink: [
 
     ]
   }

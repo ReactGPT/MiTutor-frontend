@@ -71,6 +71,7 @@ type RouterConfig = {
   coordinador: RouterDetail;
   alumno: RouterDetail;
   administrador: RouterDetail;
+  derivation:RouterDetail;
 };
 
 export const Routes: RouterConfig = {
@@ -460,6 +461,14 @@ export const Routes: RouterConfig = {
         path: '/usuarios',
         icon: <BiUser fontSize={32} />,
       }
+    ]
+  },
+  derivation:{
+    pages:[
+
+    ],
+    navBarLink:[
+
     ]
   }
 };

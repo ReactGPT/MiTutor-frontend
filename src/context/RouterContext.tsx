@@ -12,13 +12,18 @@ type RouterChildren = {
     element: ReactElement;
 };
 
+type NavBarOption = {
+    rol : "STUDENT"|"MANAGER"|"ADMIN"|"TUTOR";
+    title: string;
+    links: SidebarLink[];
+  }
 
 type RouterContextType = {
     //setRoute:(routes:RouteObject[])=>void;
     //routes:RouteObject[];
     //handleSetRoutes:(roles:Role[])=>void;
     router: ReturnType<typeof createBrowserRouter>;
-    sideBarOption: SidebarLink[];
+    sideBarOption: NavBarOption[];
 };
 
 const RouterContext = createContext<RouterContextType>({} as RouterContextType);
@@ -35,38 +40,58 @@ const useRouter = () => {
 const RouterContextProvider = () => {
     //const [routes,setRoutes] = useState<RouteObject[]>(initialRoutes);
     //const [childrenArray,setChildrenArray] = useState<RouteObject[]>([]);
-    const [sideBarOption, setSideBarOptions] = useState<SidebarLink[]>([]);
+    const [sideBarOption, setSideBarOptions] = useState<NavBarOption[]>([]);
     const { userData } = useAuth();
     const routes: RouteObject[] = useMemo(() => {
-        //console.log("Paso 2 Routes update"); POR MIENTRAS
+        
         let childrenArrayFound: RouteObject[] = [];
-        let sideBarOptionsFound: SidebarLink[] = [];
-        //console.log("Rol",userData.userInfo)
-        //console.log(userData?.userInfo); POR MIENTRAS
+        let sideBarOptionsFound: NavBarOption[] = [];
+        
         !!userData && userData.userInfo?.roles.map((rol: Role) => {
             switch (rol.type) {
                 case "TUTOR":
                     childrenArrayFound = childrenArrayFound.concat(Routes.tutor.pages);
-                    sideBarOptionsFound = sideBarOptionsFound.concat(Routes.tutor.navBarLink);
+                    if(! (sideBarOptionsFound.some((item)=>item.rol==="TUTOR"))){
+                        sideBarOptionsFound = sideBarOptionsFound.concat({
+                            rol:"TUTOR",
+                            title:"Tutor",
+                            links:Routes.tutor.navBarLink
+                        });
+                    }
                     break;
                 case "STUDENT":
-                    //console.log("Es estudiante");
-
                     childrenArrayFound = childrenArrayFound.concat(Routes.alumno.pages);
-                    sideBarOptionsFound = sideBarOptionsFound.concat(Routes.alumno.navBarLink);
-                    //console.log(childrenArrayFound);
+                    if(! (sideBarOptionsFound.some((item)=>item.rol==="STUDENT"))){
+                        sideBarOptionsFound = sideBarOptionsFound.concat({
+                            rol:"STUDENT",
+                            title:"Alumno",
+                            links:Routes.alumno.navBarLink
+                        });
+                    }
                     break;
                 case "MANAGER":
                     childrenArrayFound = childrenArrayFound.concat(Routes.coordinador.pages);
-                    sideBarOptionsFound = sideBarOptionsFound.concat(Routes.coordinador.navBarLink);
+                    if(! (sideBarOptionsFound.some((item)=>item.rol==="MANAGER"))){
+                        sideBarOptionsFound = sideBarOptionsFound.concat({
+                            rol:"MANAGER",
+                            title:"Coordinador",
+                            links:Routes.coordinador.navBarLink
+                        });
+                    }
                     break;
                 case "ADMIN":
                     childrenArrayFound = childrenArrayFound.concat(Routes.administrador.pages);
-                    sideBarOptionsFound = sideBarOptionsFound.concat(Routes.administrador.navBarLink);
+                    if(! (sideBarOptionsFound.some((item)=>item.rol==="ADMIN"))){
+                        sideBarOptionsFound = sideBarOptionsFound.concat({
+                            rol:"ADMIN",
+                            title:"Administrador",
+                            links:Routes.administrador.navBarLink
+                        });
+                    }
                     break;
             };
         });
-        //console.log(childrenArrayFound);
+        
         setSideBarOptions(sideBarOptionsFound);
         return [{
             path: '/',

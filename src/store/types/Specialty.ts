@@ -37,7 +37,7 @@ export type Specialty = {
     acronym:string;
     numberOfStudents?:number;  
     isActive?: boolean;
-    faculty?: Facultad;
+    faculty: Facultad;
     specialtyManager?: SpecialtyManager;
     creationDate?: string;
     modificationDate?: string;

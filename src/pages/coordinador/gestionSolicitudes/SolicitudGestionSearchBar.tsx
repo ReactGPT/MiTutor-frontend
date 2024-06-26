@@ -86,7 +86,25 @@ export default function SolicitudGestionSearchBar({
   }, [facultySelected, specialityList]);
 
   const handleOnChangeSpeciality = (value: { id: number | string; name: string; }) => {
-    setSpecialitySelected({ id: value.id as number, name: value.name, acronym: "", numberStudents: 0, facultyId: 0 });
+    setSpecialitySelected(
+      {
+        id: value.id as number,
+        name: value.name,
+        acronym: "",
+        numberStudents: 0,
+        facultyId: 0,
+        faculty: {
+          facultyId: 0,
+          name: "Nombre de la facultad",
+          acronym: "Siglas",
+          numberOfStudents: 0,
+          numberOfTutors: 0,
+          isActive: true,
+          facultyManager: null,
+          specialties: null,
+        }
+      }
+    );
   };
 
   const handleOnChangeStatus = (value: {

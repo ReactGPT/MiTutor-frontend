@@ -10,6 +10,8 @@ import jsPDF from 'jspdf';
 import ModalTutores from './ModalTutores';
 import noAvatar from '../../../assets/Tutor/no-avatar.webp';
 import { Services as ServicesProperties } from '../../../config';
+import { useAuth } from '../../../context';
+import { ManagerRoleDetails } from '../../../store/types';
 
 interface TutorData {
     tutorId: number;
@@ -119,11 +121,35 @@ const PageIndicadorTutor: React.FC = () => {
     });
 
     const [idTutors, setIdTutor] = useState<IdsTutor[]>([]);
+    const { userData } = useAuth();
     useEffect(() => {
         const fetchData = async () => {
             try {
                 const response = await api.get<{ success: boolean, data: TutorData[] }>('/listarTutoresConCantidadDeProgramas');
-                const responseData = response.data.data;
+                let responseData = response.data.data;
+                
+                const roles = userData?.userInfo?.roles;
+                if (roles){
+                    const iFaculty = roles.findIndex(rol => rol.rolName === 'Responsable de Facultad');
+                    if (iFaculty != -1 && userData?.userInfo?.roles[iFaculty].details && 'departmentName' in userData.userInfo.roles[iFaculty].details) {
+                        const facultyId = (userData.userInfo.roles[iFaculty].details as ManagerRoleDetails).departmentId;
+                        const responseIds = await api.get<{ success: boolean, data: number[] }>(`/listarTutoresPorIdFacultad/${facultyId}`);
+                        let responseDataIds = responseIds.data.data;
+                        responseData = responseData.filter(item =>
+                            responseDataIds.some(data => data === item.tutorId)
+                          );
+                    }else{
+                        const iSpecialty = roles.findIndex(rol => rol.rolName === 'Responsable de Especialidad');
+                        if (iSpecialty != -1 && userData?.userInfo?.roles[iFaculty].details && 'departmentName' in userData.userInfo.roles[iFaculty].details){
+                            const specialtyId = (userData.userInfo.roles[iSpecialty].details as ManagerRoleDetails).departmentId;
+                            const responseIds = await api.get<{ success: boolean, data: number[] }>(`/listarTutoresPorIdEspecialidad/${specialtyId}`);
+                            let responseDataIds = responseIds.data.data;
+                                responseData = responseData.filter(item =>
+                                responseDataIds.some(data => data === item.tutorId)
+                                );
+                        }
+                    }
+                } 
 
                 const transformedData: ChartData[] = responseData.map((tutor: TutorData) => ({
                     name: `${tutor.tutorName} ${tutor.tutorLastName} ${tutor.tutorSecondLastName}`,
@@ -149,7 +175,32 @@ const PageIndicadorTutor: React.FC = () => {
         const fetchData = async () => {
             try {
                 const response = await api.get<{ success: boolean, data: TutorInfo[] }>('/listarCantidadAppointments');
-                const responseData = response.data.data;
+                let responseData = response.data.data;
+                const roles = userData?.userInfo?.roles;
+                if (roles){
+                    const iFaculty = roles.findIndex(rol => rol.rolName === 'Responsable de Facultad');
+                    if (iFaculty != -1 && userData?.userInfo?.roles[iFaculty].details && 'departmentName' in userData.userInfo.roles[iFaculty].details){
+                        const facultyId = (userData.userInfo.roles[iFaculty].details as ManagerRoleDetails).departmentId;
+                        const responseIds = await api.get<{ success: boolean, data: number[] }>(`/listarTutoresPorIdFacultad/${facultyId}`);
+                        let responseDataIds = responseIds.data.data;
+                            responseData = responseData.filter(item =>
+                            responseDataIds.some(data => data === item.tutorId)
+                             );
+                    }else{
+                        const iSpecialty = roles.findIndex(rol => rol.rolName === 'Responsable de Especialidad');
+                        if (iSpecialty != -1 && userData?.userInfo?.roles[iFaculty].details && 'departmentName' in userData.userInfo.roles[iFaculty].details){
+                            const specialtyId = (userData.userInfo.roles[iSpecialty].details as ManagerRoleDetails).departmentId;
+                            const responseIds = await api.get<{ success: boolean, data: number[] }>(`/listarTutoresPorIdEspecialidad/${specialtyId}`);
+                            let responseDataIds = responseIds.data.data;
+                                responseData = responseData.filter(item =>
+                                responseDataIds.some(data => data === item.tutorId)
+                                );
+                        }
+
+                    }
+                } 
+
+
                 setData1(responseData);
 
             } catch (error) {
@@ -316,8 +367,31 @@ const PageIndicadorTutor: React.FC = () => {
     const handleBuscarTutoresClick = async () => {
         try {
             const response = await api.get<{ success: boolean, data: Tutor[] }>('/listarTutores');
-            const tutorsData = response.data.data;
-            setTutors(tutorsData);
+            let responseData = response.data.data;
+            const roles = userData?.userInfo?.roles;
+            if (roles){
+                const iFaculty = roles.findIndex(rol => rol.rolName === 'Responsable de Facultad');
+                if (iFaculty != -1 && userData?.userInfo?.roles[iFaculty].details && 'departmentName' in userData.userInfo.roles[iFaculty].details){
+                    const facultyId = (userData.userInfo.roles[iFaculty].details as ManagerRoleDetails).departmentId;
+                    const responseIds = await api.get<{ success: boolean, data: number[] }>(`/listarTutoresPorIdFacultad/${facultyId}`);
+                        let responseDataIds = responseIds.data.data;
+                            responseData = responseData.filter(item =>
+                            responseDataIds.some(data => data === item.tutorId)
+                             );
+                }else{
+                    const iSpecialty = roles.findIndex(rol => rol.rolName === 'Responsable de Especialidad');
+                    if (iSpecialty != -1 && userData?.userInfo?.roles[iFaculty].details && 'departmentName' in userData.userInfo.roles[iFaculty].details){
+                        const specialtyId = (userData.userInfo.roles[iSpecialty].details as ManagerRoleDetails).departmentId;
+                        const responseIds = await api.get<{ success: boolean, data: number[] }>(`/listarTutoresPorIdEspecialidad/${specialtyId}`);
+                        let responseDataIds = responseIds.data.data;
+                            responseData = responseData.filter(item =>
+                            responseDataIds.some(data => data === item.tutorId)
+                             );
+                    }
+                }
+            }
+
+            setTutors(responseData);
             setIsTutorModalOpen(true);
         } catch (error) {
             console.error("Error fetching tutors data:", error);

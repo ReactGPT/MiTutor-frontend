@@ -6,8 +6,7 @@ import { useAppSelector } from '../../../store/hooks';
 import { RootState } from '../../../store/store';
 import { useStudent } from '../../../store/hooks';
 import { useState, useEffect, useMemo, useCallback, useRef } from 'react';
-import PageAlumnosSeleccionados from './PageCargarAlumnos/PageAlumnosSeleccionados';
-import ModalAlumnosSeleccionados from './PageCargarAlumnos/ModalAlumnosSeleccionados';
+import PageAlumnosSeleccionados from './PageCargarAlumnos/PageAlumnosSeleccionados'; 
 import { TbUTurnRight } from 'react-icons/tb';
 type InputProps = {
   className: string;

@@ -215,10 +215,6 @@ export const Routes: RouterConfig = {
         element: <PageIndicadorTutor />
       },
       {
-        path: '/alumnosSeleccionados',
-        element: <PageAlumnosSeleccionados />,
-      },
-      {
         path: '/tutor-detail',
         element: <TutorDetail />
       }

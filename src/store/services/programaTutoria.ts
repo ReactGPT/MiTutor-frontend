@@ -134,7 +134,7 @@ type ServiceResponse={
         return {sucess:true,data:[]}
       }
       const tutorList: Tutor[] = response.data.data.map((item: any) => {
-        //console.log(response);
+        console.log("tutores",response);
         return {
             idTutor:item.tutorId,
             nombre:item.userAccount.persona.name,

@@ -14,6 +14,10 @@ import ModalWarning from "../../../components/ModalWarning";
 import ModalError from "../../../components/ModalError";
 import ModalConfirmation from "../../../components/ModalConfirmation";
 import ModalSuccess from "../../../components/ModalSuccess";
+import { useAuth } from "../../../context";
+import { ManagerRoleDetails, Specialty } from "../../../store/types";
+import { useAppSelector } from "../../../store/hooks";
+import { RootState } from "../../../store/store";
 
 const PageSolicitudGestion: React.FC = () => {
   const {
@@ -54,6 +58,8 @@ const PageSolicitudGestion: React.FC = () => {
     setFilters(filter);
   };
 
+  const [rolEspecifico, setRolEspecifico] = useState<string | null>(null);
+
   const handleAcceptClick = () => {
     const selectedNodes = gridApiRef.current?.getSelectedNodes() || [];
     const selectedIds = selectedNodes.map(
@@ -82,6 +88,7 @@ const PageSolicitudGestion: React.FC = () => {
     const selectedNodes = gridApiRef.current?.getSelectedNodes() || [];
     const selectedIds = selectedNodes.map(
       (node: any) => node.data.TutorStudentProgramId
+
     );
     if (selectedIds.length === 0) {
       setIsWarningModalOpen(true);
@@ -101,6 +108,9 @@ const PageSolicitudGestion: React.FC = () => {
       setIsConfirmationModalOpen(true);
     }
   };
+
+
+
 
   const handleConfirmAction = () => {
     confirmationAction();
@@ -125,7 +135,7 @@ const PageSolicitudGestion: React.FC = () => {
       maxWidth: 50,
     },
     { headerName: "Código", field: "StudentCode", minWidth: 120, maxWidth: 120 },
-    //{ headerName: "Especialidad", field: "SpecialtyName", minWidth: 150 },
+    { headerName: "Especialidad", field: "SpecialtyName", minWidth: 150 },
     { headerName: "Alumno", field: "StudentFullName", minWidth: 240 },
     { headerName: "Tutor", field: "TutorFullName", minWidth: 200 },
     { headerName: "Estado", field: "State", hide: true },
@@ -137,80 +147,183 @@ const PageSolicitudGestion: React.FC = () => {
     { headerName: "Motivo", field: "Motivo" },
   ];
 
+  const handleRolEspecificoChange = (nuevoRol: string) => {
+    setRolEspecifico(nuevoRol);
+  };
+
+  const { userData } = useAuth();
+  const specialityList = useAppSelector((state: RootState) => state.parameters.specialityList);
+
   const filteredRowData = useMemo(() => {
+    
     let filteredData = [...tutorStudentPrograms];
 
-    if (filters.faculty != undefined) {
-      filteredData = filteredData.filter(
-        (program) =>
-          program.studentProgram.student.specialty.faculty.name ===
-          filters.faculty
+    if (rolEspecifico == 'Coordinador de Facultad') {
+
+      filteredData = filteredData.filter(item => 
+        userData?.userInfo?.roles.some(role => 
+          role.details && 'departmentName' in role.details && role.details.departmentName === item.studentProgram.student.specialty.faculty.name
+        )
       );
+
+      if (filters.faculty != undefined) {
+        filteredData = filteredData.filter(
+          (program) =>
+            program.studentProgram.student.specialty.faculty.name ===
+            filters.faculty
+        );
+      }
+      if (filters.specialty != undefined) {
+        if (filters.specialty === "Todos") {
+          filteredData = filteredData;
+        } else
+          filteredData = filteredData.filter(
+            (program) =>
+              program.studentProgram.student.specialty.name ===
+              filters.specialty
+          );
+      }
+      if (filters.status != undefined) {
+        filteredData = filteredData.filter(
+          (program) => program.state === filters.status
+        );
+      }
+      if (filters.tutor != undefined) {
+        filteredData = filteredData.filter(
+          (program) =>
+            program.tutor.userAccount.persona.name
+              .toLowerCase()
+              .includes((filters.tutor ?? "").toLowerCase()) ||
+            program.tutor.userAccount.persona.lastName
+              .toLowerCase()
+              .includes((filters.tutor ?? "").toLowerCase()) ||
+            program.tutor.userAccount.persona.secondLastName
+              .toLowerCase()
+              .includes((filters.tutor ?? "").toLowerCase()) ||
+            `${program.tutor.userAccount.persona.name} ${program.tutor.userAccount.persona.lastName} ${program.tutor.userAccount.persona.secondLastName}`
+              .toLowerCase()
+              .includes((filters.tutor ?? "").toLowerCase())
+        );
+      }
+      if (filters.student != undefined) {
+        filteredData = filteredData.filter(
+          (program) =>
+            program.studentProgram.student.name
+              .toLowerCase()
+              .includes((filters.student ?? "").toLowerCase()) ||
+            program.studentProgram.student.lastName
+              .toLowerCase()
+              .includes((filters.student ?? "").toLowerCase()) ||
+            program.studentProgram.student.secondLastName
+              .toLowerCase()
+              .includes((filters.student ?? "").toLowerCase()) ||
+            program.studentProgram.student.usuario.pucpCode
+              .toLowerCase()
+              .includes((filters.student ?? "").toLowerCase()) ||
+            `${program.studentProgram.student.name} ${program.studentProgram.student.lastName} ${program.studentProgram.student.secondLastName}`
+              .toLowerCase()
+              .includes((filters.student ?? "").toLowerCase())
+        );
+      }
+      return filteredData.map((program) => ({
+        StudentCode: program.studentProgram.student.usuario.pucpCode,
+        SpecialtyName: program.studentProgram.student.specialty.name,
+        StudentFullName: `${program.studentProgram.student.name} ${program.studentProgram.student.lastName} ${program.studentProgram.student.secondLastName}`,
+        TutorFullName: `${program.tutor.userAccount.persona.name} ${program.tutor.userAccount.persona.lastName} ${program.tutor.userAccount.persona.secondLastName}`,
+        State: `${program.state}`,
+        TutorStudentProgramId: program.tutorStudentProgramId,
+        Motivo: program.motivo,
+      }));
     }
-    if (filters.specialty != undefined) {
-      filteredData = filteredData.filter(
-        (program) =>
-          program.studentProgram.student.specialty.name ===
-          filters.specialty
-      );
+    else if (rolEspecifico == 'Coordinador de Especialidad') {
+
+      const rolEspecialidad = userData?.userInfo?.roles.find(rol => rol.rolName === 'Responsable de Especialidad');
+      if (rolEspecialidad != undefined && rolEspecialidad.details && 'departmentName' in rolEspecialidad.details) {
+        const specialtyName = (rolEspecialidad.details as ManagerRoleDetails).departmentName;
+        filteredData = filteredData.filter(
+          (program) =>
+            program.studentProgram.student.specialty.name === specialtyName
+        );
+      }
+
+      if (filters.specialty != undefined) {
+        if (filters.specialty === "Todos") {
+          const rolEspecialidad = userData?.userInfo?.roles.find(rol => rol.rolName === 'Responsable de Especialidad');
+          if (rolEspecialidad != undefined && rolEspecialidad.details && 'departmentName' in rolEspecialidad.details) {
+            const specialtyName = (rolEspecialidad.details as ManagerRoleDetails).departmentName;
+            filteredData = filteredData.filter(
+              (program) =>
+                program.studentProgram.student.specialty.name === specialtyName
+            );
+          }
+        } else
+          filteredData = filteredData.filter(
+            (program) =>
+              program.studentProgram.student.specialty.name ===
+              filters.specialty
+          );
+      }
+      if (filters.status != undefined) {
+        filteredData = filteredData.filter(
+          (program) => program.state === filters.status
+        );
+      }
+      if (filters.tutor != undefined) {
+        filteredData = filteredData.filter(
+          (program) =>
+            program.tutor.userAccount.persona.name
+              .toLowerCase()
+              .includes((filters.tutor ?? "").toLowerCase()) ||
+            program.tutor.userAccount.persona.lastName
+              .toLowerCase()
+              .includes((filters.tutor ?? "").toLowerCase()) ||
+            program.tutor.userAccount.persona.secondLastName
+              .toLowerCase()
+              .includes((filters.tutor ?? "").toLowerCase()) ||
+            `${program.tutor.userAccount.persona.name} ${program.tutor.userAccount.persona.lastName} ${program.tutor.userAccount.persona.secondLastName}`
+              .toLowerCase()
+              .includes((filters.tutor ?? "").toLowerCase())
+        );
+      }
+      if (filters.student != undefined) {
+        filteredData = filteredData.filter(
+          (program) =>
+            program.studentProgram.student.name
+              .toLowerCase()
+              .includes((filters.student ?? "").toLowerCase()) ||
+            program.studentProgram.student.lastName
+              .toLowerCase()
+              .includes((filters.student ?? "").toLowerCase()) ||
+            program.studentProgram.student.secondLastName
+              .toLowerCase()
+              .includes((filters.student ?? "").toLowerCase()) ||
+            program.studentProgram.student.usuario.pucpCode
+              .toLowerCase()
+              .includes((filters.student ?? "").toLowerCase()) ||
+            `${program.studentProgram.student.name} ${program.studentProgram.student.lastName} ${program.studentProgram.student.secondLastName}`
+              .toLowerCase()
+              .includes((filters.student ?? "").toLowerCase())
+        );
+      }
+      return filteredData.map((program) => ({
+        StudentCode: program.studentProgram.student.usuario.pucpCode,
+        SpecialtyName: program.studentProgram.student.specialty.name,
+        StudentFullName: `${program.studentProgram.student.name} ${program.studentProgram.student.lastName} ${program.studentProgram.student.secondLastName}`,
+        TutorFullName: `${program.tutor.userAccount.persona.name} ${program.tutor.userAccount.persona.lastName} ${program.tutor.userAccount.persona.secondLastName}`,
+        State: `${program.state}`,
+        TutorStudentProgramId: program.tutorStudentProgramId,
+        Motivo: program.motivo,
+      }));
     }
-    if (filters.status != undefined) {
-      filteredData = filteredData.filter(
-        (program) => program.state === filters.status
-      );
-    }
-    if (filters.tutor != undefined) {
-      filteredData = filteredData.filter(
-        (program) =>
-          program.tutor.userAccount.persona.name
-            .toLowerCase()
-            .includes((filters.tutor ?? "").toLowerCase()) ||
-          program.tutor.userAccount.persona.lastName
-            .toLowerCase()
-            .includes((filters.tutor ?? "").toLowerCase()) ||
-          program.tutor.userAccount.persona.secondLastName
-            .toLowerCase()
-            .includes((filters.tutor ?? "").toLowerCase()) ||
-          `${program.tutor.userAccount.persona.name} ${program.tutor.userAccount.persona.lastName} ${program.tutor.userAccount.persona.secondLastName}`
-            .toLowerCase()
-            .includes((filters.tutor ?? "").toLowerCase())
-      );
-    }
-    if (filters.student != undefined) {
-      filteredData = filteredData.filter(
-        (program) =>
-          program.studentProgram.student.name
-            .toLowerCase()
-            .includes((filters.student ?? "").toLowerCase()) ||
-          program.studentProgram.student.lastName
-            .toLowerCase()
-            .includes((filters.student ?? "").toLowerCase()) ||
-          program.studentProgram.student.secondLastName
-            .toLowerCase()
-            .includes((filters.student ?? "").toLowerCase()) ||
-          program.studentProgram.student.usuario.pucpCode
-            .toLowerCase()
-            .includes((filters.student ?? "").toLowerCase()) ||
-          `${program.studentProgram.student.name} ${program.studentProgram.student.lastName} ${program.studentProgram.student.secondLastName}`
-            .toLowerCase()
-            .includes((filters.student ?? "").toLowerCase())
-      );
-    }
-    return filteredData.map((program) => ({
-      StudentCode: program.studentProgram.student.usuario.pucpCode,
-      SpecialtyName: program.studentProgram.student.specialty.name,
-      StudentFullName: `${program.studentProgram.student.name} ${program.studentProgram.student.lastName} ${program.studentProgram.student.secondLastName}`,
-      TutorFullName: `${program.tutor.userAccount.persona.name} ${program.tutor.userAccount.persona.lastName} ${program.tutor.userAccount.persona.secondLastName}`,
-      State: `${program.state}`,
-      TutorStudentProgramId: program.tutorStudentProgramId,
-      Motivo: program.motivo,
-    }));
   }, [tutorStudentPrograms, filters]);
+
   return (
     <div className="flex flex-col w-full h-full gap-5 justify-between">
       <div>
         <SolicitudGestionSearchBar
           handleOnChangeFilters={handleOnChangeFilters}
+          onRolEspecificoChange={handleRolEspecificoChange}
+          specialityList={specialityList}
         />
       </div>
       <h2 className="font-montserrat text-[26px] font-bold text-lg mb-[-8px]">

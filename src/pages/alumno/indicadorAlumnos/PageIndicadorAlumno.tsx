@@ -10,6 +10,8 @@ import jsPDF from 'jspdf';
 import ModalAlumnos from './ModalAlumnos';
 import noAvatar from '../../../assets/Tutor/no-avatar.webp';
 import { Services as ServicesProperties } from '../../../config';
+import { useAuth } from '../../../context';
+import { ManagerRoleDetails } from '../../../store/types';
 
 interface StudentData {
   studentId: number;
@@ -55,9 +57,11 @@ interface Student {
   lastName: string;
   secondLastName: string;
 }
+
 interface IdsStudent {
   studentId: number;
 }
+
 const exportAsImage = () => {
   const chartContainer = document.getElementById('chart-container'); // Asegúrate de tener un contenedor con un id específico para tu gráfico
   if (chartContainer) {
@@ -71,6 +75,7 @@ const exportAsImage = () => {
       });
   }
 };
+
 
 const IconTrophyGold = () => (
   <TrophyIcon className="w-6 h-6 text-yellow-500" />
@@ -100,6 +105,7 @@ const generarPDF = (studentData: StudentData) => {
   doc.save('ficha_de_derivacion.pdf');
 };
 const PageIndicadorAlumno: React.FC = () => {
+
   const [data, setData] = useState<ChartData[]>([]);
   const [topStudents, setTopStudents] = useState<ChartData[]>([]);
   const [selectedStudentPrograms, setSelectedStudentPrograms] = useState<ProgramData[]>([]);
@@ -116,6 +122,44 @@ const PageIndicadorAlumno: React.FC = () => {
     baseURL: ServicesProperties.BaseUrl, // Asegúrate de que esta URL es correcta
   });
 
+  const { userData } = useAuth();
+
+  // 1. Si es coordinador de Facultad: Puede ver todas las especialidades de esa facultad                     CASO 1
+  // 2. Si es coordinador de Especialidad: Puede ver solo la especialidad a la que pertenece                  CASO 2
+  // 3. Si es coordinador de Facultad y Especialidad: Puede ver todas las especialidades de esa facultad      CASO 1
+
+  //function filterStudentsByCoordinatorRole(students: Student[]): Student[] {
+
+    let filteredStudents: Student[] = [];
+    const roles = userData?.userInfo?.roles;
+
+    if (roles) {
+      const iFaculty = roles.findIndex(rol => rol.rolName === 'Responsable de Facultad');
+      if (iFaculty != -1) {
+
+        if (userData?.userInfo?.roles[iFaculty].details && 'departmentName' in userData.userInfo.roles[iFaculty].details) {
+          const facultyId = (userData.userInfo.roles[iFaculty].details as ManagerRoleDetails).departmentId;
+
+          const response = api.get<{ success: boolean, data: IdsStudent[] }>(`/listarProgramasDeTutoriaPorStudentId/${facultyId}`);
+          console.log(response);
+
+          // Filtrar los estudiantes que pertenecen a la facultad del coordinador
+          filteredStudents = students.filter(student => student.id);
+        }
+      } else {
+        const iSpecialty = roles.findIndex(rol => rol.rolName === 'Responsable de Especialidad');
+        if (iSpecialty != -1) {
+          if (userData?.userInfo?.roles[iSpecialty].details && 'departmentName' in userData.userInfo.roles[iSpecialty].details) {
+            const specialtyId = (userData.userInfo.roles[iSpecialty].details as ManagerRoleDetails).departmentId;
+            // Filtrar los estudiantes que pertenecen a la especialidad del coordinador
+          }
+        }
+      }
+    }
+
+    //return filteredStudents;
+  //}
+
   const [idStudents, setIdStudent] = useState<IdsStudent[]>([]);
   useEffect(() => {
     const fetchData = async () => {
@@ -128,7 +172,11 @@ const PageIndicadorAlumno: React.FC = () => {
           programCount: student.cantidadProgramas,
           studentId: student.studentId
         }));
+
+
         setData(transformedData);
+
+
 
         // Ordenar los datos por cantidad de programas en orden descendente y seleccionar los primeros 3
         const topStudentsData = transformedData.sort((a, b) => b.programCount - a.programCount).slice(0, 3);

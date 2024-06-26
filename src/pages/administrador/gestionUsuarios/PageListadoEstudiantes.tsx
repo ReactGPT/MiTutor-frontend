@@ -97,19 +97,19 @@ export default function PageListadoEstudiantes() {
   };
   const columnDefs: ColDef[] = [
 
-    { headerName: 'Código', field: 'pucpCode', filter: 'agNumberColumnFilter', minWidth: 150 },
+    { headerName: 'Código', field: 'pucpCode', filter: 'agTextColumnFilter', minWidth: 110, maxWidth: 120 },
     { headerName: 'Nombres', field: 'persona.name', filter: 'agTextColumnFilter', minWidth: 150 },
     { headerName: 'Primer Apellido', field: 'persona.lastName', filter: 'agTextColumnFilter', minWidth: 150 },
     { headerName: 'Segundo Apellido', field: 'persona.secondLastName', filter: 'agTextColumnFilter', minWidth: 150 },
     { headerName: 'Correo', field: 'institutionalEmail', filter: 'agTextColumnFilter', minWidth: 300, maxWidth: 300 },
     { headerName: 'Facultad', field: 'estudiante.facultyName', filter: 'agTextColumnFilter', minWidth: 300, maxWidth: 300 },
     { headerName: 'Especialidad', field: 'estudiante.specialtyName', filter: 'agTextColumnFilter', minWidth: 300, maxWidth: 300 },
-    {
+    /* {
       headerName: 'Activo',
       field: 'isActive',
       filter: 'agSetColumnFilter',
       minWidth: 80, maxWidth: 80
-    },
+    }, */
     {
       headerName: '',
       field: '',
@@ -139,7 +139,7 @@ export default function PageListadoEstudiantes() {
   return (
     <div className='flex w-full h-full flex-col'>
       <div className='flex w-full h-fit'>
-        <ListadoUsuariosSearchBar handleOnChangeFilters={handleOnChangeFilters} rol='estudiante' />
+        <ListadoUsuariosSearchBar rol='estudiante' />
       </div>
       <div className='flex w-full h-full ag-theme-alpine items-center justify-center'>
         {loading ? <Spinner size='lg' /> : <div className='w-full h-full'>
@@ -153,7 +153,7 @@ export default function PageListadoEstudiantes() {
           />
         </div>}
       </div>
-      <ModalConfirmation isOpen={isOpen} message={`¿Esta seguro de eliminar definitivamente el usuario : ${studentSelected && studentSelected.institutionalEmail}?`}
+      <ModalConfirmation isOpen={isOpen} message={`¿Está seguro de eliminar definitivamente el usuario : ${studentSelected && studentSelected.institutionalEmail}?`}
         onClose={() => {
           setIsOpen(false);
         }}
@@ -163,7 +163,7 @@ export default function PageListadoEstudiantes() {
         }}
         isAcceptAction={true}
       />
-      <ModalSuccess isOpen={isOpenModalSuccess} message={`Se elimino con éxito el usuario : ${studentSelected && studentSelected.institutionalEmail}`}
+      <ModalSuccess isOpen={isOpenModalSuccess} message={`Se eliminó con éxito el usuario : ${studentSelected && studentSelected.institutionalEmail}`}
         onClose={() => {
           setStudentSelected(null);
           setIsOpenModalSuccess(false);

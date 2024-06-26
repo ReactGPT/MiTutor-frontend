@@ -12,6 +12,8 @@ import { Student } from '../../../../store/types/Student';
 import { CloseIcon } from "../../../../assets";
 //import { Button } from "../../../../components";
 //import { useNavigate } from 'react-router-dom';
+import 'ag-grid-community/styles/ag-grid.css';
+import 'ag-grid-community/styles/ag-theme-alpine.css';
 
 interface InputFile {
   name: string;
@@ -44,13 +46,12 @@ const rowDataKeys: string[] = [
 //El papaParse para la cosa esa
 
 type Props = {
-  setStudentDataModified: (state: (studentData: Student[]) => Student[]) => void,
+  setStudentDataModified: (state: (studentData: Student[]) => Student[]) => void;
   setPopout: (state: boolean) => void;
+  onClose: () => void; // Prop to handle closing the dialog
 };
 
-const PageCargarMasivamente = (
-  { setStudentDataModified, setPopout }: Props
-) => {
+const PageCargarMasivamente = ({ setStudentDataModified, setPopout, onClose }: Props) => {
   const inputFileRef = useRef<HTMLInputElement>(null);
   const [file, setFile] = useState<InputFile>(initialFileState);
   const [inputState, setInputState] = useState<InputState>("normal");
@@ -391,7 +392,7 @@ const PageCargarMasivamente = (
           </button>
         </div>
 
-        <div className="flex w-full h-[75%] ag-theme-alpine ag-theme-alpine2">
+        <div className="flex w-full h-[75%] ag-theme-alpine ag-theme-alpine2" style={{ height: '300px' }}>
           <div className="w-full h-full">
             <AgGridReact
               defaultColDef={defaultColDef}
@@ -407,13 +408,14 @@ const PageCargarMasivamente = (
                     student.studentId == 0
                       ? "No encontrado"
                       : student.isActive
-                        ? "Activo"
-                        : "Inactivo",
+                      ? "Activo"
+                      : "Inactivo",
                 };
               })}
             />
           </div>
-        </div>
+      </div>
+
       </div>
       {/* Fin vista previa */}
     </div>

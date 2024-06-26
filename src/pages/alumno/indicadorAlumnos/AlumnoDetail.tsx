@@ -162,7 +162,7 @@ const AlumnoDetail: React.FC = () => {
 
     const fetchAppointments = async () => {
         try {
-            let url = `${ServicesProperties.BaseUrl}/listarAppointmentPorFecha/${student?.id}`;
+            let url = `${ServicesProperties.BaseUrl}/listarAppointmentPorFechaStudent/${student?.id}`;
             if (startDate && endDate) {
                 url += `?startDate=${startDate}&endDate=${endDate}`;
             }
@@ -181,7 +181,7 @@ const AlumnoDetail: React.FC = () => {
 
     const fetchProgramVirtualFace = async () => {
         try {
-            let url = `${ServicesProperties.BaseUrl}/listarProgramaVirtualFace/${student?.id}`;
+            let url = `${ServicesProperties.BaseUrl}/listarProgramaVirtualFaceStudent/${student?.id}`;
             if (startDate && endDate) {
                 url += `?startDate=${startDate}&endDate=${endDate}`;
             }
@@ -505,17 +505,20 @@ const AlumnoDetail: React.FC = () => {
 
             <div className="flex">
                 <div className="flex-grow bg-white shadow-md  overflow-hidden flex flex-col">
-                    <div className="bg-primary py-2 px-4 mb-4">
+                    <div className="bg-primary py-2 px-4 mb-[-6px]">
                         <h2 className="text-xl font-semibold text-white text-center">Programas Académicos</h2>
                     </div>
                     <div className="h-1/2 m-4 flex-grow flex flex-col">
+                    <div className="text-center font-montserrat font-semibold mb-2 text-xs">Cantidad de Estudiantes en Programas académicos</div>
                         <div className="flex-grow bg-gray-200">
-
+                          
                             <ResponsiveContainer width="100%" height="100%">
+                              
                                 {programs.every(program => program.studentCount === 0) ? (
                                     <div className="text-center font-montserrat">No se encontraron datos para esta fecha</div>
                                 ) : (
-                                    <PieChart>
+                                    
+                                    <PieChart>                                     
                                         <Pie
                                             data={programs}
                                             dataKey="studentCount"

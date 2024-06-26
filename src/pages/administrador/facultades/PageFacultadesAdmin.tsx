@@ -1,9 +1,7 @@
-import 'ag-grid-community/styles/ag-grid.css';
-import 'ag-grid-community/styles/ag-theme-alpine.css';
-import TablaUnidad from '../../../components/Administrador/TablaUnidad';
+import React from 'react';
 import TablaFacultad from '../../../components/Administrador/TablaFacultad';
 
-const PageUnidadFacultad = () => {
+const PageFacultadesAdmin: React.FC = () => {
   const defaultColDef = {
     suppressHeaderMenuButton: true,
     flex: 1,
@@ -16,16 +14,15 @@ const PageUnidadFacultad = () => {
       display: 'flex',
     },
   };
-
   return (
     <div className="w-full h-full">
-      <TablaUnidad
-        titulo={"Unidades de Derivación"}
-        abreviatura={"Unidad"}
+      <TablaFacultad
+        titulo={"Facultades"}
+        abreviatura={"Facultad"}
         defaultColDef={defaultColDef}
       />
     </div>
   );
 };
 
-export default PageUnidadFacultad;
+export default PageFacultadesAdmin;

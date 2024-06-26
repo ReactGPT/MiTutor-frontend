@@ -3,8 +3,9 @@ import { Student } from '../types/Student';
 import { getStudentInfo, getStudentIdInfo } from "../services";
 
 interface StudentHookReturnType {
-  fetchStudentData: (idTutoringProgram: number) => Promise<void>;
+  fetchStudentData: (idTutoringProgram: number) => Promise<Student[]>;
   fetchStudentIdData: (students:Student[]) => Promise<Student[]>;
+  setStudentData: React.Dispatch<React.SetStateAction<Student[]>>;
   studentData: Student[];
   isLoading: boolean;
   error: Error | null;
@@ -25,6 +26,7 @@ function useStudent(): StudentHookReturnType {
     } finally {
       setIsLoading(false);
     }
+    return studentData;
   };
 
   const fetchStudentIdData = async (students:Student[]) => {
@@ -44,7 +46,7 @@ function useStudent(): StudentHookReturnType {
     }
     return studentData;
   };
-  return { fetchStudentData, fetchStudentIdData, studentData, isLoading, error };
+  return { fetchStudentData, setStudentData, fetchStudentIdData, studentData, isLoading, error };
 }
 
 export { useStudent };

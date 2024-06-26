@@ -4,17 +4,38 @@ import { Button } from '../../../components';
 import { useNavigate } from 'react-router-dom';
 import { useAppSelector } from '../../../store/hooks';
 import { RootState } from '../../../store/store';
-
+import { useStudent } from '../../../store/hooks';
+import { useState, useEffect, useMemo, useCallback, useRef } from 'react';
+import PageAlumnosSeleccionados from './PageCargarAlumnos/PageAlumnosSeleccionados'; 
+import { TbUTurnRight } from 'react-icons/tb';
 type InputProps = {
   className: string;
 };
 
 function DatosAlumnosSeleccionados({ className }: InputProps) {
-  const { tutoringProgram, onChangeTutoringProgram } = useTutoringProgramContext();
+  const { tutoringProgram, updateAlumnos, onChangeTutoringProgram } = useTutoringProgramContext();
   //const { tutoringProgramSelected } = useAppSelector((state: RootState) => state.tutoringProgram);
   const navigate = useNavigate();
+  const {studentData, fetchStudentData} = useStudent();
+
+  useEffect(()=>{
+    fetchStudentData(!!tutoringProgram.id?tutoringProgram.id:-1) 
+  },[]);
+
+  useEffect(()=>{ 
+    updateAlumnos(studentData);
+    console.log(tutoringProgram.alumnos);
+  },[studentData]); 
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
   const handleOnClickVerAlumnos = () => {
-    navigate("/alumnosSeleccionados");
+    console.log("son esos Alumnos:",tutoringProgram.alumnos);
+    //navigate("/alumnosSeleccionados");
+    setIsModalOpen(true);
   };
   return (
     <div className={className}>
@@ -24,6 +45,8 @@ function DatosAlumnosSeleccionados({ className }: InputProps) {
         </div>
         <Button text='Ver Alumnos' onClick={handleOnClickVerAlumnos} />
       </div>
+      <PageAlumnosSeleccionados isOpen={isModalOpen} closeModal={() => { setIsModalOpen(false); }} />
+      {/*<ModalAlumnosSeleccionados isOpen={isModalOpen} closeModal={() => { setIsModalOpen(false); }}/>*/}
     </div>
   );
 }

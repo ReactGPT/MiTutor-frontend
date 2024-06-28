@@ -88,7 +88,8 @@ type ServiceResponse={
                 Students: programa.alumnos.map(alumno=>{
                   return {
                     Id:alumno.studentId,
-                    IdTutor:!!alumno.tutorId?alumno.tutorId:-1
+                    IdTutor:!!alumno.tutorId?alumno.tutorId:-1,
+                    IsActive:alumno.isActive
                   }
                 }),
                 Faculty : {

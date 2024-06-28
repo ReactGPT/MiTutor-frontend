@@ -14,7 +14,8 @@ import { useNavigate } from 'react-router-dom';
 import { useAppDispatch } from '../../../../store/hooks';
 import { tutoringProgramSlice } from '../../../../store/slices';
 import { useTutoringProgramContext } from '../../../../context';
-
+import DeleteIcon from '../../../../assets/svg/DeleteIcon';
+import { Checkbox } from 'antd';
 type ModalAlumnosSeleccionadosProps = {
   isOpen: boolean;
   closeModal: () => void;
@@ -53,15 +54,16 @@ const PageAlumnosSeleccionados = ({ isOpen, closeModal }: ModalAlumnosSelecciona
   };
 
   const handleClickSaveAlumnos = () => {
+    const filteredStudents = studentDataModified.filter(student => student.isActive);
     dispatch(handleChangeTutoringProgram({
       name: 'alumnos',
-      value: [...studentDataModified]
+      value: [...filteredStudents]
     }));
 
     const programaTutoria = {
       ...tutoringProgramSelected,
-      alumnos: [...studentDataModified],
-      cant_alumnos: studentDataModified.length
+      alumnos: [...filteredStudents],
+      cant_alumnos: filteredStudents.length
     };
 
     const path = !!tutoringProgramSelected.id
@@ -87,6 +89,7 @@ const PageAlumnosSeleccionados = ({ isOpen, closeModal }: ModalAlumnosSelecciona
     setStudentDataModified(updatedStudentData);
   };
 
+
   const defaultColDef = {
     suppressHeaderMenuButton: true,
     flex: 1,
@@ -104,14 +107,43 @@ const PageAlumnosSeleccionados = ({ isOpen, closeModal }: ModalAlumnosSelecciona
     { headerName: 'Código', field: 'pucpCode', maxWidth: 150, minWidth: 100 },
     { headerName: 'Nombres', field: 'name', minWidth: 150 },
     { headerName: 'Apellidos', field: 'lastName', minWidth: 150 },
-    { headerName: 'Correos', field: 'institutionalEmail', minWidth: 150 },
-    { headerName: 'Facultades', field: 'facultyName', minWidth: 150 }
+    { headerName: 'Correos', field: 'institutionalEmail', minWidth: 250 },
+    { headerName: 'Facultades', field: 'facultyName', minWidth: 250 },
+    {
+      headerComponent: () => {
+        return (
+            <button className='text-primary' onClick={() => {   }}><DeleteIcon /></button>
+        );
+      },
+      maxWidth: 60,
+      minWidth: 40,
+      cellRenderer: (row: any) => { 
+        return (
+          <Checkbox
+            checked={!studentDataModified.some(item => item.studentId === row.data.studentId && item.isActive)}
+            onChange={(e) => {
+              const isChecked = e.target.checked;
+              const studentId = row.data.studentId;
+
+              const updatedStudentData = studentDataModified.map((student) => {
+                if (student.studentId === studentId) {
+                  return { ...student, isActive: !isChecked };
+                }
+                return student;
+              });
+
+              setStudentDataModified(updatedStudentData);
+            }}
+          />
+        );
+      },
+    }
   ] : [
     { headerName: 'Código', field: 'pucpCode', maxWidth: 100, minWidth: 80 },
     { headerName: 'Nombres', field: 'name', maxWidth: 120, minWidth: 100 },
     { headerName: 'Apellidos', field: 'lastName', maxWidth: 150, minWidth: 120 },
-    { headerName: 'Correos', field: 'institutionalEmail', minWidth: 150 },
-    { headerName: 'Facultades', field: 'facultyName', minWidth: 150 },
+    { headerName: 'Correos', field: 'institutionalEmail', minWidth: 250 },
+    { headerName: 'Facultades', field: 'facultyName', minWidth: 250 },
     {
       headerName: "Tutor Fijo", field: 'tutorFijo', minWidth: 150, cellRenderer: (params: any) => {
         const student = params.data;
@@ -135,6 +167,35 @@ const PageAlumnosSeleccionados = ({ isOpen, closeModal }: ModalAlumnosSelecciona
         );
       }
     },
+    {
+      headerComponent: () => {
+        return (
+            <button className='text-primary' onClick={() => {   }}><DeleteIcon /></button>
+        );
+      },
+      maxWidth: 60,
+      minWidth: 40,
+      cellRenderer: (row: any) => { 
+        return (
+          <Checkbox
+            checked={!studentDataModified.some(item => item.studentId === row.data.studentId && item.isActive)}
+            onChange={(e) => {
+              const isChecked = e.target.checked;
+              const studentId = row.data.studentId;
+
+              const updatedStudentData = studentDataModified.map((student) => {
+                if (student.studentId === studentId) {
+                  return { ...student, isActive: !isChecked };
+                }
+                return student;
+              });
+
+              setStudentDataModified(updatedStudentData);
+            }}
+          />
+        );
+      },
+    }
   ];
 
   const handleClickSubirMasivamente = () => {
@@ -188,13 +249,13 @@ const PageAlumnosSeleccionados = ({ isOpen, closeModal }: ModalAlumnosSelecciona
                       onClose={handleClosePageCargarMasivamente}
                     />
                   ) : (
-                    <div>
+                    <div className='w-full h-full'>
                       {/* Contenido actual del modal */}
                       <div className="flex flex-col gap-5 w-full">
-                        <div className="flex flex-1">
+                        <div className="flex flex-1 w-full">
                           <SearchInput onSearch={handleSearch} handleOnChangeFilters={() => {}} placeholder="" />
                         </div>
-                        <div className="flex items-end justify-end">
+                        <div className="flex w-full items-end justify-end">
                           <Button onClick={handleClickSubirMasivamente} icon={AddSquareIcon} text="Cargar Masivamente" iconSize={25} />
                         </div>
                       </div>
@@ -207,7 +268,7 @@ const PageAlumnosSeleccionados = ({ isOpen, closeModal }: ModalAlumnosSelecciona
                               columnDefs={columnDefs}
                               rowData={studentDataModified.filter((student) => student.name.toLowerCase().includes(searchValue.toLowerCase()) || student.pucpCode.toLowerCase().includes(searchValue.toLowerCase()) || student.lastName.toLowerCase().includes(searchValue.toLowerCase()))}
                               suppressColumnVirtualisation={true}
-                              rowSelection='multiple'
+                              rowSelection='multiple' 
                             />
                           </div>
                         </div>

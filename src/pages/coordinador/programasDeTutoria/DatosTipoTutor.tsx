@@ -4,6 +4,7 @@ import { useTutoringProgramContext } from '../../../context/ProgramaTutoriaNuevo
 import { useAppSelector, useAppDispatch } from '../../../store/hooks';
 import { RootState } from '../../../store/store';
 import { tutoringProgramSlice } from '../../../store/slices';
+import { useLocation } from 'react-router-dom';
 type InputProps = {
   className: string;
 };
@@ -19,6 +20,9 @@ function DatosTipoTutor({ className }: InputProps) {
   // const handleLocalChangeTutoringProgram= (name:string,value:any)=>{
   //   dispatch(handleChangeTutoringProgram({payload:{name:name,value:value}}));
   // };
+  const location = useLocation();
+  const isEditRoute = location.pathname === '/programasDeTutoriaMaestro/editar';
+
   return (
     <div className={className}>
       <h2 className='text-xl font-bold font-roboto text-black'>Tipo de Tutor</h2>
@@ -29,7 +33,7 @@ function DatosTipoTutor({ className }: InputProps) {
             "tutorTypeId": value.id,
             "tutorTypeDescription": value.name
           });
-        }} options={tutorTypeList} value={tutorTypeList.find((item) => item.id === tutoringProgram.tutorTypeId)} />
+        }} options={tutorTypeList} value={tutorTypeList.find((item) => item.id === tutoringProgram.tutorTypeId)} disabled={isEditRoute} />
       </div>
     </div>
   );

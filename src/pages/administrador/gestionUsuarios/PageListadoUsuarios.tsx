@@ -24,7 +24,7 @@ import { User } from '../../../store/types/User';
 
 export default function PageListadoUsuarios() {
   const navigate = useNavigate();
-  //const history = useHistory();
+  
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [isOpenModalSuccess, setIsOpenModalSuccess] = useState<boolean>(false);
   const [isOpenModalError, setIsOpenModalError] = useState<boolean>(false);

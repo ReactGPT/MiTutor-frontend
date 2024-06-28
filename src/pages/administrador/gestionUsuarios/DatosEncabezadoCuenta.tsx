@@ -9,31 +9,48 @@ import ModalSuccess from '../../../components/ModalSuccess';
 import ModalError from '../../../components/ModalError';
 import InputTutor from '../../../components/Tutor/InputTutor';
 import InputAdmin from '../../../components/Administrador/InputAdmin';
+import { Faculty, Specialty, TipoRol } from '../../../store/types';
+import { UnitDerivation } from '../../../store/types/UnitDerivation';
 
 type InputProps = {
   rol: "estudiante" | "usuario";
+  selectedRoles:TipoRol[];
+  facultySelected:Faculty|null;
+  specialtySelected:Specialty|null;
+  derivationUnit:UnitDerivation|null;
 }
 
-function DatosEncabezadoCuenta({ rol }: InputProps) {
+function DatosEncabezadoCuenta({ rol,selectedRoles,derivationUnit,facultySelected,specialtySelected }: InputProps) {
   const { user, onChangeUser } = useUserContext();
-  const { postUser, postStudent, loading } = useUser();
+  const { postUser, postStudent, loading,postRoles } = useUser();
   const navigate = useNavigate();
   const [isOpenModalConfirmation, setIsOpenModalConfirmation] = useState<boolean>(false);
   const [isOpenModalSucess, setIsOpenModalSucess] = useState<boolean>(false);
   const [isOpenModalError, setIsOpenModalError] = useState<boolean>(false);
 
   const handleSaveUsuario = () => {
-    console.log("User save: ", user);
+    //console.log("User save: ", user);
     user.pucpCode = String(user.pucpCode);
     user.persona.phone = String(user.persona.phone);
-    console.log("User save 2: ", user);
+    //console.log("User save 2: ", user);
 
     if (rol === 'estudiante') {
       postStudent(user)
         .then((response) => response ? setIsOpenModalSucess(true) : setIsOpenModalError(true));
     } else {
       postUser(user)
-        .then((response) => response ? setIsOpenModalSucess(true) : setIsOpenModalError(true));
+        .then((response) =>{
+          //response ? setIsOpenModalSucess(true) : setIsOpenModalError(true)
+          if(response){
+            postRoles(user.id,selectedRoles,facultySelected,specialtySelected,derivationUnit)
+            .then((result)=>{
+              result? setIsOpenModalSucess(true) : setIsOpenModalError(true);
+            })
+          }
+          else{
+            setIsOpenModalError(true);
+          }
+        });
     }
   }
 

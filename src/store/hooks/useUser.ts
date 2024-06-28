@@ -1,8 +1,10 @@
 import {useState} from 'react';
 
-import { crearEditarUsuario, eliminarUsuario, getUsuarios, getStudents, crearEditarAlumno,getUsuariosSinEstudiantes } from '../services/User';
+import { crearEditarUsuario, eliminarUsuario, getUsuarios, getStudents, crearEditarAlumno,getUsuariosSinEstudiantes, listarTiposRoles, modificarRolesUsuario } from '../services/User';
 
 import { User } from '../types/User';
+import { Faculty, Specialty, TipoRol } from '../types';
+import { UnitDerivation } from '../types/UnitDerivation';
 
 
 type UserHookReturnType = {
@@ -17,6 +19,8 @@ type UserHookReturnType = {
     fetchStudents: () => Promise<void>;
     fetchStudentsSingleSet:()=> Promise<User[]>;
     fetchUsersSingleSet:()=> Promise<User[]>;
+    fetchRoles:(id:number)=>Promise<TipoRol[]>;
+    postRoles:(id:number,listaRoles:TipoRol[],faculty:Faculty|null,specialty:Specialty|null,derivatioUnit:UnitDerivation|null)=>Promise<boolean>;
 };
     
 function useUser(): UserHookReturnType {
@@ -142,7 +146,42 @@ function useUser(): UserHookReturnType {
         }
     }
 
-    return { userData, loading, error, fetchUsers,fetchUsersNoStudents, postUser,postStudent, deleteUser, fetchStudents,fetchStudentsSingleSet, fetchUsersSingleSet };
+    const fetchRoles = async(id:number=-1)=>{
+        setLoading(true);
+        //let tiposRoles: TipoRol[]=[]
+        try {
+            const response = await listarTiposRoles(id);
+            if(!response.sucess){
+                throw new Error(response.message);
+            }
+            //console.log(response.data);
+            return response.data;
+        } catch (err:any) {
+            setError(err);
+            return [];
+        } finally {
+            setLoading(false);
+        }
+    }
+    const postRoles = async(id:number,listaRoles:TipoRol[],faculty:Faculty|null,specialty:Specialty|null,derivatioUnit:UnitDerivation|null)=>{
+        setLoading(true);
+        //let tiposRoles: TipoRol[]=[]
+        try {
+            const response = await modificarRolesUsuario(id,listaRoles,faculty,specialty,derivatioUnit);
+            if(!response.sucess){
+                throw new Error(response.message);
+            }
+            //console.log(response.data);
+            return true;
+        } catch (err:any) {
+            setError(err);
+            return false;
+        } finally {
+            setLoading(false);
+        }
+    }
+
+    return { userData, loading, error, fetchUsers,fetchUsersNoStudents, postUser,postStudent, deleteUser, fetchStudents,fetchStudentsSingleSet, fetchUsersSingleSet,fetchRoles,postRoles };
 
 }
 

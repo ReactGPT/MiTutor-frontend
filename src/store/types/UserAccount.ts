@@ -51,3 +51,8 @@ export type UserAccount={
     personInfo:Person;
     roles:Role[];
 }
+
+export type TipoRol= {
+    id:number;
+    description:string;
+}

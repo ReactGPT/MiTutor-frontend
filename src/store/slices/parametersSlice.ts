@@ -1,21 +1,14 @@
 import { createSlice } from '@reduxjs/toolkit';
 //import { Finance } from '../../models/entities';
 
-import { Specialty,Faculty,Tutor,Student } from '../types';
+import { Specialty,Faculty,Tutor,Student, TipoRol } from '../types';
+import { UnitDerivation } from '../types/UnitDerivation';
 
 type AppointmentStatus = {
     id:number;
     name:string;
 }
 
-type UnitDerivation={
-    id:number;
-    name:string;
-    acronym:string;
-    resposible:string;
-    email:string;
-    phone:string;
-}
 
 type ParametersState={
     specialityList : Specialty[        
@@ -26,6 +19,7 @@ type ParametersState={
     tutorTypeList:TutorType[];
     tutorList: Tutor[];
     studentList: Student[];
+    tiposRollist: TipoRol[]
 }
 
 type TutorType={
@@ -333,6 +327,7 @@ const initialState:ParametersState={
             isRegistered: true,            
         }
     ],
+    tiposRollist:[]
 };
 export const parametersSlice = createSlice({
     name : 'parameters',
@@ -386,6 +381,12 @@ export const parametersSlice = createSlice({
                 state.tutorTypeList = payload;
             }
         },
+        setTiposRol:(state,action:{payload:any})=>{
+            const {payload} = action;
+            if(payload.lenght!==0){
+                state.tiposRollist =payload;
+            }
+        }
         /*updateFinance : (state,action:{payload:{updatedPrice:Finance}})=>{
             const {payload} = action;
             state.financeList[state.financeList.findIndex(finance=>finance.id===payload.updatedPrice.id)] = payload.updatedPrice;
@@ -396,4 +397,4 @@ export const parametersSlice = createSlice({
     }
 });
 
-export const { setSpecialities,setFaculties,setTutor,setStudent,setAppointmentStatuses,setUnitDerivations } = parametersSlice.actions;
+export const { setSpecialities,setFaculties,setTutor,setStudent,setAppointmentStatuses,setUnitDerivations,setTiposRol } = parametersSlice.actions;

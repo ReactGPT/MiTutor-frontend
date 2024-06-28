@@ -6,14 +6,22 @@ import { DASHBOARD_SIDEBAR_LINKS } from "../data/navigation";
 import { Outlet } from "react-router-dom";
 import { useParameters } from "../store/hooks";
 import { useRouter } from "../context";
-
+import { useAppDispatch } from "../store/hooks";
+import { parametersSlice } from "../store/slices";
+import { useUser } from "../store/hooks/useUser";
 function Layout() {
   const { fetchEspecialidades, fetchFacultades } = useParameters();
+  const dispatch = useAppDispatch();
+  const {fetchRoles}=useUser();
+  const {setTiposRol}=parametersSlice.actions;
   const { sideBarOption } = useRouter();
   useEffect(() => {
     fetchEspecialidades();
     fetchFacultades();
-
+    fetchRoles(-1)
+    .then((response)=>{
+      dispatch(setTiposRol(response));
+    });
   }, []);
 
   return (

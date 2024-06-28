@@ -1,6 +1,8 @@
 import axios from 'axios';
 import { Services as ServicesProperties } from '../../config';
 import { User } from '../types/User';
+import { Faculty, Specialty, TipoRol } from '../types';
+import { UnitDerivation } from '../types/UnitDerivation';
 
 type ServiceResponseUser = {
   userList: User[];
@@ -258,7 +260,49 @@ async function eliminarUsuario(id: number): Promise<ServiceResponse> {
     throw new Error(err.message);
   }
 }
+async function listarTiposRoles(id: number): Promise<ServiceResponse> {
+  try {
+    const response = await axios({
+      method: 'get',
+      url: ServicesProperties.BaseUrl + `/listarTiposCuenta?userId=${id}`,
+      headers: ServicesProperties.Headers
+    });
 
+    if (!response?.data.success) {
+      return {
+        sucess: false,
+        message: response?.data?.message
+      };
+    }
+    return {
+      sucess: response?.data.success,
+      data:response.data.data
+    };
 
-export { getUsuarios, getUsuariosSinEstudiantes, crearEditarUsuario, eliminarUsuario, getStudents, crearEditarAlumno }
+  } catch (err: any) {
+    console.error(err);
+    throw new Error(err.message);
+  }
+}
+
+async function modificarRolesUsuario(id:number, listaRoles:TipoRol[],faculty:Faculty|null,specialty:Specialty|null,derivatioUnit:UnitDerivation|null):Promise<ServiceResponse>{
+  try{
+    console.log(faculty);
+    const response= await axios({
+      method:'post',
+      url: ServicesProperties.BaseUrl+`/crearRolesUsuario?userId=${id}&facultyId=${faculty?(listaRoles.some(item=>item.id===2)?faculty.id:-1):-1}&specialtyId=${specialty?(listaRoles.some(item=>item.id===3||item.id===4)?specialty.id:-1):-1}&unitDerivationId=${derivatioUnit?(listaRoles.some(item=>item.id===11)?derivatioUnit.id:-1):-1}`,
+      headers: ServicesProperties.Headers,
+      data: [...listaRoles]
+    });
+    return {
+      sucess:response.data.success,
+      message:response.data.message
+    }
+  } catch(err:any){
+    console.error(err);
+    throw new Error(err.message);
+  }
+}
+
+export { getUsuarios, getUsuariosSinEstudiantes, crearEditarUsuario, eliminarUsuario, getStudents, crearEditarAlumno,listarTiposRoles,modificarRolesUsuario }
 

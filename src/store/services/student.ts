@@ -71,4 +71,37 @@ async function getStudentIdInfo(students:Student[]):Promise<StudentDetailRespons
   }
 }
 
-export {getStudentInfo, getStudentIdInfo}
+async function getAllStudentsInfo():Promise<StudentDetailResponse>{
+  try {
+      const response = await axios({
+          method: 'get',
+          url: `${ServicesProperties.BaseUrl}/listarEstudiantesTodo`,
+          headers: {
+            'Content-Type': 'application/json'
+          },
+      });
+   
+      if(!response.data.success){
+          return {studentList:[]};
+      }
+      const studentList: Student[] = response.data.data.map((item: any) => {
+          return {
+            studentId: item.personId,
+            name: item.name,
+            lastName: item.lastName + " " + item.secondLastName,
+            secondLastName: item.secondLastName,
+            isActive: item.personIsActive,
+            pucpCode: item.pucpCode,
+            institutionalEmail: item.institutionalEmail,
+            facultyName: item.facultyName,
+            isRegistered: false,
+          };
+        });
+      return {studentList};
+      
+  } catch (err) {
+    return {studentList:[]};
+  }
+}
+
+export {getStudentInfo, getStudentIdInfo, getAllStudentsInfo}

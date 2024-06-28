@@ -9,7 +9,7 @@ import Papa from 'papaparse';
 import * as XLSX from "xlsx";
 import { useStudent } from '../../../../store/hooks/useStudent';
 import { Student } from '../../../../store/types/Student';
-import { CloseIcon } from "../../../../assets";
+import IconClose from '../../../../assets/svg/IconClose';
 //import { Button } from "../../../../components";
 //import { useNavigate } from 'react-router-dom';
 import 'ag-grid-community/styles/ag-grid.css';
@@ -334,7 +334,7 @@ const PageCargarMasivamente = ({ setStudentDataModified, setPopout, onClose }: P
             onClick={handleClearInput}
             disabled={file.name === ""}
             className={`flex justify-center items-center px-3 gap-[10px] border rounded-[10px] h-[42px] ${inputState === "success" || inputState === "error"
-              ? "bg-file-error"
+              ? "bg-file-error border-primary"
               : "border-primary"
               } ${file.name === "" ? "opacity-50" : ""}`}
           >
@@ -356,9 +356,9 @@ const PageCargarMasivamente = ({ setStudentDataModified, setPopout, onClose }: P
           onChange={handleChangeInputFile}
           accept=".csv, .xlsx"
         />
-        <button className={`flex justify-center items-center border rounded-[10px] h-[42px]`}
+        <button className={`flex justify-center items-center border border-red-600 rounded-[10px] h-[42px] w-[42px]`}
           onClick={() => setPopout(false)}>
-          <CloseIcon className="" />
+          <IconClose size={16} color="red" />
         </button>
       </div>
       {/* Fin input file */}
@@ -378,7 +378,7 @@ const PageCargarMasivamente = ({ setStudentDataModified, setPopout, onClose }: P
             className={`flex justify-center items-center px-3 gap-[10px] border border-primary rounded-[10px] h-[42px] ${studentData.length === 0 ? "opacity-50" : ""
               }`}
           >
-            <AddIcon size={16}></AddIcon>
+            <AddIcon className="text-primary"></AddIcon>
             <p className="text-primary">Agregar</p>
           </button>
           <button

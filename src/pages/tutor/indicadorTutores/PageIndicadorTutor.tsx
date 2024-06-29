@@ -127,7 +127,7 @@ const PageIndicadorTutor: React.FC = () => {
             try {
                 const response = await api.get<{ success: boolean, data: TutorData[] }>('/listarTutoresConCantidadDeProgramas');
                 let responseData = response.data.data;
-                
+            
                 const roles = userData?.userInfo?.roles;
                 if (roles){
                     const iFaculty = roles.findIndex(rol => rol.rolName === 'Responsable de Facultad');

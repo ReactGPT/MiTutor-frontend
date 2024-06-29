@@ -16,6 +16,8 @@ import { tutoringProgramSlice } from '../../../../store/slices';
 import { useTutoringProgramContext } from '../../../../context';
 import DeleteIcon from '../../../../assets/svg/DeleteIcon';
 import { Checkbox } from 'antd';
+import PageCargarAlumno from "./PageCargarAlumno";
+
 type ModalAlumnosSeleccionadosProps = {
   isOpen: boolean;
   closeModal: () => void;
@@ -30,6 +32,7 @@ const PageAlumnosSeleccionados = ({ isOpen, closeModal }: ModalAlumnosSelecciona
   const [studentDataModified, setStudentDataModified] = useState<Student[]>([]);
   const [searchValue, setSearchValue] = useState('');
   const [showPageCargarMasivamente, setShowPageCargarMasivamente] = useState(false); // Estado para controlar PageCargarMasivamente
+  const [showPageCargarAlumno, setshowPageCargarAlumno] = useState(false);
 
   // Efecto para cargar datos originales cuando se abre el modal
   useEffect(() => {
@@ -202,6 +205,10 @@ const PageAlumnosSeleccionados = ({ isOpen, closeModal }: ModalAlumnosSelecciona
     setShowPageCargarMasivamente(true);
   };
 
+  const handleClickSubirAlumno = () => {
+    setshowPageCargarAlumno(true);
+  };
+
   const handleClosePageCargarMasivamente = useCallback(() => {
     // Restaurar studentDataModified a los datos originales si es necesario
     setStudentDataModified([...tutoringProgramSelected.alumnos]);
@@ -248,15 +255,40 @@ const PageAlumnosSeleccionados = ({ isOpen, closeModal }: ModalAlumnosSelecciona
                       setStudentDataModified={setStudentDataModified}
                       onClose={handleClosePageCargarMasivamente}
                     />
+                  ) : ( showPageCargarAlumno ? (
+                    <PageCargarAlumno
+                      setPopout={setshowPageCargarAlumno}
+                      setStudentDataModified={setStudentDataModified}
+                    />
                   ) : (
                     <div className='w-full h-full'>
                       {/* Contenido actual del modal */}
                       <div className="flex flex-col gap-5 w-full">
-                        <div className="flex flex-1 w-full">
-                          <SearchInput onSearch={handleSearch} handleOnChangeFilters={() => {}} placeholder="" />
+                        <div className="flex flex-1">
+                          <SearchInput
+                            onSearch={handleSearch}
+                            handleOnChangeFilters={() => {}}
+                            selectDisabled={true}
+                            placeholder=""
+                          />
                         </div>
-                        <div className="flex w-full items-end justify-end">
-                          <Button onClick={handleClickSubirMasivamente} icon={AddSquareIcon} text="Cargar Masivamente" iconSize={25} />
+                        <div className="flex w-full justify-end gap-5">
+                          <div className="flex items-end justify-end">
+                            <Button
+                              onClick={handleClickSubirAlumno}
+                              icon={AddSquareIcon}
+                              text="Cargar Alumnos"
+                              iconSize={25}
+                            />
+                          </div>
+                          <div className="flex items-end justify-end">
+                            <Button
+                              onClick={handleClickSubirMasivamente}
+                              icon={AddSquareIcon}
+                              text="Cargar Masivamente"
+                              iconSize={25}
+                            />
+                          </div>
                         </div>
                       </div>
  
@@ -279,7 +311,7 @@ const PageAlumnosSeleccionados = ({ isOpen, closeModal }: ModalAlumnosSelecciona
 
                       </div>
                     </div>
-                  )} 
+                  ))} 
                 </div>
               </Dialog.Panel>
             </Transition.Child>

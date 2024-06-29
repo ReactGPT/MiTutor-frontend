@@ -10,4 +10,7 @@ import InputCell from "./InputCell";
 import Toogle from "./Toogle";
 import Checkbox from "./Checkbox";
 import Radial from "./Radial";
-export { Button, Landing, Sidebar, Spinner, Dropdown, SearchInput, FilterComponent, Radial, Combobox, InputCell, Toogle, Checkbox };
+import ModalConfirmation from "./ModalConfirmation";
+import ModalSuccess from "./ModalSuccess";
+import ModalError from "./ModalError";
+export { Button, Landing, Sidebar, Spinner, Dropdown, SearchInput, FilterComponent, Radial, Combobox, InputCell, Toogle, Checkbox, ModalConfirmation, ModalSuccess, ModalError };

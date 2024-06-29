@@ -9,7 +9,8 @@ import {
   BiSolidLandmark,
   BiUserCheck,
   BiBarChart,
-  BiBarChartAlt
+  BiBarChartAlt,
+  BiSolidWrench 
 } from "react-icons/bi";
 import { PiStudent } from "react-icons/pi";
 
@@ -46,6 +47,7 @@ import PageUsuario from "../pages/administrador/gestionUsuarios/PageUsuario.tsx"
 import PageUnidadFacultad from "../pages/administrador/gestionUnidad/PageUnidadFacultad.tsx";
 import PageEditarFacultad from "../pages/administrador/facultades/PageEditarFacultad.tsx";
 import PageEditarUnidadDerivacion from "../pages/administrador/gestionUnidad/PageEditarUnidadDerivacion.tsx";
+import PageInstitucion from "../pages/administrador/institucion/PageInstitucion.tsx";
 import PageAlumnosSeleccionados from "../pages/coordinador/programasDeTutoria/PageCargarAlumnos/PageAlumnosSeleccionados.tsx";
 import PageListadoEstudiantes from "../pages/administrador/gestionUsuarios/PageListadoEstudiantes.tsx";
 import PageEstudiante from "../pages/administrador/gestionUsuarios/PageEstudiante.tsx";
@@ -424,6 +426,10 @@ export const Routes: RouterConfig = {
       {
         path: '/unidades/editarUnidadDerivacion',
         element: <PageEditarUnidadDerivacion />
+      },
+      {
+        path: '/institucion',
+        element: <PageInstitucion/>
       }
     ],
     navBarLink: [
@@ -462,7 +468,13 @@ export const Routes: RouterConfig = {
         label: 'Usuarios',
         path: '/usuarios',
         icon: <BiUser fontSize={32} />,
-      }
+      },
+      // {
+      //   key: 'configuracion',
+      //   label: 'Configuración de la Institución',
+      //   path: '/institucion',
+      //   icon: <BiSolidWrench  fontSize={32} />,
+      // }
     ]
   },
   derivation: {

@@ -194,5 +194,9 @@ export const PageTitles = [
   {
     path: "/misTutorias/detalle/listadoPlanAccionAlumno/detalle",
     pageName: "Detalle Plan de Acción"
+  },
+  {
+    path: "/institucion",
+    pageName: "Configuración de la Institución"
   }
 ];

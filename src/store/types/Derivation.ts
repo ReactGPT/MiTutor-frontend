@@ -8,6 +8,7 @@ export type Derivation = {
   userAccountId: number;
   appointmentId: number;
   isActive: boolean;
+  facultyId: number;
 };
 
 export type ListDerivation = {  

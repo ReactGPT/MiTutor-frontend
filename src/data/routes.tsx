@@ -60,6 +60,7 @@ import PageSolicitudGestionTutor from "../pages/tutor/gestionSolicitudes/PageSol
 import EspecialidadSingular from "../pages/coordinador/especialidades/EspecialidadSingular.tsx";
 import PageGeneralAdmin from "../pages/administrador/general/PageGeneralAdmin.tsx";
 import PageFacultadesAdmin from "../pages/administrador/facultades/PageFacultadesAdmin.tsx";
+import PageIndicadorAlumnoTutor from "../pages/tutor/indicadorTutores/PageIndicadorAlumnoTutor.tsx";
 
 type RouterDetail = {
   pages: RouteObject[];
@@ -138,6 +139,10 @@ export const Routes: RouterConfig = {
         element: <PageResultadoCitaIndividual />
       },
       {
+        path: '/IndicadorAlumnoTutor',
+        element: <PageIndicadorAlumnoTutor/>
+      },
+      {
         path: '/listaDeCitas/resultadoCitaGrupal',
         element: <PageResultadoCitaGrupal />
         //PageDetalleCitaGrupal
@@ -175,6 +180,14 @@ export const Routes: RouterConfig = {
         path: '/listaDeCitas',
         icon: <BiListUl fontSize={32} />,
       },
+
+      {
+        key: 'indicadorAlumnosTutor',
+        label: 'Indicador Alumnos',
+        path: '/IndicadorAlumnoTutor',
+        icon: <BiListUl fontSize={32} />,
+      },
+
       {
         key: 'miPerfil',
         label: 'Mi Perfil',

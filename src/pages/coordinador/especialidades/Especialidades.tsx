@@ -127,9 +127,9 @@ const EspecialidadesPage: React.FC<EspecialidadesPageProps> = ({ Facultyid, disa
     <>
       <div className="w-full h-full flex flex-col gap-5">
         <div className="flex gap-2 flex-wrap justify-between items-center">
-          <h2 className="text-primary text-3xl font-bold">
+          <h1 className="text-2xl font-bold text-[#2F2F2F]">
             Especialidades
-          </h2>
+          </h1>
           <Button
             text="Agregar especialidad"
             onClick={() => {
@@ -146,10 +146,12 @@ const EspecialidadesPage: React.FC<EspecialidadesPageProps> = ({ Facultyid, disa
             className="grow border-0"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
+            disabled={disableAgregarEspecialidad}
           />
           <button
             className="bg-primary text-white px-4 py-2"
             onClick={onSearch}
+            disabled={disableAgregarEspecialidad}
           >
             <BiSearch />
           </button>

@@ -103,7 +103,12 @@ const EspecialidadSingular = () => {
               onChange={(e) => {
                 setAcronym(e.target.value);
               }}
-              disabled={!editable} type="text" placeholder='Siglas' value={acronym} className={`grow border text-sm border-secondary rounded-xl shadow-md shadow-terciary text-primary py-1 px-5 ${!editable ? 'bg-blue-100' : ''}`} />
+              disabled={!editable}
+              type="text"
+              placeholder='Siglas'
+              value={acronym}
+              className={`grow border text-sm border-secondary rounded-xl shadow-md shadow-terciary text-primary py-1 px-5 ${!editable ? 'bg-blue-100' : ''}`}
+            />
           </div>
 
           <div className='grid-cols-2 grid gap-5 max-w-[700px]'>

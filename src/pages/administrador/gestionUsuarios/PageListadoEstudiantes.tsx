@@ -104,12 +104,12 @@ export default function PageListadoEstudiantes() {
     { headerName: 'Correo', field: 'institutionalEmail', filter: 'agTextColumnFilter', minWidth: 300, maxWidth: 300 },
     { headerName: 'Facultad', field: 'estudiante.facultyName', filter: 'agTextColumnFilter', minWidth: 300, maxWidth: 300 },
     { headerName: 'Especialidad', field: 'estudiante.specialtyName', filter: 'agTextColumnFilter', minWidth: 300, maxWidth: 300 },
-    /* {
+    {
       headerName: 'Activo',
       field: 'isActive',
       filter: 'agSetColumnFilter',
       minWidth: 80, maxWidth: 80
-    }, */
+    },
     {
       headerName: '',
       field: '',
@@ -137,8 +137,13 @@ export default function PageListadoEstudiantes() {
 
   ];
   return (
-    <div className='flex w-full h-full flex-col'>
+    <div className='flex w-full h-full flex-col gap-5'>
       <div className='flex w-full h-fit'>
+        <div className="text-base text-primary font-medium w-1/2 flex flex-col items-start justify-center">
+          <label>
+            • Los alumnos tendrán acceso al sistema.
+          </label>
+        </div>
         <ListadoUsuariosSearchBar rol='estudiante' />
       </div>
       <div className='flex w-full h-full ag-theme-alpine items-center justify-center'>

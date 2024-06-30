@@ -136,8 +136,13 @@ export default function PageListadoUsuarios() {
 
   ];
   return (
-    <div className='flex w-full h-full flex-col'>
+    <div className='flex w-full h-full flex-col gap-5'>
       <div className='flex w-full h-fit'>
+        <div className="text-base text-primary font-medium w-1/2 flex flex-col items-start justify-center">
+          <label>
+            • Los usuarios no tendrán acceso al sistema hasta que se les asigne un rol.
+          </label>
+        </div>
         <ListadoUsuariosSearchBar rol='usuario' />
       </div>
       <div className='flex w-full h-full ag-theme-alpine items-center justify-center'>

@@ -1,13 +1,13 @@
-import React, { useEffect, useMemo, useState } from 'react'
-import { Button, Dropdown } from '../../../components'
-import { AddCircleIcon, UserPlus, ArrowDown, ArrowDownload, ArrowUpload, AddIcon } from '../../../assets'
+import React, { useEffect, useMemo, useState } from 'react';
+import { Button, Dropdown } from '../../../components';
+import { AddCircleIcon, UserPlus, ArrowDown, ArrowDownload, ArrowUpload, AddIcon } from '../../../assets';
 import { useNavigate } from 'react-router-dom';
 import { useUser } from '../../../store/hooks/useUser';
 import { writeFile, utils } from 'xlsx';
 
 type InputProps = {
   rol: "estudiante" | "usuario";
-}
+};
 
 export default function ListadoUsuariosSearchBar({ rol }: InputProps) {
   const navigate = useNavigate();
@@ -16,16 +16,16 @@ export default function ListadoUsuariosSearchBar({ rol }: InputProps) {
 
   const handleClickNuevoUsuario = () => {
     navigate(`/${rol}s/nuevo`, { state: { userData: null } });
-  }
+  };
 
   const capitalize = (s: string) => {
     if (typeof s !== 'string') return '';
     return s.charAt(0).toUpperCase() + s.slice(1);
-  }
+  };
 
   const handleClickImportarMasivo = () => {
-    navigate(`/${rol}s/cargaMasiva`, { state: {rol: rol} });
-  }
+    navigate(`/${rol}s/cargaMasiva`, { state: { rol: rol } });
+  };
 
   const handleClickDescargar = async () => {
     await fetchUsers(); // Espera a que se carguen los datos en userData
@@ -63,15 +63,15 @@ export default function ListadoUsuariosSearchBar({ rol }: InputProps) {
   }, [userData, triggerDownload]); // Dependencias: userData y triggerDownload
 
   return (
-    <div className='flex w-full h-full flex-row py-0'>
-      <div className='flex w-full h-12 justify-end space-x-4'>
+    <div className='flex w-1/2 h-full flex-row'>
+      <div className='flex w-full justify-end gap-5'>
         <Button onClick={handleClickNuevoUsuario} text={`Agregar ${capitalize(rol)}`} icon={UserPlus} />
         <Button onClick={handleClickImportarMasivo} text="Importar" variant='primario' icon={ArrowUpload} />
         <Button onClick={handleClickDescargar} text="Descargar" variant='secundario' icon={ArrowDownload} />
       </div>
     </div>
 
-  )
+  );
 }
 
 /*

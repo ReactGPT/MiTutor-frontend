@@ -29,10 +29,13 @@ export type DerivationBienestar = {
   status: string;
   creationDate: string;
   unitDerivationName: string;
-  correoAlumno?: string;
+  idUsuarioAlumno: number;
+  correoAlumno: string;
   nombreAlumno: string;
   codigoAlumno: string;
-  correoTutor?: string;
+  idTutor: number;
+  idUsuarioTutor: number;
+  correoTutor: string;
   nombreTutor: string;
   codigoTutor: string;
   programName: string;

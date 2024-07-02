@@ -17,75 +17,16 @@ import { User } from '../../../store/types/User';
 import CustomUsuariosGridButton from '../../administrador/gestionUsuarios/CustomUsuariosGridButton';
 import { DerivationBienestar } from '../../../store/types/Derivation';
 import EtiquetaCompromiso from '../../../components/Tutor/EtiquetaCompromiso';
-
+import { useAuth } from '../../../context';
+import { useDerivationBienestar } from '../../../store/hooks/useDerivationBienestar'; // Importa el hook
 
 export default function PageListadoDerivaciones() {
   const navigate = useNavigate();
-  const [DerivationData, setDerivationData] = useState<DerivationBienestar[]>([]);
-  const [loading, setLoading] = useState<boolean>(false);
-  //const { loading, DerivationData, fetchDerivaciones} = useDerivaciones(); AQUÍ TRAEMOS EL LISTADO DE DERIVACIONES
+  const { userData } = useAuth();
+  const { derivaciones, loading, error, fetchDerivaciones } = useDerivationBienestar(userData?.userInfo?.id || 0);
   const [derivationSelected, setDerivationSelected] = useState<DerivationBienestar | null>(null);
-  
-  //derivaciones ejemplo:
-  const fetchDerivaciones = () => {
-    // Aquí deberías hacer el fetch a tu API para obtener las derivaciones
-    const exampleData: DerivationBienestar[] = [
-      {
-        derivationId: 1,
-        reason: "Se deriva por mal comportamiento.",
-        comment: "Conversar seriamente.",
-        status: "Pendiente",
-        creationDate: "2024-06-22",
-        unitDerivationName: "Suboficina de rendimiento",
-        correoAlumno: "estudiante1@ejemplo.com",
-        nombreAlumno: "Nuevo Estudiante Prueba",
-        codigoAlumno: "25836974",
-        correoTutor: "tutor1@ejemplo.com",
-        nombreTutor: "Tutor Ejemplo 1",
-        codigoTutor: "12345678",
-        programName: "Nueva tutoría de Teología Cachimbos",
-        observaciones: "Se debe conversar seriamente con el estudiante."
-      },
-      {
-        derivationId: 2,
-        reason: "Asistencia irregular.",
-        comment: "Revisión de asistencia.",
-        status: "Atendido",
-        creationDate: "2024-06-20",
-        unitDerivationName: "Oficina de Asistencia",
-        correoAlumno: "estudiante2@ejemplo.com",
-        nombreAlumno: "Estudiante Ejemplo 2",
-        codigoAlumno: "87654321",
-        correoTutor: "tutor2@ejemplo.com",
-        nombreTutor: "Tutor Ejemplo 2",
-        codigoTutor: "87654321",
-        programName: "Tutoría de Asistencia",
-        observaciones: "Se debe revisar la asistencia del estudiante."
-      },
-      {
-        derivationId: 3,
-        reason: "Asistencia irregular.",
-        comment: "Revisión de asistencia.",
-        status: "Observado",
-        creationDate: "2024-06-20",
-        unitDerivationName: "Oficina de Asistencia",
-        correoAlumno: "estudiante2@ejemplo.com",
-        nombreAlumno: "Estudiante Ejemplo 2",
-        codigoAlumno: "87654321",
-        correoTutor: "tutor2@ejemplo.com",
-        nombreTutor: "Tutor Ejemplo 2",
-        codigoTutor: "87654321",
-        programName: "Tutoría de Asistencia",
-        observaciones: "Se debe revisar la asistencia del estudiante."
-      }
-    ];
 
-    setDerivationData(exampleData);
-  };
-  
-  
   useEffect(() => {
-    //DESCOMENTAR ESTA LÍNEA
     fetchDerivaciones();
   }, []);
 
@@ -94,15 +35,9 @@ export default function PageListadoDerivaciones() {
     navigate("/derivaciones/detalle", { state: { derivationData: data } });
   };
 
-  const handleOnSelectStudent = (derivation: DerivationBienestar) => {
+  const handleOnSelectDerivation = (derivation: DerivationBienestar) => {
     setDerivationSelected(derivation);
   };
-
-  useEffect(() => {
-    if (derivationSelected) {
-      //setIsOpen(true);
-    }
-  }, [derivationSelected]);
 
   const defaultColDef = {
     suppressHeaderMenuButton: true,
@@ -153,7 +88,7 @@ export default function PageListadoDerivaciones() {
           <AgGridReact
             defaultColDef={defaultColDef}
             columnDefs={columnDefs}
-            rowData={DerivationData}
+            rowData={derivaciones}
             rowHeight={60}
             pagination={true}
             paginationAutoPageSize

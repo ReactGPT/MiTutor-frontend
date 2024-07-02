@@ -61,6 +61,8 @@ import EspecialidadSingular from "../pages/coordinador/especialidades/Especialid
 import PageGeneralAdmin from "../pages/administrador/general/PageGeneralAdmin.tsx";
 import PageFacultadesAdmin from "../pages/administrador/facultades/PageFacultadesAdmin.tsx";
 import PageIndicadorAlumnoTutor from "../pages/tutor/indicadorTutores/PageIndicadorAlumnoTutor.tsx";
+import PageListadoDerivaciones from "../pages/bienestar/derivaciones/PageListadoDerivaciones.tsx";
+import PageDetalleDerivacion from "../pages/bienestar/derivaciones/PageDetalleDerivacion.tsx";
 
 type RouterDetail = {
   pages: RouteObject[];
@@ -248,6 +250,15 @@ export const Routes: RouterConfig = {
         path: '/especialidades/editar',
         element: <EspecialidadSingular />
       },
+      //path temporal, va para el responsable de bienestar
+      {
+        path: '/derivaciones',
+        element: <PageListadoDerivaciones />
+      },
+      {
+        path: '/derivaciones/detalle',
+        element: <PageDetalleDerivacion />
+      }
     ],
     navBarLink: [
       {

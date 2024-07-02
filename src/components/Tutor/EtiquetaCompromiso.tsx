@@ -4,7 +4,7 @@ type EtiquetaCompromisoProps = {
   variant: String;
 };
 
-const EtiquetaCompromiso: React.FC<EtiquetaCompromisoProps> = ({variant}) => {
+const EtiquetaCompromiso: React.FC<EtiquetaCompromisoProps> = ({ variant }) => {
   let etiquetaClass = 'rounded-2xl border-2 border-solid px-2 m-10 w-full';
   let text = 'Pendiente';
   switch (variant) {
@@ -15,6 +15,14 @@ const EtiquetaCompromiso: React.FC<EtiquetaCompromisoProps> = ({variant}) => {
     case 'Hecho':
       etiquetaClass += ' bg-green-300 bg-opacity-32';
       text = 'Hecho';
+      break;
+    case 'Observado':
+      etiquetaClass += ' bg-yellow-300 bg-opacity-32';
+      text = 'Observado';
+      break;
+    case 'Atendido':
+      etiquetaClass += ' bg-green-300 bg-opacity-32';
+      text = 'Atendido';
       break;
     default:
       etiquetaClass += ' bg-pink-300 bg-opacity-32'; //pendiente

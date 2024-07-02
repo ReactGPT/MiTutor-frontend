@@ -109,7 +109,7 @@ export default function PageListadoEstudiantes() {
       field: 'isActive',
       filter: 'agSetColumnFilter',
       minWidth: 80, maxWidth: 80
-    },
+    }, 
     {
       headerName: '',
       field: '',

@@ -198,6 +198,14 @@ export const PageTitles = [
   {
     path: "/misTutorias/detalle/listadoPlanAccionAlumno/detalle",
     pageName: "Detalle Plan de Acción"
+  },
+  {
+    path: "/derivaciones",
+    pageName: "Derivaciones"
+  },
+  {
+    path: '/derivaciones/detalle',
+    pageName: "Detalle de Derivación"
   }
 ];
  

@@ -259,6 +259,33 @@ async function eliminarUsuario(id: number): Promise<ServiceResponse> {
   }
 }
 
+async function validarCodigoPUCP(pucpCode: string): Promise<ServiceResponse> {
 
-export { getUsuarios, getUsuariosSinEstudiantes, crearEditarUsuario, eliminarUsuario, getStudents, crearEditarAlumno }
+  try {
+    const response = await axios({
+      method: 'get',
+      url: ServicesProperties.BaseUrl + `/validarCodigoUusario?code=${pucpCode}`,
+      headers: ServicesProperties.Headers
+    });
+
+    if (!response.data.success) {
+      return {
+        sucess: false,
+        message: response?.data?.message
+      };
+    }
+    else{
+      return {
+        sucess: true,
+        message: response?.data?.message
+      };
+    }
+
+  } catch (err: any) {
+    console.error(err);
+    throw new Error(err.message);
+  }
+}
+
+export { getUsuarios, getUsuariosSinEstudiantes, crearEditarUsuario, eliminarUsuario, getStudents, crearEditarAlumno, validarCodigoPUCP }
 

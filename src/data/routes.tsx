@@ -63,6 +63,7 @@ import PageFacultadesAdmin from "../pages/administrador/facultades/PageFacultade
 import PageIndicadorAlumnoTutor from "../pages/tutor/indicadorTutores/PageIndicadorAlumnoTutor.tsx";
 import PageListadoDerivaciones from "../pages/bienestar/derivaciones/PageListadoDerivaciones.tsx";
 import PageDetalleDerivacion from "../pages/bienestar/derivaciones/PageDetalleDerivacion.tsx";
+import PageInicioDerivaciones from "../pages/bienestar/derivaciones/PageInicioDerivaciones.tsx";
 
 type RouterDetail = {
   pages: RouteObject[];
@@ -249,15 +250,6 @@ export const Routes: RouterConfig = {
       {
         path: '/especialidades/editar',
         element: <EspecialidadSingular />
-      },
-      //path temporal, va para el responsable de bienestar
-      {
-        path: '/derivaciones',
-        element: <PageListadoDerivaciones />
-      },
-      {
-        path: '/derivaciones/detalle',
-        element: <PageDetalleDerivacion />
       }
     ],
     navBarLink: [
@@ -491,10 +483,32 @@ export const Routes: RouterConfig = {
   },
   derivation: {
     pages: [
-
+      {
+        path: '/',
+        element: <PageInicioDerivaciones/>
+      },
+      {
+        path: '/derivaciones',
+        element: <PageListadoDerivaciones />
+      },
+      {
+        path: '/derivaciones/detalle',
+        element: <PageDetalleDerivacion />
+      }
     ],
     navBarLink: [
-
+      {
+        key: 'inicio',
+        label: 'Inicio',
+        path: '/',
+        icon: <BiHome fontSize={32} />,
+      },
+      {
+        key: 'derivaciones',
+        label: 'Derivaciones',
+        path: '/derivaciones',
+        icon: <BiListUl fontSize={32} />,
+      },
     ]
   }
 };

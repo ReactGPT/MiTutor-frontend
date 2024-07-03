@@ -24,7 +24,6 @@ export default function CargaMasivaSearchBar({ rol }: InputProps) {
   const navigate = useNavigate();
   const [file, setFile] = useState<File | null>(null);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
-  const [jsonData, setJsonData] = useState("");
   const [existFile, setExistFile] = useState(false);
   const { setRowData, rowData, setLoading } = useDataGrid();
   const { postUser, postStudent, loading } = useUser();
@@ -204,15 +203,14 @@ export default function CargaMasivaSearchBar({ rol }: InputProps) {
       console.log("User save 2: ", user);
 
       if (rol === 'estudiante') {
-        // Si necesitas implementar postStudent, descomenta y ajusta según necesites
         return postStudent(user)
           .then(response => response)
           .catch(error => false); // Manejar error si la promesa falla
       } else {
         // Utilizar postUser y retornar la promesa
-        //return postUser(user)
-        //  .then(response => response)
-        //  .catch(error => false); // Manejar error si la promesa falla
+        return postUser(user)
+          .then(response => response)
+          .catch(error => false); // Manejar error si la promesa falla
       }
     });
 

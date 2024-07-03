@@ -96,12 +96,11 @@ export default function PageListadoEstudiantes() {
     floatingFilter: true,
   };
   const columnDefs: ColDef[] = [
-
+    { headerName: 'Correo', field: 'institutionalEmail', filter: 'agTextColumnFilter', minWidth: 300, maxWidth: 300 },
     { headerName: 'Código', field: 'pucpCode', filter: 'agTextColumnFilter', minWidth: 110, maxWidth: 120 },
     { headerName: 'Nombres', field: 'persona.name', filter: 'agTextColumnFilter', minWidth: 150 },
     { headerName: 'Primer Apellido', field: 'persona.lastName', filter: 'agTextColumnFilter', minWidth: 150 },
     { headerName: 'Segundo Apellido', field: 'persona.secondLastName', filter: 'agTextColumnFilter', minWidth: 150 },
-    { headerName: 'Correo', field: 'institutionalEmail', filter: 'agTextColumnFilter', minWidth: 300, maxWidth: 300 },
     { headerName: 'Facultad', field: 'estudiante.facultyName', filter: 'agTextColumnFilter', minWidth: 300, maxWidth: 300 },
     { headerName: 'Especialidad', field: 'estudiante.specialtyName', filter: 'agTextColumnFilter', minWidth: 300, maxWidth: 300 },
     {

@@ -30,6 +30,7 @@
 
 .cell-error {
   color: #ff0000 !important;
+  background-color: #ff00001a !important;
 }
 
 ::-webkit-scrollbar {

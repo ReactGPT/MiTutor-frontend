@@ -104,14 +104,18 @@ export default function PageProgramasTutoriaMaestro() {
 
         // Apply role-based filter if user has 'Responsable de Facultad' role
         if (roles) {
-            roles.forEach(role => {
-                if (role.rolName === 'Responsable de Facultad') {
-                    const facultyId = parseInt((role.details as any).departmentId, 10);
-                    const programa = programaTutoriaData.find(item => item.facultadId === facultyId);
-                    if (programa) {
-                        filteredData.push(programa);
+            programaTutoriaData.forEach(programa => {
+                // Recorrer cada rol del usuario
+                roles.forEach(role => {
+                    if (role.rolName === 'Responsable de Facultad') {
+                        const facultyId = parseInt((role.details as any).departmentId, 10);
+                        
+                        // Si el programa tiene el mismo facultyId que el rol, agregarlo a filteredData
+                        if (programa.facultadId === facultyId) {
+                            filteredData.push(programa);
+                        }
                     }
-                }
+                });
             });
         }
 

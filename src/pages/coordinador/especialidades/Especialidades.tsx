@@ -130,20 +130,21 @@ const EspecialidadesPage: React.FC<EspecialidadesPageProps> = ({ Facultyid, disa
     const especialdadesFiltered: Specialty[] = useMemo(() => {
         let filteredData: Specialty[] = []; 
         // Apply role-based filter if user has 'Responsable de Facultad' role
+        
         if (roles) {
-            roles.forEach(role => {
-                if (role.rolName === 'Responsable de Facultad') {
-                    const facultyId = parseInt((role.details as any).departmentId, 10);
-                    console.log("fac",facultyId);
-                    const programa = especialidadData.find(item => item.faculty.facultyId === facultyId);
-                    console.log("especialdiada",especialidadData);
-                    if (programa) {
-                        filteredData.push(programa); 
-                    }
-                }
-            });
-        }
- 
+          especialidadData.forEach(especialidad => {
+              // Recorrer cada rol del usuario
+              roles.forEach(role => {
+                  if (role.rolName === 'Responsable de Facultad') {
+                      const facultyId = parseInt((role.details as any).departmentId, 10); 
+                      // Si el programa tiene el mismo facultyId que el rol, agregarlo a filteredData
+                      if (especialidad.faculty.facultyId==facultyId) {
+                          filteredData.push(especialidad);
+                      }
+                  }
+              });
+          });
+      } 
         return filteredData;
     }, [especialidadData, roles]);
 

@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { Button, Combobox, InputCell, Spinner } from '../../../components';
 import { SaveIcon, CloseIcon } from '../../../assets';
 import { useTutoringProgramContext } from '../../../context/ProgramaTutoriaNuevo';
@@ -7,18 +7,19 @@ import { RootState } from '../../../store/store';
 import ModalSuccess from '../../../components/ModalSuccess';
 import ModalError from '../../../components/ModalError';
 import { useProgramaTutoria } from '../../../store/hooks';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { Label } from 'flowbite-react';
 import { Faculty, Specialty } from '../../../store/types';
 import { useAuth } from '../../../context';
 
 function DatosGeneralesTutoria() {
+  const location = useLocation();
   const { postProgramaTutoria, isLoading } = useProgramaTutoria();
   const navigate = useNavigate();
   const { tutoringProgram, onChangeTutoringProgram } = useTutoringProgramContext();
   const { tutoringProgramSelected } = useAppSelector((state: RootState) => state.tutoringProgram);
 
-  const [isOpenModalSucess, setIsOpenModalSucess] = useState<boolean>(false);
+  const [isOpenModalSuccess, setIsOpenModalSuccess] = useState<boolean>(false);
   const [isOpenModalError, setIsOpenModalError] = useState<boolean>(false);
   const { userData } = useAuth();
   const roles = !!userData ? userData?.userInfo?.roles : [];
@@ -45,6 +46,24 @@ function DatosGeneralesTutoria() {
       }
     });
   }
+  const isEditRoute = location.pathname === '/programasDeTutoriaMaestro/editar';
+  // Identificar si estamos en modo de edición basado en la URL
+  useEffect(() => {
+    const isEditMode = location.pathname.includes('/editar');
+    if (isEditMode) {
+      // Asignar facultad seleccionada
+      const selectedFaculty = facultyList.find(faculty => faculty.id === tutoringProgramSelected.facultadId);
+      if (selectedFaculty) {
+        setFacultySelected(selectedFaculty);
+      }
+
+      // Asignar especialidad seleccionada
+      const selectedSpeciality = specialityList.find(speciality => speciality.id === tutoringProgramSelected.especialidadId);
+      if (selectedSpeciality) {
+        setSpecialitySelected(selectedSpeciality);
+      }
+    }
+  }, [location.pathname, tutoringProgramSelected, facultyList, specialityList]);
 
   const handleOnChangeFaculty = (value: Faculty) => {
     if ((facultySelected && facultySelected.id !== value.id) || (!facultySelected && specialitySelected?.facultyId !== value.id)) {
@@ -63,7 +82,7 @@ function DatosGeneralesTutoria() {
 
   const handleSaveTutoria = () => {
     postProgramaTutoria(tutoringProgramSelected)
-      .then((response) => response ? setIsOpenModalSucess(true) : setIsOpenModalError(true));
+      .then((response) => response ? setIsOpenModalSuccess(true) : setIsOpenModalError(true));
   };
 
   return (
@@ -105,6 +124,7 @@ function DatosGeneralesTutoria() {
               }}
               value={facultySelected}
               text='Facultad'
+              disabled={isEditRoute}
             />
           </span>
 
@@ -119,6 +139,7 @@ function DatosGeneralesTutoria() {
               }}
               value={specialitySelected}
               text='Especialidad'
+              disabled={isEditRoute}
             />
           </span>
 
@@ -143,10 +164,10 @@ function DatosGeneralesTutoria() {
 
       </div>
 
-      <ModalSuccess isOpen={isOpenModalSucess}
+      <ModalSuccess isOpen={isOpenModalSuccess}
         message={!!tutoringProgram.id ? "Se guardaron los cambios satisfactoriamente" : "Se creó la tutoría satisfactoriamente"}
         onClose={() => {
-          setIsOpenModalSucess(false);
+          setIsOpenModalSuccess(false);
           navigate("/programasDeTutoria");
         }}
       />

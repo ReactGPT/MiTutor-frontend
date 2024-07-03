@@ -64,6 +64,7 @@ import PageIndicadorAlumnoTutor from "../pages/tutor/indicadorTutores/PageIndica
 import PageListadoDerivaciones from "../pages/bienestar/derivaciones/PageListadoDerivaciones.tsx";
 import PageDetalleDerivacion from "../pages/bienestar/derivaciones/PageDetalleDerivacion.tsx";
 import PageInicioDerivaciones from "../pages/bienestar/derivaciones/PageInicioDerivaciones.tsx";
+import PageActualizacionMasivaAlumnos from "../pages/administrador/gestionUsuarios/PageActualizacionMasivaAlumnos.tsx";
 
 type RouterDetail = {
   pages: RouteObject[];
@@ -432,6 +433,10 @@ export const Routes: RouterConfig = {
       {
         path: '/estudiantes/cargaMasiva',
         element: <PageCargaMasiva />
+      },
+      {
+        path: '/estudiantes/updateMasivo',
+        element: <PageActualizacionMasivaAlumnos/>
       },
       {
         path: '/unidades',

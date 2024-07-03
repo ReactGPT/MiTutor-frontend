@@ -27,6 +27,10 @@ export default function ListadoUsuariosSearchBar({ rol }: InputProps) {
     navigate(`/${rol}s/cargaMasiva`, { state: { rol: rol } });
   };
 
+  const handleClickActualizarMasivo = () => {
+    navigate(`/${rol}s/updateMasivo`);
+  }
+
   const handleClickDescargar = async () => {
     if(rol === "estudiante") await fetchStudents(); // Espera a que se carguen los datos en userData
     else await fetchUsers(); // Espera a que se carguen los datos en userData
@@ -72,6 +76,7 @@ export default function ListadoUsuariosSearchBar({ rol }: InputProps) {
       <div className='flex w-full justify-end gap-5'>
         <Button onClick={handleClickNuevoUsuario} text={`Agregar ${capitalize(rol)}`} icon={UserPlus} />
         <Button onClick={handleClickImportarMasivo} text="Importar" variant='primario' icon={ArrowUpload} />
+        {rol === "estudiante" && <Button onClick={handleClickActualizarMasivo} text="Actualizar" variant='primario' icon={ArrowUpload} />}
         <Button onClick={handleClickDescargar} text="Descargar" variant='secundario' icon={ArrowDownload} />
       </div>
     </div>

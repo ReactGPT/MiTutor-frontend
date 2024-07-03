@@ -101,7 +101,7 @@ export default function PageProgramasTutoriaMaestro() {
     
     const programaTutoriaFiltered: ProgramaTutoria[] = useMemo(() => {
         let filteredData: ProgramaTutoria[] = [];
-
+        console.log(programaTutoriaData);
         // Apply role-based filter if user has 'Responsable de Facultad' role
         if (roles) {
             programaTutoriaData.forEach(programa => {

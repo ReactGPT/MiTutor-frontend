@@ -29,14 +29,15 @@ export default function PageListadoUsuarios() {
   const [isOpenModalSuccess, setIsOpenModalSuccess] = useState<boolean>(false);
   const [isOpenModalError, setIsOpenModalError] = useState<boolean>(false);
   //const {isLoading,programaTutoriaData,fetchProgramaTutorias,postEliminarProgramaTutoria} = useProgramaTutoria();
-  const { loading, userData, fetchUsers, deleteUser } = useUser();
+  const { loading, userData, fetchUsers, fetchUsersNoStudents ,deleteUser } = useUser();
   //const [programaSelected, setProgramaSelected] = useState<ProgramaTutoria | null>(null);
   const [userSelected, setUserSelected] = useState<User | null>(null);
   //const [programaTutoriaFiltered,setProgramaTutoriaFiltered] = useState<ProgramaTutoria[]|null>(null)
   useEffect(() => {
     //console.log("llamada fetch prog tutoria");
     //fetchProgramaTutorias();
-    fetchUsers();
+    //fetchUsers(); trae usuarios y alumnos
+    fetchUsersNoStudents();
   }, []);
 
   const handleNavigation = (data: User) => {
@@ -66,21 +67,6 @@ export default function PageListadoUsuarios() {
         });
     }
   };
-  const [filters, setFilters] = useState<any>({
-    idSpeciality: null,
-    idFaculty: null,
-    name: null
-  });
-  const handleOnChangeFilters = (filter: any) => {
-    setFilters(filter);
-  };
-  const UserFiltered: User[] = useMemo(() => {
-    return [...(userData).filter((item) =>
-      item.persona.name.toLowerCase().includes(filters.name ? filters.name : "")
-      //&&(filters.idSpeciality?filters.idSpeciality===item.especialidadId:true)&&(filters.idFaculty?filters.idFaculty===item.facultadId:true)
-    )];
-  }, [userData, filters]);
-
 
   const defaultColDef = {
     suppressHeaderMenuButton: true,
@@ -97,12 +83,11 @@ export default function PageListadoUsuarios() {
     floatingFilter: true,
   };
   const columnDefs: ColDef[] = [
-
+    { headerName: 'Correo', field: 'institutionalEmail', filter: 'agTextColumnFilter', minWidth: 300, maxWidth: 300 },
     { headerName: 'Código', field: 'pucpCode', filter: 'agTextColumnFilter', minWidth: 100, maxWidth: 120 },
     { headerName: 'Nombres', field: 'persona.name', filter: 'agTextColumnFilter', minWidth: 150 },
     { headerName: 'Primer Apellido', field: 'persona.lastName', filter: 'agTextColumnFilter', minWidth: 150 },
     { headerName: 'Segundo Apellido', field: 'persona.secondLastName', filter: 'agTextColumnFilter', minWidth: 150 },
-    { headerName: 'Correo', field: 'institutionalEmail', filter: 'agTextColumnFilter', minWidth: 300, maxWidth: 300 },
     {
       headerName: 'Activo',
       field: 'isActive',

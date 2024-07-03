@@ -61,6 +61,10 @@ import EspecialidadSingular from "../pages/coordinador/especialidades/Especialid
 import PageGeneralAdmin from "../pages/administrador/general/PageGeneralAdmin.tsx";
 import PageFacultadesAdmin from "../pages/administrador/facultades/PageFacultadesAdmin.tsx";
 import PageIndicadorAlumnoTutor from "../pages/tutor/indicadorTutores/PageIndicadorAlumnoTutor.tsx";
+import PageListadoDerivaciones from "../pages/bienestar/derivaciones/PageListadoDerivaciones.tsx";
+import PageDetalleDerivacion from "../pages/bienestar/derivaciones/PageDetalleDerivacion.tsx";
+import PageInicioDerivaciones from "../pages/bienestar/derivaciones/PageInicioDerivaciones.tsx";
+import PageActualizacionMasivaAlumnos from "../pages/administrador/gestionUsuarios/PageActualizacionMasivaAlumnos.tsx";
 
 type RouterDetail = {
   pages: RouteObject[];
@@ -247,7 +251,7 @@ export const Routes: RouterConfig = {
       {
         path: '/especialidades/editar',
         element: <EspecialidadSingular />
-      },
+      }
     ],
     navBarLink: [
       {
@@ -431,6 +435,10 @@ export const Routes: RouterConfig = {
         element: <PageCargaMasiva />
       },
       {
+        path: '/estudiantes/updateMasivo',
+        element: <PageActualizacionMasivaAlumnos/>
+      },
+      {
         path: '/unidades',
         element: <PageUnidadFacultad />
       },
@@ -480,10 +488,32 @@ export const Routes: RouterConfig = {
   },
   derivation: {
     pages: [
-
+      {
+        path: '/',
+        element: <PageInicioDerivaciones/>
+      },
+      {
+        path: '/derivaciones',
+        element: <PageListadoDerivaciones />
+      },
+      {
+        path: '/derivaciones/detalle',
+        element: <PageDetalleDerivacion />
+      }
     ],
     navBarLink: [
-
+      {
+        key: 'inicio',
+        label: 'Inicio',
+        path: '/',
+        icon: <BiHome fontSize={32} />,
+      },
+      {
+        key: 'derivaciones',
+        label: 'Derivaciones',
+        path: '/derivaciones',
+        icon: <BiListUl fontSize={32} />,
+      },
     ]
   }
 };

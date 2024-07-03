@@ -11,7 +11,7 @@ type InputProps = {
 
 export default function ListadoUsuariosSearchBar({ rol }: InputProps) {
   const navigate = useNavigate();
-  const { loading, userData, fetchUsers } = useUser();
+  const { loading, userData, fetchUsers, fetchStudents } = useUser();
   const [triggerDownload, setTriggerDownload] = useState(false); // Estado para controlar la descarga
 
   const handleClickNuevoUsuario = () => {
@@ -27,8 +27,13 @@ export default function ListadoUsuariosSearchBar({ rol }: InputProps) {
     navigate(`/${rol}s/cargaMasiva`, { state: { rol: rol } });
   };
 
+  const handleClickActualizarMasivo = () => {
+    navigate(`/${rol}s/updateMasivo`);
+  }
+
   const handleClickDescargar = async () => {
-    await fetchUsers(); // Espera a que se carguen los datos en userData
+    if(rol === "estudiante") await fetchStudents(); // Espera a que se carguen los datos en userData
+    else await fetchUsers(); // Espera a que se carguen los datos en userData
 
     // pequeño retraso para aseguraR que datos estén disponibles
     await new Promise(resolve => setTimeout(resolve, 500));
@@ -49,7 +54,11 @@ export default function ListadoUsuariosSearchBar({ rol }: InputProps) {
         Telefono: user.persona.phone,
         Activo: user.isActive,
         CreationDate: user.creationDate,
-        ModificationDate: user.modificationDate
+        ModificationDate: user.modificationDate,
+        ...(rol === "estudiante" && {
+          Facultad: user.estudiante?.facultyName,
+          Especialidad: user.estudiante?.specialtyName
+        })
       }));
 
       const hoja = utils.json_to_sheet(filteredData);
@@ -67,6 +76,7 @@ export default function ListadoUsuariosSearchBar({ rol }: InputProps) {
       <div className='flex w-full justify-end gap-5'>
         <Button onClick={handleClickNuevoUsuario} text={`Agregar ${capitalize(rol)}`} icon={UserPlus} />
         <Button onClick={handleClickImportarMasivo} text="Importar" variant='primario' icon={ArrowUpload} />
+        {rol === "estudiante" && <Button onClick={handleClickActualizarMasivo} text="Actualizar" variant='primario' icon={ArrowUpload} />}
         <Button onClick={handleClickDescargar} text="Descargar" variant='secundario' icon={ArrowDownload} />
       </div>
     </div>

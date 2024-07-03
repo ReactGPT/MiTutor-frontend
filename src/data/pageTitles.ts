@@ -206,6 +206,10 @@ export const PageTitles = [
   {
     path: '/derivaciones/detalle',
     pageName: "Detalle de Derivación"
+  },
+  {
+    path: '/estudiantes/updateMasivo',
+    pageName: "Actualización Masiva de Alumnos"
   }
 ];
  

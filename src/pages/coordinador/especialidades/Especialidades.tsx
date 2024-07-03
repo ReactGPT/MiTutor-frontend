@@ -108,8 +108,6 @@ const EspecialidadesPage: React.FC<EspecialidadesPageProps> = ({ Facultyid, disa
   const [isOpenModalError, setIsOpenModalError] = useState<boolean>(false);
 
   const handleOnConfirmDeleteEspecialidad = async () => {
-    console.log("Eliminando");
-
     if (selectedEspecialidadId !== null) {
       try {
         await eliminarEspecialidad(selectedEspecialidadId);
@@ -123,30 +121,31 @@ const EspecialidadesPage: React.FC<EspecialidadesPageProps> = ({ Facultyid, disa
       }
     }
   };
- 
+
   const roles = userData?.userInfo?.roles;
-  let selectedFaculties: Faculty[] = [];
-    
-    const especialdadesFiltered: Specialty[] = useMemo(() => {
-        let filteredData: Specialty[] = []; 
-        // Apply role-based filter if user has 'Responsable de Facultad' role
-        
-        if (roles) {
-          especialidadData.forEach(especialidad => {
-              // Recorrer cada rol del usuario
-              roles.forEach(role => {
-                  if (role.rolName === 'Responsable de Facultad') {
-                      const facultyId = parseInt((role.details as any).departmentId, 10); 
-                      // Si el programa tiene el mismo facultyId que el rol, agregarlo a filteredData
-                      if (especialidad.faculty.facultyId==facultyId) {
-                          filteredData.push(especialidad);
-                      }
-                  }
-              });
-          });
-      } 
-        return filteredData;
-    }, [especialidadData, roles]);
+
+  const especialdadesFiltered: Specialty[] = useMemo(() => {
+    let filteredData: Specialty[] = [];
+    // Apply role-based filter if user has 'Responsable de Facultad' role
+    if (Facultyid) {
+      return especialidadData.filter(especialidad => especialidad.faculty.facultyId == Facultyid);
+    }
+    if (roles) {
+      especialidadData.forEach(especialidad => {
+        // Recorrer cada rol del usuario
+        roles.forEach(role => {
+          if (role.rolName === 'Responsable de Facultad') {
+            const facultyId = parseInt((role.details as any).departmentId, 10);
+            // Si el programa tiene el mismo facultyId que el rol, agregarlo a filteredData
+            if (especialidad.faculty.facultyId == facultyId) {
+              filteredData.push(especialidad);
+            }
+          }
+        });
+      });
+    }
+    return filteredData;
+  }, [especialidadData, roles]);
 
   return (
     <>

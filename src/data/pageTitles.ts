@@ -210,6 +210,9 @@ export const PageTitles = [
   {
     path: '/estudiantes/updateMasivo',
     pageName: "Actualización Masiva de Alumnos"
+  },
+  {
+    path: '/facultades/editarFacultad/especialidades/editar',
+    pageName: "Editar Especialidad"
   }
 ];
- 

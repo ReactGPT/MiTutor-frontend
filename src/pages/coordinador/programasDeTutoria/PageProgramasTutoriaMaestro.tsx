@@ -10,9 +10,9 @@ import { DetailsIcon, RefreshIcon } from '../../../assets';
 import { useNavigate } from 'react-router-dom';
 import { useProgramaTutoria } from '../../../store/hooks';
 import { Spinner } from '../../../components';
-import { ProgramaTutoria, Tutor } from '../../../store/types';
+import { Faculty, ProgramaTutoria, Tutor } from '../../../store/types';
 //import { useHistory } from 'react-router-dom';
-import { useTitle } from '../../../context';
+import { useAuth, useTitle } from '../../../context';
 import DeleteIcon from '../../../assets/svg/DeleteIcon';
 //import { getEliminarTutoria } from '../../../store/services';
 import ModalConfirmation from '../../../components/ModalConfirmation';
@@ -95,12 +95,35 @@ export default function PageProgramasTutoriaMaestro() {
     const handleOnChangeFilters = (filter: any) => {
         setFilters(filter);
     };
+    const { userData } = useAuth();
+    const roles = userData?.userInfo?.roles;
+    let selectedFaculties: Faculty[] = [];
+    
     const programaTutoriaFiltered: ProgramaTutoria[] = useMemo(() => {
-        return [...(programaTutoriaData).filter((item) =>
-            item.nombre.toLowerCase().includes(filters.name ? filters.name.toString().toLowerCase() : "") && (filters.idSpeciality ? filters.idSpeciality === item.especialidadId : true) && (filters.idFaculty ? filters.idFaculty === item.facultadId : true)
-        )];
-    }, [programaTutoriaData, filters]);
+        let filteredData: ProgramaTutoria[] = [];
 
+        // Apply role-based filter if user has 'Responsable de Facultad' role
+        if (roles) {
+            roles.forEach(role => {
+                if (role.rolName === 'Responsable de Facultad') {
+                    const facultyId = parseInt((role.details as any).departmentId, 10);
+                    const programa = programaTutoriaData.find(item => item.facultadId === facultyId);
+                    if (programa) {
+                        filteredData.push(programa);
+                    }
+                }
+            });
+        }
+
+        // Apply additional filters (name, speciality, faculty)
+        filteredData = filteredData.filter(item =>
+            item.nombre.toLowerCase().includes(filters.name ? filters.name.toString().toLowerCase() : "") &&
+            (filters.idSpeciality ? filters.idSpeciality === item.especialidadId : true) &&
+            (filters.idFaculty ? filters.idFaculty === item.facultadId : true)
+        );
+
+        return filteredData;
+    }, [programaTutoriaData, filters, roles]);
 
     const defaultColDef = {
         suppressHeaderMenuButton: true,

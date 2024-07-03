@@ -1,38 +1,71 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { Button, Combobox, InputCell, Spinner } from '../../../components';
 import { SaveIcon, CloseIcon } from '../../../assets';
 import { useTutoringProgramContext } from '../../../context/ProgramaTutoriaNuevo';
-import { useAppSelector, useAppDispatch } from '../../../store/hooks';
+import { useAppSelector } from '../../../store/hooks';
 import { RootState } from '../../../store/store';
-import { useProgramaTutoria } from '../../../store/hooks';
-import { useNavigate } from 'react-router-dom';
 import ModalSuccess from '../../../components/ModalSuccess';
 import ModalError from '../../../components/ModalError';
-import { tutoringProgramSlice } from '../../../store/slices';
-import { useAuth } from '../../../context';
+import { useProgramaTutoria } from '../../../store/hooks';
+import { useNavigate } from 'react-router-dom';
 import { Label } from 'flowbite-react';
+import { Faculty, Specialty } from '../../../store/types';
+import { useAuth } from '../../../context';
 
 function DatosGeneralesTutoria() {
-  //const[open,setOpen] = useState<boolean>(true);
   const { postProgramaTutoria, isLoading } = useProgramaTutoria();
   const navigate = useNavigate();
-  //const dispatch = useAppDispatch();
-  //const {handleChangeTutoringProgram}=tutoringProgramSlice.actions;
   const { tutoringProgram, onChangeTutoringProgram } = useTutoringProgramContext();
-  const { facultyList, specialityList } = useAppSelector((state: RootState) => state.parameters);
   const { tutoringProgramSelected } = useAppSelector((state: RootState) => state.tutoringProgram);
 
   const [isOpenModalSucess, setIsOpenModalSucess] = useState<boolean>(false);
   const [isOpenModalError, setIsOpenModalError] = useState<boolean>(false);
+  const { userData } = useAuth();
+  const roles = !!userData ? userData?.userInfo?.roles : [];
+
+  const { specialityList, facultyList } = useAppSelector((state: RootState) => ({
+    specialityList: state.parameters.specialityList,
+    facultyList: state.parameters.facultyList,
+  }));
+
+  const [specialitySelected, setSpecialitySelected] = useState<Specialty | null>(null);
+  const [facultySelected, setFacultySelected] = useState<Faculty | null>(null);
+  const [searchQuery, setSearchQuery] = useState<string>("");
+
+  let selectedFaculties: Faculty[] = [];
+
+  if (roles) {
+    roles.forEach(role => {
+      if (role.rolName === 'Responsable de Facultad') {
+        const facultyId = parseInt((role.details as any).departmentId, 10);
+        const faculty = facultyList.find(faculty => faculty.id === facultyId);
+        if (faculty) {
+          selectedFaculties.push(faculty);
+        }
+      }
+    });
+  }
+
+  const handleOnChangeFaculty = (value: Faculty) => {
+    if ((facultySelected && facultySelected.id !== value.id) || (!facultySelected && specialitySelected?.facultyId !== value.id)) {
+      setSpecialitySelected(null);
+    }
+    setFacultySelected(value);
+  };
+
+  const specialityOptions = useMemo(() => {
+    if (!facultySelected?.id) {
+      return [];
+    } else {
+      return specialityList.filter(item => item.facultyId === facultySelected.id);
+    }
+  }, [facultySelected, specialityList]);
+
   const handleSaveTutoria = () => {
     postProgramaTutoria(tutoringProgramSelected)
       .then((response) => response ? setIsOpenModalSucess(true) : setIsOpenModalError(true));
   };
-  const { userData } = useAuth();
-  const roles = !!userData ? userData?.userInfo?.roles : [];
-  // const handleLocalChangeTutoringProgram= (name:string,value:any)=>{
-  //   dispatch(handleChangeTutoringProgram({name:name,value:value}));
-  // };
+
   return (
     <div className='flex flex-col w-full h-full'>
 
@@ -63,12 +96,14 @@ function DatosGeneralesTutoria() {
           <span className='w-1/3 h-full'>
             <Label value="Facultad" className='font-roboto text-primary' />
             <Combobox
-              name="Elija una facultad" //facultadId
-              options={facultyList}
+              name="Elija una facultad"
+              options={selectedFaculties}
               onChange={(value: any) => {
                 onChangeTutoringProgram("facultadId", value.id);
+                setFacultySelected(value);
+                setSpecialitySelected(null); // Reset speciality when faculty changes
               }}
-              value={tutoringProgram.facultadId === 0 ? null : facultyList.find((item) => item.id === tutoringProgram.facultadId)}
+              value={facultySelected}
               text='Facultad'
             />
           </span>
@@ -76,13 +111,13 @@ function DatosGeneralesTutoria() {
           <span className='w-1/3 h-full'>
             <Label value="Especialidad" className='font-roboto text-primary' />
             <Combobox
-              name="Elija una especialidad" //especialidadId
-              options={specialityList}
+              name="Elija una especialidad"
+              options={specialityOptions}
               onChange={(value: any) => {
                 onChangeTutoringProgram("especialidadId", value.id);
-                //dispatch(handleChangeTutoringProgram({payload:{nombre:"especialidadId",value: value.id}}));
+                setSpecialitySelected(value);
               }}
-              value={tutoringProgram.especialidadId === 0 ? null : specialityList.find((item) => item.id === tutoringProgram.especialidadId)}
+              value={specialitySelected}
               text='Especialidad'
             />
           </span>
@@ -92,7 +127,8 @@ function DatosGeneralesTutoria() {
         <div id='ProgramaTutoriaBox1ContentDescripcion' className='flex w-full h-full flex-col'>
 
           <Label value="Descripción" className='font-roboto text-primary' />
-          <textarea id="message"
+          <textarea
+            id="message"
             name="descripcion"
             onChange={(e) => {
               onChangeTutoringProgram(e.target.name, e.target.value);

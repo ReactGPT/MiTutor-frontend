@@ -8,16 +8,20 @@ import { TutorRoleDetails } from '../../../store/types';
 import { Services as ServicesProperties } from '../../../config';
 import axios from 'axios';
 import { ListCita } from '../../../store/types/ListCita';
-
+import { getTutorId
+  
+ } from '../../../store/hooks/RolesIdTutor';
 const PageListaDeCitas = () => {
   const { userData } = useAuth();
   //const tutorId = userData?.userInfo?.roles[0].details.tutorId;
-  const tutorId = (userData?.userInfo?.roles[0].details as TutorRoleDetails).tutorId;
+  //const tutorId = (userData?.userInfo?.roles[2].details as TutorRoleDetails).tutorId;
 
+  const tutorId = getTutorId(userData);
 
   const { cita, fetchCita } = useCitasPorTutor(tutorId);
 
   useEffect(() => {
+    console.log("info de userio",userData);
     fetchCita();
   }, []);
 

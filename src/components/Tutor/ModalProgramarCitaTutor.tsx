@@ -19,7 +19,7 @@ import { useAppointment } from '../../store/hooks/useAppointment';
 import ModalSuccess from '../ModalSuccess';
 import ModalError from '../ModalError';
 import ModalWarning from '../ModalWarning';
-
+import { getTutorId } from '../../store/hooks/RolesIdTutor';
 
 type MakeAppointment = {
   startTime: string;
@@ -62,7 +62,8 @@ interface ProgramarCitaTutorProps {
 
 const ModalProgramarCitaTutor: React.FC<ProgramarCitaTutorProps> = ({ isOpen, onClose, slotInfo, refreshCalendar }) => {
   const { userData } = useAuth();
-  const tutorId = (userData?.userInfo?.roles[0].details as TutorRoleDetails).tutorId;
+  //const tutorId = (userData?.userInfo?.roles[2].details as TutorRoleDetails).tutorId;
+  const tutorId = getTutorId(userData);
   //
   const initialAppointmentState: MakeAppointment = {
     startTime: "",

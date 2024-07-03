@@ -17,6 +17,7 @@ import ModalConfirmation from "../../../components/ModalConfirmation";
 import ModalSuccess from "../../../components/ModalSuccess";
 import ModalError from "../../../components/ModalError";
 import { eliminarEspecialidad } from "../../../store/services/actualizarEspecialidad";
+import { Faculty, Specialty } from "../../../store/types";
 
 type EspecialidadesPageProps = {
   Facultyid?: number;
@@ -122,6 +123,29 @@ const EspecialidadesPage: React.FC<EspecialidadesPageProps> = ({ Facultyid, disa
       }
     }
   };
+ 
+  const roles = userData?.userInfo?.roles;
+  let selectedFaculties: Faculty[] = [];
+    
+    const especialdadesFiltered: Specialty[] = useMemo(() => {
+        let filteredData: Specialty[] = []; 
+        // Apply role-based filter if user has 'Responsable de Facultad' role
+        if (roles) {
+            roles.forEach(role => {
+                if (role.rolName === 'Responsable de Facultad') {
+                    const facultyId = parseInt((role.details as any).departmentId, 10);
+                    console.log("fac",facultyId);
+                    const programa = especialidadData.find(item => item.faculty.facultyId === facultyId);
+                    console.log("especialdiada",especialidadData);
+                    if (programa) {
+                        filteredData.push(programa); 
+                    }
+                }
+            });
+        }
+ 
+        return filteredData;
+    }, [especialidadData, roles]);
 
   return (
     <>
@@ -157,7 +181,7 @@ const EspecialidadesPage: React.FC<EspecialidadesPageProps> = ({ Facultyid, disa
           </button>
         </div>
         <AgGridReact
-          rowData={especialidadData.filter((especialidad) => especialidad.faculty.facultyId === departmentId)}
+          rowData={especialdadesFiltered}
           columnDefs={columnFac}
           rowSelection="multiple"
           defaultColDef={{

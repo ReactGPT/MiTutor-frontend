@@ -91,7 +91,7 @@ const RouterContextProvider = () => {
                     break;
                 case "DERIVATION":
                     childrenArrayFound = childrenArrayFound.concat(Routes.derivation.pages);
-                    if(! (sideBarOptionsFound.some((item)=>item.rol==="ADMIN"))){
+                    if(! (sideBarOptionsFound.some((item)=>item.rol==="DERIVATION"))){
                         sideBarOptionsFound = sideBarOptionsFound.concat({
                             rol:"DERIVATION",
                             title:"Derivación",

@@ -5,10 +5,14 @@ import { useEffect, useState } from 'react';
 import { useCitasPorTutor } from '../../../store/hooks/useCita';
 import { useAuth } from '../../../context';
 import { TutorRoleDetails } from '../../../store/types';
-
+import { getTutorId
+  
+ } from '../../../store/hooks/RolesIdTutor';
 const PageCalendarioTutor: React.FC = () => {
   const { userData } = useAuth();
-  const tutorId = (userData?.userInfo?.roles[0].details as TutorRoleDetails).tutorId;
+  //const tutorId = (userData?.userInfo?.roles[2].details as TutorRoleDetails).tutorId;
+
+  const tutorId = getTutorId(userData);
 
   const { cita, fetchCita } = useCitasPorTutor(tutorId);
 
@@ -16,6 +20,7 @@ const PageCalendarioTutor: React.FC = () => {
   const [shouldFetch, setShouldFetch] = useState<boolean>(false);
 
   useEffect(() => {
+    console.log(tutorId);
     fetchCita();
   }, [shouldFetch]);
 

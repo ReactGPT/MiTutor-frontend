@@ -15,9 +15,10 @@ interface ModalSearchProps {
   facultad: Facultad;
   setFacultadData: (facultad: Facultad) => void;
   userType: "CoordFacultad" | "CoordBienestar";
+  updateKey: number;
 }
 
-const ModalSearch: React.FC<ModalSearchProps> = ({ isOpen, onClose, facultad, setFacultadData, userType }) => {
+const ModalSearch: React.FC<ModalSearchProps> = ({ isOpen, onClose, facultad, setFacultadData, userType, updateKey }) => {
 
   const { userData, fetchUsersNoStudents } = useUser();
   const [usuarioSelected, setUsuarioSelected] = useState<User | null>(null);
@@ -25,7 +26,7 @@ const ModalSearch: React.FC<ModalSearchProps> = ({ isOpen, onClose, facultad, se
 
   useEffect(() => {
     fetchUsersNoStudents();
-  }, []);
+  }, [updateKey]);
 
   const handleSearch = (query: string) => {
     setSearchValue(query);

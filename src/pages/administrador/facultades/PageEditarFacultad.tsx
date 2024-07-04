@@ -30,11 +30,15 @@ const PageEditarFacultad = () => {
 
   const [us, setUs] = useState<"CoordFacultad" | "CoordBienestar">("CoordFacultad");
 
-  const [idResponsableBienestar, setIdResponsableBienestar] = useState<number>(-1); //falta poner el por defecto
-  const [nombreResponsableBienestar, setNombreResponsableBienestar] = useState<string>("-"); //falta poner el por defecto
-  const [correoResponsableBienestar, setCorreoResponsableBienestar] = useState<string>("-"); //falta poner el por defecto
+  const [refreshKey, setRefreshKey] = useState(0);
+
+  const update = () => {
+    setRefreshKey(prevKey => prevKey + 1);
+  };
 
   useEffect(() => {
+    console.log("estado que me viene:");
+    console.log(facultadEstado);
     setFacultadBorrador(facultadBorrador);
     fetchEspecialidadPorFacultadData(facultadEstado.id);
   }, [isOpenModalSearch]);
@@ -44,12 +48,16 @@ const PageEditarFacultad = () => {
   };
 
   const handleEditSaveButton = () => {
-    if (editable) {
-      if (facultadBorrador) {
-        updateFacultad(facultadBorrador);
-      }
+    if (!editable) {
+      setEditable(true);
+      return;
     }
-    setEditable(!editable);
+
+    updateFacultad(facultadBorrador);
+
+    setEditable(false);
+
+    update();
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -65,19 +73,22 @@ const PageEditarFacultad = () => {
     });
   };
 
+  const setBienestarManagerToNull = () => {
+    setFacultadBorrador((prevState) => ({
+      ...prevState,
+      bienestarManager: null
+    }));
+  };
+
+  const setFacultyManagerToNull = () => {
+    setFacultadBorrador((prevState) => ({
+      ...prevState,
+      facultyManager: null
+    }));
+  };
+
   const handleClearFacultad = () => {
     setFacultadBorrador(facultadEstado);
-    //falta clear a responsable bienestar
-  };
-
-  const handleClearResponsableFacultad = () => {
-    //
-  };
-
-  const handleClearResponsableBienestar = () => {
-    setIdResponsableBienestar(-1);//falta poner el por defecto
-    setNombreResponsableBienestar("-");//falta poner el por defecto
-    setCorreoResponsableBienestar("-");//falta poner el por defecto
   };
 
   return (
@@ -90,11 +101,44 @@ const PageEditarFacultad = () => {
             {`${facultadBorrador?.name}`}
           </h1>
 
-          <Button
+          {/* <Button
             className=""
             onClick={() => { handleEditSaveButton(); }}
             text={`${editable ? "Guardar" : "Editar"}`}
-          />
+          /> */}
+
+          {
+            editable
+              ?
+              <div className='flex gap-5'>
+                <Button
+                  text='Guardar'
+                  onClick={handleEditSaveButton}
+                  className='rounded-2xl '
+                />
+                <Button
+                  text='Cancelar'
+                  onClick={async () => {
+                    if (!editable) {
+                      setEditable(true);
+                      return;
+                    }
+                    //restablecer
+                    handleClearFacultad();
+                    //
+                    setEditable(false);
+                  }}
+                  className='rounded-2xl'
+                  variant='warning'
+                />
+              </div>
+              :
+              <Button
+                text='Editar'
+                onClick={() => { setEditable(true); }}
+                className='rounded-2xl '
+              />
+          }
 
         </div>
 
@@ -238,17 +282,13 @@ const PageEditarFacultad = () => {
                   >
                     <MdOutlineEdit />
                   </button>
-                  {/* <button
+                  <button
                     className={`rounded-lg ${editable ? 'bg-white' : 'bg-secondary'} shadow p-2`}
-                    onClick={() => {
-                      handleClearResponsableFacultad();
-                    }
-                    }
-                    disabled={true}
-                  //disabled={!editable}
+                    onClick={setFacultyManagerToNull}
+                    disabled={!editable}
                   >
                     <MdDeleteOutline />
-                  </button> */}
+                  </button>
                 </div>
               </div>
 
@@ -298,16 +338,13 @@ const PageEditarFacultad = () => {
                   >
                     <MdOutlineEdit />
                   </button>
-                  {/* <button
+                  <button
                     className={`rounded-lg ${editable ? 'bg-white' : 'bg-secondary'} shadow p-2`}
-                    onClick={() => {
-                      handleClearResponsableBienestar();
-                    }}
-                    disabled={true}
-                  //disabled={!editable}
+                    onClick={setBienestarManagerToNull}
+                    disabled={!editable}
                   >
                     <MdDeleteOutline />
-                  </button> */}
+                  </button>
                 </div>
               </div>
 
@@ -325,6 +362,7 @@ const PageEditarFacultad = () => {
           facultad={facultadBorrador}
           setFacultadData={(facultad: Facultad) => { setFacultadBorrador(facultad); }}
           userType={us}
+          updateKey={refreshKey}
         />
       </div>
     </FacultadProvider>

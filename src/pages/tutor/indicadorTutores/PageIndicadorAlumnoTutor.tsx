@@ -8,6 +8,7 @@ import { useAuth } from '../../../context';
 import jsPDF from 'jspdf';
 import { IconSearch } from '../../../assets';
 import { PieChart, Pie, Tooltip, Legend, ResponsiveContainer, BarChart, CartesianGrid, XAxis, YAxis, Bar, Cell } from 'recharts';
+import { getTutorId } from '../../../store/hooks/RolesIdTutor';
 
 interface StudentData {
     studentId: number;
@@ -243,7 +244,7 @@ const PageIndicadorAlumnoTutor: React.FC = () => {
 
     const fetchStudentsData = async (tutorId: number) => {
         try {
-            const response = await api.get<{ success: boolean, data: StudentData[] }>(`/listarAlumnosPorIdTutor/${tutorId}`);
+            const response = await api.get<{ success: boolean, data: StudentData[]; }>(`/listarAlumnosPorIdTutor/${tutorId}`);
             return response.data.data;
         } catch (error) {
             console.error("Error fetching students data:", error);
@@ -253,7 +254,7 @@ const PageIndicadorAlumnoTutor: React.FC = () => {
 
     const fetchStudentDetails = async (tutorId: number, studentId: number) => {
         try {
-            const response = await api.get<{ success: boolean, data: DetailedStudentData }>(`/obtenerInfoEstudiantePorTutor/${tutorId}/${studentId}`);
+            const response = await api.get<{ success: boolean, data: DetailedStudentData; }>(`/obtenerInfoEstudiantePorTutor/${tutorId}/${studentId}`);
             setSelectedStudent(response.data.data);
             setIsModalOpen(true); // Aquí debe abrir el modal
         } catch (error) {
@@ -509,19 +510,19 @@ const PageIndicadorAlumnoTutor: React.FC = () => {
             doc.setFont('helvetica');
             doc.setFontSize(12);
             doc.setTextColor(0);
-    
+
             // Definir márgenes y dimensiones de página
             const pageWidth = doc.internal.pageSize.width;
             const pageHeight = doc.internal.pageSize.height;
             const marginLeft = 20;
             const marginTop = 20;
             const marginBottom = 20;
-    
+
             // Función para agregar marca de agua y fondo
             const addWatermarkAndBackground = () => {
                 doc.setFillColor(255, 255, 255);
                 doc.rect(0, 0, pageWidth, pageHeight, 'F'); // Ajuste para cubrir toda la página
-    
+
                 doc.setTextColor(220);
                 doc.setFontSize(20);
                 doc.setFont('helvetica', 'bold');
@@ -531,21 +532,21 @@ const PageIndicadorAlumnoTutor: React.FC = () => {
                         doc.textWithLink('PUCP', j, i, { angle: 45, url: 'https://www.pucp.edu.pe/' });
                     }
                 }
-    
+
                 doc.setTextColor(0);
                 doc.setFontSize(12);
             };
-    
+
             // Función para agregar encabezado
-            const addHeader = (includeStudentName:any) => {
+            const addHeader = (includeStudentName: any) => {
                 if (includeStudentName) {
                     doc.setFontSize(20);
                     doc.setFont('helvetica', 'bold');
                     doc.text(`${selectedStudent.name.toUpperCase()} ${selectedStudent.lastName.toUpperCase()} ${selectedStudent.secondLastName.toUpperCase()}`, pageWidth / 2, marginTop + 10, { align: 'center' });
                 }
-    
+
                 let y = includeStudentName ? marginTop + 30 : marginTop + 10;
-    
+
                 doc.setFontSize(14);
                 doc.setFont('helvetica', 'bold');
                 doc.text('Información del Estudiante', pageWidth / 2, y, { align: 'center' });
@@ -553,13 +554,13 @@ const PageIndicadorAlumnoTutor: React.FC = () => {
                 doc.line(marginLeft, y, pageWidth - marginLeft, y); // Línea horizontal después del encabezado
                 return y + 5; // Retornamos la posición vertical después del encabezado
             };
-    
+
             // Agregar marca de agua y fondo
             addWatermarkAndBackground();
-    
+
             // Inicializar posición vertical y agregar encabezado
             let currentY = addHeader(true);
-    
+
             // Detalles del estudiante
             const details = [
                 { label: 'ID del Estudiante:', value: selectedStudent.studentId },
@@ -569,17 +570,17 @@ const PageIndicadorAlumnoTutor: React.FC = () => {
                 { label: 'Programa de Tutoría:', value: selectedStudent.programName },
                 { label: 'Descripción del Programa:', value: selectedStudent.description }
             ];
-    
+
             doc.setFontSize(12);
             doc.setFont('helvetica', 'bold');
-    
+
             // Recorremos los detalles y los agregamos al documento
             details.forEach(({ label, value }) => {
                 // Dividir el texto largo en líneas para que quepa en la página
                 const lines = doc.splitTextToSize(`${label} ${value}`, pageWidth - 2 * marginLeft);
-    
+
                 // Recorremos cada línea y la agregamos al PDF
-                lines.forEach((line:any, index:any) => {
+                lines.forEach((line: any, index: any) => {
                     if (currentY + 10 > pageHeight - marginBottom) {
                         doc.addPage(); // Agregamos una nueva página si el texto no cabe en la página actual
                         addWatermarkAndBackground(); // Volvemos a agregar marca de agua y fondo en la nueva página
@@ -589,19 +590,19 @@ const PageIndicadorAlumnoTutor: React.FC = () => {
                     currentY += 10; // Incrementamos la posición vertical para la próxima línea
                 });
             });
-    
+
             // Agregar título de historial de citas
             doc.setFont('helvetica', 'bold');
             doc.text(`Historial de Citas con el Tutor:`, marginLeft, currentY + 10);
             currentY += 15;
-    
+
             // Obtener y mostrar las citas del estudiante con el tutor
             try {
                 const response = await axios.get(`https://localhost:44369/listarCitasPorEstudianteYTutor/${userData?.userInfo?.id}/${selectedStudent.studentId}`);
                 const appointments = response.data;
-    
+
                 // Recorrer las citas y agregarlas al documento
-                appointments.forEach((appointment:any) => {
+                appointments.forEach((appointment: any) => {
                     if (currentY + 10 > pageHeight - marginBottom) {
                         doc.addPage(); // Agregamos una nueva página si el texto no cabe en la página actual
                         addWatermarkAndBackground(); // Volvemos a agregar marca de agua y fondo en la nueva página
@@ -613,16 +614,16 @@ const PageIndicadorAlumnoTutor: React.FC = () => {
                     doc.text(`Observaciones: ${appointment.observaciones}`, marginLeft + 10, currentY);
                     currentY += 10;
                 });
-    
+
             } catch (error) {
                 console.error('Error al obtener citas:', error);
             }
-    
+
             // Guardar el documento PDF con el nombre adecuado
             doc.save(`detalle_estudiante_${selectedStudent.studentId}.pdf`);
         }
     };
-    
+
 
     return (
         <>
@@ -664,7 +665,7 @@ const PageIndicadorAlumnoTutor: React.FC = () => {
                         </div>
                         <div className="p-4">
                             {students.map(student => (
-                                <div key={student.studentId} className="bg-gray-100 p-4 mb-2 rounded-md shadow-sm cursor-pointer" onClick={() => fetchStudentDetails(28, student.studentId)}>
+                                <div key={student.studentId} className="bg-gray-100 p-4 mb-2 rounded-md shadow-sm cursor-pointer" onClick={() => fetchStudentDetails(getTutorId(userData), student.studentId)}>
                                     <h3 className="font-semibold">{student.name} {student.lastName} {student.secondLastName}</h3>
                                     <p>Teléfono: {student.phone}</p>
                                     <p>Especialidad: {student.specialtyName}</p>

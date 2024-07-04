@@ -10,7 +10,7 @@ type SidebarProps = {
 };
 
 type NavBarOption = {
-  rol : "STUDENT"|"MANAGER"|"ADMIN"|"TUTOR"|"DERIVATION";
+  rol : "STUDENT"|"SPECIALTYMANAGER"|"FACULTYMANAGER" |"ADMIN"|"TUTOR"|"DERIVATION"|"CAREMANAGER";
   title: string;
   links: SidebarLink[];
 }

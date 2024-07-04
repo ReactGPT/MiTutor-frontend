@@ -298,8 +298,9 @@ const ModalProgramarCitaTutor: React.FC<ProgramarCitaTutorProps> = ({ isOpen, on
                   :
                   <TablaAlumnos
                     tutoringProgramId={Number(selectedProgram?.value)}
-                    selectedRows={selectedRows} // Pasar selectedRows como prop
-                    setSelectedRows={setSelectedRows} // Pasar setSelectedRows como prop
+                    selectedRows={selectedRows}
+                    setSelectedRows={setSelectedRows}
+                    cantidad={selectedProgram?.data.groupBased ? "grupal" : "individual"}
                   />
                 }
 
@@ -334,12 +335,14 @@ type TablaAlumnosProps = {
   selectedRows: ListStudent[]; // Prop para almacenar los rows seleccionados
   setSelectedRows: React.Dispatch<React.SetStateAction<ListStudent[]>>; // Setter para actualizar selectedRows
   onclick?: () => void;
+  cantidad?: "grupal" | "individual";
 };
 
 const TablaAlumnos: React.FC<TablaAlumnosProps> = ({
   tutoringProgramId,
   selectedRows,
   setSelectedRows,
+  cantidad,
 }) => {
 
   const [estudiantes, setEstudiantes] = useState<ListStudent[]>([]);
@@ -373,7 +376,7 @@ const TablaAlumnos: React.FC<TablaAlumnosProps> = ({
 
   const columnDefs: ColDef[] = [
     {
-      headerCheckboxSelection: true,
+      headerCheckboxSelection: cantidad == "grupal" ? true : false,
       checkboxSelection: true,
       headerName: '',
       field: 'checkbox',
@@ -422,7 +425,7 @@ const TablaAlumnos: React.FC<TablaAlumnosProps> = ({
           columnDefs={columnDefs}
           rowData={estudiantes}
           rowHeight={60}
-          rowSelection='multiple'
+          rowSelection={cantidad == "grupal" ? "multiple" : "single"}
           onSelectionChanged={onSelectionChanged}
         />
       </div>

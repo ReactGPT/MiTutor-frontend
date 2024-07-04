@@ -3,7 +3,7 @@ import Button from "../Button";
 import IconDetails from '../../assets/svg/IconDetails';
 import { useNavigate } from "react-router-dom";
 import { ListCita } from "../../store/types/ListCita";
-import { Services as ServicesProperties } from '../../config'; 
+import { Services as ServicesProperties } from '../../config';
 import axios from 'axios';
 import CitaModalDetalle from "./CitaModalDetalle";
 interface AppointmentItemProps {
@@ -73,40 +73,40 @@ const controlColor = (color: string, tipo: string) => {
 
 const AppointmentItem: React.FC<AppointmentItemProps> = ({ appointment, tipo, user, flag }) => {
   const navigate = useNavigate();
-  const [appointmentStatus, setAppointmentStatus] = useState(appointment.appointmentStatus); 
+  const [appointmentStatus, setAppointmentStatus] = useState(appointment.appointmentStatus);
 
   // Combina creationDate y endTime para crear la fecha de finalización completa
   const endDateTime = new Date(`${appointment.creationDate}T${appointment.endTime}`);
-  
+
   //Modal Registrado
   const [isModalOpen, setIsModalOpen] = useState(false);
-  
+
   const closeModal = () => {
     setIsModalOpen(false);
   };
 
   const goToDetalleCita = () => {
-    if (user === 'tutor' && appointment.appointmentStatus!="registrada") {
-      if(appointment.groupBased==false){
+    if (user === 'tutor' && appointment.appointmentStatus != "registrada") {
+      if (appointment.groupBased == false) {
         navigate("/listaDeCitas/resultadoCitaIndividual", { state: { cita: appointment } });
-      }else{
+      } else {
         navigate("/listaDeCitas/resultadoCitaGrupal", { state: { cita: appointment } });
       }
     } else if (user === 'alumno') {
       navigate("/listaDeCitasAlumno/detalleCitaAlumno", { state: { cita: appointment } });
-    } else if (user === 'tutor' && appointment.appointmentStatus=="registrada"){
-      setIsModalOpen(!isModalOpen); 
+    } else if (user === 'tutor' && appointment.appointmentStatus == "registrada") {
+      setIsModalOpen(!isModalOpen);
     }
   };
 
   // Función para verificar si la cita ha terminado
   const checkAppointmentStatus = () => {
     const currentDate = new Date();
-    if (appointmentStatus === 'registrada' && currentDate > endDateTime) { 
-      setAppointmentStatus('pendiente resultado'); 
+    if (appointmentStatus === 'registrada' && currentDate > endDateTime) {
+      setAppointmentStatus('pendiente resultado');
     }
   };
-   
+
   useEffect(() => {
     setAppointmentStatus(appointment.appointmentStatus);
   }, [appointment]);
@@ -114,19 +114,19 @@ const AppointmentItem: React.FC<AppointmentItemProps> = ({ appointment, tipo, us
   useEffect(() => {
     checkAppointmentStatus();
   }, [flag]);
- 
-  
+
+
   return (
     <div className="w-full h-22 border-custom shadow-custom flex bg-[rgba(235,_236,_250,_1.00)] overflow-hidden font-roboto">
       <div className={`w-[2%] max-w-6 bg-gradient-to-b ${controlColor(appointmentStatus, 'from')} ${controlColor(appointmentStatus, 'to')}`}></div>
 
-      <div className="w-full flex p-5 gap-5 justify-between items-center">
+      <div className="w-full flex p-5 gap-2 justify-between items-center">
         <div className="w-1/3">
           <span className="text-xl text-black"> {appointment.programName} </span>
         </div>
 
-        <div className="flex gap-6 items-center h-full text-center justify-between">
-          <div className="flex flex-col items-start">
+        <div className="flex gap-3 items-center h-full text-center justify-between">
+          <div className="flex flex-col items-start min-w-36">
             <span className="text-black font-semibold">Estado:</span>
             <span className={`font-semibold ${controlColor(appointmentStatus, 'text')}`}>{appointmentStatus}</span>
           </div>
@@ -139,7 +139,7 @@ const AppointmentItem: React.FC<AppointmentItemProps> = ({ appointment, tipo, us
                     user === "tutor" && (
                       <>
                         <span className="text-black font-semibold">Participante:</span>
-                        <span className="text-primary">
+                        <span className="text-primary min-w-52">
                           {appointment.groupBased === false ? `${appointment.name} ${appointment.lastName} ${appointment.secondLastName}` : appointment.name}
                         </span>
                       </>
@@ -167,8 +167,8 @@ const AppointmentItem: React.FC<AppointmentItemProps> = ({ appointment, tipo, us
             <span className="text-black font-semibold">Hora:</span>
             <span className="text-primary">{`${appointment.startTime}`}</span>
           </div>
-            <Button variant='primario' onClick={goToDetalleCita} icon={IconDetails} />
-            <div>{isModalOpen && <CitaModalDetalle onClose={closeModal} appointment={appointment}/>}</div>
+          <Button variant='primario' onClick={goToDetalleCita} icon={IconDetails} />
+          <div>{isModalOpen && <CitaModalDetalle onClose={closeModal} appointment={appointment} />}</div>
         </div>
       </div>
     </div>

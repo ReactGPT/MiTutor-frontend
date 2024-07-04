@@ -3,6 +3,8 @@ export type ListTutoringProgram = {
   programName: string;
   description: string;
   faceToFace?: boolean;
+  groupBased?: boolean;
+  individualBased?: boolean;
   virtual?: boolean;
   facultyName: string;
   specialtyName: string;

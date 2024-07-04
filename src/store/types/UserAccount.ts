@@ -36,11 +36,17 @@ export type DerivationRoleDetails={
     isDerivationCoord:boolean;
 }
 
+export type CareManagerRoleDetails={
+    isCareManager:boolean;
+    facultyId:number;
+    facultyName:string;
+}
+
 export type Role ={
     accountTypeId:number;
     rolName:string;
     type:string;
-    details:TutorRoleDetails|StudentRoleDetails|ManagerRoleDetails|AdminRoleDetails|DerivationRoleDetails
+    details:TutorRoleDetails|StudentRoleDetails|ManagerRoleDetails|AdminRoleDetails|DerivationRoleDetails|CareManagerRoleDetails
 }
 
 export type UserAccount={

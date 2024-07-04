@@ -43,7 +43,8 @@ async function getUserInfo(email: string = '', codigoPUCP: string = ''): Promise
               facultyId: item.facultyId,
               facultyName: item.facultyName
             };
-          case "MANAGER":
+          case "FACULTYMANAGER":
+          case "SPECIALTYMANAGER":
             return {
               isManager: true,
               departmentType: item.departmentType,
@@ -58,6 +59,12 @@ async function getUserInfo(email: string = '', codigoPUCP: string = ''): Promise
           case "DERIVATION":
             return {
               isDerivationCoord:true
+            };
+          case "CAREMANAGER":
+            return {
+              isCareManager:true,
+              facultyId:item.facultyId,
+              facultyName:item.facultyName
             }
         }
       };

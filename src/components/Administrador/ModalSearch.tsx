@@ -91,8 +91,8 @@ const ModalSearch: React.FC<ModalSearchProps> = ({ isOpen, onClose, facultad, se
   };
 
   const columnUser: ColDef[] = [
-    { headerName: 'Nombre', valueGetter: p => p.data.persona.name + ' ' + p.data.persona.lastName + ' ' + p.data.persona.secondLastName, minWidth: 3 },
-    { headerName: 'Código', field: 'pucpCode', minWidth: 150, maxWidth: 180 },
+    { headerName: 'Nombre', valueGetter: p => p.data.persona.name + ' ' + p.data.persona.lastName + ' ' + p.data.persona.secondLastName, minWidth: 200, maxWidth: 200 },
+    { headerName: 'Correo', field: 'institutionalEmail', minWidth: 200 },
     {
       headerName: 'Seleccionar',
       field: '',
@@ -170,7 +170,7 @@ const ModalSearch: React.FC<ModalSearchProps> = ({ isOpen, onClose, facultad, se
                           defaultColDef={defaultColDef}
                           columnDefs={columnUser}
                           rowData={userData.filter((item) =>
-                            item.persona.name.toLowerCase().includes(searchValue.toLowerCase()) || item.pucpCode.toLowerCase().includes(searchValue.toLowerCase())
+                            item.persona.name.toLowerCase().includes(searchValue.toLowerCase()) || item.institutionalEmail.toLowerCase().includes(searchValue.toLowerCase())
                           )}
                         />
                       </div>

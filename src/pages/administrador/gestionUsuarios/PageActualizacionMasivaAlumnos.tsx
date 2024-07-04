@@ -16,7 +16,6 @@ import { useEspecialidad } from '../../../store/hooks/useEspecialidad';
 import ArrowDown from '../../../assets/svg/ArrowDown';
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-alpine.css';
-import { GridReadyEvent } from 'ag-grid-community';
 
 interface Especialidad {
   id: number;
@@ -270,9 +269,6 @@ export default function PageActualizacionMasivaAlumnos() {
       );
 
       await Promise.all(updatePromises);
-
-      //console.log("updates", updates);
-
       if (updates > 0) {
         setIsOpenModalSuccess(true);
       } else {

@@ -9,12 +9,28 @@ import ModalError from '../../../components/ModalError';
 import InputTutor from '../../../components/Tutor/InputTutor';
 import InputAdmin from '../../../components/Administrador/InputAdmin';
 
-function DatosPersona() {
-  const { user, onChangeUser } = useUserContext();
+type InputProps = {
+  fieldErrors: {
+    phone: string;
+    pucpCode: string;
+    institutionalEmail: string;
+    name: string;
+    lastName: string;
+    specialityId: string;
+  };
+  setFieldErrors: React.Dispatch<React.SetStateAction<{
+    phone: string;
+    pucpCode: string;
+    institutionalEmail: string;
+    name: string;
+    lastName: string;
+    specialityId: string;
+  }>>;
+}
 
-  const handleClick = () => {
-    console.log(user);
-  }
+
+function DatosPersona({ fieldErrors, setFieldErrors }: InputProps) {
+  const { user, onChangeUser } = useUserContext();
 
   return (
     <div className='flex flex-col w-full h-full'>
@@ -24,13 +40,13 @@ function DatosPersona() {
       <div className='flex flex-row w-full h-full gap-2 h-[70%]'>
         <div className='flex flex-col w-[100%]'>
           <div className='flex flex-col gap-2'>
-            <InputAdmin titulo="Nombres" name="persona.name" text={user.persona.name} placeholder='Ingresa los nombres' enable={true} onChange={{tipo: 'object', onChange: onChangeUser }}/>
+            <InputAdmin titulo="Nombres" name="persona.name" text={user.persona.name} placeholder='Ingresa los nombres' enable={true} onChange={{tipo: 'object', onChange: onChangeUser }} error={fieldErrors.name}/>
 
             <div className='grid grid-cols-2 gap-4' style={{ width: "100%" }} >
-              <InputAdmin titulo="Primer Apellido" name="persona.lastName" text={user?.persona.lastName} placeholder='Ingresa el primer apellido'  enable={true} onChange={{tipo: 'object', onChange: onChangeUser }}/>
+              <InputAdmin titulo="Primer Apellido" name="persona.lastName" text={user?.persona.lastName} placeholder='Ingresa el primer apellido'  enable={true} onChange={{tipo: 'object', onChange: onChangeUser }} error={fieldErrors.lastName}/>
               <InputAdmin titulo="Segundo Apellido" name="persona.secondLastName" text={user?.persona.secondLastName} placeholder='Ingresa el segundo apellido' enable={true} onChange={{tipo: 'object', onChange: onChangeUser }}/>
             </div>
-            <InputAdmin titulo="Teléfono" name="persona.phone" placeholder='Ingresa el número de teléfono' text={user?.persona.phone} enable={true} onChange={{tipo: 'object', onChange: onChangeUser }} type='number'/>
+            <InputAdmin titulo="Teléfono" name="persona.phone" placeholder='Ingresa el número de teléfono' text={user?.persona.phone} enable={true} onChange={{tipo: 'object', onChange: onChangeUser }} type='number' error={fieldErrors.phone}/>
             
           </div>
         </div>

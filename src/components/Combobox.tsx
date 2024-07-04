@@ -16,6 +16,7 @@ type FiltersProps = {
   buttonStyle?: string;
   noMt?: boolean;
   stylesOptions?: string;
+  error?: string;
 };
 
 export default function Combobox({
@@ -32,6 +33,7 @@ export default function Combobox({
   buttonStyle,
   noMt,
   stylesOptions,
+  error
 }: FiltersProps) {
   const [selected, setSelected] = useState(value);
   // const displayedText = !value? text: value?.name ? value.name : '';
@@ -53,7 +55,8 @@ export default function Combobox({
         <div className={`relative ${noMt ? '' : 'mt-1'}`}>
 
           <Listbox.Button
-            className={`${icon ? "pl-10" : "pl-3"} ${disabled ? 'cursor-default disabled-combobox' : 'cursor-pointer'} relative w-full  py-2  pr-10 text-left ${buttonStyle ? buttonStyle : 'dark:bg-secondary bg-white py-2  pr-10 text-left focus:outline-none border border-secondary09 dark:border-0 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm rounded-lg'}`}
+            className={`${icon ? "pl-10" : "pl-3"} ${disabled ? 'cursor-default disabled-combobox' : 'cursor-pointer'} relative w-full  py-2  pr-10 text-left ${buttonStyle ? buttonStyle : 'dark:bg-secondary bg-white py-2  pr-10 text-left focus:outline-none border border-secondary09 dark:border-0 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm rounded-lg'}
+            ${error ? 'border-red-500' : 'border-secondary09 dark:border-0'}`}
           >
             {icon && (
               <Icon size={iconSize} className="absolute left-2 top-1/2 transform -translate-y-1/2 h-5 w-5 text-black dark:text-secondary01"
@@ -103,6 +106,7 @@ export default function Combobox({
           </Transition>
         </div>
       </Listbox>
+      {error && <p className="text-red-500 text-sm mt-1">{error}</p>}
     </div>
   );
 }

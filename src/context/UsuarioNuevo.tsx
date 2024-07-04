@@ -67,7 +67,7 @@ function UserProvider({ children, user: inputUsuario }: ContextProps) {
   }
 
   const handleChangeUsuario = (name: string, value: any) => {
-    console.log("name: ", name, "value: ", value);
+    //console.log("name: ", name, "value: ", value);
     const [part1, part2] = name.split('.');
     //console.log(typeof (part1))
     //console.log("part1: ", part1, "part2: ", part2);

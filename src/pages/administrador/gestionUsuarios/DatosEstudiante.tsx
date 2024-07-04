@@ -4,7 +4,26 @@ import { useUserContext } from '../../../context/UsuarioNuevo';
 import { useFacultades } from '../../../store/hooks/useFacultades';
 import { useEspecialidad } from '../../../store/hooks/useEspecialidad';
 
-function DatosEstudiante() {
+type InputProps = {
+  fieldErrors: {
+    phone: string;
+    pucpCode: string;
+    institutionalEmail: string;
+    name: string;
+    lastName: string;
+    specialityId: string;
+  };
+  setFieldErrors: React.Dispatch<React.SetStateAction<{
+    phone: string;
+    pucpCode: string;
+    institutionalEmail: string;
+    name: string;
+    lastName: string;
+    specialityId: string;
+  }>>;
+}
+
+function DatosEstudiante({ fieldErrors, setFieldErrors }: InputProps) {
   const { user, onChangeUser } = useUserContext();
   const { facultadData, fetchFacultadData } = useFacultades();
   const { especialidadData, fetchEspecialidadData2 } = useEspecialidad();
@@ -63,6 +82,7 @@ function DatosEstudiante() {
             value={user.estudiante?.specialityId === -1 ? null : filteredEspecialidadData.find((item) => item.id === user.estudiante?.specialityId)}
             text='Especialidad'
             disabled={facultadSelected === -1}
+            error={fieldErrors.specialityId}
           />
         </div>
       </div>

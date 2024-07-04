@@ -15,7 +15,6 @@ import { ExcelDataUser, User } from '../../../store/types/User';
 import ArrowDown from '../../../assets/svg/ArrowDown';
 import { CellMouseOverEvent, ColDef, CellClassParams } from 'ag-grid-community';
 import { Spinner } from '../../../components';
-import { useDataGrid } from '../../../context/UsersDataGridContext';
 import { FiFileText } from 'react-icons/fi';
 import { FaRegTrashCan } from 'react-icons/fa6';
 import { SaveIcon, TrashIcon } from '../../../assets';
@@ -320,6 +319,11 @@ export default function PageCargaMasiva() {
               estudiante: rol === 'estudiante' ? estudiante : null,
             };
           });
+
+        if (users.length === 0) {
+          alert("No hay alumnos nuevos.");
+        }
+
         setRowData(users);
         setHasErrors(hasAnyError);
         setLoading(false); // Finaliza la carga

@@ -1,4 +1,3 @@
-import * as React from 'react';
 import { useState, useEffect, useMemo } from 'react';
 import ListadoUsuariosSearchBar from './ListadoUsuariosSearchBar';
 import { AgGridReact } from 'ag-grid-react';
@@ -11,12 +10,10 @@ import { useNavigate } from 'react-router-dom';
 import { useUser } from '../../../store/hooks/useUser';
 import { Spinner } from '../../../components';
 import DeleteIcon from '../../../assets/svg/DeleteIcon';
-//import { getEliminarTutoria } from '../../../store/services';
 import ModalConfirmation from '../../../components/ModalConfirmation';
 import ModalSuccess from '../../../components/ModalSuccess';
 import ModalError from '../../../components/ModalError';
 import { User } from '../../../store/types/User';
-//import { Student } from '../../../store/types/User';
 
 
 export default function PageListadoEstudiantes() {
@@ -69,10 +66,6 @@ export default function PageListadoEstudiantes() {
     idFaculty: null,
     name: null
   });
-
-  const handleOnChangeFilters = (filter: any) => {
-    setFilters(filter);
-  };
 
   const UserFiltered: User[] = useMemo(() => {
     return [...(userData).filter((item) =>

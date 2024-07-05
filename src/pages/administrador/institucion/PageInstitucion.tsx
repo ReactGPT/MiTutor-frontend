@@ -37,7 +37,7 @@ const PageInstitucion = () => {
     if(editable){
       if(institucionBorrador){
         updateInstitucion(institucionBorrador);
-        console.log("institucionBorrador",institucionBorrador);
+        // console.log("institucionBorrador",institucionBorrador);
       }
     }
     setEditable(!editable);
@@ -78,13 +78,16 @@ const PageInstitucion = () => {
 
   return (
     <div className="w-full h-full">
-      <h1 className="text-3xl font-bold text-[#2F2F2F]">
-        Datos Generales de la Institución
-      </h1>
-      
+      <div className='flex justify-between'>
+        <h1 className="text-3xl font-bold text-[#2F2F2F]">
+          {institucionBorrador?.name ? institucionBorrador?.name : institucionData[0]?.name}
+        </h1>
+        <Button className="" onClick={() => {handleEditSaveButton()}} text={`${editable ? "Guardar" : "Editar"} Institución`} />
+      </div>
       <div className="w-full h-full flex items-center justify-center">
         <div className="w-[80%] h-full flex flex-col justify-center">
-          <div className="grid grid-cols-2 gap-4 p-4">
+          <h2 className="text-2xl font-bold text-[#2F2F2F]">Información de la Institución</h2>
+          <div className="grid grid-cols-1 gap-4 p-4">
             <div className='grid grid-cols-1'>
               <InputAdmin2 
                 titulo="Nombre de la Institucion" 
@@ -113,7 +116,7 @@ const PageInstitucion = () => {
                 enable={editable}
                 onChange={handleInputChange} />
             </div>
-            <div className='flex flex-col justify-between items-center'>
+            {/* <div className='flex flex-col justify-between items-center'>
               <img 
                 src={institucionBorrador?.logo ? institucionBorrador?.logo :
                   (institucionData[0]?.logo ? institucionData[0]?.logo : upload)} 
@@ -121,26 +124,24 @@ const PageInstitucion = () => {
                 className="mb-4 max-w-full h-auto max-h-80" 
                 key={institucionData[0]?.logo} />
               <div className="flex justify-center items-center">
-              <input 
-                type="file" 
-                accept="image/*" 
-                onChange={handleEditLogo}
-                className="hidden"
-                id="logo-upload"
-                disabled={!editable}
-              />
-              <label 
-                htmlFor="logo-upload"
-                className={`flex items-center justify-between h-[42px] gap-2 px-3 py-2 shadow-custom rounded-xl font-roboto text-sm font-medium transition-all duration-200 ease-linear border-custom bg-secondary text-primary ${editable ? 'hover:bg-primary hover:text-white cursor-pointer' : 'opacity-50 cursor-not-allowed'}`}
-
-              >
+                <input 
+                  type="file" 
+                  accept="image/*" 
+                  onChange={handleEditLogo}
+                  className="hidden"
+                  id="logo-upload"
+                  disabled={!editable}
+                />
+                <label 
+                  htmlFor="logo-upload"
+                  className={`flex items-center justify-between h-[42px] gap-2 px-3 py-2 shadow-custom rounded-xl font-roboto text-sm font-medium transition-all duration-200 ease-linear border-custom bg-secondary text-primary ${editable ? 'hover:bg-primary hover:text-white cursor-pointer' : 'opacity-50 cursor-not-allowed'}`}
+                >
                 Cambiar Logo
-              </label>
+                </label>
               </div>
-            </div>
+            </div> */}
           </div>
         </div>
-        <Button className="" onClick={() => {handleEditSaveButton()}} text={`${editable ? "Guardar" : "Editar"} Institución`} />
       </div>
     </div>
   );

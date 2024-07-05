@@ -29,7 +29,7 @@ function useInstitucion(): InstitucionHookReturnType {
         setIsLoading(true);
         try {
             //console.log("user en postUser: ",user)
-            console.log("en updateInstitucion",institucion)
+            // console.log("en updateInstitucion",institucion)
             const response = await actualizarInstitucion(institucion);
             if (!response.success) {
             throw new Error(response.message);

@@ -48,7 +48,7 @@ async function actualizarInstitucion(institucion: Institucion): Promise<ServiceR
     logo: institucion.logo.split(',')[1],
     isActive: true,
   }
-  console.log("institucion enviada",unit)
+  // console.log("institucion enviada",unit)
   try {
     const response = await axios({
       method: 'post',

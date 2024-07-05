@@ -10,7 +10,7 @@ import {
   BiUserCheck,
   BiBarChart,
   BiBarChartAlt,
-  BiSolidWrench 
+  BiSolidWrench
 } from "react-icons/bi";
 import { PiStudent } from "react-icons/pi";
 
@@ -67,7 +67,7 @@ import PageListadoDerivaciones from "../pages/bienestar/derivaciones/PageListado
 import PageDetalleDerivacion from "../pages/bienestar/derivaciones/PageDetalleDerivacion.tsx";
 import PageInicioDerivaciones from "../pages/bienestar/derivaciones/PageInicioDerivaciones.tsx";
 import PageActualizacionMasivaAlumnos from "../pages/administrador/gestionUsuarios/PageActualizacionMasivaAlumnos.tsx";
-import PageMaestroTutoresEsp  from "../pages/coordi_esp/MaestroTutores/PageMaestroTutores.tsx";
+import PageMaestroTutoresEsp from "../pages/coordi_esp/MaestroTutores/PageMaestroTutores.tsx";
 import PageProgramasTutoriaMaestroEsp from "../pages/coordi_esp/programasDeTutoria/PageProgramasTutoriaMaestro.tsx";
 import PageProgTutoriaEsp from "../pages/coordi_esp/programasDeTutoria/PageProgTutoria.tsx";
 
@@ -83,7 +83,7 @@ type RouterConfig = {
   alumno: RouterDetail;
   administrador: RouterDetail;
   derivation: RouterDetail;
-  bienestar : RouterDetail;
+  bienestar: RouterDetail;
 };
 
 export const Routes: RouterConfig = {
@@ -151,7 +151,7 @@ export const Routes: RouterConfig = {
       },
       {
         path: '/IndicadorAlumnoTutor',
-        element: <PageIndicadorAlumnoTutor/>
+        element: <PageIndicadorAlumnoTutor />
       },
       {
         path: '/listaDeCitas/resultadoCitaGrupal',
@@ -477,10 +477,6 @@ export const Routes: RouterConfig = {
         element: <PageGeneralAdmin />
       },
       {
-        path: '/general',
-        element: <PageGeneralAdmin />
-      },
-      {
         path: '/facultades',
         element: <PageFacultadesAdmin />
       },
@@ -526,7 +522,7 @@ export const Routes: RouterConfig = {
       },
       {
         path: '/estudiantes/updateMasivo',
-        element: <PageActualizacionMasivaAlumnos/>
+        element: <PageActualizacionMasivaAlumnos />
       },
       {
         path: '/unidades',
@@ -538,7 +534,7 @@ export const Routes: RouterConfig = {
       },
       {
         path: '/institucion',
-        element: <PageInstitucion/>
+        element: <PageInstitucion />
       }
     ],
     navBarLink: [
@@ -549,10 +545,10 @@ export const Routes: RouterConfig = {
         icon: <BiHome fontSize={32} />,
       },
       {
-        key: 'general',
-        label: 'General',
-        path: '/general',//Pendiente agregar
-        icon: <BiCabinet fontSize={32} />,
+        key: 'configuracion',
+        label: 'Configuración de la Institución',
+        path: '/institucion',
+        icon: <BiSolidWrench fontSize={32} />,
       },
       {
         key: 'facultades',
@@ -578,19 +574,13 @@ export const Routes: RouterConfig = {
         path: '/usuarios',
         icon: <BiUser fontSize={32} />,
       },
-      {
-        key: 'configuracion',
-        label: 'Configuración de la Institución',
-        path: '/institucion',
-        icon: <BiSolidWrench  fontSize={32} />,
-      }
     ]
   },
   derivation: {
     pages: [
       {
         path: '/',
-        element: <PageInicioDerivaciones/>
+        element: <PageInicioDerivaciones />
       },
       {
         path: '/derivaciones',
@@ -616,12 +606,12 @@ export const Routes: RouterConfig = {
       },
     ]
   },
-  bienestar:{
-    pages:[
+  bienestar: {
+    pages: [
 
     ],
-    navBarLink:[
-      
+    navBarLink: [
+
     ]
   }
 };

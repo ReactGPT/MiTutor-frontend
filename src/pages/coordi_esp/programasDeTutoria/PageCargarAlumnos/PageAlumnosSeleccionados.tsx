@@ -57,7 +57,9 @@ const PageAlumnosSeleccionados = ({ isOpen, closeModal }: ModalAlumnosSelecciona
   };
 
   const handleClickSaveAlumnos = () => {
+    console.log("modificados",studentDataModified);
     const filteredStudents = studentDataModified.filter(student => student.isActive);
+    console.log("alumnos finales",filteredStudents);
     dispatch(handleChangeTutoringProgram({
       name: 'alumnos',
       value: [...filteredStudents]
@@ -70,10 +72,11 @@ const PageAlumnosSeleccionados = ({ isOpen, closeModal }: ModalAlumnosSelecciona
     };
 
     const path = !!tutoringProgramSelected.id
-      ? "/programasDeTutoriaMaestro/editar"
-      : "/programasDeTutoriaMaestro/nuevo";
+      ? "/programasDeTutoriaMaestroEsp/editar"
+      : "/programasDeTutoriaMaestroEsp/nuevo";
 
     navigate(path, { state: { programaTutoria } });
+    setStudentDataModified(filteredStudents);
     closeModal();
   };
 

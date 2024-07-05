@@ -355,7 +355,7 @@ export const Routes: RouterConfig = {
         icon: <BiHome fontSize={32} />,
       },
       {
-        key: 'programasDeTutoria',
+        key: 'programasDeTutoriaEsp',
         label: 'Tipos de Tutoria',
         path: '/programasDeTutoriaEsp',
         icon: <BiCabinet fontSize={32} />,

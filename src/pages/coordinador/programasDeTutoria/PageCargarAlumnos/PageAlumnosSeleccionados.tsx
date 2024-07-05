@@ -74,6 +74,7 @@ const PageAlumnosSeleccionados = ({ isOpen, closeModal }: ModalAlumnosSelecciona
       : "/programasDeTutoriaMaestro/nuevo";
 
     navigate(path, { state: { programaTutoria } });
+    setStudentDataModified(filteredStudents);
     closeModal();
   };
 

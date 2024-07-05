@@ -85,7 +85,7 @@ const RouterContextProvider = () => {
                         sideBarOptionsFound = sideBarOptionsFound.concat({
                             rol:"SPECIALTYMANAGER",
                             title:"Coord. Especialidad",
-                            links:Routes.coordinadorFacultad.navBarLink
+                            links:Routes.coordinadorEspecialidad.navBarLink
                         });
                     }
                     break;

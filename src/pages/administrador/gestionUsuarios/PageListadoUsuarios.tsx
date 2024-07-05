@@ -23,7 +23,7 @@ export default function PageListadoUsuarios() {
   const [isOpenModalSuccess, setIsOpenModalSuccess] = useState<boolean>(false);
   const [isOpenModalError, setIsOpenModalError] = useState<boolean>(false);
   //const {isLoading,programaTutoriaData,fetchProgramaTutorias,postEliminarProgramaTutoria} = useProgramaTutoria();
-  const { loading, userData, fetchUsers, fetchUsersNoStudents ,deleteUser } = useUser();
+  const { loading, userData, fetchUsers, fetchUsersNoStudents ,deleteUser, fetchUsersNoAdminNoStudents } = useUser();
   //const [programaSelected, setProgramaSelected] = useState<ProgramaTutoria | null>(null);
   const [userSelected, setUserSelected] = useState<User | null>(null);
   //const [programaTutoriaFiltered,setProgramaTutoriaFiltered] = useState<ProgramaTutoria[]|null>(null)
@@ -31,7 +31,8 @@ export default function PageListadoUsuarios() {
     //console.log("llamada fetch prog tutoria");
     //fetchProgramaTutorias();
     //fetchUsers(); trae usuarios y alumnos
-    fetchUsersNoStudents();
+    //fetchUsersNoStudents();
+    fetchUsersNoAdminNoStudents();
   }, []);
 
   const handleNavigation = (data: User) => {

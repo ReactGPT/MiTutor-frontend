@@ -52,6 +52,52 @@ async function getUsuarios(): Promise<ServiceResponseUser> {
 
 }
 
+async function getUsuariosSinAdminSinAlumnos(): Promise<ServiceResponseUser> {
+
+  try {
+    const response = await axios({
+      method: 'get',
+      url: ServicesProperties.BaseUrl + `/listarUsuariosSinAdminSinAlumnos`,
+      headers: ServicesProperties.Headers
+    });
+
+    if (!response.data.success) {
+      // Si la llamada no es exitosa, devolvemos una lista vacía
+      return { userList: [] };
+    }
+
+    // Mapeamos la respuesta para obtener la lista de usuarios
+    const userList: User[] = response.data.data.map((item: any) => {
+      return {
+        id: item.id,
+        institutionalEmail: item.institutionalEmail,
+        pucpCode: item.pucpCode,
+        isActive: item.isActive,
+        creationDate: item.creationDate,
+        modificationDate: item.modificationDate,
+        persona: {
+          id: item.persona.id,
+          name: item.persona.name,
+          lastName: item.persona.lastName,
+          secondLastName: item.persona.secondLastName,
+          phone: item.persona.phone,
+          isActive: item.persona.isActive
+        },
+        roles: item.roles,
+        isVerified: item.isVerified
+      };
+    });
+
+    // Devolvemos la lista de usuarios
+    return { userList: userList };
+
+  } catch (err: any) {
+    console.error(err);
+    throw new Error(err.message);
+  }
+
+}
+
 async function getUsuariosSinEstudiantes(): Promise<ServiceResponseUser> {
 
   try {
@@ -287,5 +333,5 @@ async function validarCodigoPUCP(pucpCode: string): Promise<ServiceResponse> {
   }
 }
 
-export { getUsuarios, getUsuariosSinEstudiantes, crearEditarUsuario, eliminarUsuario, getStudents, crearEditarAlumno, validarCodigoPUCP }
+export { getUsuarios, getUsuariosSinEstudiantes, crearEditarUsuario, eliminarUsuario, getStudents, crearEditarAlumno, validarCodigoPUCP, getUsuariosSinAdminSinAlumnos}
 

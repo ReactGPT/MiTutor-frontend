@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button, Combobox, InputCell, Spinner } from '../../../components';
 import { SaveIcon, CloseIcon } from '../../../assets';
 import { useTutoringProgramContext } from '../../../context/ProgramaTutoriaNuevo';
@@ -22,7 +22,7 @@ function DatosGeneralesTutoria() {
   const [isOpenModalSuccess, setIsOpenModalSuccess] = useState<boolean>(false);
   const [isOpenModalError, setIsOpenModalError] = useState<boolean>(false);
   const { userData } = useAuth();
-  const roles = !!userData ? userData?.userInfo?.roles : [];
+  const roles = userData?.userInfo?.roles || [];
 
   const { specialityList, facultyList } = useAppSelector((state: RootState) => ({
     specialityList: state.parameters.specialityList,
@@ -33,75 +33,66 @@ function DatosGeneralesTutoria() {
   const [facultySelected, setFacultySelected] = useState<Faculty | null>(null);
   const [searchQuery, setSearchQuery] = useState<string>("");
 
-  let selectedFaculties: Faculty[] = [];
-
-  if (roles) {
-    roles.forEach(role => {
-      if (role.rolName === 'Responsable de Facultad') {
-        const facultyId = parseInt((role.details as any).departmentId, 10);
-        const faculty = facultyList.find(faculty => faculty.id === facultyId);
-        if (faculty) {
-          selectedFaculties.push(faculty);
-        }
+  // Construir la lista de especialidades seleccionadas basadas en los roles
+  const selectedEspecialidades: Specialty[] = roles.reduce((acc: Specialty[], role: any) => {
+    if (role.rolName === 'Responsable de Especialidad') {
+      const facultyId = parseInt(role.details?.departmentId, 10);
+      const speciality = specialityList.find(faculty => faculty.id === facultyId);
+      if (speciality && !acc.some(especialidad => especialidad.id === speciality.id)) {
+        acc.push(speciality);
       }
-    });
-  }
-  const isEditRoute = location.pathname === '/programasDeTutoriaMaestro/editar';
-  // Identificar si estamos en modo de edición basado en la URL
+    }
+    return acc;
+  }, []);
+
+  const isEditRoute = location.pathname === '/programasDeTutoriaMaestroEsp/editar';
+
   useEffect(() => {
-    const isEditMode = location.pathname.includes('/editar');
-    if (isEditMode) {
-      // Asignar facultad seleccionada
+    if (isEditRoute) {
       const selectedFaculty = facultyList.find(faculty => faculty.id === tutoringProgramSelected.facultadId);
       if (selectedFaculty) {
         setFacultySelected(selectedFaculty);
       }
 
-      // Asignar especialidad seleccionada
       const selectedSpeciality = specialityList.find(speciality => speciality.id === tutoringProgramSelected.especialidadId);
       if (selectedSpeciality) {
         setSpecialitySelected(selectedSpeciality);
       }
     }
-  }, [location.pathname, tutoringProgramSelected, facultyList, specialityList]);
-
-  const handleOnChangeFaculty = (value: Faculty) => {
-    if ((facultySelected && facultySelected.id !== value.id) || (!facultySelected && specialitySelected?.facultyId !== value.id)) {
-      setSpecialitySelected(null);
-    }
-    setFacultySelected(value);
-  };
-
-  const specialityOptions = useMemo(() => {
-    if (!facultySelected?.id) {
-      return [];
-    } else {
-      return specialityList.filter(item => item.facultyId === facultySelected.id);
-    }
-  }, [facultySelected, specialityList]);
+  }, [isEditRoute, tutoringProgramSelected, facultyList, specialityList]);
 
   const handleSaveTutoria = () => {
     postProgramaTutoria(tutoringProgramSelected)
       .then((response) => response ? setIsOpenModalSuccess(true) : setIsOpenModalError(true));
   };
 
+  /*{isLoading ? <Spinner /> : 
+  <Button disabled={!!roles ? !(roles.some((rol: any) => rol.type === "SPECIALTYMANAGER" 
+  && (rol.details.departmentType === 'Facultad' ? 
+  rol.details.departmentId.toString() === tutoringProgram.facultadId.toString() : rol.details.departmentId.toString() === tutoringProgram.especialidadId.toString()))) : true} text='Guardar' icon={SaveIcon} onClick={handleSaveTutoria} />}
+           */
   return (
     <div className='flex flex-col w-full h-full'>
-
       <div id="ProgramaTutoriaBox1Header" className='flex flex-row justify-between items-center w-full h-full'>
         <h2 className='text-xl font-bold font-roboto text-black'>Datos del programa</h2>
         <div className='flex flex-row gap-4'>
-          {isLoading ? <Spinner /> : <Button disabled={!!roles ? !(roles.some((rol: any) => rol.type === "FACULTYMANAGER" 
-            && (rol.details.departmentType === 'Facultad' ? rol.details.departmentId.toString() === tutoringProgram.facultadId.toString() : rol.details.departmentId.toString() === tutoringProgram.especialidadId.toString()))) : true} text='Guardar' icon={SaveIcon} onClick={handleSaveTutoria} />}
-          <Button text='Cancelar' variant='primario' icon={CloseIcon} iconSize={4} onClick={() => { navigate("/programasDeTutoria"); }} />
+        {isLoading ? <Spinner /> : 
+            <Button 
+            disabled={!!roles && !roles.some((rol: any) => 
+              rol.type === "SPECIALTYMANAGER" && 
+              rol.details.departmentType === 'Especialidad' && 
+              rol.details.departmentId.toString() === tutoringProgram.especialidadId.toString()
+            )} 
+            text='Guardar' 
+            icon={SaveIcon} 
+            onClick={handleSaveTutoria} 
+          />}
+          <Button text='Cancelar' variant='primario' icon={CloseIcon} iconSize={4} onClick={() => { navigate("/programasDeTutoriaEsp"); }} />
         </div>
       </div>
-
       <div id='ProgramaTutoriaBox1Content' className='flex flex-col w-full gap-2 h-full'>
-
         <div id='ProgramaTutoriaBox1ContentTutoria' className='flex w-full justify-between items-center gap-5'>
-
-          <span className='w-1/3 h-full'>
+          <span className='w-1/2 h-full'>
             <Label value="Nombre de tutoría" className='font-roboto text-primary' />
             <InputCell
               name='nombre'
@@ -111,42 +102,22 @@ function DatosGeneralesTutoria() {
               boxSize='w-full flex h-[38px]'
             />
           </span>
-
-          <span className='w-1/3 h-full'>
-            <Label value="Facultad" className='font-roboto text-primary' />
+          <span className='w-1/2 h-full'>
+            <Label value="Especialidades" className='font-roboto text-primary' />
             <Combobox
-              name="Elija una facultad"
-              options={selectedFaculties}
+              name="Elija una especialidad"
+              options={selectedEspecialidades}
               onChange={(value: any) => {
-                onChangeTutoringProgram("facultadId", value.id);
-                setFacultySelected(value);
-                setSpecialitySelected(null); // Reset speciality when faculty changes
+                onChangeTutoringProgram("facultadId", value.facultyId); 
+                onChangeTutoringProgram("especialidadId", value.id);
               }}
-              value={facultySelected}
+              value={specialitySelected}
               text='Facultad'
               disabled={isEditRoute}
             />
           </span>
-
-          <span className='w-1/3 h-full'>
-            <Label value="Especialidad" className='font-roboto text-primary' />
-            <Combobox
-              name="Elija una especialidad"
-              options={specialityOptions}
-              onChange={(value: any) => {
-                onChangeTutoringProgram("especialidadId", value.id);
-                setSpecialitySelected(value);
-              }}
-              value={specialitySelected}
-              text='Especialidad'
-              disabled={isEditRoute}
-            />
-          </span>
-
         </div>
-
         <div id='ProgramaTutoriaBox1ContentDescripcion' className='flex w-full h-full flex-col'>
-
           <Label value="Descripción" className='font-roboto text-primary' />
           <textarea
             id="message"
@@ -156,26 +127,21 @@ function DatosGeneralesTutoria() {
             }}
             value={tutoringProgram.descripcion}
             rows={4}
-            className="block w-full max-h-[51px] text-xs  bg-gray-50 rounded-md border border-primary focus:ring-primary focus:border-primary dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            className="block w-full max-h-[51px] text-xs bg-gray-50 rounded-md border border-primary focus:ring-primary focus:border-primary dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
             placeholder="Ej: La tutorías de cachimbos es para..."
           />
-
         </div>
-
       </div>
-
       <ModalSuccess isOpen={isOpenModalSuccess}
         message={!!tutoringProgram.id ? "Se guardaron los cambios satisfactoriamente" : "Se creó la tutoría satisfactoriamente"}
         onClose={() => {
           setIsOpenModalSuccess(false);
-          navigate("/programasDeTutoria");
+          navigate("/programasDeTutoriaEsp");
         }}
       />
-
       <ModalError isOpen={isOpenModalError} message='Ocurrió un error al intentar procesar el programa de tutoría. Intente nuevamente'
         onClose={() => setIsOpenModalError(false)}
       />
-
     </div>
   );
 }

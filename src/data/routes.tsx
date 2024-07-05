@@ -65,6 +65,9 @@ import PageListadoDerivaciones from "../pages/bienestar/derivaciones/PageListado
 import PageDetalleDerivacion from "../pages/bienestar/derivaciones/PageDetalleDerivacion.tsx";
 import PageInicioDerivaciones from "../pages/bienestar/derivaciones/PageInicioDerivaciones.tsx";
 import PageActualizacionMasivaAlumnos from "../pages/administrador/gestionUsuarios/PageActualizacionMasivaAlumnos.tsx";
+import PageMaestroTutoresEsp  from "../pages/coordi_esp/MaestroTutores/PageMaestroTutores.tsx";
+import PageProgramasTutoriaMaestroEsp from "../pages/coordi_esp/programasDeTutoria/PageProgramasTutoriaMaestro.tsx";
+import PageProgTutoriaEsp from "../pages/coordi_esp/programasDeTutoria/PageProgTutoria.tsx";
 
 type RouterDetail = {
   pages: RouteObject[];
@@ -307,16 +310,16 @@ export const Routes: RouterConfig = {
         element: <PageInicioTutor />,
       },
       {
-        path: '/programasDeTutoria',
-        element: <PageProgramasTutoriaMaestro />,
+        path: '/programasDeTutoriaEsp',
+        element: <PageProgramasTutoriaMaestroEsp />,
       },
       {
-        path: '/programasDeTutoriaMaestro/editar',
-        element: <PageProgTutoria />
+        path: '/programasDeTutoriaMaestroEsp/editar',
+        element: <PageProgTutoriaEsp />
       },
       {
-        path: '/programasDeTutoriaMaestro/nuevo',
-        element: <PageProgTutoria />,
+        path: '/programasDeTutoriaMaestroEsp/nuevo',
+        element: <PageProgTutoriaEsp />,
       },
       {
         path: '/gestionSolicitudes',
@@ -341,15 +344,7 @@ export const Routes: RouterConfig = {
       },
       {
         path: '/maestroTutores',
-        element: <PageMaestroTutores />
-      },
-      {
-        path: '/especialidades',
-        element: <EspecialidadesPage />
-      },
-      {
-        path: '/especialidades/editar',
-        element: <EspecialidadSingular />
+        element: <PageMaestroTutoresEsp />
       }
     ],
     navBarLink: [
@@ -362,20 +357,14 @@ export const Routes: RouterConfig = {
       {
         key: 'programasDeTutoria',
         label: 'Tipos de Tutoria',
-        path: '/programasDeTutoria',
+        path: '/programasDeTutoriaEsp',
         icon: <BiCabinet fontSize={32} />,
       },
-      {
+      /*{
         key: 'gestionDeSolicitudes',
         label: 'Gestion de Solicitudes',
         path: '/gestionSolicitudes',
         icon: <BiUserCheck fontSize={32} />,
-      },
-      {
-        key: 'especialidades',
-        label: 'Especialidades',
-        path: '/especialidades',//Pendiente agregar
-        icon: <BiListUl fontSize={32} />,
       },
       {
         key: 'indicadorAlumno',
@@ -388,7 +377,7 @@ export const Routes: RouterConfig = {
         label: 'Indicador Tutor',
         path: '/indicadorTutor',
         icon: <BiBarChartAlt fontSize={32} />,
-      },
+      },*/
       {
         key: 'maestroTutores',
         label: 'Maestro Tutores',

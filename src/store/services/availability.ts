@@ -23,7 +23,7 @@ async function getAvailabilityByTutorId(tutorId: number): Promise<Availability[]
       endTime: item.endTime,
       isActive: item.isActive,
     }));
-
+    console.log(response.data.data);
     return availabilityList;
   } catch (error) {
     throw new Error("Error en getAvailabilityByTutorId");

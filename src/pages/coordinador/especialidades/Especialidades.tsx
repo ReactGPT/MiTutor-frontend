@@ -17,6 +17,7 @@ import ModalConfirmation from "../../../components/ModalConfirmation";
 import ModalSuccess from "../../../components/ModalSuccess";
 import ModalError from "../../../components/ModalError";
 import { eliminarEspecialidad } from "../../../store/services/actualizarEspecialidad";
+import { Faculty, Specialty } from "../../../store/types";
 
 type EspecialidadesPageProps = {
   Facultyid?: number;
@@ -89,10 +90,10 @@ const EspecialidadesPage: React.FC<EspecialidadesPageProps> = ({ Facultyid, disa
       return Facultyid;
     }
     userInfo?.roles.forEach((role: any) => {
-      if (role.type === "MANAGER") {
+      if (role.rolName === 'Responsable de Facultad') {
         departmentId = role.details.departmentId;
       }
-    });
+    }); 
     return departmentId;
   }, [userInfo]);
 
@@ -107,8 +108,6 @@ const EspecialidadesPage: React.FC<EspecialidadesPageProps> = ({ Facultyid, disa
   const [isOpenModalError, setIsOpenModalError] = useState<boolean>(false);
 
   const handleOnConfirmDeleteEspecialidad = async () => {
-    console.log("Eliminando");
-
     if (selectedEspecialidadId !== null) {
       try {
         await eliminarEspecialidad(selectedEspecialidadId);
@@ -123,13 +122,38 @@ const EspecialidadesPage: React.FC<EspecialidadesPageProps> = ({ Facultyid, disa
     }
   };
 
+  const roles = userData?.userInfo?.roles;
+
+  const especialdadesFiltered: Specialty[] = useMemo(() => {
+    let filteredData: Specialty[] = [];
+    // Apply role-based filter if user has 'Responsable de Facultad' role
+    if (Facultyid) {
+      return especialidadData.filter(especialidad => especialidad.faculty.facultyId == Facultyid);
+    }
+    if (roles) {
+      especialidadData.forEach(especialidad => {
+        // Recorrer cada rol del usuario
+        roles.forEach(role => {
+          if (role.rolName === 'Responsable de Facultad') {
+            const facultyId = parseInt((role.details as any).departmentId, 10);
+            // Si el programa tiene el mismo facultyId que el rol, agregarlo a filteredData
+            if (especialidad.faculty.facultyId == facultyId) {
+              filteredData.push(especialidad);
+            }
+          }
+        });
+      });
+    }
+    return filteredData;
+  }, [especialidadData, roles]);
+
   return (
     <>
       <div className="w-full h-full flex flex-col gap-5">
         <div className="flex gap-2 flex-wrap justify-between items-center">
-          <h2 className="text-primary text-3xl font-bold">
+          <h1 className="text-2xl font-bold text-[#2F2F2F]">
             Especialidades
-          </h2>
+          </h1>
           <Button
             text="Agregar especialidad"
             onClick={() => {
@@ -146,16 +170,18 @@ const EspecialidadesPage: React.FC<EspecialidadesPageProps> = ({ Facultyid, disa
             className="grow border-0"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
+            disabled={disableAgregarEspecialidad}
           />
           <button
             className="bg-primary text-white px-4 py-2"
             onClick={onSearch}
+            disabled={disableAgregarEspecialidad}
           >
             <BiSearch />
           </button>
         </div>
         <AgGridReact
-          rowData={especialidadData.filter((especialidad) => especialidad.faculty.facultyId === departmentId)}
+          rowData={especialdadesFiltered}
           columnDefs={columnFac}
           rowSelection="multiple"
           defaultColDef={{

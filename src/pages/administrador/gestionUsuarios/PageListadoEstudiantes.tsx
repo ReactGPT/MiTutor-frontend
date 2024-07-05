@@ -1,4 +1,3 @@
-import * as React from 'react';
 import { useState, useEffect, useMemo } from 'react';
 import ListadoUsuariosSearchBar from './ListadoUsuariosSearchBar';
 import { AgGridReact } from 'ag-grid-react';
@@ -11,12 +10,10 @@ import { useNavigate } from 'react-router-dom';
 import { useUser } from '../../../store/hooks/useUser';
 import { Spinner } from '../../../components';
 import DeleteIcon from '../../../assets/svg/DeleteIcon';
-//import { getEliminarTutoria } from '../../../store/services';
 import ModalConfirmation from '../../../components/ModalConfirmation';
 import ModalSuccess from '../../../components/ModalSuccess';
 import ModalError from '../../../components/ModalError';
 import { User } from '../../../store/types/User';
-//import { Student } from '../../../store/types/User';
 
 
 export default function PageListadoEstudiantes() {
@@ -70,10 +67,6 @@ export default function PageListadoEstudiantes() {
     name: null
   });
 
-  const handleOnChangeFilters = (filter: any) => {
-    setFilters(filter);
-  };
-
   const UserFiltered: User[] = useMemo(() => {
     return [...(userData).filter((item) =>
       item.persona.name.toLowerCase().includes(filters.name ? filters.name : "")
@@ -96,20 +89,19 @@ export default function PageListadoEstudiantes() {
     floatingFilter: true,
   };
   const columnDefs: ColDef[] = [
-
+    { headerName: 'Correo', field: 'institutionalEmail', filter: 'agTextColumnFilter', minWidth: 300, maxWidth: 300 },
     { headerName: 'Código', field: 'pucpCode', filter: 'agTextColumnFilter', minWidth: 110, maxWidth: 120 },
     { headerName: 'Nombres', field: 'persona.name', filter: 'agTextColumnFilter', minWidth: 150 },
     { headerName: 'Primer Apellido', field: 'persona.lastName', filter: 'agTextColumnFilter', minWidth: 150 },
     { headerName: 'Segundo Apellido', field: 'persona.secondLastName', filter: 'agTextColumnFilter', minWidth: 150 },
-    { headerName: 'Correo', field: 'institutionalEmail', filter: 'agTextColumnFilter', minWidth: 300, maxWidth: 300 },
     { headerName: 'Facultad', field: 'estudiante.facultyName', filter: 'agTextColumnFilter', minWidth: 300, maxWidth: 300 },
     { headerName: 'Especialidad', field: 'estudiante.specialtyName', filter: 'agTextColumnFilter', minWidth: 300, maxWidth: 300 },
-    /* {
+    {
       headerName: 'Activo',
       field: 'isActive',
       filter: 'agSetColumnFilter',
       minWidth: 80, maxWidth: 80
-    }, */
+    }, 
     {
       headerName: '',
       field: '',
@@ -137,8 +129,13 @@ export default function PageListadoEstudiantes() {
 
   ];
   return (
-    <div className='flex w-full h-full flex-col'>
+    <div className='flex w-full h-full flex-col gap-5'>
       <div className='flex w-full h-fit'>
+        <div className="text-base text-primary font-medium w-1/2 flex flex-col items-start justify-center">
+          <label>
+            • Los alumnos tendrán acceso al sistema.
+          </label>
+        </div>
         <ListadoUsuariosSearchBar rol='estudiante' />
       </div>
       <div className='flex w-full h-full ag-theme-alpine items-center justify-center'>

@@ -6,7 +6,9 @@ import { Datepicker, Label, TextInput } from 'flowbite-react';
 import { useAvailability } from '../../store/hooks/useAvailability';
 import { useAuth } from '../../context';
 import { TutorRoleDetails } from '../../store/types';
-
+import { getTutorId
+  
+ } from '../../store/hooks/RolesIdTutor';
 const formatDate = (date: Date) => {
   const month = String(date.getMonth() + 1).padStart(2, '0');
   const day = String(date.getDate()).padStart(2, '0');
@@ -26,8 +28,8 @@ const ModalModificarDisponibilidad: React.FC<ModalModificarDisponibilidadProps> 
 ) => {
 
   const { userData } = useAuth();
-  const tutorId = (userData?.userInfo?.roles[0].details as TutorRoleDetails).tutorId;
-
+  //const tutorId = (userData?.userInfo?.roles[2].details as TutorRoleDetails).tutorId;
+  const tutorId = getTutorId(userData);
 
   const { addAvailability } = useAvailability(tutorId);
 
@@ -36,6 +38,7 @@ const ModalModificarDisponibilidad: React.FC<ModalModificarDisponibilidadProps> 
   const [date, setDate] = useState<string>("");
 
   useEffect(() => {
+    console.log(tutorId);
     if (slotInfo) {
       setDate(formatDate(slotInfo.start));
       setStartTime(slotInfo.start.toTimeString().split(' ')[0]);

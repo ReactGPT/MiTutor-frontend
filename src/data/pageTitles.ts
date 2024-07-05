@@ -192,11 +192,31 @@ export const PageTitles = [
     pageName: "Resultado de Cita Grupal"
   },
   {
+    path: "/IndicadorAlumnoTutor",
+    pageName: "Indicador Alumnos"
+  },
+  {
     path: "/misTutorias/detalle/listadoPlanAccionAlumno/detalle",
     pageName: "Detalle Plan de Acción"
   },
   {
     path: "/institucion",
     pageName: "Configuración de la Institución"
+  },
+  {
+    path: "/derivaciones",
+    pageName: "Derivaciones"
+  },
+  {
+    path: '/derivaciones/detalle',
+    pageName: "Detalle de Derivación"
+  },
+  {
+    path: '/estudiantes/updateMasivo',
+    pageName: "Actualización Masiva de Alumnos"
+  },
+  {
+    path: '/facultades/editarFacultad/especialidades/editar',
+    pageName: "Editar Especialidad"
   }
 ];

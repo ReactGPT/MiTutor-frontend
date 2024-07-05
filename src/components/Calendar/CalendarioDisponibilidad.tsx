@@ -11,7 +11,7 @@ import ModalModificarDisponibilidad from '../Tutor/ModalModificarDisponibilidad'
 import { useAuth } from '../../context';
 import { TutorRoleDetails } from '../../store/types';
 import ModalProgramarCitaTutor from '../Tutor/ModalProgramarCitaTutor';
-
+import { getTutorId } from '../../store/hooks/RolesIdTutor';
 interface CustomEvent extends Event {
   isBackgroundEvent?: boolean;
   availabilityTutorId?: number;
@@ -93,15 +93,21 @@ function transformAvailabilityToEvent(availability: Availability[]): CustomEvent
 
 const CalendarioDisponibilidad: React.FC<CalendarioDisponibilidadProps> = ({ citas = null, programable = false, onSelectEvent, onSelectSlot, refresh, refrescar, tipo }) => {
   const { userData } = useAuth();
-  const tutorId = (userData?.userInfo?.roles[0].details as TutorRoleDetails).tutorId;
+  //const tutorId = (userData?.userInfo?.roles[2].details as TutorRoleDetails).tutorId;
+  const tutorId = getTutorId(userData);
 
   const { availability, fetchAvailability } = useAvailability(tutorId);
 
   const [refreshKey, setRefreshKey] = useState(0);
 
   useEffect(() => {
+    console.log(tutorId);
     fetchAvailability();
   }, [refrescar, refreshKey]);
+
+  useEffect(() => {
+    console.log(availability); 
+  }, [fetchAvailability]);
 
   const events: CustomEvent[] = citas?.map(transformCitaToEvent) ?? [];
   const disponibilidad = transformAvailabilityToEvent(availability);

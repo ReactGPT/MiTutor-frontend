@@ -4,7 +4,8 @@ import Pagination from "../../../components/Pagination";
 import { SearchInput } from "../../../components";
 import { useDerivationPorTutor } from '../../../store/hooks/useDerivation';
 import { useAuth } from '../../../context';
-import { TutorRoleDetails } from '../../../store/types';
+import { TutorRoleDetails, UserAccount } from '../../../store/types';
+import { getTutorId } from '../../../store/hooks/RolesIdTutor';
 
 const listaDerivaciones = [
 
@@ -25,7 +26,11 @@ const listaDerivaciones = [
 const PageMisDerivacionesHechas = () => {
     const { userData } = useAuth();
     //const tutorId = userData?.userInfo?.roles[0].details.tutorId;
-    const tutorId = (userData?.userInfo?.roles[0].details as TutorRoleDetails).tutorId;
+    //const tutorId = (userData?.userInfo?.roles[2].details as TutorRoleDetails).tutorId;
+    
+    //llamar funcion para el tutorId
+    const tutorId = getTutorId(userData);
+ 
     const { derivation, fetchDerivation } = useDerivationPorTutor(tutorId);
 
     useEffect(() => {

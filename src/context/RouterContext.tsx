@@ -13,7 +13,7 @@ type RouterChildren = {
 };
 
 type NavBarOption = {
-    rol : "STUDENT"|"MANAGER"|"ADMIN"|"TUTOR"|"DERIVATION";
+    rol : "STUDENT"|"SPECIALTYMANAGER"|"FACULTYMANAGER" |"ADMIN"|"TUTOR"|"DERIVATION"|"CAREMANAGER";
     title: string;
     links: SidebarLink[];
   }
@@ -69,13 +69,23 @@ const RouterContextProvider = () => {
                         });
                     }
                     break;
-                case "MANAGER":
-                    childrenArrayFound = childrenArrayFound.concat(Routes.coordinador.pages);
-                    if(! (sideBarOptionsFound.some((item)=>item.rol==="MANAGER"))){
+                case "FACULTYMANAGER":
+                    childrenArrayFound = childrenArrayFound.concat(Routes.coordinadorFacultad.pages);
+                    if(! (sideBarOptionsFound.some((item)=>item.rol==="FACULTYMANAGER"))){
                         sideBarOptionsFound = sideBarOptionsFound.concat({
-                            rol:"MANAGER",
-                            title:"Coordinador",
-                            links:Routes.coordinador.navBarLink
+                            rol:"FACULTYMANAGER",
+                            title:"Coord. Facultad",
+                            links:Routes.coordinadorFacultad.navBarLink
+                        });
+                    }
+                    break;
+                case "SPECIALTYMANAGER":
+                    childrenArrayFound = childrenArrayFound.concat(Routes.coordinadorEspecialidad.pages);
+                    if(! (sideBarOptionsFound.some((item)=>item.rol==="SPECIALTYMANAGER"))){
+                        sideBarOptionsFound = sideBarOptionsFound.concat({
+                            rol:"SPECIALTYMANAGER",
+                            title:"Coord. Especialidad",
+                            links:Routes.coordinadorEspecialidad.navBarLink
                         });
                     }
                     break;
@@ -91,10 +101,20 @@ const RouterContextProvider = () => {
                     break;
                 case "DERIVATION":
                     childrenArrayFound = childrenArrayFound.concat(Routes.derivation.pages);
-                    if(! (sideBarOptionsFound.some((item)=>item.rol==="ADMIN"))){
+                    if(! (sideBarOptionsFound.some((item)=>item.rol==="DERIVATION"))){
                         sideBarOptionsFound = sideBarOptionsFound.concat({
                             rol:"DERIVATION",
                             title:"Derivación",
+                            links:Routes.derivation.navBarLink
+                        });
+                    }
+                    break;
+                case "CAREMANAGER":
+                    childrenArrayFound = childrenArrayFound.concat(Routes.bienestar.pages);
+                    if(! (sideBarOptionsFound.some((item)=>item.rol==="CAREMANAGER"))){
+                        sideBarOptionsFound = sideBarOptionsFound.concat({
+                            rol:"CAREMANAGER",
+                            title:"Coord. Bienestar",
                             links:Routes.derivation.navBarLink
                         });
                     }

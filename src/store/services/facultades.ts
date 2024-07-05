@@ -7,11 +7,11 @@ type FacultyDetailResponse = {
   facultadList: Facultad[];
 };
 
-/*async function getFacultadInfo(): Promise<FacultyDetailResponse> {
+async function getFacultadInfo(): Promise<FacultyDetailResponse> {
   try {
     const response = await axios({
       method: 'GET',
-      url: `${Services.BaseUrl}/api/Faculty/listarFacultades`,
+      url: `${Services.BaseUrl}/api/Faculty/listarFacultadesTodos`,
     });
     if (response.data.success === false) {
       return { facultadList: [] };
@@ -25,9 +25,9 @@ type FacultyDetailResponse = {
         numberTutors: item.numberOfTutors,
         isActive: item.isActive,
         facultyManager: item.facultyManager,
+        bienestarManager: item.bienestarManager,
         specialties: item.specialties,
         tutoringPrograms: item.tutoringPrograms,
-
       };
     });
     return { facultadList };
@@ -36,44 +36,13 @@ type FacultyDetailResponse = {
     console.log("error");
     return { facultadList: [] };
   }
-}*/
-
-async function getFacultadInfo():Promise<FacultyDetailResponse>{
-    try{
-        const response = await axios({
-            method: 'GET',
-            url: `${Services.BaseUrl}/api/Faculty/listarFacultadesTodos`,
-        });
-        if(response.data.success===false){
-            return {facultadList:[]};
-        }
-        const facultadList:Facultad[] = response.data.data.map((item:any)=>{
-            return {
-              id: item.facultyId,
-              name: item.name,
-              acronym: item.acronym,
-              numberStudents: item.numberOfStudents,
-              numberTutors: item.numberOfTutors,
-              isActive: item.isActive,
-              facultyManager: item.facultyManager,
-              specialties: item.specialties,
-              tutoringPrograms: item.tutoringPrograms,
-              
-            }
-        });
-        return {facultadList};
-    }
-    catch(error){
-      console.log("error");
-        return {facultadList:[]};
-    }
 }
 
 type ServiceResponse = {
   success: boolean;
   data?: any;
   message?: string;
-}
+};
 
 async function eliminarFacultad(id: number): Promise<ServiceResponse> {
   try {
@@ -82,7 +51,7 @@ async function eliminarFacultad(id: number): Promise<ServiceResponse> {
       url: `${Services.BaseUrl}/api/Faculty/eliminarFacultad/${id}`,
       // headers: Services.Headers,
     });
-    
+
     if (!response?.data.success) {
       return {
         success: false,
@@ -107,23 +76,23 @@ async function actualizarFacultad(facultad: Facultad): Promise<ServiceResponse> 
     facultyId: facultad.id,
   };
   try {
-    console.log("desde fac axios",facultadBody)
-      const response = await axios.put(`${Services.BaseUrl}/api/Faculty/actualizarFacultades`, facultadBody);
-      console.log("desde fac axios",facultadBody, response)
-      if (!response?.data.success) {
-        return {
-          success: false,
-          message: response?.data?.message
-        };
-      }
+    console.log("desde fac axios", facultadBody);
+    const response = await axios.put(`${Services.BaseUrl}/api/Faculty/actualizarFacultades`, facultadBody);
+    console.log("desde fac axios", facultadBody, response);
+    if (!response?.data.success) {
       return {
-        success: response?.data.success,
-        message: response?.data.message
+        success: false,
+        message: response?.data?.message
       };
+    }
+    return {
+      success: response?.data.success,
+      message: response?.data.message
+    };
   } catch (error) {
-    console.log("error")
-      console.error('Error updating facultad:', error);
-      throw new Error('Error en updateFacultad');
+    console.log("error");
+    console.error('Error updating facultad:', error);
+    throw new Error('Error en updateFacultad');
   }
 }
 
@@ -153,4 +122,4 @@ async function crearFacultad(facultad: Facultad): Promise<ServiceResponse> {
   }
 }
 
-export { getFacultadInfo, eliminarFacultad, actualizarFacultad, crearFacultad }
+export { getFacultadInfo, eliminarFacultad, actualizarFacultad, crearFacultad };

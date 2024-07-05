@@ -8,11 +8,14 @@ import { useLocation } from 'react-router-dom';
 import { ListStudent } from '../../../store/types/ListStudent';
 import { TutorRoleDetails } from '../../../store/types';
 import image from '/src/assets/Tutor/no-avatar.webp';
-
+import { getTutorId
+  
+ } from '../../../store/hooks/RolesIdTutor';
 const PageHistoricoDeCitas = () => {
   const { userData } = useAuth();
-  const tutorId = (userData?.userInfo?.roles[0].details as TutorRoleDetails).tutorId;
+  //const tutorId = (userData?.userInfo?.roles[0].details as TutorRoleDetails).tutorId;
 
+  const tutorId = getTutorId(userData);
 
   const location = useLocation();
   const student: ListStudent = location.state.data;

@@ -8,16 +8,19 @@ import { TutorRoleDetails } from '../../../store/types';
 import { Services as ServicesProperties } from '../../../config';
 import axios from 'axios';
 import { ListCita } from '../../../store/types/ListCita';
+import { getTutorId } from '../../../store/hooks/RolesIdTutor';
 
 const PageListaDeCitas = () => {
   const { userData } = useAuth();
   //const tutorId = userData?.userInfo?.roles[0].details.tutorId;
-  const tutorId = (userData?.userInfo?.roles[0].details as TutorRoleDetails).tutorId;
+  //const tutorId = (userData?.userInfo?.roles[2].details as TutorRoleDetails).tutorId;
 
+  const tutorId = getTutorId(userData);
 
   const { cita, fetchCita } = useCitasPorTutor(tutorId);
 
   useEffect(() => {
+    console.log("info de userio", userData);
     fetchCita();
   }, []);
 
@@ -48,9 +51,9 @@ const PageListaDeCitas = () => {
   const indiceUltimaCita = currentPage * itemsPerPage;
   const indicePrimeraCita = indiceUltimaCita - itemsPerPage;
   const citasFiltradasRango = citasFiltradas.slice(indicePrimeraCita, indiceUltimaCita);
- 
+
   // Función para actualizar la cita en el servidor
-  const actualizarCitaEnServidor = async (appointment:ListCita) => {
+  const actualizarCitaEnServidor = async (appointment: ListCita) => {
     try {
       await axios.put(`${ServicesProperties.BaseUrl}/actulizar_Estado_Insertar_Resultado?id_appointment=${appointment.appointmentId}`, {});
       //esto era si no habian grupales
@@ -59,8 +62,8 @@ const PageListaDeCitas = () => {
       console.error('Error al actualizar la cita:', error);
     }
   };
- 
-  const [flag,setFlag] =useState(false);
+
+  const [flag, setFlag] = useState(false);
 
   useEffect(() => {
     const intervalId = setInterval(() => {
@@ -70,11 +73,11 @@ const PageListaDeCitas = () => {
           const endDateTime = new Date(`${appointment.creationDate}T${appointment.endTime}`);
           if (appointment.appointmentStatus === 'registrada' && currentDate > endDateTime) {
             appointment.appointmentStatus = 'pendiente resultado';
-            actualizarCitaEnServidor(appointment); 
+            actualizarCitaEnServidor(appointment);
             setFlag(true);
-          } 
-        }); 
-      } 
+          }
+        });
+      }
     }, 5000);
 
     return () => clearInterval(intervalId);

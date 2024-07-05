@@ -16,6 +16,8 @@ async function getProgramaDeTutoriaByTutorId(tutorId: number): Promise<ProgramaD
         description: item.description,
         faceToFace: item.faceToFace,
         virtual: item.virtual,
+        groupBased: item.groupBased,
+        individualBased: item.individualBased,
         facultyName: item.facultyName,
         specialtyName: item.specialtyName,
         tutorType: item.tutorType,

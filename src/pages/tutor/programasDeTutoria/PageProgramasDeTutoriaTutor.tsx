@@ -5,11 +5,12 @@ import Pagination from "../../../components/Pagination";
 import { useProgramaDeTutoria } from "../../../store/hooks/useProgramaDeTutoria";
 import { TutorRoleDetails } from "../../../store/types";
 import { useAuth } from "../../../context";
+import { getTutorId } from "../../../store/hooks/RolesIdTutor";
 
 const PageProgramasDeTutoriaTutor: React.FC = () => {
   const { userData } = useAuth();
-  const tutorId = (userData?.userInfo?.roles[0].details as TutorRoleDetails).tutorId;
-
+  //const tutorId = (userData?.userInfo?.roles[2].details as TutorRoleDetails).tutorId;
+  const tutorId = getTutorId(userData);
   const { programaTutoria, fetchProgramaDeTutoria, loading } = useProgramaDeTutoria(tutorId);
 
   useEffect(() => {

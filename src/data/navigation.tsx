@@ -34,6 +34,12 @@ export const DASHBOARD_SIDEBAR_LINKS: SidebarLink[] = [
     icon: <BiListUl fontSize={32} />,
   },
   {
+    key: 'indicadorAlumnosTutor',
+    label: 'Indicador Alumnos',
+    path: '/IndicadorAlumnoTutor',
+    icon: <BiListUl fontSize={32} />,
+  },
+  {
     key: 'miPerfil',
     label: 'Mi Perfil',
     path: '/miPerfil',

@@ -6,61 +6,81 @@ import { useUser } from '../../store/hooks/useUser';
 import Facultad from '../../store/types/Facultad';
 import SearchInput from '../SearchInput';
 import { ColDef } from 'ag-grid-community';
-import { BiCheckbox , BiSolidCheckSquare  } from "react-icons/bi";
+import { BiCheckbox, BiSolidCheckSquare } from "react-icons/bi";
 import { User } from '../../store/types/User';
 
 interface ModalSearchProps {
   isOpen: boolean;
   onClose: () => void;
-  onAdd: () => void;
-  message: string;
-  isAcceptAction: boolean;
-  defaultColDef: object;
   facultad: Facultad;
   setFacultadData: (facultad: Facultad) => void;
+  userType: "CoordFacultad" | "CoordBienestar";
+  updateKey: number;
 }
 
-const ModalSearch = ({isOpen, onClose, onAdd, message, isAcceptAction, defaultColDef, facultad, setFacultadData }:ModalSearchProps) => {
-  
+const ModalSearch: React.FC<ModalSearchProps> = ({ isOpen, onClose, facultad, setFacultadData, userType, updateKey }) => {
+
   const { userData, fetchUsersNoStudents } = useUser();
-  const [ usuarioSelected, setUsuarioSelected ] = useState<User | null>(null);
+  const [usuarioSelected, setUsuarioSelected] = useState<User | null>(null);
   const [searchValue, setSearchValue] = useState('');
-  
-  useEffect(() => {fetchUsersNoStudents()},[]);
+
+  useEffect(() => {
+    fetchUsersNoStudents();
+  }, [updateKey]);
+
   const handleSearch = (query: string) => {
     setSearchValue(query);
   };
-  // useEffect(() => {console.log(nuevaFacultad)},[nuevaFacultad]);
 
-  const modifiedFaculty:Facultad = useMemo(()=>{
-    if(usuarioSelected){
-      return {
-        ...facultad,
-        facultyManager: {
-          institutionalEmail:usuarioSelected.institutionalEmail,
-          isActive:usuarioSelected.isActive,
-          id:usuarioSelected.id,
-          isVerified:usuarioSelected.isVerified,
-          persona:{
-            id: usuarioSelected.persona.id,
-            name: usuarioSelected.persona.name,
-            lastName: usuarioSelected.persona.lastName,
-            secondLastName: usuarioSelected.persona.secondLastName,
-            isActive: usuarioSelected.persona.isActive, 
-            usuario: null,
-          },
-          roles: usuarioSelected.roles,
-          pucpCode:usuarioSelected.pucpCode
-        }
+  const defaultColDef = {
+    suppressHeaderMenuButton: true,
+    flex: 1,
+    sortable: true,
+    resizable: true,
+    cellStyle: {
+      textAlign: 'center',
+      justifyContent: 'center',
+      alignItems: 'center',
+      display: 'flex',
+    },
+  };
+
+  const modifiedFaculty: Facultad = useMemo(() => {
+    if (usuarioSelected) {
+      const managerData = {
+        id: usuarioSelected.id,
+        institutionalEmail: usuarioSelected.institutionalEmail,
+        pucpCode: usuarioSelected.pucpCode,
+        isActive: usuarioSelected.isActive,
+        persona: {
+          id: usuarioSelected.persona.id,
+          name: usuarioSelected.persona.name,
+          lastName: usuarioSelected.persona.lastName,
+          secondLastName: usuarioSelected.persona.secondLastName,
+          isActive: usuarioSelected.persona.isActive,
+          usuario: null,
+        },
+        roles: usuarioSelected.roles,
+        isVerified: usuarioSelected.isVerified,
+      };
+
+      if (userType === "CoordFacultad") {
+        return {
+          ...facultad,
+          facultyManager: managerData,
+        };
+      } else if (userType === "CoordBienestar") {
+        return {
+          ...facultad,
+          bienestarManager: managerData,
+        };
       }
     }
-    else{
-      return {...facultad}
-    }
-  },[usuarioSelected,facultad]);
-  
+    return { ...facultad };
+  }, [usuarioSelected, facultad]);
+
   const handleOnAddAgregarResponsable = () => {
-    if(usuarioSelected){
+    if (usuarioSelected) {
       setFacultadData({
         ...modifiedFaculty
       });
@@ -72,23 +92,22 @@ const ModalSearch = ({isOpen, onClose, onAdd, message, isAcceptAction, defaultCo
   };
 
   const columnUser: ColDef[] = [
-    { headerName: 'Nombre', valueGetter: p => p.data.persona.name + ' ' + p.data.persona.lastName + ' ' + p.data.persona.secondLastName, minWidth:3 },
-    { headerName: 'Código', field: 'pucpCode', minWidth:150, maxWidth:180},
+    { headerName: 'Nombre', valueGetter: p => p.data.persona.name + ' ' + p.data.persona.lastName + ' ' + p.data.persona.secondLastName, minWidth: 200, maxWidth: 200 },
+    { headerName: 'Correo', field: 'institutionalEmail', minWidth: 200 },
     {
-        headerName:'Seleccionar',
-        field:'',
-        maxWidth:120,
-        minWidth:120,
-        cellRenderer:(rowData:any)=>{
-            return(
-                <button className='text-primary' onClick={()=>{
-                  handleOnSelectUser(rowData.data);
-                }}>
-                  {/* <DeleteIcon size={6}/> */}
-                    {usuarioSelected?.id == rowData.data.id ? <BiSolidCheckSquare size={22}/> : <BiCheckbox size={22}/>}
-                </button>
-            )
-        }
+      headerName: 'Seleccionar',
+      field: '',
+      maxWidth: 120,
+      minWidth: 120,
+      cellRenderer: (rowData: any) => {
+        return (
+          <button className='text-primary' onClick={() => {
+            handleOnSelectUser(rowData.data);
+          }}>
+            {usuarioSelected?.id == rowData.data.id ? <BiSolidCheckSquare size={22} /> : <BiCheckbox size={22} />}
+          </button>
+        );
+      }
     }
   ];
 
@@ -140,7 +159,7 @@ const ModalSearch = ({isOpen, onClose, onAdd, message, isAcceptAction, defaultCo
                   <div className="w-full mt-4">
                     <SearchInput
                       onSearch={handleSearch}
-                      handleOnChangeFilters={() => {}}
+                      handleOnChangeFilters={() => { }}
                       placeholder={`Nombre o código del usuario`}
                       selectDisabled={true}
                     />
@@ -152,8 +171,8 @@ const ModalSearch = ({isOpen, onClose, onAdd, message, isAcceptAction, defaultCo
                           defaultColDef={defaultColDef}
                           columnDefs={columnUser}
                           rowData={userData.filter((item) =>
-                              item.persona.name.toLowerCase().includes(searchValue.toLowerCase()) || item.pucpCode.toLowerCase().includes(searchValue.toLowerCase())
-                            )}
+                            item.persona.name.toLowerCase().includes(searchValue.toLowerCase()) || item.institutionalEmail.toLowerCase().includes(searchValue.toLowerCase())
+                          )}
                         />
                       </div>
                     </div>
@@ -165,7 +184,7 @@ const ModalSearch = ({isOpen, onClose, onAdd, message, isAcceptAction, defaultCo
                 <Button
                   text="Agregar"
                   onClick={() => {
-                    if ( usuarioSelected ){
+                    if (usuarioSelected) {
                       handleOnAddAgregarResponsable();
                       onClose();
                     }

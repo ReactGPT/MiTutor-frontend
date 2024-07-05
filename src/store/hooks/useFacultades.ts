@@ -5,9 +5,9 @@ import Facultad from '../types/Facultad';
 interface FacultadHookReturnType {
   fetchFacultadData: () => Promise<void>;
   facultadData: Facultad[];
-  deleteFacultad: (id:number) => Promise<boolean>;
-  createFacultad: (facultad:Facultad) => Promise<boolean>;
-  updateFacultad: (facultad:Facultad) => Promise<boolean>;
+  deleteFacultad: (id: number) => Promise<boolean>;
+  createFacultad: (facultad: Facultad) => Promise<boolean>;
+  updateFacultad: (facultad: Facultad) => Promise<boolean>;
   isLoading: boolean;
   error: Error | null;
 }
@@ -26,23 +26,23 @@ function useFacultades(): FacultadHookReturnType {
     } finally {
       setIsLoading(false);
     }
-  }
-  
-  const deleteFacultad = async (id:number) => {
+  };
+
+  const deleteFacultad = async (id: number) => {
     setIsLoading(true);
     try {
-        const response = await eliminarFacultad(id);
-        if(!response.success){
-            throw new Error(response.message);
-        }
-        return true;
-    } catch (err:any) {
-        setError(err);
-        return false;
+      const response = await eliminarFacultad(id);
+      if (!response.success) {
+        throw new Error(response.message);
+      }
+      return true;
+    } catch (err: any) {
+      setError(err);
+      return false;
     } finally {
-        setIsLoading(false);
+      setIsLoading(false);
     }
-  }
+  };
 
   const createFacultad = async (facultad: Facultad) => {
     setIsLoading(true);
@@ -59,12 +59,33 @@ function useFacultades(): FacultadHookReturnType {
     } finally {
       setIsLoading(false);
     }
-  }
+  };
 
   const updateFacultad = async (facultad: Facultad) => {
     setIsLoading(true);
     try {
-      //console.log("user en postUser: ",user)
+      if (facultad.facultyManager === null) {
+        facultad.facultyManager = {
+          id: null,
+          institutionalEmail: "",
+          pucpCode: "",
+          isActive: true,
+          persona: null,
+          roles: null,
+          isVerified: true,
+        };
+      }
+      if (facultad.bienestarManager === null) {
+        facultad.bienestarManager = {
+          id: null,
+          institutionalEmail: "",
+          pucpCode: "",
+          isActive: true,
+          persona: null,
+          roles: null,
+          isVerified: true,
+        };
+      }
       const response = await actualizarFacultad(facultad);
       if (!response.success) {
         throw new Error(response.message);
@@ -76,9 +97,9 @@ function useFacultades(): FacultadHookReturnType {
     } finally {
       setIsLoading(false);
     }
-  }
+  };
 
   return { fetchFacultadData, facultadData, deleteFacultad, createFacultad, updateFacultad, isLoading, error };
 }
 
-export { useFacultades }
+export { useFacultades };

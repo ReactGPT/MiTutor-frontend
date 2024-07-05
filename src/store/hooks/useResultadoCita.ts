@@ -133,7 +133,8 @@ function useDerivacion(id_appointment:number): DerivacionHooksReturn {
         unitDerivationId: 0,
         userAccountId: 1,
         appointmentId: 0,
-        isActive: true
+        isActive: true,
+        facultyId:0,
       });
     }
   }, [derivation]);

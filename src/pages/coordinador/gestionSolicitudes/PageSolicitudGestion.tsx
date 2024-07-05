@@ -9,15 +9,15 @@ import { Spinner } from "../../../components";
 import Accept from "../../../assets/svg/Accept";
 import Reject from "../../../assets/svg/Reject";
 import Button from "../../../components/Button";
-import SimpleSearchInput from "../../../components/SimpleSearchInput";
 import ModalWarning from "../../../components/ModalWarning";
 import ModalError from "../../../components/ModalError";
 import ModalConfirmation from "../../../components/ModalConfirmation";
 import ModalSuccess from "../../../components/ModalSuccess";
 import { useAuth } from "../../../context";
-import { ManagerRoleDetails, Specialty } from "../../../store/types";
+import { ManagerRoleDetails } from "../../../store/types";
 import { useAppSelector } from "../../../store/hooks";
 import { RootState } from "../../../store/store";
+import NuevoSearchBar from "./nuevoSearch";
 
 const PageSolicitudGestion: React.FC = () => {
   const {
@@ -37,13 +37,10 @@ const PageSolicitudGestion: React.FC = () => {
   }>({});
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
   const [isErrorModalOpen, setIsErrorModalOpen] = useState(false);
-  const [isConfirmationModalOpen, setIsConfirmationModalOpen] =
-    useState(false);
+  const [isConfirmationModalOpen, setIsConfirmationModalOpen] = useState(false);
   const [isWarningModalOpen, setIsWarningModalOpen] = useState(false);
   const [modalMessage, setModalMessage] = useState("");
-  const [confirmationAction, setConfirmationAction] = useState<() => void>(
-    () => { }
-  );
+  const [confirmationAction, setConfirmationAction] = useState<() => void>(() => {});
 
   useEffect(() => {
     fetchTutorStudentPrograms();
@@ -62,15 +59,11 @@ const PageSolicitudGestion: React.FC = () => {
 
   const handleAcceptClick = () => {
     const selectedNodes = gridApiRef.current?.getSelectedNodes() || [];
-    const selectedIds = selectedNodes.map(
-      (node: any) => node.data.TutorStudentProgramId
-    );
+    const selectedIds = selectedNodes.map((node: any) => node.data.TutorStudentProgramId);
     if (selectedIds.length === 0) {
       setIsWarningModalOpen(true);
     } else {
-      setModalMessage(
-        "¿Está seguro de aceptar las solicitudes seleccionadas?"
-      );
+      setModalMessage("¿Está seguro de aceptar las solicitudes seleccionadas?");
       setConfirmationAction(() => async () => {
         try {
           await updateProgramState(selectedIds, "ASIGNADO");
@@ -86,16 +79,11 @@ const PageSolicitudGestion: React.FC = () => {
 
   const handleRejectClick = () => {
     const selectedNodes = gridApiRef.current?.getSelectedNodes() || [];
-    const selectedIds = selectedNodes.map(
-      (node: any) => node.data.TutorStudentProgramId
-
-    );
+    const selectedIds = selectedNodes.map((node: any) => node.data.TutorStudentProgramId);
     if (selectedIds.length === 0) {
       setIsWarningModalOpen(true);
     } else {
-      setModalMessage(
-        "¿Está seguro de rechazar las solicitudes seleccionadas?"
-      );
+      setModalMessage("¿Está seguro de rechazar las solicitudes seleccionadas?");
       setConfirmationAction(() => async () => {
         try {
           await updateProgramState(selectedIds, "RECHAZADO");
@@ -109,9 +97,6 @@ const PageSolicitudGestion: React.FC = () => {
     }
   };
 
-
-
-
   const handleConfirmAction = () => {
     confirmationAction();
     setIsConfirmationModalOpen(false);
@@ -123,9 +108,7 @@ const PageSolicitudGestion: React.FC = () => {
 
   const onSelectionChanged = () => {
     const selectedNodes = gridApiRef.current?.getSelectedNodes() || [];
-    const selectedIds = selectedNodes.map(
-      (node: any) => node.data.TutorStudentProgramId
-    );
+    const selectedIds = selectedNodes.map((node: any) => node.data.TutorStudentProgramId);
   };
 
   const columnDefs: ColDef[] = [
@@ -152,43 +135,39 @@ const PageSolicitudGestion: React.FC = () => {
   };
 
   const { userData } = useAuth();
-  const specialityList = useAppSelector((state: RootState) => state.parameters.specialityList);
 
   const filteredRowData = useMemo(() => {
-    
     let filteredData = [...tutorStudentPrograms];
 
-    if (rolEspecifico == 'Coordinador de Facultad') {
-
-      filteredData = filteredData.filter(item => 
-        userData?.userInfo?.roles.some(role => 
+    if (rolEspecifico === 'Coordinador de Facultad') {
+      filteredData = filteredData.filter(item =>
+        userData?.userInfo?.roles.some(role =>
           role.details && 'departmentName' in role.details && role.details.departmentName === item.studentProgram.student.specialty.faculty.name
         )
       );
 
-      if (filters.faculty != undefined) {
+      if (filters.faculty !== undefined) {
         filteredData = filteredData.filter(
           (program) =>
-            program.studentProgram.student.specialty.faculty.name ===
-            filters.faculty
+            program.studentProgram.student.specialty.faculty.name === filters.faculty
         );
       }
-      if (filters.specialty != undefined) {
+      if (filters.specialty !== undefined) {
         if (filters.specialty === "Todos") {
           filteredData = filteredData;
-        } else
+        } else {
           filteredData = filteredData.filter(
             (program) =>
-              program.studentProgram.student.specialty.name ===
-              filters.specialty
+              program.studentProgram.student.specialty.name === filters.specialty
           );
+        }
       }
-      if (filters.status != undefined) {
+      if (filters.status !== undefined) {
         filteredData = filteredData.filter(
           (program) => program.state === filters.status
         );
       }
-      if (filters.tutor != undefined) {
+      if (filters.tutor !== undefined) {
         filteredData = filteredData.filter(
           (program) =>
             program.tutor.userAccount.persona.name
@@ -205,7 +184,7 @@ const PageSolicitudGestion: React.FC = () => {
               .includes((filters.tutor ?? "").toLowerCase())
         );
       }
-      if (filters.student != undefined) {
+      if (filters.student !== undefined) {
         filteredData = filteredData.filter(
           (program) =>
             program.studentProgram.student.name
@@ -225,20 +204,9 @@ const PageSolicitudGestion: React.FC = () => {
               .includes((filters.student ?? "").toLowerCase())
         );
       }
-      return filteredData.map((program) => ({
-        StudentCode: program.studentProgram.student.usuario.pucpCode,
-        SpecialtyName: program.studentProgram.student.specialty.name,
-        StudentFullName: `${program.studentProgram.student.name} ${program.studentProgram.student.lastName} ${program.studentProgram.student.secondLastName}`,
-        TutorFullName: `${program.tutor.userAccount.persona.name} ${program.tutor.userAccount.persona.lastName} ${program.tutor.userAccount.persona.secondLastName}`,
-        State: `${program.state}`,
-        TutorStudentProgramId: program.tutorStudentProgramId,
-        Motivo: program.motivo,
-      }));
-    }
-    else if (rolEspecifico == 'Coordinador de Especialidad') {
-
+    } else if (rolEspecifico === 'Coordinador de Especialidad') {
       const rolEspecialidad = userData?.userInfo?.roles.find(rol => rol.rolName === 'Responsable de Especialidad');
-      if (rolEspecialidad != undefined && rolEspecialidad.details && 'departmentName' in rolEspecialidad.details) {
+      if (rolEspecialidad !== undefined && rolEspecialidad.details && 'departmentName' in rolEspecialidad.details) {
         const specialtyName = (rolEspecialidad.details as ManagerRoleDetails).departmentName;
         filteredData = filteredData.filter(
           (program) =>
@@ -246,29 +214,29 @@ const PageSolicitudGestion: React.FC = () => {
         );
       }
 
-      if (filters.specialty != undefined) {
+      if (filters.specialty !== undefined) {
         if (filters.specialty === "Todos") {
           const rolEspecialidad = userData?.userInfo?.roles.find(rol => rol.rolName === 'Responsable de Especialidad');
-          if (rolEspecialidad != undefined && rolEspecialidad.details && 'departmentName' in rolEspecialidad.details) {
+          if (rolEspecialidad !== undefined && rolEspecialidad.details && 'departmentName' in rolEspecialidad.details) {
             const specialtyName = (rolEspecialidad.details as ManagerRoleDetails).departmentName;
             filteredData = filteredData.filter(
               (program) =>
                 program.studentProgram.student.specialty.name === specialtyName
             );
           }
-        } else
+        } else {
           filteredData = filteredData.filter(
             (program) =>
-              program.studentProgram.student.specialty.name ===
-              filters.specialty
+              program.studentProgram.student.specialty.name === filters.specialty
           );
+        }
       }
-      if (filters.status != undefined) {
+      if (filters.status !== undefined) {
         filteredData = filteredData.filter(
           (program) => program.state === filters.status
         );
       }
-      if (filters.tutor != undefined) {
+      if (filters.tutor !== undefined) {
         filteredData = filteredData.filter(
           (program) =>
             program.tutor.userAccount.persona.name
@@ -285,7 +253,7 @@ const PageSolicitudGestion: React.FC = () => {
               .includes((filters.tutor ?? "").toLowerCase())
         );
       }
-      if (filters.student != undefined) {
+      if (filters.student !== undefined) {
         filteredData = filteredData.filter(
           (program) =>
             program.studentProgram.student.name
@@ -305,25 +273,25 @@ const PageSolicitudGestion: React.FC = () => {
               .includes((filters.student ?? "").toLowerCase())
         );
       }
-      return filteredData.map((program) => ({
-        StudentCode: program.studentProgram.student.usuario.pucpCode,
-        SpecialtyName: program.studentProgram.student.specialty.name,
-        StudentFullName: `${program.studentProgram.student.name} ${program.studentProgram.student.lastName} ${program.studentProgram.student.secondLastName}`,
-        TutorFullName: `${program.tutor.userAccount.persona.name} ${program.tutor.userAccount.persona.lastName} ${program.tutor.userAccount.persona.secondLastName}`,
-        State: `${program.state}`,
-        TutorStudentProgramId: program.tutorStudentProgramId,
-        Motivo: program.motivo,
-      }));
     }
+
+    return filteredData.map((program) => ({
+      StudentCode: program.studentProgram.student.usuario.pucpCode,
+      SpecialtyName: program.studentProgram.student.specialty.name,
+      StudentFullName: `${program.studentProgram.student.name} ${program.studentProgram.student.lastName} ${program.studentProgram.student.secondLastName}`,
+      TutorFullName: `${program.tutor.userAccount.persona.name} ${program.tutor.userAccount.persona.lastName} ${program.tutor.userAccount.persona.secondLastName}`,
+      State: `${program.state}`,
+      TutorStudentProgramId: program.tutorStudentProgramId,
+      Motivo: program.motivo,
+    }));
   }, [tutorStudentPrograms, filters]);
 
   return (
     <div className="flex flex-col w-full h-full gap-5 justify-between">
       <div>
-        <SolicitudGestionSearchBar
+        <NuevoSearchBar
           handleOnChangeFilters={handleOnChangeFilters}
           onRolEspecificoChange={handleRolEspecificoChange}
-          specialityList={specialityList}
         />
       </div>
       <h2 className="font-montserrat text-[26px] font-bold text-lg mb-[-8px]">

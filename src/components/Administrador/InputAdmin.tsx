@@ -20,9 +20,10 @@ type InputProps = {
   onChange: onChangeComplex | onChangeSimple;
   type?: string;
   manejarBlur?: (e: ChangeEvent<HTMLInputElement>) => void;
+  error?: string;
 };
 
-const InputAdmin = ({ titulo = "", placeholder = "", enable = true, name, text = '', readOnly = false, onChange, type = 'string', manejarBlur }: InputProps) => {
+const InputAdmin = ({ titulo = "", placeholder = "", enable = true, name, text = '', readOnly = false, onChange, type = 'string', manejarBlur, error }: InputProps) => {
 
   const [query, setQuery] = useState<string | number>(text);
   //console.log(text)
@@ -61,6 +62,7 @@ const InputAdmin = ({ titulo = "", placeholder = "", enable = true, name, text =
         onBlur={manejarBlur}
       >
       </input>
+      {error && <p className="text-red-500 text-sm mt-1">{error}</p>}
     </li>
   );
 };

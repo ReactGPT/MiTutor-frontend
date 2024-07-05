@@ -20,7 +20,7 @@ import ToggleAdmin from '../../../components/Administrador/ToggleAdmin';
 
 const circleButtonStyles = 'bg-[rgba(235,236,250,1)] shadow-custom border border-solid border-[rgba(116,170,255,0.70)]';
 
-const subUnidadInicial : UnidadDerivacion = {
+const subUnidadInicial: UnidadDerivacion = {
   unidadDerivacionId: 0,
   nombre: '',
   siglas: '',
@@ -43,23 +43,23 @@ const PageEditarUnidadDerivacion = () => {
   const { subUnidadData, fetchSubUnidadData, updateUnidad, deleteUnidad } = useUnidadDerivacion();
   const { unidad, onChangeUnidad } = useUnidadContext();
   const [editable, setEditable] = useState(false);
-  const [ unidadBorrador, setUnidadBorrador ] = useState<UnidadDerivacion | null>(unidadData);
-  
+  const [unidadBorrador, setUnidadBorrador] = useState<UnidadDerivacion | null>(unidadData);
+
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [isOpenModalSuccess, setIsOpenModalSuccess] = useState<boolean>(false);
   const [isOpenModalError, setIsOpenModalError] = useState<boolean>(false);
   const [isOpenModalInput, setIsOpenModalInput] = useState<boolean>(false);
   const [isOpenModalInputUnidadUpdate, setIsOpenModalInputUnidadUpdate] = useState<boolean>(false);
 
-  const [subUnidadSelected, setSubUnidadSelected] = useState<UnidadDerivacion >(subUnidadInicial); 
+  const [subUnidadSelected, setSubUnidadSelected] = useState<UnidadDerivacion>(subUnidadInicial);
   const [subUnidadEditarSelected, setSubUnidadEditarSelected] = useState<UnidadDerivacion>(subUnidadInicial);
 
   useEffect(() => {
     fetchSubUnidadData(unidadData.unidadDerivacionId);
-  }, [isOpenModalInput,isOpenModalInputUnidadUpdate,isOpen]);
-  
+  }, [isOpenModalInput, isOpenModalInputUnidadUpdate, isOpen]);
+
   const handleOnConfirmDeleteSubUnidad = () => {
-    console.log("uni selec nombre",subUnidadSelected);
+    console.log("uni selec nombre", subUnidadSelected);
     if (subUnidadSelected && !!subUnidadSelected) {
       deleteUnidad(subUnidadSelected.unidadDerivacionId)
         .then((result) => {
@@ -70,7 +70,7 @@ const PageEditarUnidadDerivacion = () => {
             setIsOpenModalError(true);
           }
           setIsOpen(false);
-        })
+        });
     }
   };
 
@@ -97,15 +97,15 @@ const PageEditarUnidadDerivacion = () => {
   const handleSearch = (query: string) => {
     console.log(unidadData);
     setSearchValue(query);
-  }
+  };
 
-  
+
 
   const defaultColDef = {
     suppressHeaderMenuButton: true,
     flex: 1,
     sortable: true,
-    resizable: true,        
+    resizable: true,
     cellStyle: {
       textAlign: 'center',
       justifyContent: 'center',
@@ -114,196 +114,168 @@ const PageEditarUnidadDerivacion = () => {
     },
   };
   const columnUni: ColDef[] = [
-    { headerName: 'Siglas', field: 'siglas', minWidth:150},
-    { headerName: 'Nombre', field: 'nombre',minWidth:240 },
-    { headerName: 'Responsable', field: 'responsable', minWidth:200 },
-    { headerName: 'Email', field: 'email', minWidth:200 },
-    { headerName: 'Teléfono', field: 'telefono', minWidth:200 },
-    { headerName: 'Estado', valueGetter: p => p.data?.estado ? "Activo" : "Inactivo", minWidth:100, maxWidth:100},
-    { headerName: 'Fecha de Creacion', field: 'fechaCreacion', minWidth:100, maxWidth:100},
+    { headerName: 'Siglas', field: 'siglas', minWidth: 150 },
+    { headerName: 'Nombre', field: 'nombre', minWidth: 240 },
+    { headerName: 'Responsable', field: 'responsable', minWidth: 200 },
+    { headerName: 'Email', field: 'email', minWidth: 200 },
+    { headerName: 'Teléfono', field: 'telefono', minWidth: 200 },
+    { headerName: 'Estado', valueGetter: p => p.data?.estado ? "Activo" : "Inactivo", minWidth: 100, maxWidth: 100 },
+    { headerName: 'Fecha de Creacion', field: 'fechaCreacion', minWidth: 100, maxWidth: 100 },
     {
-      headerName:'Editar',
-      field:'',
-      maxWidth:100,
-      minWidth:80,
-      cellRenderer: (rowData:any)=>{
-        return(
-          <CustomUnidadGridButton 
-            icon={DetailsIcon} 
-            iconSize={4} 
-            onClick={()=>{
+      headerName: 'Editar',
+      field: '',
+      maxWidth: 100,
+      minWidth: 80,
+      cellRenderer: (rowData: any) => {
+        return (
+          <CustomUnidadGridButton
+            icon={DetailsIcon}
+            iconSize={4}
+            onClick={() => {
               handleOnSelectSubUnidadEditar(rowData.data);
-            }}/>
-        )
+            }} />
+        );
       }
     },
     {
-      headerName:'Eliminar',
-      field:'',
-      maxWidth:100,
-      minWidth:80,
-      cellRenderer:(rowData:any)=>{
-        return(
-          <button className='text-primary' onClick={()=>{handleOnSelectSubUnidad(rowData.data)}}>
-            <DeleteIcon size={6}/>
+      headerName: 'Eliminar',
+      field: '',
+      maxWidth: 100,
+      minWidth: 80,
+      cellRenderer: (rowData: any) => {
+        return (
+          <button className='text-primary' onClick={() => { handleOnSelectSubUnidad(rowData.data); }}>
+            <DeleteIcon size={6} />
           </button>
-        )
+        );
       }
     }
   ];
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const {name, value} = e.target;
+    const { name, value } = e.target;
     setUnidadBorrador((prevState) => {
-      if(!prevState){
+      if (!prevState) {
         return null;
       }
       return {
         ...prevState,
-      [name]: value,
+        [name]: value,
       };
     });
   };
 
   const handleEditSaveButton = () => {
-    if(editable){
-      if(unidadBorrador){
+    if (editable) {
+      if (unidadBorrador) {
         updateUnidad(unidadBorrador);
       }
     }
     setEditable(!editable);
   };
 
-  const handleNavigation = () => {
-    navigate("/unidades");
-  };
-
   return (
-    <UnidadProvider unidad={unidadData}> 
+    <UnidadProvider unidad={unidadData}>
       <div className="w-full h-full">
-        <div className="mt-1 mb-3">
-          <p className="text-primary font-semibold">
-            <span
-             className="cursor-pointer hover:underline"
-             onClick={handleNavigation}>
-              Unidades de Derivación
-            </span>
-              &nbsp;&gt; {`${unidadData?.nombre}`}
-          </p>
-        </div>
         <div className="w-full flex justify-between items-center">
-          <h1 className="text-4xl font-bold text-[#2F2F2F]">
+          <h1 className="text-2xl font-bold text-[#2F2F2F]">
             {`${unidadData?.nombre}`}
           </h1>
-          <Button className="" onClick={() => {handleEditSaveButton()}} text={`${editable ? "Guardar" : "Editar"} Unidad`} />
+          <Button className="" onClick={() => { handleEditSaveButton(); }} text={`${editable ? "Guardar" : "Editar"} Unidad`} />
         </div>
 
         <div className="grid grid-cols-2 gap-4 p-4">
-            <div className='grid grid-cols-1'>
-              <InputAdmin2 
-                titulo="Nombre de la Unidad de Derivación" 
-                valor={unidadData?.nombre} 
-                enable={editable}
-                onChange={handleInputChange}/>
-              <div className='flex'>
-                <div className='w-[40%]'>
-                  <InputAdmin2 
-                    titulo="Nombre del Responsable" 
-                    valor={unidadData?.responsable}
-                    name="responsable"
-                    enable={editable} 
-                    onChange={handleInputChange}/>
-                </div>
-                <div className='w-[60%]'>
-                  <InputAdmin2 
-                  titulo="Email del Responsable" 
-                  valor={unidadData?.email} 
-                  name="email" 
-                  enable={editable} 
-                  onChange={handleInputChange}/>
-                </div>
-                
+          <div className='grid grid-cols-1'>
+            <InputAdmin2
+              titulo="Nombre de la Unidad de Derivación"
+              valor={unidadData?.nombre}
+              enable={editable}
+              onChange={handleInputChange} />
+            <div className='flex'>
+              <div className='w-[40%]'>
+                <InputAdmin2
+                  titulo="Nombre del Responsable"
+                  valor={unidadData?.responsable}
+                  name="responsable"
+                  enable={editable}
+                  onChange={handleInputChange} />
               </div>
-              
+              <div className='w-[60%]'>
+                <InputAdmin2
+                  titulo="Email del Responsable"
+                  valor={unidadData?.email}
+                  name="email"
+                  enable={editable}
+                  onChange={handleInputChange} />
+              </div>
+
             </div>
-            <div className='grid grid-cols-2'>
-              <InputAdmin2 
-                titulo="Siglas" 
-                valor={unidadData?.siglas} 
-                name="siglas" 
-                enable={editable}
-                onChange={handleInputChange} />
-              
-              {/* Activacion */}
-              {/* <div className='flex flex-col justify-center'>
-                <div className='flex flex-row w-full h-fit gap-4 max-h-[90px] p-2'>
-                  <ToggleAdmin 
-                    text='Activa'
-                    boxSize='w-[50%]' 
-                    value={unidadData?.estado}
-                    name={"estado"}
-                    enable={editable}
-                    onChange={() => {
-                      
-                      handleEstadoChange(!unidadData?.estado);
-                      onChangeUnidad
-                    }}
-                  />
-                </div>
-              </div> */}
-              
-              <InputAdmin2 
-                titulo="Estado" 
-                valor={unidadData?.estado ? 'Activo' : 'Inactivo'} 
-                enable={false} />
-              <InputAdmin2 
-                titulo="Teléfono del Responsable" 
-                valor={unidadData?.telefono}  
-                name="telefono" 
-                enable={editable}
-                onChange={handleInputChange} />
-              <InputAdmin2 titulo="Fecha de Creación" valor={unidadData?.fechaCreacion} enable={false} />
+
+          </div>
+          <div className='grid grid-cols-2 h-fit'>
+            <InputAdmin2
+              titulo="Siglas"
+              valor={unidadData?.siglas}
+              name="siglas"
+              enable={editable}
+              onChange={handleInputChange}
+            />
+            {/* <InputAdmin2 titulo="Estado" valor={unidadData?.estado} enable={false} /> */}
+            <InputAdmin2
+              titulo="Teléfono del Responsable"
+              valor={unidadData?.telefono}
+              name="telefono"
+              enable={editable}
+              onChange={handleInputChange}
+            />
+            <div>
+
             </div>
-            
+            <div>
+
+            </div>
+            {/* <InputAdmin2 titulo="Fecha de Creación" valor={unidadData?.fechaCreacion} enable={false} /> */}
           </div>
 
+        </div>
+
         <div className="w-full flex justify-between items-center">
-          <h1 className="text-[28px] font-bold text-[#2F2F2F]">
+          <h1 className="text-2xl font-bold text-[#2F2F2F]">
             SubUnidades
           </h1>
-          
-        </div>  
+
+        </div>
         <div className='grid grid-cols-2 gap-4 p-4 items-end'>
           <SearchInput
             onSearch={handleSearch}
-            handleOnChangeFilters={() => {}}
+            handleOnChangeFilters={() => { }}
             placeholder="Siglas o nombre de la SubUnidad"
             selectDisabled={true}
           />
           <div className='flex items-end align-center justify-between gap-4'>
-            <Button 
-              variant="primario" 
-              onClick={() => {setIsOpenModalInput(true);}} 
-              text="Crear SubUnidad" className='w-[20%]'/>
-            <InputAdmin2 titulo="Total SubUnidades" valor={subUnidadData.length.toString()} enable={false} noPad={true}/>
+            <Button
+              variant="primario"
+              onClick={() => { setIsOpenModalInput(true); }}
+              text="Crear SubUnidad" className='w-[20%]' />
+            {/* <InputAdmin2 titulo="Total SubUnidades" valor={subUnidadData.length.toString()} enable={false} noPad={true} /> */}
           </div>
         </div>
 
-        <div className="flex w-full h-[35%] flex-col space-y-10 mt-10">
-          <div className="flex w-full h-[85%] ag-theme-alpine items-center justify-center">
+        <div className="flex w-full h-[35%] flex-col">
+          <div className="flex w-full h-full ag-theme-alpine items-center justify-center">
             <div className="w-full h-full">
               <AgGridReact
                 defaultColDef={defaultColDef}
                 columnDefs={columnUni}
                 rowData={subUnidadData.filter((item) =>
-                    (item.nombre.toLowerCase().includes(searchValue.toLowerCase()) || item.siglas.toLowerCase().includes(searchValue.toLowerCase()))
-                  )}
+                  (item.nombre.toLowerCase().includes(searchValue.toLowerCase()) || item.siglas.toLowerCase().includes(searchValue.toLowerCase()))
+                )}
               />
             </div>
           </div>
         </div>
         <ModalInputUnidadUpdate
-          isOpen={isOpenModalInputUnidadUpdate} 
+          isOpen={isOpenModalInputUnidadUpdate}
           // isOpen={false}
           message={`¿Esta seguro de modificar la unidad: ?`}
           onClose={() => {
@@ -319,7 +291,7 @@ const PageEditarUnidadDerivacion = () => {
           unidadEstado={subUnidadEditarSelected}
         />
         <ModalInputUnidad
-          isOpen={isOpenModalInput} 
+          isOpen={isOpenModalInput}
           message={`¿Esta seguro de inhabilitar la unidad: ?`}
           onClose={() => {
             setIsOpenModalInput(false);
@@ -352,12 +324,12 @@ const PageEditarUnidadDerivacion = () => {
         <ModalError isOpen={isOpenModalError} message='Ocurrió un problema inesperado. Intente nuevamente'
           onClose={() => {
             setSubUnidadSelected(subUnidadInicial);
-            setIsOpenModalError(false)
+            setIsOpenModalError(false);
           }}
-        /> 
+        />
       </div>
     </UnidadProvider>
   );
-}
+};
 
 export default PageEditarUnidadDerivacion;

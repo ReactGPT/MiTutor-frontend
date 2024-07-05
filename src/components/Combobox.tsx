@@ -1,21 +1,22 @@
 import { Listbox, Transition } from '@headlessui/react';
 import { Fragment, useEffect, useState } from 'react';
-import { ArrowDown,AddCircleIcon } from '../assets';
+import { ArrowDown, AddCircleIcon } from '../assets';
 
 type FiltersProps = {
   name?: string;
   className?: string;
-  options:any[];
-  value?:any|null;
+  options: any[];
+  value?: any | null;
   text?: string;
-  icon?:any;
-  iconSize?:number;
+  icon?: any;
+  iconSize?: number;
   loading?: boolean;
   disabled?: boolean;
-  onChange:(value:any)=>void;
+  onChange: (value: any) => void;
   buttonStyle?: string;
-  noMt?:boolean;
-  stylesOptions?:string;
+  noMt?: boolean;
+  stylesOptions?: string;
+  error?: string;
 };
 
 export default function Combobox({
@@ -25,13 +26,14 @@ export default function Combobox({
   value,
   text,
   icon,
-  iconSize=6,
+  iconSize = 6,
   loading,
   disabled = false,
-  onChange,  
+  onChange,
   buttonStyle,
   noMt,
   stylesOptions,
+  error
 }: FiltersProps) {
   const [selected, setSelected] = useState(value);
   // const displayedText = !value? text: value?.name ? value.name : '';
@@ -39,10 +41,10 @@ export default function Combobox({
   useEffect(() => {
     setSelected(value);
   }, [value]);
-  const Icon=icon;
+  const Icon = icon;
   return (
     <div data-testid="initial-display" className={className}>
-      <Listbox        
+      <Listbox
         disabled={disabled}
         value={selected}
         onChange={(value) => {
@@ -50,14 +52,15 @@ export default function Combobox({
           onChange(value);
         }}
       >
-        <div className={`relative ${noMt? '': 'mt-1'}`}>
+        <div className={`relative ${noMt ? '' : 'mt-1'}`}>
 
           <Listbox.Button
-            className={`${icon ? "pl-10" : "pl-3"} ${disabled ? 'cursor-not-allowed disabled-combobox' : 'cursor-pointer'} relative w-full  py-2  pr-10 text-left ${buttonStyle ? buttonStyle :'dark:bg-secondary bg-white py-2  pr-10 text-left focus:outline-none border border-secondary09 dark:border-0 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm rounded-lg' }`}
+            className={`${icon ? "pl-10" : "pl-3"} ${disabled ? 'cursor-default disabled-combobox' : 'cursor-pointer'} relative w-full  py-2  pr-10 text-left ${buttonStyle ? buttonStyle : 'dark:bg-secondary bg-white py-2  pr-10 text-left focus:outline-none border border-secondary09 dark:border-0 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm rounded-lg'}
+            ${error ? 'border-red-500' : 'border-secondary09 dark:border-0'}`}
           >
             {icon && (
               <Icon size={iconSize} className="absolute left-2 top-1/2 transform -translate-y-1/2 h-5 w-5 text-black dark:text-secondary01"
-                aria-hidden="true"/>
+                aria-hidden="true" />
             )}
             <span className="pr-4 block truncate dark:text-secondary01 h-[20px]">
               {selected?.name || name}
@@ -79,32 +82,31 @@ export default function Combobox({
           >
             <Listbox.Options className={`absolute ring-1 z-50 w-full  ${stylesOptions ? stylesOptions : '  bg-white text-base   ring-black ring-opacity-5 focus:outline-none sm:text-sm  overflow-auto '} shadow-lg mt-3 max-h-60 rounded-lg`}>
               {options.map((option) => (
-                  <Listbox.Option
-                    key={`f-o-${option.id}-${option?.name}`}
-                    className={({ active }) =>
-                      `relative cursor-pointer rounded-lg select-none py-3 px-4 flex items-center hover:bg-secondary10
+                <Listbox.Option
+                  key={`f-o-${option.id}-${option?.name}`}
+                  className={({ active }) =>
+                    `relative cursor-pointer rounded-lg select-none py-3 px-4 flex items-center hover:bg-secondary10
                       ${active ? 'bg-white' : 'text-gray-900'}
                       `
-                    }
-                    value={option}
-                  >
-                    {({ selected }) => (
-                        <span
-                          className={`block truncate flex-grow ${
-                            selected ? 'font-medium' : 'font-normal'
-                          }
+                  }
+                  value={option}
+                >
+                  {({ selected }) => (
+                    <span
+                      className={`block truncate flex-grow ${selected ? 'font-medium' : 'font-normal'
+                        }
                         `}
-                        >
-                          {option?.name}
-                        </span>
-                    )}
-                  </Listbox.Option>
-                ))}
+                    >
+                      {option?.name}
+                    </span>
+                  )}
+                </Listbox.Option>
+              ))}
             </Listbox.Options>
           </Transition>
         </div>
       </Listbox>
+      {error && <p className="text-red-500 text-sm mt-1">{error}</p>}
     </div>
   );
 }
- 

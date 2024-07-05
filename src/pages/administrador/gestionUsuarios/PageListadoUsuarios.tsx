@@ -1,5 +1,4 @@
-import * as React from 'react';
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect } from 'react';
 import ListadoUsuariosSearchBar from './ListadoUsuariosSearchBar';
 import { AgGridReact } from 'ag-grid-react';
 import 'ag-grid-community/styles/ag-grid.css';
@@ -8,14 +7,9 @@ import { ColDef } from 'ag-grid-community';
 import CustomUsuariosGridButton from './CustomUsuariosGridButton';
 import { DetailsIcon } from '../../../assets';
 import { useNavigate } from 'react-router-dom';
-import { useProgramaTutoria } from '../../../store/hooks';
 import { useUser } from '../../../store/hooks/useUser';
 import { Spinner } from '../../../components';
-import { ProgramaTutoria, Tutor } from '../../../store/types';
-//import { useHistory } from 'react-router-dom';
-import { useTitle } from '../../../context';
 import DeleteIcon from '../../../assets/svg/DeleteIcon';
-//import { getEliminarTutoria } from '../../../store/services';
 import ModalConfirmation from '../../../components/ModalConfirmation';
 import ModalSuccess from '../../../components/ModalSuccess';
 import ModalError from '../../../components/ModalError';
@@ -29,14 +23,16 @@ export default function PageListadoUsuarios() {
   const [isOpenModalSuccess, setIsOpenModalSuccess] = useState<boolean>(false);
   const [isOpenModalError, setIsOpenModalError] = useState<boolean>(false);
   //const {isLoading,programaTutoriaData,fetchProgramaTutorias,postEliminarProgramaTutoria} = useProgramaTutoria();
-  const { loading, userData, fetchUsers, deleteUser } = useUser();
+  const { loading, userData, fetchUsers, fetchUsersNoStudents ,deleteUser, fetchUsersNoAdminNoStudents } = useUser();
   //const [programaSelected, setProgramaSelected] = useState<ProgramaTutoria | null>(null);
   const [userSelected, setUserSelected] = useState<User | null>(null);
   //const [programaTutoriaFiltered,setProgramaTutoriaFiltered] = useState<ProgramaTutoria[]|null>(null)
   useEffect(() => {
     //console.log("llamada fetch prog tutoria");
     //fetchProgramaTutorias();
-    fetchUsers();
+    //fetchUsers(); trae usuarios y alumnos
+    //fetchUsersNoStudents();
+    fetchUsersNoAdminNoStudents();
   }, []);
 
   const handleNavigation = (data: User) => {
@@ -66,21 +62,6 @@ export default function PageListadoUsuarios() {
         });
     }
   };
-  const [filters, setFilters] = useState<any>({
-    idSpeciality: null,
-    idFaculty: null,
-    name: null
-  });
-  const handleOnChangeFilters = (filter: any) => {
-    setFilters(filter);
-  };
-  const UserFiltered: User[] = useMemo(() => {
-    return [...(userData).filter((item) =>
-      item.persona.name.toLowerCase().includes(filters.name ? filters.name : "")
-      //&&(filters.idSpeciality?filters.idSpeciality===item.especialidadId:true)&&(filters.idFaculty?filters.idFaculty===item.facultadId:true)
-    )];
-  }, [userData, filters]);
-
 
   const defaultColDef = {
     suppressHeaderMenuButton: true,
@@ -97,12 +78,11 @@ export default function PageListadoUsuarios() {
     floatingFilter: true,
   };
   const columnDefs: ColDef[] = [
-
+    { headerName: 'Correo', field: 'institutionalEmail', filter: 'agTextColumnFilter', minWidth: 300, maxWidth: 300 },
     { headerName: 'Código', field: 'pucpCode', filter: 'agTextColumnFilter', minWidth: 100, maxWidth: 120 },
     { headerName: 'Nombres', field: 'persona.name', filter: 'agTextColumnFilter', minWidth: 150 },
     { headerName: 'Primer Apellido', field: 'persona.lastName', filter: 'agTextColumnFilter', minWidth: 150 },
     { headerName: 'Segundo Apellido', field: 'persona.secondLastName', filter: 'agTextColumnFilter', minWidth: 150 },
-    { headerName: 'Correo', field: 'institutionalEmail', filter: 'agTextColumnFilter', minWidth: 300, maxWidth: 300 },
     {
       headerName: 'Activo',
       field: 'isActive',
@@ -136,8 +116,13 @@ export default function PageListadoUsuarios() {
 
   ];
   return (
-    <div className='flex w-full h-full flex-col'>
+    <div className='flex w-full h-full flex-col gap-5'>
       <div className='flex w-full h-fit'>
+        <div className="text-base text-primary font-medium w-1/2 flex flex-col items-start justify-center">
+          <label>
+            • Los usuarios no tendrán acceso al sistema hasta que se les asigne un rol.
+          </label>
+        </div>
         <ListadoUsuariosSearchBar rol='usuario' />
       </div>
       <div className='flex w-full h-full ag-theme-alpine items-center justify-center'>

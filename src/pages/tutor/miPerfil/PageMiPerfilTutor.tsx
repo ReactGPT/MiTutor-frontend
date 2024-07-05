@@ -8,7 +8,8 @@ const PageMiPerfilTutor: React.FC = () => {
   const { userData } = useAuth();
   const navigate = useNavigate();
   const goToDerivaciones = () => {
-    navigate("/miPerfil/derivaciones");
+    console.log("voy a dereiv");
+    navigate("/miPerfilTutor/derivaciones");
   };
 
   return (

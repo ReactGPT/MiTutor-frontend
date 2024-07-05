@@ -8,28 +8,29 @@ type Persona = {
     phone?: string | null;
     isActive: boolean;
     usuario?: any | null;
-}
+};
 
 type FacultyManager = {
-    id: number;
+    id: number | null;
     institutionalEmail: string;
     pucpCode: string;
     isActive: boolean;
-    persona: Persona;
+    persona: Persona | null;
     roles: any[] | null;
     isVerified: boolean;
-}
+};
 
 type Facultad = {
-    id:number;
-    name:string;
-    acronym:string;
-    numberStudents:number;
-    numberTutors:number;
-    isActive?:boolean | null;
-    facultyManager:FacultyManager | null;
-    specialties?:Specialty[] | null;
-    tutoringPrograms?:TutoringProgram[] | null;
-}
+    id: number;
+    name: string;
+    acronym: string;
+    numberStudents: number;
+    numberTutors: number;
+    isActive?: boolean | null;
+    facultyManager: FacultyManager | null;
+    bienestarManager?: FacultyManager | null;
+    specialties?: Specialty[] | null;
+    tutoringPrograms?: TutoringProgram[] | null;
+};
 
 export default Facultad;

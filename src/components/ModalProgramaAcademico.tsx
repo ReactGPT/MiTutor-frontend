@@ -63,7 +63,7 @@ const ModalProgramaAcademico: React.FC<ModalProgramaAcademicoProps> = ({ isOpen,
                                         ))}
                                     </ul>
                                 ) : (
-                                    <p className="text-gray-600">No hay programas académicos para este tutor.</p>
+                                    <p className="text-gray-600">No hay programas académicos para este usuario.</p>
                                 )}
                             </div>
                             <div className="flex items-center justify-center pt-5">

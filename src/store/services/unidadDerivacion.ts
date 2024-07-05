@@ -140,13 +140,15 @@ async function actualizarUnidad(unidad: UnidadDerivacion): Promise<ServiceRespon
     name: unidad.nombre,
     acronym: unidad.siglas,
     responsible: unidad.responsable,
-    isActive: true,
+    isActive: unidad.estado,
     email: unidad.email,
     phone: unidad.telefono,
     creationDate: unidad.fechaCreacion || "2021-09-01T00:00:00.000Z",
     isParent: true,
-    parentId: 0
+    parentId: 0,
+    managerId: 0
   }
+  console.log("unidad enviada",unit)
   try {
     const response = await axios({
       method: 'put',

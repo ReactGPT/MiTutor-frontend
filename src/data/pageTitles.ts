@@ -200,6 +200,10 @@ export const PageTitles = [
     pageName: "Detalle Plan de Acción"
   },
   {
+    path: "/institucion",
+    pageName: "Configuración de la Institución"
+  },
+  {
     path: "/derivaciones",
     pageName: "Derivaciones"
   },

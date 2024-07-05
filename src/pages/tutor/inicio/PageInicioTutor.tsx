@@ -3,7 +3,7 @@ import { AddCircleIcon } from '../../../assets';
 import Button from '../../../components/Button';
 import { useNavigate } from 'react-router-dom';
 import  SFTPClient from 'ssh2-sftp-client';
-
+import welcome from '../../../assets/welcome.png'
 const PageInicioTutor = () => {
   /*const downloadFile = async () => {
     const sftp = new SFTPClient();
@@ -34,9 +34,17 @@ const PageInicioTutor = () => {
     }
   };*/
   return (
-    <div className="w-full h-full">
-       
+    <div className='flex flex-col items-center justify-center h-[100%]'>
+      <div className='flex justify-center items-center h-4/5'>
+        <img src={welcome} alt="welcome" className='max-h-full' />
       </div>
+      <h1 className='mt-4 text-3xl font-bold'>
+        ¡Hola! Bienvenido a MiTutor
+      </h1>
+      <p className='mt-2 text-lg text-center'>
+        Para comenzar, haz click en una de las opciones del menú de la izquierda.
+      </p>
+    </div>
   );
 };
 //<button onClick={downloadFile}>Descargar Archivo</button>

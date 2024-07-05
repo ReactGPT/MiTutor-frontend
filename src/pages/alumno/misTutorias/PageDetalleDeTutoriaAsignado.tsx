@@ -11,6 +11,11 @@ import { Spinner } from "../../../components";
 import { useAuth } from "../../../context";
 import { Label, TextInput, Textarea } from "flowbite-react";
 
+enum Estado {
+  SIN_TUTOR = "SIN_TUTOR", 
+  TUTOR_ASIGNADO = "TUTOR_ASIGNADO"
+}
+
 const PageDetalleDeTutoriaAsignado = () => {
   const { userData } = useAuth();
   const studentId = userData?.userInfo?.id || 0;
@@ -19,7 +24,7 @@ const PageDetalleDeTutoriaAsignado = () => {
   const data = location.state.data;
   //console.log(data);
 
-  const { listaDeTutores, fetchTutoresPorTutoria, loading } = useTutoresPorTutoriayAlumno(data.tutoringProgramId, studentId);
+  const { listaDeTutores, estado, fetchTutoresPorTutoria, loading } = useTutoresPorTutoriayAlumno(data.tutoringProgramId, studentId);
 
   const navigate = useNavigate();
 
@@ -36,6 +41,18 @@ const PageDetalleDeTutoriaAsignado = () => {
     navigate('/misTutorias/detalle/solicitarCita', { state: { datos } });
   };
 
+  let componenteActual: JSX.Element;
+
+  switch (estado) {
+    case Estado.SIN_TUTOR:
+      componenteActual = <SimpleCard content="" title="Sin Tutor Asignado" subContent="" />;
+      break; 
+    case Estado.TUTOR_ASIGNADO:
+      componenteActual = <SimpleCard content="Docente a tiempo completo" title={`${listaDeTutores[0].tutorName} ${listaDeTutores[0].tutorLastName} ${listaDeTutores[0].tutorSecondLastName}`} subContent="" />;
+      break;
+    default:
+      componenteActual = <div className="w-full h-[90%] flex items-center justify-center"> <Spinner size="xl" /> </div>;
+  }
   return (
     <div className="w-full h-full flex flex-col gap-5">
 
@@ -58,7 +75,7 @@ const PageDetalleDeTutoriaAsignado = () => {
           </div>
         </div>
         <div className="w-full flex items-center justify-center p-2">
-          <Button onClick={goToSolicitarCita} variant="primario" text="Solicitar cita" />
+          <Button onClick={goToSolicitarCita} variant="primario" text="Solicitar cita" disabled={estado=='SIN_TUTOR'}/>
         </div>
       </div>
 
@@ -73,8 +90,8 @@ const PageDetalleDeTutoriaAsignado = () => {
                   <Spinner size="xl" />
                 </div>
                 :
-                <SimpleCard content="Docente a tiempo completo" title={`${listaDeTutores[0]?.tutorName} ${listaDeTutores[0]?.tutorLastName} ${listaDeTutores[0]?.tutorSecondLastName}`} subContent="" />
-            }
+                componenteActual
+              }
           </div>
         </div>
 

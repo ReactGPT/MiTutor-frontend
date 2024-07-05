@@ -25,12 +25,12 @@ function useInstitucion(): InstitucionHookReturnType {
             setIsLoading(false);
         }
     };
-    const updateInstitucion = async (unidad: Institucion) => {
+    const updateInstitucion = async (institucion: Institucion) => {
         setIsLoading(true);
         try {
             //console.log("user en postUser: ",user)
-            console.log("en updateInstitucion",unidad)
-            const response = await actualizarInstitucion(unidad);
+            console.log("en updateInstitucion",institucion)
+            const response = await actualizarInstitucion(institucion);
             if (!response.success) {
             throw new Error(response.message);
             }

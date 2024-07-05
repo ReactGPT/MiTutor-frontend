@@ -469,12 +469,12 @@ export const Routes: RouterConfig = {
         path: '/usuarios',
         icon: <BiUser fontSize={32} />,
       },
-      // {
-      //   key: 'configuracion',
-      //   label: 'Configuración de la Institución',
-      //   path: '/institucion',
-      //   icon: <BiSolidWrench  fontSize={32} />,
-      // }
+      {
+        key: 'configuracion',
+        label: 'Configuración de la Institución',
+        path: '/institucion',
+        icon: <BiSolidWrench  fontSize={32} />,
+      }
     ]
   },
   derivation: {

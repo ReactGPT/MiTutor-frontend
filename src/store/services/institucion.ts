@@ -10,19 +10,19 @@ async function getInstitucionInfo():Promise<InstitucionDetailResponse>{
     try{
         const response = await axios({
             method: 'GET',
-            url: `${Services.BaseUrl}/listarInstituciones`,
+            url: `${Services.BaseUrl}/listarInstitucion`,
         });
         if(response.data.success===false){
             return {institucionList:[]};
         }
         const institucionList:Institucion[] = response.data.data.map((item:any)=>{
             return {
-                institutionId: item.institutionId,
+                institutionId: item.id,
                 name: item.name,
                 address: item.address,
                 district: item.district,
                 institutionType: item.institutionType,
-                logo: item.logo,
+                logo: 'image/png;base64,' + item.logo,
             }
         });
         return {institucionList};
@@ -40,17 +40,18 @@ type ServiceResponse = {
 
 async function actualizarInstitucion(institucion: Institucion): Promise<ServiceResponse> {
   const unit = {
-    institutionId: institucion.institutionId,
+    id: institucion.institutionId,
     name: institucion.name,
     address: institucion.address,
     district: institucion.district,
     institutionType: institucion.institutionType,
-    logo: institucion.logo,
+    logo: institucion.logo.split(',')[1],
+    isActive: true,
   }
   console.log("institucion enviada",unit)
   try {
     const response = await axios({
-      method: 'put',
+      method: 'post',
       url: Services.BaseUrl + `/actualizarInstitucion`,
       headers: Services.Headers,
       data: unit

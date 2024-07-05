@@ -8,6 +8,7 @@ export type ListStudent = {
   phone: string;
   specialtyName: string;
   facultyName: string;
+  facultyId: number;
 };
 
 export type ListStudent2 = {

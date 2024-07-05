@@ -14,6 +14,7 @@ import { useRef } from 'react';
 import jsPDF from 'jspdf'; 
 import { useAuth } from '../../../context';
 import { TutorRoleDetails } from '../../../store/types';
+import { getTutorId } from '../../../store/hooks/RolesIdTutor';
 
 type InputProps = {
   className:string; 
@@ -22,7 +23,7 @@ type InputProps = {
  
 function FormularioDerivacion({className,cita}:InputProps){  
   const { userData } = useAuth();
-  const tutorId = (userData?.userInfo?.roles[0].details as TutorRoleDetails).tutorId;
+  const tutorId = getTutorId(userData);
   //Traer datos del estudiante
   const { estudiante, fetchEstudiante } = useEstudianteResultadoCita(cita); 
   //Traer datos del profesor
@@ -73,6 +74,7 @@ function FormularioDerivacion({className,cita}:InputProps){
 
   const crearDerivacion = async () => {
     try {
+      console.log("lo enviado",derivation);
       const response = await axios.post(ServicesProperties.BaseUrl+'/crearDerivacion', derivation);
       console.log('Derivacion creada',response.data); 
       setDerivacionId(response.data.data); 
@@ -112,7 +114,8 @@ function FormularioDerivacion({className,cita}:InputProps){
       fecha:getCurrentDate(),
       motivo:'',
       comentario:'',
-      unidadDerivada:0
+      unidadDerivada:0,
+      facultyId:0
     },
     validations: { 
       nombreAlumno: (value) => {
@@ -165,6 +168,7 @@ function FormularioDerivacion({className,cita}:InputProps){
       formData.motivo=derivation.reason 
       formData.unidadDerivada=derivation.unitDerivationId
       formData.comentario=derivation.comment
+      //formData.facultyId=derivation.facultyId
     }  
 
     if (estudiante) {
@@ -172,6 +176,7 @@ function FormularioDerivacion({className,cita}:InputProps){
       formData.codigo=estudiante.pucpCode
       formData.correoAlumno=estudiante.institutionalEmail
       formData.unidadAlumno=estudiante.specialtyName
+      formData.facultyId=estudiante.facultyId
     }
   }, [tutor,derivation,estudiante]);
 
@@ -347,8 +352,10 @@ function FormularioDerivacion({className,cita}:InputProps){
       derivation.comment=formData.comentario
       derivation.status='Pendiente'
       derivation.unitDerivationId=formData.unidadDerivada
+      derivation.facultyId=formData.facultyId
     }
-
+    console.log("estudiante",estudiante);
+    console.log("Formulario enviado:", formData);
     if(derivation?.derivationId==0){  
       crearDerivacion() 
     }else{ 
@@ -369,7 +376,7 @@ function FormularioDerivacion({className,cita}:InputProps){
       formData.comentario=derivation.comment;
       formData.unidadDerivada=derivation.unitDerivationId; 
       formData.motivo=derivation.reason;
-       
+      
     } 
  
     setEnableAttendance(!enableAttendance); 

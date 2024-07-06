@@ -9,6 +9,8 @@ import { ColDef } from 'ag-grid-community';
 import { BiCheckbox, BiSolidCheckSquare } from "react-icons/bi";
 import { User } from '../../store/types/User';
 import Spinner from '../Spinner';
+import { QuestionMarkCircleIcon } from '@heroicons/react/16/solid';
+import { Tooltip } from 'flowbite-react';
 
 interface ModalSearchProps {
   isOpen: boolean;
@@ -155,15 +157,22 @@ const ModalSearch: React.FC<ModalSearchProps> = ({ isOpen, onClose, facultad, se
             leaveFrom="opacity-100 translate-y-0 sm:scale-100"
             leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
           >
-            <div className="inline-block space-y-10 h-[85%] align-bottom bg-white rounded-lg pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-2xl  sm:w-full sm:p-6">
+            <div className="inline-block space-y-10 h-[85%] align-bottom bg-white rounded-lg pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-2xl  sm:w-full sm:p-6">
               <div className="flex flex-col h-[85%] items-center justify-center">
                 <div className="text-center h-[85%] w-full">
-                  <Dialog.Title
-                    as="h1"
-                    className="text-2xl leading-6 font-semibold text-gray-900"
-                  >
-                    Lista de Usuarios
-                  </Dialog.Title>
+                  <div className='flex items-center justify-center gap-4'>
+                    <Dialog.Title
+                      as="h1"
+                      className="text-2xl leading-6 font-semibold text-gray-900"
+                    >
+                      Lista de Usuarios
+                    </Dialog.Title>
+                    {userType == "CoordBienestar" &&
+                      <Tooltip content="Solo permite usuarios sin roles">
+                        <QuestionMarkCircleIcon width={20} height={20} />
+                      </Tooltip>
+                    }
+                  </div>
                   <div className="w-full mt-4">
                     <SearchInput
                       onSearch={handleSearch}

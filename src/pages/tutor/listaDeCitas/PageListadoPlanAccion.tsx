@@ -10,13 +10,13 @@ import { FaCheckCircle } from "react-icons/fa";
 import { useLocation } from 'react-router-dom';
 import { useActionPlans } from '../../../store/hooks/useActionPlan';
 import { useAuth } from '../../../context';
-import { TutorRoleDetails } from '../../../store/types';
 import noPlansImg from "../../../assets/Tutor/no-planes.webp";
+import { getTutorId } from '../../../store/hooks/RolesIdTutor';
 
 
 const PageListadoPlanAccion = () => {
   const { userData } = useAuth();
-  const tutorId = (userData?.userInfo?.roles[0].details as TutorRoleDetails).tutorId;
+  const tutorId = getTutorId(userData);
 
   const [modalOpen, setModalOpen] = useState(false);
   const [registrationModalOpen, setRegistrationModalOpen] = useState(false);
@@ -65,7 +65,9 @@ const PageListadoPlanAccion = () => {
     <div className="w-full h-full flex flex-col gap-5">
       <div className='flex justify-end'>
         <Button variant='call-to-action' onClick={openModal} text='Nuevo Plan de Acción' />
-        <ModalNuevoPlanAccion isOpen={modalOpen} onClose={closeModal} updatePage={updatePlans} studentId={studentId} programId={programId} />
+        {modalOpen &&
+          <ModalNuevoPlanAccion isOpen={modalOpen} onClose={closeModal} updatePage={updatePlans} studentId={studentId} programId={programId} />
+        }
         {registrationModalOpen && ( // Mostrar el modal de registro exitoso si registrationModalOpen es true
           <ModalRegistroExitoso
             title="¡Registro Exitoso!"

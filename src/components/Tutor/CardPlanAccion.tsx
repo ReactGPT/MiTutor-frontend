@@ -12,8 +12,6 @@ type CardPlanAccionProps = {
 
 const CardPlanAccion: React.FC<CardPlanAccionProps> = ({ data, usuario }) => {
   const navigate = useNavigate();
-
-
   // Función para navegar a la página de detalles con el ID dado
   const toDetail = (id: any) => {
     console.log(id, 'id');
@@ -25,7 +23,6 @@ const CardPlanAccion: React.FC<CardPlanAccionProps> = ({ data, usuario }) => {
     }
   };
 
-  //TODO: Agregar redireccionamiento al apretar el boton
   return (
     <div className="border-custom shadow-custom flex h-21 bg-[rgba(235,_236,_250,_1.00)] overflow-hidden font-roboto">
       <div className={`${data.isActive ? 'bg-green-700' : 'bg-red-700'} w-[20px]`} />

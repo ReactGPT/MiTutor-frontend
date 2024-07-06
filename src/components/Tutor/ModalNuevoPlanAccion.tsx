@@ -6,7 +6,7 @@ import Button from '../Button';
 import axios from 'axios';
 import { Services as ServicesProperties } from '../../config';
 import { useAuth } from '../../context';
-import { TutorRoleDetails } from '../../store/types';
+import { getTutorId } from '../../store/hooks/RolesIdTutor';
 
 interface ModalNuevoPlanAccionProps {
   isOpen: boolean;
@@ -16,13 +16,13 @@ interface ModalNuevoPlanAccionProps {
   programId: number;
 }
 
-export default function ModalNuevoPlanAccion({ isOpen, onClose, updatePage,studentId, programId }: ModalNuevoPlanAccionProps) {
+export default function ModalNuevoPlanAccion({ isOpen, onClose, updatePage, studentId, programId }: ModalNuevoPlanAccionProps) {
   const [planData, setPlanData] = useState({
     name: '',
     description: ''
   });
   const { userData } = useAuth();
-  const tutorId = (userData?.userInfo?.roles[0].details as TutorRoleDetails).tutorId;
+  const tutorId = getTutorId(userData);
   // Estado para el mensaje de error del nombre del plan de acción
   const [nameError, setNameError] = useState('');
 
@@ -30,28 +30,20 @@ export default function ModalNuevoPlanAccion({ isOpen, onClose, updatePage,stude
     const { name, value } = e.target;
     setPlanData({ ...planData, [name]: value });
   };
-  
+
   const handleChangeTextArea = (e: ChangeEvent<HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setPlanData({ ...planData, [name]: value });
   };
 
-  const onBlurName = (e: ChangeEvent<HTMLInputElement>) => {
-    if (!planData.name.trim()) {
-      setNameError('El nombre del plan no puede estar vacío');
-    } else {
-      setNameError('');
-    }
-  }
-
   const guardarDatos = async () => {
     if (!planData.name.trim()) {
       setNameError('El nombre del plan no puede estar vacío');
       return;
-    } else{
+    } else {
       setNameError('');
     }
-    
+
     try {
       const newData = {
         name: planData.name,
@@ -60,8 +52,8 @@ export default function ModalNuevoPlanAccion({ isOpen, onClose, updatePage,stude
         programId: programId, // Asigna el valor correspondiente para programId 
         tutorId: tutorId, // Asigna el valor correspondiente para tutorId
       };
-  
-      const response = await axios.post(ServicesProperties.BaseUrl+'/crearActionPlan', newData);
+
+      const response = await axios.post(ServicesProperties.BaseUrl + '/crearActionPlan', newData);
       console.log('Plan de acción creado:', response.data);
       onClose(); // Cierra el modal después de guardar los datos exitosamente
       updatePage(); // Actualiza la página
@@ -100,28 +92,28 @@ export default function ModalNuevoPlanAccion({ isOpen, onClose, updatePage,stude
               <div className="p-4">
                 <p className="font-montserrat text-[35px] font-bold text-primary">Nuevo Plan de Acción</p>
                 <div>
-                  <InputTutor 
+                  <InputTutor
                     titulo="Nombre *"
                     texto="Nombre del plan de acción"
                     name="name"
                     value={planData.name}
                     onChange={handleChangeInput}
-                    manejarBlur={onBlurName}
+                  //manejarBlur={onBlurName}
                   />
                   {nameError && <p className="text-red-500 pl-6">{nameError}</p>}
                   <div style={{ height: '12rem' }}>
-                    <TextAreaTutor 
-                    titulo="Descripción"
-                    texto="Describe el plan de acción"
-                    name="description"
-                    value={planData.description}
-                    onChange={handleChangeTextArea}
+                    <TextAreaTutor
+                      titulo="Descripción"
+                      texto="Describe el plan de acción"
+                      name="description"
+                      value={planData.description}
+                      onChange={handleChangeTextArea}
                     />
                   </div>
                 </div>
                 <div className="flex justify-between items-center mx-20">
                   <Button text="Cancelar" onClick={onClose} variant='secundario' />
-                  <Button text="Crear Plan" onClick={guardarDatos} variant='call-to-action' disabled={!planData.name.trim()}/>
+                  <Button text="Crear Plan" onClick={guardarDatos} variant='call-to-action' disabled={!planData.name.trim()} />
                 </div>
               </div>
             </div>

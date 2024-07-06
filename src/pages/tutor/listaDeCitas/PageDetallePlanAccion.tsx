@@ -26,7 +26,6 @@ const PageDetallePlanAccion = () => {
   const { id } = state;
   const navigate = useNavigate();
 
-
   const [modalOpen, setModalOpen] = useState(false);
   //const [actionPlans, setActionPlans] = useState<ActionPlan[]>([]);
   const [registrationModalOpen, setRegistrationModalOpen] = useState(false);
@@ -35,11 +34,14 @@ const PageDetallePlanAccion = () => {
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
 
+  const [refreshKey, setRefreshKey] = useState<number>(0);
+
+  const actualizarPagina = () => {
+    setRefreshKey(prev => prev + 1);
+  };
 
   const [deleteCommintModalOpen, setdeleteCommintModalOpen] = useState(false);
-  const [editCommintModalOpen, seteditCommintModalOpen] = useState(false);
   const [deleteActionPlanModalOpen, setdeleteActionPlanModalOpen] = useState(false);
-  const [tablaEditable, setTablaEditable] = useState(false);
 
   //Estados para el uso de la API
   const { actionPlans, fetchActionPlans } = useActionPlanById(parseInt(id));
@@ -49,7 +51,7 @@ const PageDetallePlanAccion = () => {
 
   useEffect(() => {
     fetchActionPlans();
-  }, []);
+  }, [refreshKey]);
 
   useEffect(() => {
     if (actionPlans.length > 0) {
@@ -98,7 +100,6 @@ const PageDetallePlanAccion = () => {
         "modificationDate": "2024-05-09T07:35:12.513Z"
       };
       console.log("Data guardar", newData);
-      //await axios.put(`${ServicesProperties.BaseUrl}/actualizarActionPlan`, newData);
       useUpdateActionPlan(newData);
       seteditionModalOpen(true);
       setEditable(false);
@@ -108,7 +109,6 @@ const PageDetallePlanAccion = () => {
   };
 
   const handleDeleteActionPlan = async () => {
-    //await axios.put('https://localhost:44369' + '/eliminarActionPlan?actionPlanId=' + id);
     console.log('id:', id);
     useDeleteActionPlan(id);
     setdeleteActionPlanModalOpen(false);
@@ -126,12 +126,11 @@ const PageDetallePlanAccion = () => {
         "tutorId": 0,
         "creationDate": "2024-05-10T04:39:19.094Z", //no necesita
         "modificationDate": "2024-05-10T04:39:19.094Z" //no necesita
-      }
+      };
       await axios.put(ServicesProperties.BaseUrl + '/actualizarActionPlan', data3);
       console.log("data desactivar: ", data3);
-      //useUpdateActionPlan(data3);
       setdeleteActionPlanModalOpen(false);
-      window.location.reload();
+      actualizarPagina();
     } catch (error) {
       console.error('Error updating action plan:', error);
     }
@@ -148,11 +147,11 @@ const PageDetallePlanAccion = () => {
         "tutorId": 0,
         "creationDate": "2024-05-10T04:39:19.094Z", //no necesita
         "modificationDate": "2024-05-10T04:39:19.094Z" //no necesita
-      }
+      };
       await axios.put(ServicesProperties.BaseUrl + '/actualizarActionPlan', data3);
       //useUpdateActionPlan(data3);
       setdeleteActionPlanModalOpen(false);
-      window.location.reload();
+      actualizarPagina();
     } catch (error) {
       console.error('Error updating action plan:', error);
     }
@@ -234,7 +233,8 @@ const PageDetallePlanAccion = () => {
                 icon={FaCheckCircle}
                 iconSize={60}
                 onClose={() => {
-                  window.location.reload();
+                  setRegistrationModalOpen(false);
+                  actualizarPagina();
                 }} />
             )}
             {editionModalOpen && ( // Mostrar el modal de edición exitoso si editionModalOpen es true
@@ -243,7 +243,11 @@ const PageDetallePlanAccion = () => {
                 description="El plan se actualizó con éxito."
                 icon={FaCheckCircle}
                 iconSize={60}
-                onClose={() => seteditionModalOpen(false)} />
+                onClose={() => {
+                  seteditionModalOpen(false);
+                  actualizarPagina();
+                }}
+              />
             )}
             {deleteActionPlanModalOpen && (
               <ModalAdvertencia
@@ -257,7 +261,13 @@ const PageDetallePlanAccion = () => {
             )}
           </div>
           <div>
-            <TablaDetallePlanAccion onclickDelete={handleConfirmDeleteCommit} onclickEdit={close} actionPlanId={id ? parseInt(id) : 0} usuario='tutor' />
+            <TablaDetallePlanAccion
+              onclickDelete={handleConfirmDeleteCommit}
+              onclickEdit={close}
+              actionPlanId={id ? parseInt(id) : 0}
+              usuario='tutor'
+              refreshKey={refreshKey}
+            />
           </div>
         </div>
       </div>

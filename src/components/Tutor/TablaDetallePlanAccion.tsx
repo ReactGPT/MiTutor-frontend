@@ -1,7 +1,4 @@
-import { useMemo, useState, StrictMode } from 'react';
-//import reactLogo from './assets/react.svg';
-//import viteLogo from '/vite.svg';
-//import React from 'react';
+import { useMemo, useState } from 'react';
 import { AgGridReact } from 'ag-grid-react';
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-alpine.css';
@@ -15,13 +12,14 @@ import ModalAdvertencia from './ModalAdvertencia';
 import { RiErrorWarningLine } from 'react-icons/ri';
 import ModalEditarCompromiso from './ModalEditarCompromiso';
 import ActionCellRenderer from './ActionCellRenderer'; // Importa el nuevo componente
-import {Services as ServicesProperties} from '../../config';
+import { Services as ServicesProperties } from '../../config';
 
 type TablaDetalleProps = {
-  onclickEdit: () => void;
-  onclickDelete: () => void;
+  onclickEdit?: () => void;
+  onclickDelete?: () => void;
   actionPlanId: number;
   usuario: string;
+  refreshKey?: number;
 };
 
 const TablaDetalle: React.FC<TablaDetalleProps> = ({
@@ -29,6 +27,7 @@ const TablaDetalle: React.FC<TablaDetalleProps> = ({
   onclickDelete,
   actionPlanId,
   usuario,
+  refreshKey,
 }) => {
 
   const [rowData, setRowData] = useState<any[]>([]);
@@ -53,11 +52,11 @@ const TablaDetalle: React.FC<TablaDetalleProps> = ({
 
   useEffect(() => {
     fetchData();
-  }, [actionPlanId]);
+  }, [actionPlanId, refreshKey]);
 
   const fetchData = async () => {
     try {
-      const response = await axios.get(ServicesProperties.BaseUrl+'/listarCommitment?IdPlanAction='+actionPlanId);
+      const response = await axios.get(ServicesProperties.BaseUrl + '/listarCommitment?IdPlanAction=' + actionPlanId);
       setRowData(response.data.data);
     } catch (error) {
       console.error('Error fetching data:', error);
@@ -109,7 +108,7 @@ const TablaDetalle: React.FC<TablaDetalleProps> = ({
       cellEditorParams: {
         values: ["Pendiente", "En Proceso", "Hecho"],
       },
-      cellRenderer: (params: { value: string }) => <EtiquetaCompromiso variant={params.value} />,
+      cellRenderer: (params: { value: string; }) => <EtiquetaCompromiso variant={params.value} />,
     },
     {
       headerName: 'Acciones',
@@ -129,7 +128,7 @@ const TablaDetalle: React.FC<TablaDetalleProps> = ({
   ]);
 
   const handleDeleteCompromiso = async () => {
-    await axios.put(ServicesProperties.BaseUrl+'/eliminarCommitment?commitmentId=' + commitmentId);
+    await axios.put(ServicesProperties.BaseUrl + '/eliminarCommitment?commitmentId=' + commitmentId);
     setdeleteCommintModalOpen(false);
     fetchData();
   };
@@ -148,7 +147,7 @@ const TablaDetalle: React.FC<TablaDetalleProps> = ({
       },
       filter: 'agTextColumnFilter',
       floatingFilter: true,
-    }
+    };
   }, []);
 
   return (
@@ -164,7 +163,7 @@ const TablaDetalle: React.FC<TablaDetalleProps> = ({
         />
       )}
       {editCommintModalOpen && (
-        <ModalEditarCompromiso 
+        <ModalEditarCompromiso
           onClose={closeModalEdit}
           updatePage={fetchData}
           compromiso={compromiso}

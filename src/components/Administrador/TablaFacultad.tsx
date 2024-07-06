@@ -168,7 +168,8 @@ const Tabla: React.FC<TablaProps> = ({
         <Button
           className=""
           onClick={() => { setIsOpenModalInput(true); }}
-          text={`Agregar ${abreviatura}`} />
+          text={`Agregar ${abreviatura}`}
+        />
       </div>
 
       <div className="w-full mt-[1%]">
@@ -196,18 +197,13 @@ const Tabla: React.FC<TablaProps> = ({
 
       <ModalInput
         isOpen={isOpenModalInput}
-        message={`¿Está seguro de eliminar esta facultad: ?`}
         onClose={() => {
           setIsOpenModalInput(false);
         }}
-        onAdd={() => {
-          // handleOnConfirmDeleteFacultad();
-          // handleOnAddAgregarFacultad();
-          setIsOpenModalInput(false);
-        }}
-        isAcceptAction={true}
       />
-      <ModalConfirmation isOpen={isOpen} message="¿Está seguro de eliminar esta facultad?"
+      <ModalConfirmation
+        isOpen={isOpen}
+        message="¿Está seguro de eliminar esta facultad?"
         onClose={() => {
           setIsOpen(false);
         }}
@@ -217,7 +213,9 @@ const Tabla: React.FC<TablaProps> = ({
         }}
         isAcceptAction={true}
       />
-      <ModalSuccess isOpen={isOpenModalSuccess} message="Se eliminó con éxito"
+      <ModalSuccess
+        isOpen={isOpenModalSuccess}
+        message="Se eliminó con éxito"
         onClose={() => {
           setFacultadSelected(null);
           setIsOpenModalSuccess(false);

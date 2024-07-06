@@ -12,9 +12,9 @@ import InputAdmin2 from './InputAdmin2';
 interface ModalInputProps {
   isOpen: boolean;
   onClose: () => void;
-  onAdd: () => void;
-  message: string;
-  isAcceptAction: boolean;
+  onAdd?: () => void;
+  message?: string;
+  isAcceptAction?: boolean;
 }
 
 const facultadInicial: Facultad = {
@@ -34,7 +34,7 @@ const ModalInput: React.FC<ModalInputProps> = ({ isOpen, onClose, onAdd, message
   const [isOpenModal, setIsOpenModel] = useState<boolean>(false);
   const [isOpenModalSuccess, setIsOpenModalSuccess] = useState<boolean>(false);
   const [isOpenModalError, setIsOpenModalError] = useState<boolean>(false);
-  const {createFacultad} = useFacultades();
+  const { createFacultad } = useFacultades();
   const handleOnAddAgregarFacultad = (nuevaFacultad: Facultad) => {
     createFacultad(nuevaFacultad).then((result) => {
       if (result) {
@@ -44,18 +44,18 @@ const ModalInput: React.FC<ModalInputProps> = ({ isOpen, onClose, onAdd, message
         setIsOpenModalError(true);
       }
       setIsOpenModel(false);
-    })
+    });
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const {name, value} = e.target;
+    const { name, value } = e.target;
     setNuevaFacultad((prevState) => {
-      if(!prevState){
+      if (!prevState) {
         return null;
       }
       return {
         ...prevState,
-      [name]: value,
+        [name]: value,
       };
     });
   };
@@ -89,27 +89,27 @@ const ModalInput: React.FC<ModalInputProps> = ({ isOpen, onClose, onAdd, message
           >
             <div className="inline-block align-bottom bg-white rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full sm:p-6">
               <div className="flex flex-col items-center justify-center gap-4">
-                
+
                 <div className="text-center">
                   <Dialog.Title as="h1" className="text-2xl leading-6 font-semibold text-gray-900">
                     Nueva Facultad
                   </Dialog.Title>
-                  <InputAdmin2 
-                    titulo="Nombre de la Facultad" 
+                  <InputAdmin2
+                    titulo="Nombre de la Facultad"
                     enable={true}
                     name="name"
-                    onChange={handleInputChange}/>
-                  <InputAdmin2 
-                    titulo="Siglas de la Facultad" 
+                    onChange={handleInputChange} />
+                  <InputAdmin2
+                    titulo="Siglas de la Facultad"
                     enable={true}
                     name="acronym"
-                    onChange={handleInputChange}/>
+                    onChange={handleInputChange} />
                 </div>
               </div>
               <div className="flex items-center justify-center pt-5 space-x-4">
                 <Button text='Cancelar' onClick={onClose} />
                 <Button text='Agregar' onClick={() => {
-                  if(nuevaFacultad && nuevaFacultad.name && nuevaFacultad.acronym)
+                  if (nuevaFacultad && nuevaFacultad.name && nuevaFacultad.acronym)
                     handleOnAddAgregarFacultad(nuevaFacultad);
                   // setIsOpen(false);
                 }} />
@@ -117,20 +117,20 @@ const ModalInput: React.FC<ModalInputProps> = ({ isOpen, onClose, onAdd, message
             </div>
           </Transition.Child>
         </div>
-        <ModalSuccess 
-          isOpen={isOpenModalSuccess} 
-          message={`Se creó con éxito la facultad: ${nuevaFacultad &&nuevaFacultad.name}`}
+        <ModalSuccess
+          isOpen={isOpenModalSuccess}
+          message={`Se creó con éxito la facultad`}
           onClose={() => {
             setNuevaFacultad(null);
             onClose();
           }}
         />
         <ModalError isOpen={isOpenModalError} message='Ocurrió un problema inesperado. Intente nuevamente'
-        onClose={() => {
-          setNuevaFacultad(null);
-          setIsOpenModalError(false)
-        }}
-      /> 
+          onClose={() => {
+            setNuevaFacultad(null);
+            setIsOpenModalError(false);
+          }}
+        />
       </Dialog>
     </Transition.Root>
   );

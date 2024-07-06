@@ -6,8 +6,7 @@ import { useUserAccountAuth } from "../store/hooks";
 import loginImg from "../assets/Tutor/login.webp";
 
 function Login() {
-  const { error, handleSuccessLogin: handleSuccess, handleError } = useAuth();
-  const { isLoading } = useUserAccountAuth();
+  const { error, handleSuccessLogin: handleSuccess, handleError, isLoading } = useAuth();
   return (
     <div className="w-screen bg-gradient-to-br from-white to-blue-300 h-screen flex justify-center items-center">
 
@@ -33,7 +32,7 @@ function Login() {
               <h6 className="w-full font-roboto text-5xl font-medium text-black">Ingresar</h6>
 
               <div className="flex flex-col items-center justify-center gap-2">
-                {isLoading ? <Spinner color="primary" size='md' /> :
+                {isLoading ? <Spinner color="primary" size='xxxxl' /> :
                   <GoogleLogin onSuccess={handleSuccess} onError={handleError} />}
                 {error &&
                   <label className="text-xs font-roboto font-semibold text-red-500">

@@ -15,6 +15,7 @@ import ModalSuccess from '../ModalSuccess';
 import ModalError from '../ModalError';
 import { useFacultades } from '../../store/hooks/useFacultades';
 import Facultad from '../../store/types/Facultad';
+import Spinner from '../Spinner';
 
 type FacultadDelete = {
   id: number,
@@ -70,7 +71,7 @@ const Tabla: React.FC<TablaProps> = ({
   const [isOpenModalError, setIsOpenModalError] = useState<boolean>(false);
   const [isOpenModalInput, setIsOpenModalInput] = useState<boolean>(false);
 
-  const { facultadData, fetchFacultadData, deleteFacultad } = useFacultades();
+  const { facultadData, fetchFacultadData, deleteFacultad, isLoading } = useFacultades();
   const [facultadSelected, setFacultadSelected] = useState<FacultadDelete | null>(null);
 
   useEffect(() => { fetchFacultadData(); }, [isOpenModalInput]);
@@ -181,18 +182,23 @@ const Tabla: React.FC<TablaProps> = ({
         />
       </div>
 
-      <div className="flex w-full h-full flex-col space-y-5 mt-5 ag-theme-alpine items-center">
-        <div className="w-full h-full ag-theme-alpine items-center">
-          <AgGridReact
-            defaultColDef={defaultColDef}
-            columnDefs={columnFac}
-            rowData={facultadData.filter((item) =>
-              item.name.toLowerCase().includes(searchValue.toLowerCase()) || item.acronym.toLowerCase().includes(searchValue.toLowerCase())
-            )}
-            paginationAutoPageSize
-            suppressMovableColumns
-          />
-        </div>
+      <div className="flex w-full h-full flex-col space-y-5 mt-5 ag-theme-alpine items-center justify-center">
+        {isLoading ?
+          <Spinner color="primary" size='xxxxxxl' />
+          :
+          <div className="w-full h-full ag-theme-alpine">
+
+            <AgGridReact
+              defaultColDef={defaultColDef}
+              columnDefs={columnFac}
+              rowData={facultadData.filter((item) =>
+                item.name.toLowerCase().includes(searchValue.toLowerCase()) || item.acronym.toLowerCase().includes(searchValue.toLowerCase())
+              )}
+              paginationAutoPageSize
+              suppressMovableColumns
+            />
+
+          </div>}
       </div>
 
       <ModalInput

@@ -8,6 +8,7 @@ import SearchInput from '../SearchInput';
 import { ColDef } from 'ag-grid-community';
 import { BiCheckbox, BiSolidCheckSquare } from "react-icons/bi";
 import { User } from '../../store/types/User';
+import Spinner from '../Spinner';
 
 interface ModalSearchProps {
   isOpen: boolean;
@@ -20,13 +21,20 @@ interface ModalSearchProps {
 
 const ModalSearch: React.FC<ModalSearchProps> = ({ isOpen, onClose, facultad, setFacultadData, userType, updateKey }) => {
 
-  const { userData, fetchUsersNoStudents } = useUser();
+  const { userData, fetchUsersNoStudents, fetchUsersNoRoles, loading } = useUser();
   const [usuarioSelected, setUsuarioSelected] = useState<User | null>(null);
   const [searchValue, setSearchValue] = useState('');
 
   useEffect(() => {
-    fetchUsersNoStudents();
-  }, [updateKey]);
+    switch (userType) {
+      case "CoordFacultad":
+        fetchUsersNoStudents();
+        break;
+      case "CoordBienestar":
+        fetchUsersNoRoles();
+        break;
+    }
+  }, [updateKey, userType]);
 
   const handleSearch = (query: string) => {
     setSearchValue(query);
@@ -167,13 +175,17 @@ const ModalSearch: React.FC<ModalSearchProps> = ({ isOpen, onClose, facultad, se
                   <div className="flex w-full h-full flex-col">
                     <div className="flex w-full h-full ag-theme-alpine items-center justify-center">
                       <div className="w-full h-[85%]">
-                        <AgGridReact
-                          defaultColDef={defaultColDef}
-                          columnDefs={columnUser}
-                          rowData={userData.filter((item) =>
-                            item.persona.name.toLowerCase().includes(searchValue.toLowerCase()) || item.institutionalEmail.toLowerCase().includes(searchValue.toLowerCase())
-                          )}
-                        />
+                        {loading ?
+                          <Spinner color="primary" size='xxxxl' />
+                          :
+                          <AgGridReact
+                            defaultColDef={defaultColDef}
+                            columnDefs={columnUser}
+                            rowData={userData.filter((item) =>
+                              item.persona.name.toLowerCase().includes(searchValue.toLowerCase()) || item.institutionalEmail.toLowerCase().includes(searchValue.toLowerCase())
+                            )}
+                          />
+                        }
                       </div>
                     </div>
                   </div>

@@ -276,6 +276,7 @@ const PageEditarFacultad = () => {
                     className={`rounded-lg ${editable ? 'bg-white' : 'bg-secondary'} shadow p-2`}
                     onClick={() => {
                       setUs("CoordFacultad");
+                      update();
                       setIsOpenModalSearch(true);
                     }}
                     disabled={!editable}
@@ -332,6 +333,7 @@ const PageEditarFacultad = () => {
                     className={`rounded-lg ${editable ? 'bg-white' : 'bg-secondary'} shadow p-2`}
                     onClick={() => {
                       setUs("CoordBienestar");
+                      update();
                       setIsOpenModalSearch(true);
                     }}
                     disabled={!editable}

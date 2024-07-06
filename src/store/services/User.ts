@@ -4,7 +4,7 @@ import { User } from '../types/User';
 
 type ServiceResponseUser = {
   userList: User[];
-}
+};
 
 async function getUsuarios(): Promise<ServiceResponseUser> {
 
@@ -145,6 +145,48 @@ async function getUsuariosSinEstudiantes(): Promise<ServiceResponseUser> {
 
 }
 
+async function getUsuariosSinRoles(): Promise<ServiceResponseUser> {
+  try {
+    const response = await axios({
+      method: 'get',
+      url: ServicesProperties.BaseUrl + `/listarUsuariosSinRoles`,
+      headers: ServicesProperties.Headers
+    });
+
+    if (!response.data.success) {
+      return { userList: [] };
+    }
+
+    const userList: User[] = response.data.data.map((item: any) => {
+      return {
+        id: item.id,
+        institutionalEmail: item.institutionalEmail,
+        pucpCode: item.pucpCode,
+        isActive: item.isActive,
+        creationDate: item.creationDate,
+        modificationDate: item.modificationDate,
+        persona: {
+          id: item.persona.id,
+          name: item.persona.name,
+          lastName: item.persona.lastName,
+          secondLastName: item.persona.secondLastName,
+          phone: item.persona.phone,
+          isActive: item.persona.isActive,
+          usuario: item.persona.usuario
+        },
+        roles: item.roles,
+        isVerified: item.isVerified
+      };
+    });
+
+    return { userList: userList };
+
+  } catch (err: any) {
+    console.error(err);
+    throw new Error(err.message);
+  }
+}
+
 async function getStudents(): Promise<ServiceResponseUser> {
 
   try {
@@ -204,7 +246,7 @@ type ServiceResponse = {
   sucess: boolean;
   data?: any;
   message?: string;
-}
+};
 
 async function crearEditarUsuario(user: User): Promise<ServiceResponse> {
   try {
@@ -320,7 +362,7 @@ async function validarCodigoPUCP(pucpCode: string): Promise<ServiceResponse> {
         message: response?.data?.message
       };
     }
-    else{
+    else {
       return {
         sucess: true,
         message: response?.data?.message
@@ -333,5 +375,5 @@ async function validarCodigoPUCP(pucpCode: string): Promise<ServiceResponse> {
   }
 }
 
-export { getUsuarios, getUsuariosSinEstudiantes, crearEditarUsuario, eliminarUsuario, getStudents, crearEditarAlumno, validarCodigoPUCP, getUsuariosSinAdminSinAlumnos}
+export { getUsuarios, getUsuariosSinRoles, getUsuariosSinEstudiantes, crearEditarUsuario, eliminarUsuario, getStudents, crearEditarAlumno, validarCodigoPUCP, getUsuariosSinAdminSinAlumnos }
 

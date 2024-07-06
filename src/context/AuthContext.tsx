@@ -16,6 +16,7 @@ type UserData = {
 type AuthContextType = {
   userData: UserData | null;
   error: boolean;
+  isLoading: boolean;
   handleSuccessLogin: (credentialResponse: CredentialResponse) => void;
   handleError: () => void;
   handleLogout: () => void;
@@ -36,7 +37,7 @@ type AuthProviderProps = {
 };
 
 const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
-  const { fetchUserInfo, userInfo, resetUserInfo } = useUserAccountAuth();
+  const { fetchUserInfo, userInfo, resetUserInfo, isLoading } = useUserAccountAuth();
   const [user, setUser] = useState<UserData | null>(() => {
     const storedUser = localStorage.getItem("authCredential");
     return storedUser ? JSON.parse(storedUser) : null;
@@ -145,7 +146,7 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   }, []);
 
   return (
-    <AuthContext.Provider value={{ userData: user, error: error, handleSuccessLogin: handleSuccess, handleError: handleError, handleLogout: handleLogout }}>
+    <AuthContext.Provider value={{ userData: user, error: error, handleSuccessLogin: handleSuccess, handleError: handleError, handleLogout: handleLogout, isLoading }}>
       {children}
     </AuthContext.Provider>
   );

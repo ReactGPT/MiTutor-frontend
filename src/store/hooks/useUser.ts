@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { crearEditarUsuario, eliminarUsuario, getUsuarios, getStudents, crearEditarAlumno, getUsuariosSinEstudiantes, validarCodigoPUCP, getUsuariosSinAdminSinAlumnos } from '../services/User';
+import { crearEditarUsuario, eliminarUsuario, getUsuarios, getStudents, crearEditarAlumno, getUsuariosSinEstudiantes, validarCodigoPUCP, getUsuariosSinAdminSinAlumnos, getUsuariosSinRoles } from '../services/User';
 
 import { User } from '../types/User';
 
@@ -19,6 +19,7 @@ type UserHookReturnType = {
   fetchStudentsSingleSet: () => Promise<User[]>;
   fetchUsersSingleSet: () => Promise<User[]>;
   validateUserByPucpCode: (pucpCode: string) => Promise<boolean>;
+  fetchUsersNoRoles: () => Promise<void>;
 };
 
 function useUser(): UserHookReturnType {
@@ -37,7 +38,7 @@ function useUser(): UserHookReturnType {
     } finally {
       setLoading(false);
     }
-  }
+  };
 
   const fetchUsersNoAdminNoStudents = async () => {
     setLoading(true);
@@ -50,7 +51,7 @@ function useUser(): UserHookReturnType {
     } finally {
       setLoading(false);
     }
-  }
+  };
 
   const fetchUsersNoStudents = async () => {
     setLoading(true);
@@ -63,7 +64,7 @@ function useUser(): UserHookReturnType {
     } finally {
       setLoading(false);
     }
-  }
+  };
   const fetchStudents = async () => {
     setLoading(true);
     try {
@@ -75,7 +76,7 @@ function useUser(): UserHookReturnType {
     } finally {
       setLoading(false);
     }
-  }
+  };
   const fetchStudentsSingleSet = async () => {
     setLoading(true);
     try {
@@ -89,7 +90,7 @@ function useUser(): UserHookReturnType {
     } finally {
       setLoading(false);
     }
-  }
+  };
   const fetchUsersSingleSet = async () => {
     setLoading(true);
     try {
@@ -104,7 +105,7 @@ function useUser(): UserHookReturnType {
     } finally {
       setLoading(false);
     }
-  }
+  };
 
   const postUser = async (user: User) => {
     setLoading(true);
@@ -121,7 +122,7 @@ function useUser(): UserHookReturnType {
     } finally {
       setLoading(false);
     }
-  }
+  };
 
   const postStudent = async (user: User) => {
     setLoading(true);
@@ -138,7 +139,7 @@ function useUser(): UserHookReturnType {
     } finally {
       setLoading(false);
     }
-  }
+  };
 
   const deleteUser = async (id: number) => {
     setLoading(true);
@@ -154,7 +155,7 @@ function useUser(): UserHookReturnType {
     } finally {
       setLoading(false);
     }
-  }
+  };
 
   const validateUserByPucpCode = async (pucpCode: string) => {
     setLoading(true);
@@ -169,10 +170,23 @@ function useUser(): UserHookReturnType {
     } finally {
       setLoading(false);
     }
-  }
+  };
 
-  return { userData, loading, error, fetchUsers, fetchUsersNoStudents, postUser, postStudent, deleteUser, fetchStudents, fetchStudentsSingleSet, fetchUsersSingleSet, validateUserByPucpCode, fetchUsersNoAdminNoStudents };
+  const fetchUsersNoRoles = async () => {
+    setLoading(true);
+    try {
+      const response = await getUsuariosSinRoles();
+      setUserData(response.userList);
+    } catch (err: any) {
+      setError(err);
+      setUserData([]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return { userData, loading, error, fetchUsers, fetchUsersNoStudents, postUser, postStudent, deleteUser, fetchStudents, fetchStudentsSingleSet, fetchUsersSingleSet, validateUserByPucpCode, fetchUsersNoAdminNoStudents, fetchUsersNoRoles };
 
 }
 
-export { useUser }
+export { useUser };

@@ -10,6 +10,11 @@ function Spinner({ size = "sm", color = "blue" }: SpinnerProps) {
     md: "h-4 w-4",
     lg: "h-5 w-5",
     xl: "h-6 w-6",
+    xxl: "h-7 w-7",
+    xxxl: "h-8 w-8",
+    xxxxl: "h-9 w-9",
+    xxxxxl: "h-10 w-10",
+    xxxxxxl: "h-11 w-11",
   };
   const colorClasses: Record<string, string> = {
     blue: "fill-blue-600",
@@ -21,7 +26,7 @@ function Spinner({ size = "sm", color = "blue" }: SpinnerProps) {
     <div role="status">
       <svg
         aria-hidden="true"
-        className={`inline mr-2 text-gray-200 text-base h- animate-spin dark:text-gray-600 ${sizeClasses[size]} ${colorClasses[color]}`}
+        className={`h- inline mr-2 text-gray-200 text-base h- animate-spin dark:text-gray-600 ${sizeClasses[size]} ${colorClasses[color]}`}
         viewBox="0 0 100 101"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"

@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { UserAccount } from "../types";
 
 
-type ProgramaTutoriaHookReturnType = {
+type UserAccountAuthReturnType = {
   fetchUserInfo: (email?: string, codigoPUCP?: string) => Promise<any>;
   resetUserInfo: () => void;
   userInfo: UserAccount | null;
@@ -11,7 +11,7 @@ type ProgramaTutoriaHookReturnType = {
   error: Error | null;
 };
 
-function useUserAccountAuth(): ProgramaTutoriaHookReturnType {
+function useUserAccountAuth(): UserAccountAuthReturnType {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<Error | null>(null);
   const [userInfo, setUserInfo] = useState<UserAccount | null>(null);

@@ -1,4 +1,4 @@
-import welcome from '../../../assets/welcome.png'
+import welcome from '../../../assets/welcome.webp';
 const PageGeneralAdmin = () => {
   return (
     <div className='flex flex-col items-center justify-center h-[100%]'>
@@ -12,7 +12,7 @@ const PageGeneralAdmin = () => {
         Para comenzar, haz click en una de las opciones del menú de la izquierda.
       </p>
     </div>
-    
+
   );
 };
 

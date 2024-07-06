@@ -11,10 +11,11 @@ import { useNavigate } from 'react-router-dom';
 interface ButtonModalCancelarCitaProps {
   appointmentId: number;
   redirectUrl?: string;
+  onCancelAppointment?: () => void;
 }
 
 const ButtonModalCancelarCita: React.FC<ButtonModalCancelarCitaProps> = (
-  { appointmentId, redirectUrl }
+  { appointmentId, redirectUrl, onCancelAppointment }
 ) => {
   const navigate = useNavigate();
   //console.log(appointmentId);
@@ -59,6 +60,11 @@ const ButtonModalCancelarCita: React.FC<ButtonModalCancelarCitaProps> = (
     }
   };
   //
+  const onAcceptCancel = () => {
+    if (onCancelAppointment) onCancelAppointment();
+    setIsSuccessModalOpen(false);
+  };
+  //
   return (
     <>
       <Button onClick={handleOpenModal} text='Cancelar cita' variant='warning' />
@@ -85,7 +91,7 @@ const ButtonModalCancelarCita: React.FC<ButtonModalCancelarCitaProps> = (
       </ModalBase >
       <ModalSuccess
         isOpen={isSuccessModalOpen}
-        onClose={() => setIsSuccessModalOpen(false)}
+        onClose={onAcceptCancel}
         message="Se canceló la cita exitosamente."
       />
       <ModalError

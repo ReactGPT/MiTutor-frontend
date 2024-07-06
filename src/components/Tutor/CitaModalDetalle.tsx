@@ -1,75 +1,82 @@
 import { Dialog, Transition } from '@headlessui/react';
 import { Fragment, useState } from 'react';
 
-import Button from '../Button'; 
+import Button from '../Button';
 import { ListCita } from "../../store/types/ListCita";
 import { Services as ServicesProperties } from '../../config';
 import axios from 'axios';
+import ButtonModalCancelarCita from '../ButtonModalCancelarCita';
 
 interface CitaModalDetalleProps {
   onClose: () => void; // Tipo de onClose
   appointment: ListCita;
+  onCancelAppointment?: () => void;
 }
 
-export default function CitaModalDetalle({ onClose, appointment }: CitaModalDetalleProps) {
+export default function CitaModalDetalle({ onClose, appointment, onCancelAppointment }: CitaModalDetalleProps) {
   // Solo necesitas el estado isOpen dentro de ModalTutor
   const [isOpen, setIsOpen] = useState(true); // Inicializar el estado como true para abrir el modal por defecto
-    
+
   function closeModal() {
     setIsOpen(false);
     onClose(); // Llamar a la función onClose para comunicar que se cerró el modal
   }
 
-  const attributesToRender =[
+  const handleCancelAppointment = () => {
+    if (onCancelAppointment) onCancelAppointment();
+    closeModal();
+  };
+
+  const attributesToRender = [
     {
-        name:"Fecha",
-        value:appointment.creationDate
+      name: "Fecha",
+      value: appointment.creationDate
     },
     {
-        name:"Modalidad",
-        value:appointment.isInPerson?"Presencial":"Virtual"
+      name: "Modalidad",
+      value: appointment.isInPerson ? "Presencial" : "Virtual"
     },
     {
-        name:"Hora",
-        value:appointment.startTime+" - "+appointment.endTime
+      name: "Hora",
+      value: appointment.startTime + " - " + appointment.endTime
     },
     {
-        name:"Motivo",
-        value:appointment.reason
+      name: "Motivo",
+      value: appointment.reason
     },
     {
-        name:"Tipo de Tutoría",
-        value:appointment.programName
+      name: "Tipo de Tutoría",
+      value: appointment.programName
     }
-] 
+  ];
 
   return (
-      <Transition appear show={isOpen} as={Fragment}>
-        <Dialog as="div" className="fixed inset-0 z-10 overflow-y-auto" onClose={closeModal}>
-          <div className="min-h-screen px-4 text-center">
-            <Transition.Child
-              as={Fragment}
-              enter="ease-out duration-300"
-              enterFrom="opacity-0"
-              enterTo="opacity-100"
-              leave="ease-in duration-200"
-              leaveFrom="opacity-100"
-              leaveTo="opacity-0"
-            >
-              <Dialog.Overlay className="fixed inset-0 bg-black/25" />
-            </Transition.Child>
+    <Transition appear show={isOpen} as={Fragment}>
+      <Dialog as="div" className="fixed inset-0 z-10 overflow-y-auto" onClose={closeModal}>
+        <div className="min-h-screen px-4 text-center">
+          <Transition.Child
+            as={Fragment}
+            enter="ease-out duration-300"
+            enterFrom="opacity-0"
+            enterTo="opacity-100"
+            leave="ease-in duration-200"
+            leaveFrom="opacity-100"
+            leaveTo="opacity-0"
+          >
+            <Dialog.Overlay className="fixed inset-0 bg-black/25" />
+          </Transition.Child>
 
-            {/* Contenido del modal */}
-            <span className="inline-block h-screen align-middle">&#8203;</span>
-            <Transition.Child
-              as={Fragment}
-              enter="ease-out duration-300"
-              enterFrom="opacity-0 scale-95"
-              enterTo="opacity-100 scale-100"
-              leave="ease-in duration-200"
-              leaveFrom="opacity-100 scale-100"
-              leaveTo="opacity-0 scale-95"
-            >
+          {/* Contenido del modal */}
+          <span className="inline-block h-screen align-middle">&#8203;</span>
+          <Transition.Child
+            as={Fragment}
+            enter="ease-out duration-300"
+            enterFrom="opacity-0 scale-95"
+            enterTo="opacity-100 scale-100"
+            leave="ease-in duration-200"
+            leaveFrom="opacity-100 scale-100"
+            leaveTo="opacity-0 scale-95"
+          >
             <div className="inline-block w-full max-w-md p-6 my-8 overflow-hidden text-left align-middle transition-all transform bg-white shadow-xl rounded-2xl relative">
               <Dialog.Title as="h3" className="text-lg font-medium leading-6 text-gray-900 relative mb-4">
                 <div className="flex items-center justify-between">
@@ -90,18 +97,21 @@ export default function CitaModalDetalle({ onClose, appointment }: CitaModalDeta
                   </div>
                 </div>
               </Dialog.Title>
-                <div className='flex flex-col gap-2 flex-grow overflow-auto'>
-                    {attributesToRender.length>0 && attributesToRender.map((item)=>(
-                    <div key={`label-${item.name}`} className='flex w-full'>
-                        <label className='font-montserrat text-sm w-[50%] font-bold'>{item.name}</label>
-                        <p className='font-montserrat text-sm w-[50%] justify-begin font-semibold block truncate'>{item.value}</p>
-                    </div>
-                    ))}
-                </div> 
+              <div className='flex flex-col gap-2'>
+                {attributesToRender.length > 0 && attributesToRender.map((item) => (
+                  <div key={`label-${item.name}`} className='flex w-full'>
+                    <label className='font-montserrat text-sm w-[50%] font-bold'>{item.name}</label>
+                    <p className='font-montserrat text-sm w-[50%] justify-begin font-semibold block truncate'>{item.value}</p>
+                  </div>
+                ))}
+                <div className='flex justify-end'>
+                  <ButtonModalCancelarCita appointmentId={appointment.appointmentId} onCancelAppointment={handleCancelAppointment} />
+                </div>
+              </div>
             </div>
-            </Transition.Child>
-          </div>
-        </Dialog>
-      </Transition>
+          </Transition.Child>
+        </div>
+      </Dialog>
+    </Transition>
   );
 }

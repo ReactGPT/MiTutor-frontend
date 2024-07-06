@@ -19,10 +19,11 @@ const PageListaDeCitas = () => {
 
   const { cita, fetchCita } = useCitasPorTutor(tutorId);
 
+  const [refreshKey, setRefreshKey] = useState<number>(0);
+
   useEffect(() => {
-    console.log("info de userio", userData);
     fetchCita();
-  }, []);
+  }, [refreshKey]);
 
   const [searchText, setSearchText] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
@@ -105,6 +106,9 @@ const PageListaDeCitas = () => {
             tipo="lista"
             user="tutor"
             flag={flag}
+            onCancelAppointment={() => {
+              setRefreshKey(prev => prev + 1);
+            }}
           />
         ))}
       </div>

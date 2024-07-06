@@ -3,15 +3,7 @@ import Button from "../Button";
 import IconDetails from '../../assets/svg/IconDetails';
 import { useNavigate } from "react-router-dom";
 import { ListCita } from "../../store/types/ListCita";
-import { Services as ServicesProperties } from '../../config';
-import axios from 'axios';
 import CitaModalDetalle from "./CitaModalDetalle";
-interface AppointmentItemProps {
-  appointment: ListCita;
-  tipo: "lista" | "historico";
-  user: "alumno" | "tutor";
-  flag: boolean;
-}
 
 const textClasses = {
   red: 'text-red-500',
@@ -71,7 +63,15 @@ const controlColor = (color: string, tipo: string) => {
   }
 };
 
-const AppointmentItem: React.FC<AppointmentItemProps> = ({ appointment, tipo, user, flag }) => {
+interface AppointmentItemProps {
+  appointment: ListCita;
+  tipo: "lista" | "historico";
+  user: "alumno" | "tutor";
+  flag: boolean;
+  onCancelAppointment?: () => void;
+}
+
+const AppointmentItem: React.FC<AppointmentItemProps> = ({ appointment, tipo, user, flag, onCancelAppointment }) => {
   const navigate = useNavigate();
   const [appointmentStatus, setAppointmentStatus] = useState(appointment.appointmentStatus);
 
@@ -114,7 +114,6 @@ const AppointmentItem: React.FC<AppointmentItemProps> = ({ appointment, tipo, us
   useEffect(() => {
     checkAppointmentStatus();
   }, [flag]);
-
 
   return (
     <div className="w-full h-22 border-custom shadow-custom flex bg-[rgba(235,_236,_250,_1.00)] overflow-hidden font-roboto">
@@ -168,7 +167,7 @@ const AppointmentItem: React.FC<AppointmentItemProps> = ({ appointment, tipo, us
             <span className="text-primary">{`${appointment.startTime}`}</span>
           </div>
           <Button variant='primario' onClick={goToDetalleCita} icon={IconDetails} />
-          <div>{isModalOpen && <CitaModalDetalle onClose={closeModal} appointment={appointment} />}</div>
+          <div>{isModalOpen && <CitaModalDetalle onClose={closeModal} appointment={appointment} onCancelAppointment={onCancelAppointment} />}</div>
         </div>
       </div>
     </div>

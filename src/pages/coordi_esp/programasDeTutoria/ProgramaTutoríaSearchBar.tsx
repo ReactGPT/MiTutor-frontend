@@ -33,7 +33,7 @@ const ProgramaTutoríaSearchBar = ({ handleOnChangeFilters }: InputProps) => {
             if (role.rolName === 'Responsable de Especialidad') {
                 const facultyId = parseInt((role.details as any).departmentId, 10);
                 const speciality = specialityList.find(faculty => faculty.id === facultyId);
-                if (speciality && !selectedEspecialidades.some(especialidad => especialidad.id === speciality.id)) { 
+                if (speciality && !selectedEspecialidades.some(especialidad => especialidad.id === speciality.id)) {
                     selectedEspecialidades.push(speciality);
                 }
             }
@@ -53,7 +53,7 @@ const ProgramaTutoríaSearchBar = ({ handleOnChangeFilters }: InputProps) => {
     };
 
     const handleOnChangeFaculty = (value: Specialty) => {
-        if ((specialitySelected && specialitySelected.id !== value.id) ) {
+        if ((specialitySelected && specialitySelected.id !== value.id)) {
             setSpecialitySelected(null);
         }
         setSpecialitySelected(value);
@@ -87,8 +87,14 @@ const ProgramaTutoríaSearchBar = ({ handleOnChangeFilters }: InputProps) => {
                 </div>
                 <div>
                     <Label value="Especialidad" className='font-roboto text-primary' />
-                    <Combobox className='w-[250px]' text='Seleccione una Facultad' options={selectedEspecialidades} onChange={handleOnChangeFaculty} value={facultySelected} />
-                </div> 
+                    <Combobox
+                        className='w-[250px]'
+                        text='Seleccione una Facultad'
+                        options={selectedEspecialidades}
+                        onChange={handleOnChangeFaculty}
+                        value={facultySelected}
+                    />
+                </div>
             </form>
             <div className='flex w-[30%] justify-end'>
                 <Button onClick={handleClickNuevaTutoria} text="Nueva Tutoria" icon={AddCircleIcon} />

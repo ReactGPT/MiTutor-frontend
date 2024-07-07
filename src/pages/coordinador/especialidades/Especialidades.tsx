@@ -1,6 +1,6 @@
 import React, { useMemo } from "react";
 import { useState, useEffect } from 'react';
-import { Button } from "../../../components";
+import { Button, Combobox } from "../../../components";
 import { FaHamburger } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { BiMenuAltLeft, BiSearch } from "react-icons/bi";
@@ -17,7 +17,9 @@ import ModalConfirmation from "../../../components/ModalConfirmation";
 import ModalSuccess from "../../../components/ModalSuccess";
 import ModalError from "../../../components/ModalError";
 import { eliminarEspecialidad } from "../../../store/services/actualizarEspecialidad";
-import { Faculty, Specialty } from "../../../store/types";
+import { Faculty, ManagerRoleDetails, Specialty } from "../../../store/types";
+import { Label } from "flowbite-react";
+import { getFacultadesFromRoleCoordinador } from "../../../store/hooks/FacultadesRolesIdCoordinador";
 
 type EspecialidadesPageProps = {
   Facultyid?: number;
@@ -25,13 +27,18 @@ type EspecialidadesPageProps = {
 };
 
 const EspecialidadesPage: React.FC<EspecialidadesPageProps> = ({ Facultyid, disableAgregarEspecialidad }) => {
+  const { userData } = useAuth();
+  const userInfo = userData?.userInfo;
+  //
+  const facultades: ManagerRoleDetails[] = getFacultadesFromRoleCoordinador(userData);
+  //
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = React.useState(false);
   const [search, setSearch] = React.useState<string>("");
   const { especialidadData, fetchEspecialidadData } = useEspecialidadByName();
 
   useEffect(() => {
-    fetchEspecialidadData(search);
+    fetchEspecialidadData("");
   }, []);
 
   const columnFac: ColDef[] = [
@@ -81,28 +88,18 @@ const EspecialidadesPage: React.FC<EspecialidadesPageProps> = ({ Facultyid, disa
     }
   ];
 
-  const { userData } = useAuth();
-  const userInfo = userData?.userInfo;
-
   const departmentId = useMemo(() => {
-    let departmentId: number = 0;
     if (Facultyid) {
       return Facultyid;
     }
-    userInfo?.roles.forEach((role: any) => {
-      if (role.rolName === 'Responsable de Facultad') {
-        departmentId = role.details.departmentId;
-      }
-    });
-    return departmentId;
   }, [userInfo]);
 
   const onSearch = () => {
-    console.log(`Searching for... '${search}'`);
-    fetchEspecialidadData(search);
+    //
   };
 
   const [isOpenConfirmation, setIsOpenConfirmation] = useState<boolean>(false);
+  const [selectedFacultyId, setSelectedFacultyId] = useState<number | null>(null);
   const [selectedEspecialidadId, setSelectedEspecialidadId] = useState<number | null>(null);
   const [isOpenModalSuccess, setIsOpenModalSuccess] = useState<boolean>(false);
   const [isOpenModalError, setIsOpenModalError] = useState<boolean>(false);
@@ -122,38 +119,49 @@ const EspecialidadesPage: React.FC<EspecialidadesPageProps> = ({ Facultyid, disa
     }
   };
 
-  const roles = userData?.userInfo?.roles;
-
   const especialdadesFiltered: Specialty[] = useMemo(() => {
-    let filteredData: Specialty[] = [];
-    // Apply role-based filter if user has 'Responsable de Facultad' role
     if (Facultyid) {
       return especialidadData.filter(especialidad => especialidad.faculty.facultyId == Facultyid);
     }
-    if (roles) {
-      especialidadData.forEach(especialidad => {
-        // Recorrer cada rol del usuario
-        roles.forEach(role => {
-          if (role.rolName === 'Responsable de Facultad') {
-            const facultyId = parseInt((role.details as any).departmentId, 10);
-            // Si el programa tiene el mismo facultyId que el rol, agregarlo a filteredData
-            if (especialidad.faculty.facultyId == facultyId) {
-              filteredData.push(especialidad);
-            }
-          }
-        });
-      });
+
+    if (selectedFacultyId) {
+      return especialidadData.filter(especialidad => especialidad.faculty.facultyId == selectedFacultyId);
     }
-    return filteredData;
-  }, [especialidadData, roles]);
+
+    return especialidadData.filter(especialidad =>
+      facultades.some(facultad => Number(facultad.departmentId) === especialidad.faculty.facultyId)
+    );
+  }, [especialidadData, selectedFacultyId]);
+
+  const handleOnChangeFaculty = (value: any) => {
+    setSelectedFacultyId(value.id);
+  };
 
   return (
     <>
       <div className="w-full h-full flex flex-col gap-5">
         <div className="flex gap-2 flex-wrap justify-between items-center">
-          <h1 className="text-2xl font-bold text-[#2F2F2F]">
-            Especialidades
-          </h1>
+          <div className="flex gap-4 items-center">
+            {Facultyid ?
+              <h1 className="text-2xl font-bold text-[#2F2F2F]">
+                Especialidades
+              </h1>
+              :
+              <div>
+                <Label value="Facultad" className='font-roboto text-primary' />
+                <Combobox
+                  className='w-[250px]'
+                  options={facultades.map(facultad => ({
+                    id: facultad.departmentId,
+                    name: facultad.departmentName,
+                    ...facultad
+                  }))}
+                  onChange={handleOnChangeFaculty}
+                  value={null}
+                />
+              </div>
+            }
+          </div>
           <Button
             text="Agregar especialidad"
             onClick={() => {
@@ -202,7 +210,7 @@ const EspecialidadesPage: React.FC<EspecialidadesPageProps> = ({ Facultyid, disa
           paginationAutoPageSize
           suppressMovableColumns
         />
-      </div>
+      </div >
       <NuevaEspecialidad
         FacultyId={departmentId}
         isOpen={isOpen}

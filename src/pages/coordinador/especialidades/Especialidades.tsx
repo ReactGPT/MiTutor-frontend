@@ -93,7 +93,7 @@ const EspecialidadesPage: React.FC<EspecialidadesPageProps> = ({ Facultyid, disa
       if (role.rolName === 'Responsable de Facultad') {
         departmentId = role.details.departmentId;
       }
-    }); 
+    });
     return departmentId;
   }, [userInfo]);
 

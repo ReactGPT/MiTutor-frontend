@@ -29,12 +29,16 @@ const ProgramaTutoríaSearchBar = ({ handleOnChangeFilters }: InputProps) => {
     let selectedFaculties: Faculty[] = [];
 
     if (roles) {
+        const uniqueFacultyIds = new Set<number>();
         roles.forEach(role => {
             if (role.rolName === 'Responsable de Facultad') {
                 const facultyId = parseInt((role.details as any).departmentId, 10);
-                const faculty = facultyList.find(faculty => faculty.id === facultyId);
-                if (faculty) {
-                    selectedFaculties.push(faculty);
+                if (!uniqueFacultyIds.has(facultyId)) {
+                    uniqueFacultyIds.add(facultyId);
+                    const faculty = facultyList.find(faculty => faculty.id === facultyId);
+                    if (faculty) {
+                        selectedFaculties.push(faculty);
+                    }
                 }
             }
         });
@@ -82,16 +86,28 @@ const ProgramaTutoríaSearchBar = ({ handleOnChangeFilters }: InputProps) => {
                     <Label value="Buscar" className='font-roboto text-primary' />
                     <span className='flex gap-1'>
                         <InputCell placeholder='Escribe aquí' boxSize='w-[250px] h-[37px] mt-1' text={searchQuery} onChange={{ tipo: "simple", onChange: handleOnChangeQuery }} />
-                        <Button onClick={() => console.log(filters)} icon={IconSearch} iconSize={4} />
+                        <Button onClick={() => { }} icon={IconSearch} iconSize={4} />
                     </span>
                 </div>
                 <div>
                     <Label value="Facultad" className='font-roboto text-primary' />
-                    <Combobox className='w-[250px]' text='Seleccione una Facultad' options={selectedFaculties} onChange={handleOnChangeFaculty} value={facultySelected} />
+                    <Combobox
+                        className='w-[250px]'
+                        text='Seleccione una Facultad'
+                        options={selectedFaculties}
+                        onChange={handleOnChangeFaculty}
+                        value={facultySelected}
+                    />
                 </div>
                 <div>
                     <Label value="Especialidad" className='font-roboto text-primary' />
-                    <Combobox className='w-[300px]' text='Seleccione una especialidad' options={facultySelected ? specialityOptions : []} onChange={setSpecialitySelected} value={specialitySelected} />
+                    <Combobox
+                        className='w-[300px]'
+                        text='Seleccione una especialidad'
+                        options={facultySelected ? specialityOptions : []}
+                        onChange={setSpecialitySelected}
+                        value={specialitySelected}
+                    />
                 </div>
             </form>
             <div className='flex w-[30%] justify-end'>

@@ -97,25 +97,26 @@ export default function PageProgramasTutoriaMaestro() {
     };
     const { userData } = useAuth();
     const roles = userData?.userInfo?.roles;
-    let selectedFaculties: Faculty[] = [];
-    
+
     const programaTutoriaFiltered: ProgramaTutoria[] = useMemo(() => {
         let filteredData: ProgramaTutoria[] = [];
-        console.log(programaTutoriaData);
+        //console.log("programaTutoriaData");
+        //console.log(programaTutoriaData);
         // Apply role-based filter if user has 'Responsable de Facultad' role
         if (roles) {
-            programaTutoriaData.forEach(programa => {
-                // Recorrer cada rol del usuario
-                roles.forEach(role => {
-                    if (role.rolName === 'Responsable de Facultad') {
-                        const facultyId = parseInt((role.details as any).departmentId, 10);
-                        
-                        // Si el programa tiene el mismo facultyId que el rol, agregarlo a filteredData
-                        if (programa.facultadId === facultyId) {
-                            filteredData.push(programa);
+            const uniqueProgramIds = new Set<number>();
+            roles.forEach(role => {
+                if (role.rolName === 'Responsable de Facultad') {
+                    const facultyId = parseInt((role.details as any).departmentId, 10);
+                    programaTutoriaData.forEach(programa => {
+                        if (typeof programa.id === 'number' && programa.facultadId === facultyId) {
+                            if (!uniqueProgramIds.has(programa.id)) {
+                                uniqueProgramIds.add(programa.id);
+                                filteredData.push(programa);
+                            }
                         }
-                    }
-                });
+                    });
+                }
             });
         }
 
@@ -125,7 +126,8 @@ export default function PageProgramasTutoriaMaestro() {
             (filters.idSpeciality ? filters.idSpeciality === item.especialidadId : true) &&
             (filters.idFaculty ? filters.idFaculty === item.facultadId : true)
         );
-
+        //console.log("filteredData");
+        //console.log(filteredData);
         return filteredData;
     }, [programaTutoriaData, filters, roles]);
 

@@ -35,7 +35,7 @@ function DatosGeneralesTutoria() {
 
   let selectedFaculties: Faculty[] = [];
 
-  if (roles) {
+  /* if (roles) {
     roles.forEach(role => {
       if (role.rolName === 'Responsable de Facultad') {
         const facultyId = parseInt((role.details as any).departmentId, 10);
@@ -45,7 +45,24 @@ function DatosGeneralesTutoria() {
         }
       }
     });
+  } */
+
+  if (roles) {
+    const uniqueFacultyIds = new Set<number>();
+    roles.forEach(role => {
+      if (role.rolName === 'Responsable de Facultad') {
+        const facultyId = parseInt((role.details as any).departmentId, 10);
+        if (!uniqueFacultyIds.has(facultyId)) {
+          uniqueFacultyIds.add(facultyId);
+          const faculty = facultyList.find(faculty => faculty.id === facultyId);
+          if (faculty) {
+            selectedFaculties.push(faculty);
+          }
+        }
+      }
+    });
   }
+
   const isEditRoute = location.pathname === '/programasDeTutoriaMaestro/editar';
   // Identificar si estamos en modo de edición basado en la URL
   useEffect(() => {
@@ -91,7 +108,7 @@ function DatosGeneralesTutoria() {
       <div id="ProgramaTutoriaBox1Header" className='flex flex-row justify-between items-center w-full h-full'>
         <h2 className='text-xl font-bold font-roboto text-black'>Datos del programa</h2>
         <div className='flex flex-row gap-4'>
-          {isLoading ? <Spinner /> : <Button disabled={!!roles ? !(roles.some((rol: any) => rol.type === "FACULTYMANAGER" 
+          {isLoading ? <Spinner /> : <Button disabled={!!roles ? !(roles.some((rol: any) => rol.type === "FACULTYMANAGER"
             && (rol.details.departmentType === 'Facultad' ? rol.details.departmentId.toString() === tutoringProgram.facultadId.toString() : rol.details.departmentId.toString() === tutoringProgram.especialidadId.toString()))) : true} text='Guardar' icon={SaveIcon} onClick={handleSaveTutoria} />}
           <Button text='Cancelar' variant='primario' icon={CloseIcon} iconSize={4} onClick={() => { navigate("/programasDeTutoria"); }} />
         </div>

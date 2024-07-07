@@ -1,6 +1,6 @@
 import React, { useState, ChangeEvent, useMemo, useEffect } from 'react';
 import IconSearch from '../assets/svg/IconSearch';
-import { Combobox,InputCell } from './index.ts';
+import { Combobox, InputCell } from './index.ts';
 import { RootState } from '../store/store';
 import { useAppSelector } from '../store/hooks';
 
@@ -18,25 +18,25 @@ const className = 'font-roboto bg-[rgba(235,236,250,1)] shadow-custom border bor
 
 type SearchInputProps = {
   placeholder?: string;
-  selectDisabled?:boolean;
+  selectDisabled?: boolean;
   onSearch: (query: string) => void;
   handleOnChangeFilters: (filters: any) => void;
 };
 
 type AppointmentStatus = {
-  id:number;
-  name:string;
-}
+  id: number;
+  name: string;
+};
 
 const SearchInput: React.FC<SearchInputProps> = ({
   placeholder,
   onSearch,
-  selectDisabled=false,
+  selectDisabled = false,
   handleOnChangeFilters,
-}:SearchInputProps) => {
+}: SearchInputProps) => {
 
   const [query, setQuery] = useState('');
-  const [selectedStatus, setSelectedStatus] = useState<AppointmentStatus |  null>(null);
+  const [selectedStatus, setSelectedStatus] = useState<AppointmentStatus | null>(null);
   const [startDateSelected, setStartDateSelected] = useState<Date | null>(null);
   const [endDateSelected, setEndDateSelected] = useState<Date | null>(null);
 
@@ -54,59 +54,63 @@ const SearchInput: React.FC<SearchInputProps> = ({
     onSearch(query);
   };
 
-  const filters = useMemo(()=>{
+  const filters = useMemo(() => {
     return {
       status: selectedStatus?.name,
       startDate: startDateSelected,
       endDate: endDateSelected,
       name: query
-    }
-  },[selectedStatus,startDateSelected,endDateSelected,query]);
+    };
+  }, [selectedStatus, startDateSelected, endDateSelected, query]);
 
-  useEffect(()=>{
+  useEffect(() => {
     handleOnChangeFilters(filters);
-  },[filters]);
+  }, [filters]);
 
   return (
     <div className="flex w-full max-h-[40px] rounded-2xl">
-      
 
-      
-        <input className={`w-full p-3 rounded-l-2xl focus:outline-none ${className}`}onChange={handleInputChange} type="search" placeholder={placeholder} />
-          {!selectDisabled&&<Combobox 
-          className={`${className}`}
-          stylesOptions={`${className}`}
-          text='Seleccione un Estado'
-          name='Estado'
-          options={appointmentStatusList}
-          onChange={handleComboBoxChange}
-          value={selectedStatus}
-          buttonStyle='rounded-r-2xl'
-          noMt={true}
-          />}
-        
-        {!selectDisabled&&<p 
-          className={`text-center flex items-center justify-center w-36 ${className} 
+      <input
+        className={`w-full p-3 rounded-l-2xl focus:outline-none ${className}`}
+        onChange={handleInputChange}
+        type="search"
+        placeholder={placeholder}
+      />
+
+      {!selectDisabled && <Combobox
+        className={`${className}`}
+        stylesOptions={`${className}`}
+        text='Seleccione un Estado'
+        name='Estado'
+        options={appointmentStatusList}
+        onChange={handleComboBoxChange}
+        value={selectedStatus}
+        buttonStyle='rounded-r-2xl'
+        noMt={true}
+      />}
+
+      {!selectDisabled && <p
+        className={`text-center flex items-center justify-center w-36 ${className} 
             border-r-0`}>
-          Inicio: 
-        </p>}
-        {!selectDisabled&&<input 
-          type="date" 
-          className={`${className} border-l-0`}
-          name="Fecha Inicio" id="" />}
-        {!selectDisabled&&<p 
-          className={`text-center flex items-center justify-center w-28 ${className} 
+        Inicio:
+      </p>}
+      {!selectDisabled && <input
+        type="date"
+        className={`${className} border-l-0`}
+        name="Fecha Inicio" id="" />}
+      {!selectDisabled && <p
+        className={`text-center flex items-center justify-center w-28 ${className} 
             border-r-0`}>
-          Fin: 
-        </p>}
-        {!selectDisabled&&<input 
-          type="date" 
-          className={`${className} border-l-0`} 
-          name="Fecha Fin" id="" />}
-        
-        <button className=" bg-primary cursor-default rounded-r-2xl text-white px-5 shadow-custom border border-solid border-[rgba(116,170,255,0.70)] active:bg-black hover:cursor-pointer" onClick={handleSearch}><IconSearch /></button>
-    
-  </div>
+        Fin:
+      </p>}
+      {!selectDisabled && <input
+        type="date"
+        className={`${className} border-l-0`}
+        name="Fecha Fin" id="" />}
+
+      <button className=" bg-primary cursor-default rounded-r-2xl text-white px-5 shadow-custom border border-solid border-[rgba(116,170,255,0.70)] active:bg-black hover:cursor-pointer" onClick={handleSearch}><IconSearch /></button>
+
+    </div>
   );
 };
 

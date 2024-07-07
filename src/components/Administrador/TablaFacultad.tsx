@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { ChangeEvent, useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import SearchInput from '../SearchInput';
 import DeleteIcon from '../../assets/svg/DeleteIcon';
@@ -16,6 +16,7 @@ import ModalError from '../ModalError';
 import { useFacultades } from '../../store/hooks/useFacultades';
 import Facultad from '../../store/types/Facultad';
 import Spinner from '../Spinner';
+import { BiSearch } from 'react-icons/bi';
 
 type FacultadDelete = {
   id: number,
@@ -62,10 +63,9 @@ const Tabla: React.FC<TablaProps> = ({
   defaultColDef,
 }: TablaProps) => {
   const navigate = useNavigate();
-  const [searchValue, setSearchValue] = useState('');
-  const handleSearch = (query: string) => {
-    setSearchValue(query);
-  };
+
+  const [search, setSearch] = React.useState<string>("");
+
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [isOpenModalSuccess, setIsOpenModalSuccess] = useState<boolean>(false);
   const [isOpenModalError, setIsOpenModalError] = useState<boolean>(false);
@@ -74,7 +74,9 @@ const Tabla: React.FC<TablaProps> = ({
   const { facultadData, fetchFacultadData, deleteFacultad, isLoading } = useFacultades();
   const [facultadSelected, setFacultadSelected] = useState<FacultadDelete | null>(null);
 
-  useEffect(() => { fetchFacultadData(); }, [isOpenModalInput]);
+  useEffect(() => {
+    fetchFacultadData();
+  }, [isOpenModalInput]);
 
   const handleOnConfirmDeleteFacultad = () => {
     if (facultadSelected && !!facultadSelected) {
@@ -160,6 +162,16 @@ const Tabla: React.FC<TablaProps> = ({
     }
   ];
 
+  const facultadesFiltered: Facultad[] = useMemo(() => {
+    return facultadData.filter(facultad =>
+      facultad.name.toLowerCase().includes(search.toLowerCase())
+    );
+  }, [facultadData, search]);
+
+  const handleSearchChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setSearch(event.target.value);
+  };
+
   return (
     <div className='w-full h-full flex flex-col'>
       <div className="w-full flex justify-between items-center">
@@ -174,12 +186,21 @@ const Tabla: React.FC<TablaProps> = ({
       </div>
 
       <div className="w-full mt-[1%]">
-        <SearchInput
-          onSearch={handleSearch}
-          handleOnChangeFilters={() => { }}
-          placeholder={`Siglas o nombre de la ${abreviatura}`}
-          selectDisabled={true}
-        />
+        <div className="border border-terciary shadow-lg rounded-2xl w-full  bg-white flex overflow-clip">
+          <input
+            type="text"
+            placeholder="Buscar facultad"
+            className="grow border-0"
+            value={search}
+            onChange={handleSearchChange}
+          />
+          <button
+            className="bg-primary text-white px-4 py-2"
+            onClick={() => { }}
+          >
+            <BiSearch />
+          </button>
+        </div>
       </div>
 
       <div className="flex w-full h-full flex-col space-y-5 mt-5 ag-theme-alpine items-center justify-center">
@@ -191,9 +212,7 @@ const Tabla: React.FC<TablaProps> = ({
             <AgGridReact
               defaultColDef={defaultColDef}
               columnDefs={columnFac}
-              rowData={facultadData.filter((item) =>
-                item.name.toLowerCase().includes(searchValue.toLowerCase()) || item.acronym.toLowerCase().includes(searchValue.toLowerCase())
-              )}
+              rowData={facultadesFiltered}
               paginationAutoPageSize
               suppressMovableColumns
             />

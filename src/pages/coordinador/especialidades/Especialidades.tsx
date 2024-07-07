@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { ChangeEvent, useMemo } from "react";
 import { useState, useEffect } from 'react';
 import { Button, Combobox } from "../../../components";
 import { FaHamburger } from "react-icons/fa";
@@ -94,10 +94,6 @@ const EspecialidadesPage: React.FC<EspecialidadesPageProps> = ({ Facultyid, disa
     }
   }, [userInfo]);
 
-  const onSearch = () => {
-    //
-  };
-
   const [isOpenConfirmation, setIsOpenConfirmation] = useState<boolean>(false);
   const [selectedFacultyId, setSelectedFacultyId] = useState<number | null>(null);
   const [selectedEspecialidadId, setSelectedEspecialidadId] = useState<number | null>(null);
@@ -120,21 +116,37 @@ const EspecialidadesPage: React.FC<EspecialidadesPageProps> = ({ Facultyid, disa
   };
 
   const especialdadesFiltered: Specialty[] = useMemo(() => {
+    let filteredData = especialidadData;
     if (Facultyid) {
-      return especialidadData.filter(especialidad => especialidad.faculty.facultyId == Facultyid);
+      filteredData = especialidadData.filter(especialidad => especialidad.faculty.facultyId == Facultyid);
+      return filteredData.filter(especialidad =>
+        especialidad.name.toLowerCase().includes(search.toLowerCase())
+      );
     }
 
     if (selectedFacultyId) {
-      return especialidadData.filter(especialidad => especialidad.faculty.facultyId == selectedFacultyId);
+      filteredData = especialidadData.filter(especialidad => especialidad.faculty.facultyId == selectedFacultyId);
+      return filteredData.filter(especialidad =>
+        especialidad.name.toLowerCase().includes(search.toLowerCase())
+      );
     }
 
-    return especialidadData.filter(especialidad =>
+    filteredData = especialidadData.filter(especialidad =>
       facultades.some(facultad => Number(facultad.departmentId) === especialidad.faculty.facultyId)
     );
-  }, [especialidadData, selectedFacultyId]);
+    return filteredData.filter(especialidad =>
+      especialidad.name.toLowerCase().includes(search.toLowerCase())
+    );
+
+  }, [especialidadData, selectedFacultyId, search]);
 
   const handleOnChangeFaculty = (value: any) => {
     setSelectedFacultyId(value.id);
+    setSearch("");
+  };
+
+  const handleSearchChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setSearch(event.target.value);
   };
 
   return (
@@ -177,12 +189,12 @@ const EspecialidadesPage: React.FC<EspecialidadesPageProps> = ({ Facultyid, disa
             placeholder="Buscar especialidad"
             className="grow border-0"
             value={search}
-            onChange={(e) => setSearch(e.target.value)}
+            onChange={handleSearchChange}
             disabled={disableAgregarEspecialidad}
           />
           <button
             className="bg-primary text-white px-4 py-2"
-            onClick={onSearch}
+            onClick={() => { }}
             disabled={disableAgregarEspecialidad}
           >
             <BiSearch />

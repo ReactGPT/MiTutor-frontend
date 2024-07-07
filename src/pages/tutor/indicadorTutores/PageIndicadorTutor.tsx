@@ -112,6 +112,9 @@ const PageIndicadorTutor: React.FC = () => {
     const [data1, setData1] = useState<TutorInfo[]>([]);
     const [loading1, setLoading1] = useState(true);
 
+    const [startDate, setStartDate] = useState<string>('');
+    const [endDate, setEndDate] = useState<string>('');
+
     const [isTutorModalOpen, setIsTutorModalOpen] = useState(false);
     const [tutors, setTutors] = useState<Tutor[]>([]);
 
@@ -122,96 +125,107 @@ const PageIndicadorTutor: React.FC = () => {
 
     const [idTutors, setIdTutor] = useState<IdsTutor[]>([]);
     const { userData } = useAuth();
+
     useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const response = await api.get<{ success: boolean, data: TutorData[] }>('/listarTutoresConCantidadDeProgramas');
-                let responseData = response.data.data;
-            
-                const roles = userData?.userInfo?.roles;
-                if (roles){
-                    const iFaculty = roles.findIndex(rol => rol.rolName === 'Responsable de Facultad');
-                    if (iFaculty != -1 && userData?.userInfo?.roles[iFaculty].details && 'departmentName' in userData.userInfo.roles[iFaculty].details) {
-                        const facultyId = (userData.userInfo.roles[iFaculty].details as ManagerRoleDetails).departmentId;
-                        const responseIds = await api.get<{ success: boolean, data: number[] }>(`/listarTutoresPorIdFacultad/${facultyId}`);
+        fetchData();
+        fetchDataAppointment();
+
+    }, []);
+    const fetchData = async () => {
+        try {
+            let url = `${ServicesProperties.BaseUrl}/listarTutoresConCantidadDeProgramasFacu/15`;
+            if (startDate && endDate) {
+                url += `?startDate=${startDate}&endDate=${endDate}`;
+            }
+            const response = await api.get<{ success: boolean, data: TutorData[] }>(url);
+            let responseData = response.data.data;
+
+            const roles = userData?.userInfo?.roles;
+            if (roles) {
+                const iFaculty = roles.findIndex(rol => rol.rolName === 'Responsable de Facultad');
+                if (iFaculty != -1 && userData?.userInfo?.roles[iFaculty].details && 'departmentName' in userData.userInfo.roles[iFaculty].details) {
+                    const facultyId = (userData.userInfo.roles[iFaculty].details as ManagerRoleDetails).departmentId;
+                    const responseIds = await api.get<{ success: boolean, data: number[] }>(`/listarTutoresPorIdFacultad/${facultyId}`);
+                    let responseDataIds = responseIds.data.data;
+                    responseData = responseData.filter(item =>
+                        responseDataIds.some(data => data === item.tutorId)
+                    );
+                } else {
+                    const iSpecialty = roles.findIndex(rol => rol.rolName === 'Responsable de Especialidad');
+                    if (iSpecialty != -1 && userData?.userInfo?.roles[iFaculty].details && 'departmentName' in userData.userInfo.roles[iFaculty].details) {
+                        const specialtyId = (userData.userInfo.roles[iSpecialty].details as ManagerRoleDetails).departmentId;
+                        const responseIds = await api.get<{ success: boolean, data: number[] }>(`/listarTutoresPorIdEspecialidad/${specialtyId}`);
                         let responseDataIds = responseIds.data.data;
                         responseData = responseData.filter(item =>
                             responseDataIds.some(data => data === item.tutorId)
-                          );
-                    }else{
-                        const iSpecialty = roles.findIndex(rol => rol.rolName === 'Responsable de Especialidad');
-                        if (iSpecialty != -1 && userData?.userInfo?.roles[iFaculty].details && 'departmentName' in userData.userInfo.roles[iFaculty].details){
-                            const specialtyId = (userData.userInfo.roles[iSpecialty].details as ManagerRoleDetails).departmentId;
-                            const responseIds = await api.get<{ success: boolean, data: number[] }>(`/listarTutoresPorIdEspecialidad/${specialtyId}`);
-                            let responseDataIds = responseIds.data.data;
-                                responseData = responseData.filter(item =>
-                                responseDataIds.some(data => data === item.tutorId)
-                                );
-                        }
+                        );
                     }
-                } 
-
-                const transformedData: ChartData[] = responseData.map((tutor: TutorData) => ({
-                    name: `${tutor.tutorName} ${tutor.tutorLastName} ${tutor.tutorSecondLastName}`,
-                    programCount: tutor.cantidadProgramas,
-                    tutorId: tutor.tutorId
-                }));
-                setData(transformedData);
-
-                // Ordenar los datos por cantidad de programas en orden descendente y seleccionar los primeros 3
-                const topTutorsData = transformedData.sort((a, b) => b.programCount - a.programCount).slice(0, 3);
-                setTopTutors(topTutorsData);
-            } catch (error) {
-                console.error("Error fetching tutor data:", error);
-            } finally {
-                setLoading(false);
+                }
             }
-        };
 
-        fetchData();
-    }, []);
+            const transformedData: ChartData[] = responseData.map((tutor: TutorData) => ({
+                name: `${tutor.tutorName} ${tutor.tutorLastName} ${tutor.tutorSecondLastName}`,
+                programCount: tutor.cantidadProgramas,
+                tutorId: tutor.tutorId
+            }));
+            setData(transformedData);
 
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const response = await api.get<{ success: boolean, data: TutorInfo[] }>('/listarCantidadAppointments');
-                let responseData = response.data.data;
-                const roles = userData?.userInfo?.roles;
-                if (roles){
-                    const iFaculty = roles.findIndex(rol => rol.rolName === 'Responsable de Facultad');
-                    if (iFaculty != -1 && userData?.userInfo?.roles[iFaculty].details && 'departmentName' in userData.userInfo.roles[iFaculty].details){
-                        const facultyId = (userData.userInfo.roles[iFaculty].details as ManagerRoleDetails).departmentId;
-                        const responseIds = await api.get<{ success: boolean, data: number[] }>(`/listarTutoresPorIdFacultad/${facultyId}`);
+            // Ordenar los datos por cantidad de programas en orden descendente y seleccionar los primeros 3
+            const topTutorsData = transformedData.sort((a, b) => b.programCount - a.programCount).slice(0, 3);
+            setTopTutors(topTutorsData);
+        } catch (error) {
+            console.error("Error fetching tutor data:", error);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+
+
+
+    const fetchDataAppointment = async () => {
+        try {
+            let url = `${ServicesProperties.BaseUrl}/listarCantidadAppointmentsFacu/15`;
+            if (startDate && endDate) {
+                url += `?startDate=${startDate}&endDate=${endDate}`;
+            }
+            const response = await api.get<{ success: boolean, data: TutorInfo[] }>(url);
+            let responseData = response.data.data;
+            const roles = userData?.userInfo?.roles;
+            if (roles) {
+                const iFaculty = roles.findIndex(rol => rol.rolName === 'Responsable de Facultad');
+                if (iFaculty != -1 && userData?.userInfo?.roles[iFaculty].details && 'departmentName' in userData.userInfo.roles[iFaculty].details) {
+                    const facultyId = (userData.userInfo.roles[iFaculty].details as ManagerRoleDetails).departmentId;
+                    const responseIds = await api.get<{ success: boolean, data: number[] }>(`/listarTutoresPorIdFacultad/${facultyId}`);
+                    let responseDataIds = responseIds.data.data;
+                    responseData = responseData.filter(item =>
+                        responseDataIds.some(data => data === item.tutorId)
+                    );
+                } else {
+                    const iSpecialty = roles.findIndex(rol => rol.rolName === 'Responsable de Especialidad');
+                    if (iSpecialty != -1 && userData?.userInfo?.roles[iFaculty].details && 'departmentName' in userData.userInfo.roles[iFaculty].details) {
+                        const specialtyId = (userData.userInfo.roles[iSpecialty].details as ManagerRoleDetails).departmentId;
+                        const responseIds = await api.get<{ success: boolean, data: number[] }>(`/listarTutoresPorIdEspecialidad/${specialtyId}`);
                         let responseDataIds = responseIds.data.data;
-                            responseData = responseData.filter(item =>
+                        responseData = responseData.filter(item =>
                             responseDataIds.some(data => data === item.tutorId)
-                             );
-                    }else{
-                        const iSpecialty = roles.findIndex(rol => rol.rolName === 'Responsable de Especialidad');
-                        if (iSpecialty != -1 && userData?.userInfo?.roles[iFaculty].details && 'departmentName' in userData.userInfo.roles[iFaculty].details){
-                            const specialtyId = (userData.userInfo.roles[iSpecialty].details as ManagerRoleDetails).departmentId;
-                            const responseIds = await api.get<{ success: boolean, data: number[] }>(`/listarTutoresPorIdEspecialidad/${specialtyId}`);
-                            let responseDataIds = responseIds.data.data;
-                                responseData = responseData.filter(item =>
-                                responseDataIds.some(data => data === item.tutorId)
-                                );
-                        }
-
+                        );
                     }
-                } 
 
-
-                setData1(responseData);
-
-            } catch (error) {
-                console.error("Error fetching data:", error);
-            } finally {
-                setLoading1(false);
+                }
             }
-        };
 
-        fetchData();
-    }, []);
+
+            setData1(responseData);
+
+        } catch (error) {
+            console.error("Error fetching data:", error);
+        } finally {
+            setLoading1(false);
+        }
+    };
+
+
     const fetchProgramsData = async (tutorId: number) => {
         try {
             const response = await api.get<{ success: boolean, data: ProgramData[] }>(`/listarProgramasDeTutoriaPorTutorId/${tutorId}`);
@@ -235,7 +249,7 @@ const PageIndicadorTutor: React.FC = () => {
     const applyBackgroundAndWatermark = (doc: jsPDF) => {
         doc.setFillColor(255, 255, 255);
         doc.rect(0, 0, 210, 297, 'F'); // 210x297 is the A4 size in mm
-    
+
         doc.setTextColor(220);
         doc.setFontSize(20);
         doc.setFont('helvetica', 'bold');
@@ -245,7 +259,7 @@ const PageIndicadorTutor: React.FC = () => {
                 doc.textWithLink('PUCP', j, i, { angle: 45, url: 'https://www.pucp.edu.pe/' });
             }
         }
-    
+
         doc.setTextColor(0);
         doc.setFontSize(10);
     };
@@ -267,8 +281,8 @@ const PageIndicadorTutor: React.FC = () => {
             doc.setFont('helvetica', 'bold');
             doc.text('FICHA DE INDICADORES TUTORES', 105, 10, { align: 'center' });
             doc.setFontSize(8);
-            doc.text('SERVICIOS DAES', 105, 14, { align: 'center' });    
-            
+            doc.text('SERVICIOS DAES', 105, 14, { align: 'center' });
+
             y = 30;
             doc.setFontSize(10);
             doc.setFont('helvetica');
@@ -368,39 +382,51 @@ const PageIndicadorTutor: React.FC = () => {
         try {
             const response = await api.get<{ success: boolean, data: Tutor[] }>('/listarTutores');
             let responseData = response.data.data;
+            
             const roles = userData?.userInfo?.roles;
-            if (roles){
+            
+            if (roles) {
                 const iFaculty = roles.findIndex(rol => rol.rolName === 'Responsable de Facultad');
-                if (iFaculty != -1 && userData?.userInfo?.roles[iFaculty].details && 'departmentName' in userData.userInfo.roles[iFaculty].details){
+                
+                if (iFaculty !== -1 && userData?.userInfo?.roles[iFaculty].details && 'departmentName' in userData.userInfo.roles[iFaculty].details) {
                     const facultyId = (userData.userInfo.roles[iFaculty].details as ManagerRoleDetails).departmentId;
-                    const responseIds = await api.get<{ success: boolean, data: number[] }>(`/listarTutoresPorIdFacultad/${facultyId}`);
-                        let responseDataIds = responseIds.data.data;
-                            responseData = responseData.filter(item =>
-                            responseDataIds.some(data => data === item.tutorId)
-                             );
-                }else{
+                    
+                    const responseIds = await api.get<{ success: boolean, data: number[] }>(`/listarTutoresPorIdFacultad/15`);
+                    const responseDataIds = responseIds.data.data;
+                    
+                    responseData = responseData.filter(item =>
+                        responseDataIds.includes(item.tutorId)
+                    );
+                } else {
                     const iSpecialty = roles.findIndex(rol => rol.rolName === 'Responsable de Especialidad');
-                    if (iSpecialty != -1 && userData?.userInfo?.roles[iFaculty].details && 'departmentName' in userData.userInfo.roles[iFaculty].details){
+                    
+                    if (iSpecialty !== -1 && userData?.userInfo?.roles[iSpecialty].details && 'departmentName' in userData.userInfo.roles[iSpecialty].details) {
                         const specialtyId = (userData.userInfo.roles[iSpecialty].details as ManagerRoleDetails).departmentId;
-                        const responseIds = await api.get<{ success: boolean, data: number[] }>(`/listarTutoresPorIdEspecialidad/${specialtyId}`);
-                        let responseDataIds = responseIds.data.data;
-                            responseData = responseData.filter(item =>
-                            responseDataIds.some(data => data === item.tutorId)
-                             );
+                        
+                        const responseIds = await api.get<{ success: boolean, data: number[] }>(`/listarTutoresPorIdEspecialidad/15`);
+                        const responseDataIds = responseIds.data.data;
+                        
+                        responseData = responseData.filter(item =>
+                            responseDataIds.includes(item.tutorId)
+                        );
                     }
                 }
             }
-
+    
             setTutors(responseData);
             setIsTutorModalOpen(true);
         } catch (error) {
             console.error("Error fetching tutors data:", error);
         }
     };
+    
     if (loading) {
         return <div>Loading...</div>;
     }
-
+    const handleSearch = () => {
+        fetchData();
+        fetchDataAppointment();
+    };
     return (
         <>
             <div className="mb-4 flex justify-between">
@@ -408,25 +434,24 @@ const PageIndicadorTutor: React.FC = () => {
                     Exportar
                 </button>
                 <button className="bg-primary cursor-default rounded-l-full rounded-r-full text-white px-5 shadow-custom border border-solid border-[rgba(116,170,255,0.70)] active:bg-black hover:cursor-pointer ml-6" onClick={handleBuscarTutoresClick}>
-                    Buscar Tutores
+                    Buscar Tutores Históricos
                 </button>
                 <div className="max-h-[40px] rounded-2xl flex">
                     <p className={`text-center flex items-center justify-center w-36 ${className} border-r-0 rounded-l-full`}>Inicio:</p>
                     <input
                         type="date"
                         className={`${className} border-l-0`}
-                        name="Fecha Inicio"
-                        id=""
+                        value={startDate}
+                        onChange={(e) => setStartDate(e.target.value)}
                     />
                     <p className={`text-center flex items-center justify-center w-28 ${className} border-r-0`}>Fin:</p>
                     <input
                         type="date"
                         className={`${className} border-l-0`}
-                        name="Fecha Fin"
-                        id=""
-                        onChange={(e) => console.log(e.target.value)}
+                        value={endDate}
+                        onChange={(e) => setEndDate(e.target.value)}
                     />
-                    <button className="bg-primary cursor-default rounded-r-2xl text-white px-5 shadow-custom border border-solid border-[rgba(116,170,255,0.70)] active:bg-black hover:cursor-pointer">
+                    <button className="bg-primary cursor-default rounded-r-2xl text-white px-5 shadow-custom border border-solid border-[rgba(116,170,255,0.70)] active:bg-black hover:cursor-pointer" onClick={handleSearch}>
                         <IconSearch />
                     </button>
                 </div>
@@ -440,25 +465,31 @@ const PageIndicadorTutor: React.FC = () => {
                             <h2 className="text-xl font-semibold text-white text-center">Top Tutores Programas Académicos</h2>
                         </div>
 
-                        <ul className="divide-y bg-gray-200">
-                            {topTutors.map((tutor, index) => (
-                                <li key={index} className="flex items-center py-4 px-6 cursor-pointer hover:bg-gradient-to-r from-secondary to-blue-300" onClick={() => handleTutorClick(tutor.tutorId)}>
-                                    <span className="text-gray-700 text-lg font-medium mr-4">{index + 1}.</span>
-                                    <img className="w-12 h-12 rounded-full object-cover mr-4" src={noAvatar} alt="User avatar" />
+                        {topTutors.length === 0 || topTutors.every(tutor => tutor.programCount === 0) ? (
+                            <div className="bg-gray-200 py-4 px-6 text-center">
+                                No se encontraron datos para esta fecha.
+                            </div>
+                        ) : (
+                            <ul className="divide-y bg-gray-200">
+                                {topTutors.map((tutor, index) => (
+                                    <li key={index} className="flex items-center py-4 px-6 cursor-pointer hover:bg-gradient-to-r from-secondary to-blue-300" onClick={() => handleTutorClick(tutor.tutorId)}>
+                                        <span className="text-gray-700 text-lg font-medium mr-4">{index + 1}.</span>
+                                        <img className="w-12 h-12 rounded-full object-cover mr-4" src={noAvatar} alt="User avatar" />
 
-                                    <div className="flex-1">
-                                        <h3 className="text-lg font-medium text-gray-800">{tutor.name}</h3>
-                                        <p className="text-gray-600 text-base">{tutor.programCount} programas</p>
-                                    </div>
+                                        <div className="flex-1">
+                                            <h3 className="text-lg font-medium text-gray-800">{tutor.name}</h3>
+                                            <p className="text-gray-600 text-base">{tutor.programCount} programas</p>
+                                        </div>
 
-                                    <div className="ml-auto">
-                                        {index === 0 && <IconTrophyGold />}
-                                        {index === 1 && <IconTrophySilver />}
-                                        {index === 2 && <IconTrophyBronze />}
-                                    </div>
-                                </li>
-                            ))}
-                        </ul>
+                                        <div className="ml-auto">
+                                            {index === 0 && <IconTrophyGold />}
+                                            {index === 1 && <IconTrophySilver />}
+                                            {index === 2 && <IconTrophyBronze />}
+                                        </div>
+                                    </li>
+                                ))}
+                            </ul>
+                        )}
                     </div>
                 </div>
 
@@ -468,22 +499,28 @@ const PageIndicadorTutor: React.FC = () => {
                     </div>
                     <div className="h-1/3 m-4 shadow-md rounded-md overflow-hidden" id="chart-container">
                         <ResponsiveContainer width="100%" height="100%">
-                            <BarChart
-                                data={data}
-                                margin={{
-                                    top: 5,
-                                    right: 30,
-                                    left: 20,
-                                    bottom: 5,
-                                }}
-                            >
-                                <CartesianGrid strokeDasharray="3 3" />
-                                <XAxis dataKey="name" tick={{ fontWeight: 'bold' }} />
-                                <YAxis />
-                                <Tooltip />
-                                <Legend />
-                                <Bar name="Cantidad de programas académicos" dataKey="programCount" fill="#7d2bc5" activeBar={<Rectangle fill="skyblue" stroke="blue-bold" />} />
-                            </BarChart>
+                            {data && data.length > 0 ? (
+                                <BarChart
+                                    data={data}
+                                    margin={{
+                                        top: 5,
+                                        right: 30,
+                                        left: 20,
+                                        bottom: 5,
+                                    }}
+                                >
+                                    <CartesianGrid strokeDasharray="3 3" />
+                                    <XAxis dataKey="name" tick={{ fontWeight: 'bold' }} />
+                                    <YAxis />
+                                    <Tooltip />
+                                    <Legend />
+                                    <Bar name="Cantidad de programas académicos" dataKey="programCount" fill="#7d2bc5" activeBar={<Rectangle fill="skyblue" stroke="blue-bold" />} />
+                                </BarChart>
+                            ) : (
+                                <div className="bg-gray-200 p-4 text-center">
+                                    No se encontraron datos para esta fecha
+                                </div>
+                            )}
                         </ResponsiveContainer>
                     </div>
                     <div className="bg-primary py-2 px-4">
@@ -491,27 +528,33 @@ const PageIndicadorTutor: React.FC = () => {
                     </div>
                     <div className="h-1/2 bg-white-300 m-4 flex-grow p-4 overflow-auto">
                         <ResponsiveContainer width="100%" height="100%">
-                            <AreaChart
-                                data={data1}
-                                margin={{
-                                    top: 5,
-                                    right: 30,
-                                    left: 20,
-                                    bottom: 5,
-                                }}
-                            >
-                                <CartesianGrid strokeDasharray="3 3" />
-                                <XAxis
-                                    dataKey={(item) => `${item.tutorName} ${item.tutorLastName}`}
-                                    tick={{ fontWeight: 'bold' }}
-                                />
-                                <YAxis />
-                                <Tooltip />
-                                <Legend />
-                                <Area type="monotone" dataKey="registeredCount" stackId="1" stroke="#7d2bc5" fill="#7d2bc5" name="Registrado" />
-                                <Area type="monotone" dataKey="pendingResultCount" stackId="1" stroke="#0f5827" fill="#0f5827" name="Pendiente Resultado" />
-                                <Area type="monotone" dataKey="completedCount" stackId="1" stroke="#f7db18" fill="#f7db18" name="Completado" />
-                            </AreaChart>
+                            {data1 && data1.length > 0 ? (
+                                <AreaChart
+                                    data={data1}
+                                    margin={{
+                                        top: 5,
+                                        right: 30,
+                                        left: 20,
+                                        bottom: 5,
+                                    }}
+                                >
+                                    <CartesianGrid strokeDasharray="3 3" />
+                                    <XAxis
+                                        dataKey={(item) => `${item.tutorName} ${item.tutorLastName}`}
+                                        tick={{ fontWeight: 'bold' }}
+                                    />
+                                    <YAxis />
+                                    <Tooltip />
+                                    <Legend />
+                                    <Area type="monotone" dataKey="registeredCount" stackId="1" stroke="#7d2bc5" fill="#7d2bc5" name="Registrado" />
+                                    <Area type="monotone" dataKey="pendingResultCount" stackId="1" stroke="#0f5827" fill="#0f5827" name="Pendiente Resultado" />
+                                    <Area type="monotone" dataKey="completedCount" stackId="1" stroke="#f7db18" fill="#f7db18" name="Completado" />
+                                </AreaChart>
+                            ) : (
+                                <div className="bg-gray-200 p-4 text-center">
+                                     No se encontraron datos para esta fecha
+                                </div>
+                            )}
                         </ResponsiveContainer>
                     </div>
                 </div>

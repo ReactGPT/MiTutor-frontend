@@ -241,7 +241,7 @@ const TutorDetail: React.FC = () => {
         { name: 'Presencial', value: programVirtualFace[0].cantidadPresenciales, fill: '#8884d8' },
         { name: 'Virtual', value: programVirtualFace[0].cantidadVirtuales, fill: '#82ca9d' }
     ] : [{ name: 'Presencial', value: 0, fill: '#8884d8' }, { name: 'Virtual', value: 0, fill: '#82ca9d' }];
-    
+
     // Verificar si appointments está vacío
     if (appointments.length === 0) {
         pieData.forEach((data) => (data.value = 0)); // Reset both values to 0%
@@ -253,62 +253,62 @@ const TutorDetail: React.FC = () => {
             doc.setFont('helvetica');
             doc.setFontSize(12);
             doc.setTextColor(0);
-    
+
             // Definir márgenes
             const marginLeft = 20;
             const marginTop = 20;
             const marginRight = 20;
             const marginBottom = 20;
             const pageHeight = doc.internal.pageSize.height;
-    
+
             // Función para imprimir una cita
             const printAppointment = (doc: any, appointment: any, x: number, y: number): number => {
                 const lineHeight = 5; // Altura entre líneas
                 const sectionHeight = lineHeight * 6; // Espacio que ocupará una cita
-    
+
                 if (y + sectionHeight > pageHeight - marginBottom) {
                     doc.addPage();
                     addWatermarkAndBackground(doc);
                     y = marginTop;
                 }
-    
+
                 doc.setFontSize(12);
                 doc.setFont('helvetica', 'normal');
-    
+
                 // Hora de inicio
                 const startTime = new Date(appointment.startTime);
                 const formattedStartTime = startTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
                 doc.text(`Hora de inicio: ${formattedStartTime}`, x, y);
                 y += lineHeight;
-    
+
                 // Hora de fin
                 const endTime = new Date(appointment.endTime);
                 const formattedEndTime = endTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
                 doc.text(`Hora de fin: ${formattedEndTime}`, x, y);
                 y += lineHeight;
-    
+
                 // Fecha de creación
                 const creationDate = new Date(appointment.creationDate);
                 const formattedCreationDate = creationDate.toLocaleDateString();
                 doc.text(`Fecha de creación: ${formattedCreationDate}`, x, y);
                 y += lineHeight;
-    
+
                 // Razón
                 doc.text(`Razón: ${appointment.reason}`, x, y);
                 y += lineHeight;
-    
+
                 // Cantidad de estudiantes
                 doc.text(`Cantidad de estudiantes: ${appointment.studentCount}`, x, y);
                 y += lineHeight + 5; // Espacio adicional entre citas
-    
+
                 return y;
             };
-    
+
             // Función para agregar marca de agua y fondo
             const addWatermarkAndBackground = (doc: any) => {
                 doc.setFillColor(255, 255, 255);
                 doc.rect(0, 0, 210, 297, 'F'); // 210x297 es el tamaño A4 en mm
-    
+
                 doc.setTextColor(220);
                 doc.setFontSize(20);
                 doc.setFont('helvetica', 'bold');
@@ -318,20 +318,20 @@ const TutorDetail: React.FC = () => {
                         doc.textWithLink('PUCP', j, i, { angle: 45, url: 'https://www.pucp.edu.pe/' });
                     }
                 }
-    
+
                 doc.setTextColor(0);
                 doc.setFontSize(12);
             };
-    
+
             const addHeader = (doc: any, marginTop: number, includeTutorName: boolean) => {
                 if (includeTutorName) {
                     doc.setFontSize(20);
                     doc.setFont('helvetica', 'bold');
                     doc.text(`${tutor.userAccount.persona.name.toUpperCase()} ${tutor.userAccount.persona.lastName.toUpperCase()} ${tutor.userAccount.persona.secondLastName.toUpperCase()}`, 105, marginTop + 10, { align: 'center' });
                 }
-            
+
                 let y = marginTop + (includeTutorName ? 30 : 10);
-            
+
                 doc.setFontSize(14);
                 doc.setFont('helvetica', 'bold');
                 doc.text('Programas Académicos', 105, y, { align: 'center' });
@@ -339,20 +339,20 @@ const TutorDetail: React.FC = () => {
                 doc.line(marginLeft, y, 210 - marginRight, y);
                 return y + 5;
             };
-            
-    
+
+
             addWatermarkAndBackground(doc);
-    
+
             let y = addHeader(doc, marginTop, true);
-    
+
             // Detalles de los programas académicos
             programsTutor.forEach(program => {
                 if (y + 30 > pageHeight - marginBottom) {
                     doc.addPage();
                     addWatermarkAndBackground(doc);
                     y = addHeader(doc, marginTop, false); // Cambiado a false
-                }                
-    
+                }
+
                 // Nombre del programa
                 doc.setFontSize(12);
                 doc.setFont('helvetica', 'bold');
@@ -361,7 +361,7 @@ const TutorDetail: React.FC = () => {
                 doc.setFont('helvetica', 'normal');
                 doc.text(`${program.programName}`, marginLeft + 60, y); // Ajustamos la posición en x
                 y += 10;
-    
+
                 // Descripción del programa
                 const descriptionLines = doc.splitTextToSize(program.programDescription, 170);
                 descriptionLines.forEach((line: string) => {
@@ -373,7 +373,7 @@ const TutorDetail: React.FC = () => {
                     doc.text(line, marginLeft, y);
                     y += 5;
                 });
-    
+
                 // Facultad
                 doc.setFontSize(12);
                 doc.setFont('helvetica', 'bold');
@@ -382,12 +382,12 @@ const TutorDetail: React.FC = () => {
                 doc.setFont('helvetica', 'normal');
                 doc.text(`${program.nameFaculty}`, marginLeft + 20, y); // Ajustamos la posición en x
                 y += 7;
-    
+
                 // Separador
                 doc.line(marginLeft, y, 210 - marginRight, y);
                 y += 5;
             });
-    
+
             // Separador
             if (y + 10 > pageHeight - marginBottom) {
                 doc.addPage();
@@ -395,12 +395,12 @@ const TutorDetail: React.FC = () => {
                 y = marginTop;
             }
             y += 10;
-    
+
             // Añadir un salto de página antes de las citas
             doc.addPage();
             addWatermarkAndBackground(doc);
             y = marginTop;
-    
+
             // Título de las citas
             doc.setFontSize(14);
             doc.setFont('helvetica', 'bold');
@@ -408,14 +408,14 @@ const TutorDetail: React.FC = () => {
             y += 10;
             doc.line(marginLeft, y, 210 - marginRight, y);
             y += 10;
-    
+
             // Dividir las citas en dos columnas
             const halfAppointments = Math.ceil(appointments.length / 2);
             const firstColumnAppointments = appointments.slice(0, halfAppointments);
             const secondColumnAppointments = appointments.slice(halfAppointments);
-    
+
             const rowHeight = 30; // Altura estimada para cada cita
-    
+
             let xFirstColumn = marginLeft;
             let xSecondColumn = 105 + marginRight; // Separación de columnas
             let index = 0;
@@ -428,22 +428,22 @@ const TutorDetail: React.FC = () => {
                     yFirstColumn = marginTop;
                     ySecondColumn = marginTop;
                 }
-    
+
                 // Primera columna
                 if (index < firstColumnAppointments.length) {
                     const appointment = firstColumnAppointments[index];
                     yFirstColumn = printAppointment(doc, appointment, xFirstColumn, yFirstColumn);
                 }
-    
+
                 // Segunda columna
                 if (index < secondColumnAppointments.length) {
                     const appointment = secondColumnAppointments[index];
                     ySecondColumn = printAppointment(doc, appointment, xSecondColumn, ySecondColumn);
                 }
-    
+
                 index++;
             }
-    
+
             doc.save(`detalle_${tutor.userAccount.persona.name}_${tutor.userAccount.persona.lastName}_${tutor.userAccount.persona.secondLastName}.pdf`);
         }
     };
@@ -569,18 +569,23 @@ const TutorDetail: React.FC = () => {
                             </div>
                             <div className="flex-grow bg-gray-200">
                                 <ResponsiveContainer width="100%" height="100%">
-                                    <BarChart
-                                        data={appointments}
-                                        margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
-                                    >
-                                        <CartesianGrid strokeDasharray="3 3" />
-                                        {/* Modificar el eje X */}
-                                        <XAxis dataKey="appointmentId" tick={{ fontWeight: 'bold' }} tickFormatter={(value, index) => `Cita ${index + 1}`} />
-                                        <YAxis domain={[0, 4]} tickCount={5} tick={{ fontWeight: 'bold' }} interval={0} tickFormatter={(value) => Math.round(value) === value ? value : ''} />
-                                        <Tooltip content={<CustomTooltip />} />
-                                        <Legend />
-                                        <Bar dataKey="studentCount" fill="#1d4ed8" stackId="1" stroke="#8884d8" name="Cantidad de Alumnos" />
-                                    </BarChart>
+                                    {appointments && appointments.length > 0 ? (
+                                        <BarChart
+                                            data={appointments}
+                                            margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
+                                        >
+                                            <CartesianGrid strokeDasharray="3 3" />
+                                            <XAxis dataKey="appointmentId" tick={{ fontWeight: 'bold' }} tickFormatter={(value, index) => `Cita ${index + 1}`} />
+                                            <YAxis domain={[0, 4]} tickCount={5} tick={{ fontWeight: 'bold' }} interval={0} tickFormatter={(value) => Math.round(value) === value ? value : ''} />
+                                            <Tooltip content={<CustomTooltip />} />
+                                            <Legend />
+                                            <Bar dataKey="studentCount" fill="#1d4ed8" stackId="1" stroke="#8884d8" name="Cantidad de Alumnos" />
+                                        </BarChart>
+                                    ) : (
+                                        <div className="p-4 text-center">
+                                            No se encontraron datos para esta fecha
+                                        </div>
+                                    )}
                                 </ResponsiveContainer>
                             </div>
                         </div>

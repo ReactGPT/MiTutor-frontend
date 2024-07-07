@@ -119,6 +119,7 @@ function DatosGeneralesTutoria() {
               options={selectedFaculties}
               onChange={(value: any) => {
                 onChangeTutoringProgram("facultadId", value.id);
+                onChangeTutoringProgram("especialidadId", 0); // CAMBIO: Reset speciality when faculty changes in TutoringProgram
                 setFacultySelected(value);
                 setSpecialitySelected(null); // Reset speciality when faculty changes
               }}

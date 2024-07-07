@@ -13,6 +13,7 @@ type Props = {
     state: (studentData: Student[]) => Student[]
   ) => void;
   setPopout: (state: boolean) => void;
+  idEspecialidad: number;
 };
 
 const defaultColDef = {
@@ -28,12 +29,12 @@ const defaultColDef = {
   },
 };
 
-const PageCargarAlumno = ({ setStudentDataModified, setPopout }: Props) => {
-  const { studentData, fetchAllStudentsData } = useStudent();
+const PageCargarAlumno = ({ setStudentDataModified, setPopout, idEspecialidad }: Props) => {
+  const { studentData, fetchStudentSpecialtyData } = useStudent();
   const [studentDataSelected, setStudentDataSelected] = useState<Student[]>([]);
 
   useEffect(() => {
-    fetchAllStudentsData();
+    fetchStudentSpecialtyData(idEspecialidad);
   }, []);
   console.log("cargando",studentData)
   const [searchValue, setSearchValue] = useState<string>("");

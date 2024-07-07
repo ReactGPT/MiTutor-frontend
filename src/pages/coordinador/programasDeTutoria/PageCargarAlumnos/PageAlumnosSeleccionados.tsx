@@ -34,6 +34,8 @@ const PageAlumnosSeleccionados = ({ isOpen, closeModal }: ModalAlumnosSelecciona
   const [showPageCargarMasivamente, setShowPageCargarMasivamente] = useState(false); // Estado para controlar PageCargarMasivamente
   const [showPageCargarAlumno, setshowPageCargarAlumno] = useState(false);
 
+  console.log("facultadId", tutoringProgramSelected.facultadId);
+  console.log("especialidadId", tutoringProgramSelected.especialidadId);
   // Efecto para cargar datos originales cuando se abre el modal
   useEffect(() => {
     if (isOpen && tutoringProgramSelected.alumnos && tutoringProgramSelected.alumnos.length > 0) {
@@ -260,6 +262,8 @@ const PageAlumnosSeleccionados = ({ isOpen, closeModal }: ModalAlumnosSelecciona
                     <PageCargarAlumno
                       setPopout={setshowPageCargarAlumno}
                       setStudentDataModified={setStudentDataModified}
+                      idFacultad={tutoringProgramSelected.facultadId}
+                      idEspecialidad={tutoringProgramSelected.especialidadId}
                     />
                   ) : (
                     <div className='w-full h-full'>

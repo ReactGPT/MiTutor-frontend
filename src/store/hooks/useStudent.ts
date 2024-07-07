@@ -1,12 +1,14 @@
 import { useState } from "react";
 import { Student } from '../types/Student';
-import { getStudentInfo, getStudentIdInfo, getAllStudentsInfo } from "../services";
+import { getStudentInfo, getStudentIdInfo, getAllStudentsInfo, getStudentsBySpecialtyInfo, getStudentsByFacultyInfo } from "../services";
 
 interface StudentHookReturnType {
   fetchStudentData: (idTutoringProgram: number) => Promise<Student[]>;
   fetchStudentIdData: (students:Student[]) => Promise<Student[]>;
   setStudentData: React.Dispatch<React.SetStateAction<Student[]>>;
   fetchAllStudentsData: () => Promise<Student[]>;
+  fetchStudentSpecialtyData: (idEspecialidad: number) => Promise<Student[]>;
+  fetchStudentFacultyData: (idFacultad: number) => Promise<Student[]>;
   studentData: Student[];
   isLoading: boolean;
   error: Error | null;
@@ -64,7 +66,41 @@ function useStudent(): StudentHookReturnType {
     }
     return studentData;
   };
-  return { fetchAllStudentsData, fetchStudentData, setStudentData, fetchStudentIdData, studentData, isLoading, error };
+  const fetchStudentSpecialtyData = async (idEspecialidad: number) => {
+    setIsLoading(true);
+    let studentData: Student[] = [];
+    try {
+      const studentRes = await getStudentsBySpecialtyInfo(idEspecialidad);
+      studentData = studentRes.studentList;
+
+      setStudentData(studentRes.studentList);
+    } catch (err: any) {
+      setError(err);
+      setStudentData([]);
+
+    } finally {
+      setIsLoading(false);
+    }
+    return studentData;
+  };
+  const fetchStudentFacultyData = async (idFacultad: number) => {
+    setIsLoading(true);
+    let studentData: Student[] = [];
+    try {
+      const studentRes = await getStudentsByFacultyInfo(idFacultad);
+      studentData = studentRes.studentList;
+
+      setStudentData(studentRes.studentList);
+    } catch (err: any) {
+      setError(err);
+      setStudentData([]);
+
+    } finally {
+      setIsLoading(false);
+    }
+    return studentData;
+  };
+  return { fetchAllStudentsData, fetchStudentData, setStudentData, fetchStudentIdData, fetchStudentSpecialtyData,fetchStudentFacultyData, studentData, isLoading, error };
 }
 
 export { useStudent };

@@ -14,6 +14,8 @@ import { CloseIcon } from "../../../../assets";
 //import { useNavigate } from 'react-router-dom';
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-alpine.css';
+import { Button } from '../../../../components';
+import ArrowDown from '../../../../assets/svg/ArrowDown';
 
 interface InputFile {
   name: string;
@@ -273,6 +275,18 @@ const PageCargarMasivamente = ({ setStudentDataModified, setPopout, onClose }: P
     }
   };
 
+  const handleClickDescargarFormato = async () => {
+    const data = [
+      ["Codigo", "Nombres", "Apellidos", "Correos", "Facultades"],
+      ["20240001", "Lorem", "Ipsum Ipsum","ejemplo@pucp.edu.pe", "Facultad Ejemplo"]
+    ];
+
+    const ws = XLSX.utils.aoa_to_sheet(data);
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "Formato Usuarios");
+    XLSX.writeFile(wb, "FormatoUsuarios.xlsx");
+  };
+
   const defaultColDef = {
     suppressHeaderMenuButton: true,
     flex: 1,
@@ -356,6 +370,7 @@ const PageCargarMasivamente = ({ setStudentDataModified, setPopout, onClose }: P
           onChange={handleChangeInputFile}
           accept=".csv, .xlsx"
         />
+        <Button onClick={handleClickDescargarFormato} text="Descargar Formato" variant='primario' icon={ArrowDown} />
         <button className={`flex justify-center items-center border rounded-[10px] h-[42px]`}
           onClick={() => setPopout(false)}>
           <CloseIcon className="" />
@@ -378,7 +393,7 @@ const PageCargarMasivamente = ({ setStudentDataModified, setPopout, onClose }: P
             className={`flex justify-center items-center px-3 gap-[10px] border border-primary rounded-[10px] h-[42px] ${studentData.length === 0 ? "opacity-50" : ""
               }`}
           >
-            <AddIcon size={16}></AddIcon>
+            <AddIcon size={10}></AddIcon>
             <p className="text-primary">Agregar</p>
           </button>
           <button

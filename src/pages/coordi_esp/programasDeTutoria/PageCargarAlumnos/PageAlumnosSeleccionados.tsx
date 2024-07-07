@@ -262,6 +262,7 @@ const PageAlumnosSeleccionados = ({ isOpen, closeModal }: ModalAlumnosSelecciona
                     <PageCargarAlumno
                       setPopout={setshowPageCargarAlumno}
                       setStudentDataModified={setStudentDataModified}
+                      idEspecialidad={tutoringProgramSelected.especialidadId}
                     />
                   ) : (
                     <div className='w-full h-full'>

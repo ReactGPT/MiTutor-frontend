@@ -685,7 +685,7 @@ const PageIndicadorAlumnoTutor: React.FC = () => {
         <div className="h-full w-full bg-gray-200 flex flex-col shadow-md">
 
           <div className="bg-primary py-2 px-4">
-            <h2 className="text-xl font-semibold text-white text-center">Gráfica 2</h2>
+            <h2 className="text-xl font-semibold text-white text-center">Cantidad de alumnos por programa</h2>
           </div>
 
           <div className="h-1/2 m-4 shadow-md rounded-md overflow-hidden" id="chart-container">
@@ -727,7 +727,7 @@ const PageIndicadorAlumnoTutor: React.FC = () => {
           </div>
 
           <div className="bg-primary py-2 px-4">
-            <h2 className="text-xl font-semibold text-white text-center">Gráfica 3</h2>
+            <h2 className="text-xl font-semibold text-white text-center">Tipo de Programas</h2>
           </div>
 
           <div className="h-1/2 bg-white-300 m-4 flex-grow p-4 overflow-auto">

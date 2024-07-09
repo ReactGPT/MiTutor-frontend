@@ -299,7 +299,7 @@ export const Routes: RouterConfig = {
       },
       {
         key: 'maestroTutores',
-        label: 'Maestro Tutores',
+        label: 'Asignación Tutores',
         path: '/maestroTutores',
         icon: <UserPlus size={6} />
       }
@@ -382,7 +382,7 @@ export const Routes: RouterConfig = {
       },*/
       {
         key: 'maestroTutores',
-        label: 'Maestro Tutores',
+        label: 'Asignación Tutores',
         path: '/maestroTutores',
         icon: <UserPlus size={6} />
       }

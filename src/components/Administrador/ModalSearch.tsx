@@ -102,13 +102,25 @@ const ModalSearch: React.FC<ModalSearchProps> = ({ isOpen, onClose, facultad, se
   };
 
   const columnUser: ColDef[] = [
-    { headerName: 'Nombre', valueGetter: p => p.data.persona.name + ' ' + p.data.persona.lastName + ' ' + p.data.persona.secondLastName, minWidth: 200, maxWidth: 200 },
-    { headerName: 'Correo', field: 'institutionalEmail', minWidth: 200 },
     {
-      headerName: 'Seleccionar',
+      headerName: 'Nombres y Apellidos',
+      valueGetter: p => p.data.persona.name + ' ' + p.data.persona.lastName + ' ' + p.data.persona.secondLastName,
+      minWidth: 200,
+      maxWidth: 200,
+      resizable: false
+    },
+    {
+      headerName: 'Correo',
+      field: 'institutionalEmail',
+      minWidth: 200,
+      resizable: false
+    },
+    {
+      headerName: '',
       field: '',
       maxWidth: 120,
       minWidth: 120,
+      resizable: false,
       cellRenderer: (rowData: any) => {
         return (
           <button className='text-primary' onClick={() => {
@@ -193,6 +205,7 @@ const ModalSearch: React.FC<ModalSearchProps> = ({ isOpen, onClose, facultad, se
                             rowData={userData.filter((item) =>
                               item.persona.name.toLowerCase().includes(searchValue.toLowerCase()) || item.institutionalEmail.toLowerCase().includes(searchValue.toLowerCase())
                             )}
+                            suppressMovableColumns={true}
                           />
                         }
                       </div>

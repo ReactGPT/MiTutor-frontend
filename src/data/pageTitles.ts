@@ -61,7 +61,7 @@ export const PageTitles = [
   },
   {
     path: '/maestroTutores',
-    pageName: "Maestro Tutores",
+    pageName: "Asignación de Tutores",
   },
   {
     path: '/alumnosSeleccionados',

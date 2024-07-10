@@ -70,6 +70,7 @@ import PageActualizacionMasivaAlumnos from "../pages/administrador/gestionUsuari
 import PageMaestroTutoresEsp from "../pages/coordi_esp/MaestroTutores/PageMaestroTutores.tsx";
 import PageProgramasTutoriaMaestroEsp from "../pages/coordi_esp/programasDeTutoria/PageProgramasTutoriaMaestro.tsx";
 import PageProgTutoriaEsp from "../pages/coordi_esp/programasDeTutoria/PageProgTutoria.tsx";
+import PageSolicitudGestionEsp from "../pages/coordi_esp/gestionSolicitudes/PageSolicitudGestion.tsx";
 
 type RouterDetail = {
   pages: RouteObject[];
@@ -338,8 +339,8 @@ export const Routes: RouterConfig = {
         element: <PageProgTutoriaEsp />,
       },
       {
-        path: '/gestionSolicitudes',
-        element: <PageSolicitudGestion />,
+        path: '/gestionSolicitudesEsp',
+        element: <PageSolicitudGestionEsp />,
       },
       {
         path: '/indicadorAlumno',
@@ -376,13 +377,13 @@ export const Routes: RouterConfig = {
         path: '/programasDeTutoriaEsp',
         icon: <BiCabinet fontSize={32} />,
       },
-      /*{
+      {
         key: 'gestionDeSolicitudes',
         label: 'Gestion de Solicitudes',
-        path: '/gestionSolicitudes',
+        path: '/gestionSolicitudesEsp',
         icon: <BiUserCheck fontSize={32} />,
       },
-      {
+      /*{
         key: 'indicadorAlumno',
         label: 'Indicador Alumno',
         path: '/indicadorAlumno',

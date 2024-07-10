@@ -50,8 +50,9 @@ const PageAlumnosSeleccionados = ({ isOpen, closeModal }: ModalAlumnosSelecciona
     }
   }, [studentDataModified, dispatch, handleChangeTutoringProgram]);
 
+  //PARA FIJO SOLICITADO Y ASIGNADO
   const esFijo: boolean = useMemo(() => {
-    return tutoringProgramSelected.tutorTypeId === 2;
+    return tutoringProgramSelected.tutorTypeId === 2 || tutoringProgramSelected.tutorTypeId === 1;
   }, [tutoringProgramSelected]);
 
   const handleSearch = (query: string) => {
@@ -151,22 +152,22 @@ const PageAlumnosSeleccionados = ({ isOpen, closeModal }: ModalAlumnosSelecciona
     { headerName: 'Correos', field: 'institutionalEmail', minWidth: 250 },
     { headerName: 'Facultades', field: 'facultyName', minWidth: 250 },
     {
-      headerName: "Tutor Fijo", field: 'tutorFijo', minWidth: 150, cellRenderer: (params: any) => {
+      headerName: "Tutor Fijo", field: 'tutorFijo', minWidth: 170, cellRenderer: (params: any) => {
         const student = params.data;
         const tutorExistsInProfessors = tutoringProgramSelected.tutores.some(tutor => tutor.idTutor === student.tutorId);
         return (
           <select
             className='w-full h-full bg-white border border-gray-300 rounded-md px-2 py-1'
-            value={student.tutorId || ''}
+            value={student.tutorId !== undefined && student.tutorId !== null ? student.tutorId : ''}
             onChange={(e) => handleTutorChange(student.studentId, parseInt(e.target.value))}
           >
             <option value="">Sin Tutor</option>
-            {!tutorExistsInProfessors && student.tutorId !== 0 && (
+            {student.tutorId && !tutorExistsInProfessors && (
               <option value={student.tutorId}>{student.tutorName}</option>
             )}
             {tutoringProgramSelected.tutores.map((tutor) => (
               <option key={tutor.idTutor} value={tutor.idTutor}>
-                {tutor.nombre}
+                {tutor.nombre + ' ' + tutor.apellido_paterno}
               </option>
             ))}
           </select>
@@ -245,11 +246,10 @@ const PageAlumnosSeleccionados = ({ isOpen, closeModal }: ModalAlumnosSelecciona
               leaveFrom="opacity-100 scale-100"
               leaveTo="opacity-0 scale-95"
             >
-              <Dialog.Panel className="max-w-screen-xl w-2/3 min-h-[50%] max-h-[80%] bg-white transform rounded-2xl p-6 shadow-xl transition-all">
+              <Dialog.Panel className="max-w-screen-xl w-full min-h-[50%] max-h-[80%] bg-white transform rounded-2xl p-6 shadow-xl transition-all">
                 <Dialog.Title as="div" className="flex flex-row h-[10%] max-h-[80px] items-center ml-2 mr-2 justify-begin mb-[20px]">
                   <h3 className='text-2xl font-bold w-full justify-begin text-primary font-large leading-6 text-gray-900'>{`Seleccionar Alumnos`}</h3>
                 </Dialog.Title>
-
 
                 <div className='w-full h-full'>
                   {showPageCargarMasivamente ? (

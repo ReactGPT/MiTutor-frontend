@@ -46,11 +46,12 @@ const ProgramaTutoríaSearchBar = ({ handleOnChangeFilters }: InputProps) => {
 
     const specialityOptions = useMemo(() => {
         if (!facultySelected?.id) {
-            return [];
+          return [];
         } else {
-            return specialityList.filter(item => item.facultyId === facultySelected.id);
+          const filteredOptions = specialityList.filter(item => item.facultyId === facultySelected.id);
+          return [{ id: 0, name: 'Todas', facultyId: facultySelected.id }, ...filteredOptions];
         }
-    }, [facultySelected, specialityList]);
+      }, [facultySelected, specialityList]);
 
     const handleOnChangeQuery = (value: string | number) => {
         setSearchQuery(value as string);

@@ -258,7 +258,15 @@ export const Routes: RouterConfig = {
       {
         path: '/especialidades/editar',
         element: <EspecialidadSingular />
-      }
+      },
+      {
+        path: '/estudiantes',
+        element: <PageListadoEstudiantes />
+      },
+      {
+        path: '/estudiantes/detalle',
+        element: <PageEstudiante />
+      },
     ],
     navBarLink: [
       {
@@ -302,6 +310,12 @@ export const Routes: RouterConfig = {
         label: 'Asignación Tutores',
         path: '/maestroTutores',
         icon: <UserPlus size={6} />
+      },
+      {
+        key: 'alumnos',
+        label: 'Alumnos',
+        path: '/estudiantes',
+        icon: <PiStudent fontSize={32} />,
       }
     ]
   },

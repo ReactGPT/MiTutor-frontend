@@ -7,11 +7,11 @@ import IconSearch from "../../../assets/svg/IconSearch";
 import { TrophyIcon } from '@heroicons/react/16/solid';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
-import ModalTutores from './ModalTutores';
 import noAvatar from '../../../assets/Tutor/no-avatar.webp';
 import { Services as ServicesProperties } from '../../../config';
 import { useAuth } from '../../../context';
 import { ManagerRoleDetails } from '../../../store/types';
+import ModalTutoresEspecialidad from './ModalTutoresEspecialidad';
 
 interface TutorData {
     tutorId: number;
@@ -103,7 +103,7 @@ const generarPDF = (tutorData: TutorData) => {
 
     doc.save('ficha_de_derivacion.pdf');
 };
-const PageIndicadorTutor: React.FC = () => {
+const PageIndicadorTutorEspecialidad: React.FC = () => {
     const [data, setData] = useState<ChartData[]>([]);
     const [topTutors, setTopTutors] = useState<ChartData[]>([]);
     const [selectedTutorPrograms, setSelectedTutorPrograms] = useState<ProgramData[]>([]);
@@ -133,7 +133,7 @@ const PageIndicadorTutor: React.FC = () => {
     }, []);
     const fetchData = async () => {
         try {
-            let url = `${ServicesProperties.BaseUrl}/listarTutoresConCantidadDeProgramasFacu/15`;
+            let url = `${ServicesProperties.BaseUrl}/listarTutoresConCantidadDeProgramasEspecialidad/17`;
             if (startDate && endDate) {
                 url += `?startDate=${startDate}&endDate=${endDate}`;
             }
@@ -185,7 +185,7 @@ const PageIndicadorTutor: React.FC = () => {
 
     const fetchDataAppointment = async () => {
         try {
-            let url = `${ServicesProperties.BaseUrl}/listarCantidadAppointmentsFacu/15`;
+            let url = `${ServicesProperties.BaseUrl}/listarCantidadAppointmentsEspecialidad/17`;
             if (startDate && endDate) {
                 url += `?startDate=${startDate}&endDate=${endDate}`;
             }
@@ -391,7 +391,7 @@ const PageIndicadorTutor: React.FC = () => {
                 if (iFaculty !== -1 && userData?.userInfo?.roles[iFaculty].details && 'departmentName' in userData.userInfo.roles[iFaculty].details) {
                     const facultyId = (userData.userInfo.roles[iFaculty].details as ManagerRoleDetails).departmentId;
                     
-                    const responseIds = await api.get<{ success: boolean, data: number[] }>(`/listarTutoresPorIdFacultad/15`);
+                    const responseIds = await api.get<{ success: boolean, data: number[] }>(`/listarTutoresPorIdEspecialidad/17`);
                     const responseDataIds = responseIds.data.data;
                     
                     responseData = responseData.filter(item =>
@@ -403,7 +403,7 @@ const PageIndicadorTutor: React.FC = () => {
                     if (iSpecialty !== -1 && userData?.userInfo?.roles[iSpecialty].details && 'departmentName' in userData.userInfo.roles[iSpecialty].details) {
                         const specialtyId = (userData.userInfo.roles[iSpecialty].details as ManagerRoleDetails).departmentId;
                         
-                        const responseIds = await api.get<{ success: boolean, data: number[] }>(`/listarTutoresPorIdEspecialidad/15`);
+                        const responseIds = await api.get<{ success: boolean, data: number[] }>(`/listarTutoresPorIdEspecialidad/17`);
                         const responseDataIds = responseIds.data.data;
                         
                         responseData = responseData.filter(item =>
@@ -560,11 +560,11 @@ const PageIndicadorTutor: React.FC = () => {
                 </div>
 
                 <ModalProgramaAcademico isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} programs={selectedTutorPrograms} />
-                <ModalTutores isOpen={isTutorModalOpen} onClose={() => setIsTutorModalOpen(false)} tutors={tutors}
+                <ModalTutoresEspecialidad isOpen={isTutorModalOpen} onClose={() => setIsTutorModalOpen(false)} tutors={tutors}
                 />
             </div>
         </>
     );
 };
 
-export default PageIndicadorTutor;
+export default PageIndicadorTutorEspecialidad;

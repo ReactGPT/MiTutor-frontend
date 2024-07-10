@@ -10,6 +10,7 @@ import { RootState } from "../../../store/store";
 import { useAppSelector } from "../../../store/hooks";
 import SimpleSearchInput from "../../../components/SimpleSearchInput";
 import { useAuth } from '../../../context';
+import { Label } from "flowbite-react";
 
 type InputProps = {
   handleOnChangeFilters: (filter: any) => void;
@@ -102,11 +103,9 @@ export default function NuevoSearchBar({
 
   return (
     <div className="flex flex-col w-full h-full gap-1 justify-between">
-      <h2 className="font-montserrat text-[26px] font-bold text-lg mb-2 mt-[-6px]">
-        Filtros
-      </h2>
       <div className="flex w-full h-full flex-row">
-        <div className="w-[70%] max-w-[70%] min-w-[70%] h-full flex flex-row gap-4 mb-7">
+        <div className="min-w-64 h-full flex flex-col">
+          <Label value="Especialidad" className='font-roboto text-primary' />
           <DropdownSolicitud
             options={[
               { id: 0, name: "Todos" },
@@ -123,31 +122,32 @@ export default function NuevoSearchBar({
         </div>
       </div>
 
-      <div className="mb-2">
-        <h2 className="font-montserrat text-[26px] font-bold text-lg mb-2 mt-[-12px]">
-          Tutor
-        </h2>
-        <div className="flex space-x-4 mt-2">
-          <SimpleSearchInput
-            placeholder="Nombre o apellido del tutor"
-            value={tutorSearchValue || ""}
-            onChange={(value: string) => setTutorSearchValue(value)}
-            onSearch={handleOnSearchTutor}
-          />
+      <div className="w-full flex gap-4">
+
+        <div className="w-1/2">
+          <Label value="Tutor" className='font-roboto text-primary' />
+          <div className="flex space-x-4 mt-2">
+            <SimpleSearchInput
+              placeholder="Nombre o apellido del tutor"
+              value={tutorSearchValue || ""}
+              onChange={(value: string) => setTutorSearchValue(value)}
+              onSearch={handleOnSearchTutor}
+            />
+          </div>
         </div>
-      </div>
-      <div className="mb-2">
-        <h2 className="font-montserrat text-[26px] font-bold text-lg mb-2 mt-4">
-          Alumno
-        </h2>
-        <div className="flex space-x-8 mt-2">
-          <SimpleSearchInput
-            placeholder="Nombre o apellido del tutor"
-            value={studentSearchValue || ""}
-            onChange={(value: string) => setStudentSearchValue(value)}
-            onSearch={handleOnSearchStudent}
-          />
+
+        <div className="w-1/2">
+          <Label value="Alumno" className='font-roboto text-primary' />
+          <div className="flex space-x-8 mt-2">
+            <SimpleSearchInput
+              placeholder="Nombre o apellido del tutor"
+              value={studentSearchValue || ""}
+              onChange={(value: string) => setStudentSearchValue(value)}
+              onSearch={handleOnSearchStudent}
+            />
+          </div>
         </div>
+
       </div>
     </div>
   );

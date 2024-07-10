@@ -46,7 +46,7 @@ const PageSolicitudGestion: React.FC = () => {
 
   useEffect(() => {
     fetchTutorStudentPrograms();
-  }, [filters]);
+  }, []);
 
   const handleOnChangeFilters = (filter: {
     faculty?: string;

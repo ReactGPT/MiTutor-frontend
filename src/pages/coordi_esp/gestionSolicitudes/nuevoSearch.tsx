@@ -5,7 +5,7 @@ import AcademicUnit from "../../../assets/svg/AcademicUnit";
 import Program from "../../../assets/svg/Program";
 import State from "../../../assets/svg/State";
 import { useNavigate } from "react-router-dom";
-import { Faculty, ManagerRoleDetails, Specialty, SpecialtyManager, Tutor } from "../../../store/types";
+import { ManagerRoleDetails, Specialty, Tutor } from "../../../store/types";
 import { RootState } from "../../../store/store";
 import { useAppSelector } from "../../../store/hooks";
 import SimpleSearchInput from "../../../components/SimpleSearchInput";
@@ -15,16 +15,20 @@ type InputProps = {
   handleOnChangeFilters: (filter: any) => void;
 };
 
+function isManagerRoleDetails(role: any): role is ManagerRoleDetails {
+  return 'departmentId' in role;
+}
+
 export default function NuevoSearchBar({
   handleOnChangeFilters,
 }: InputProps) {
   const { userData } = useAuth();
+
   const navigate = useNavigate();
 
-  const { facultyList, tutorList, specialityList } = useAppSelector((state: RootState) => state.parameters);
+  const { specialityList } = useAppSelector((state: RootState) => state.parameters);
 
   const [specialitySelected, setSpecialitySelected] = useState<Specialty | null>(null);
-  const [facultySelected, setFacultySelected] = useState<Faculty | null>(null);
   const [tutorSearchValue, setTutorSearchValue] = useState<string | null>("");
   const [studentSearchValue, setStudentSearchValue] = useState<string | null>("");
   const [statusSelected, setStatusSelected] = useState<{
@@ -32,33 +36,26 @@ export default function NuevoSearchBar({
     name: string;
   } | null>(null);
 
-  let selectedFaculties: Faculty[] = [];
-  const roles = userData?.userInfo?.roles;
-  let rolEspecifico = '';
+  const roles = userData?.userInfo?.roles.filter(role => role.type === "SPECIALTYMANAGER").map(role => role.details);
+  const selectedSpecialties: Specialty[] = [];
 
   if (roles) {
     roles.forEach(role => {
-      if (role.rolName === 'Responsable de Facultad') {
-        const facultyId = parseInt((role.details as ManagerRoleDetails).departmentId, 10); // Convertir a número
-        const faculty = facultyList.find(faculty => faculty.id === facultyId);
-        if (faculty && !selectedFaculties.some(f => f.id === faculty.id)) {
-          selectedFaculties.push(faculty);
+      if (isManagerRoleDetails(role)) {
+        const specialtyId = parseInt(role.departmentId);
+        const specialty = specialityList.find(specialty => specialty.id == specialtyId);
+        if (specialty && !selectedSpecialties.some((s) => s.id === specialty.id)) {
+          selectedSpecialties.push(specialty);
         }
       }
     });
   }
 
-  const specialityOptions = useMemo(() => {
-    if (!facultySelected?.id) {
-      return [];
-    } else {
-      return [
-        ...specialityList.filter(
-          (item) => item.facultyId === facultySelected.id
-        ),
-      ];
-    }
-  }, [facultySelected, specialityList]);
+  console.log(selectedSpecialties);
+
+  const specialtyOptions = useMemo(() => {
+    return selectedSpecialties;
+  }, [specialityList]);
 
   const handleOnChangeSpeciality = (value: { id: number | string; name: string; }) => {
     const selectedSpeciality = specialityList.find(speciality => speciality.id === value.id);
@@ -88,14 +85,12 @@ export default function NuevoSearchBar({
   const filters = useMemo(() => {
     return {
       specialty: specialitySelected?.name,
-      faculty: facultySelected?.name,
       status: statusSelected?.name,
       tutor: tutorSearchValue,
       student: studentSearchValue,
     };
   }, [
     specialitySelected,
-    facultySelected,
     statusSelected,
     tutorSearchValue,
     studentSearchValue,
@@ -103,8 +98,6 @@ export default function NuevoSearchBar({
 
   useEffect(() => {
     handleOnChangeFilters(filters);
-    console.log("facultyList ", facultyList);
-    console.log("facultyListSeleccionadas:", selectedFaculties);
   }, [filters]);
 
   return (
@@ -117,22 +110,7 @@ export default function NuevoSearchBar({
           <DropdownSolicitud
             options={[
               { id: 0, name: "Todos" },
-              ...selectedFaculties.map(faculty => ({
-                id: faculty.id,
-                name: faculty.name,
-              }))
-            ]}
-            onSelect={(option) => {
-              const selectedFaculty = selectedFaculties.find(faculty => faculty.id === option.id);
-              setFacultySelected(selectedFaculty || null);
-            }}
-            value={facultySelected ? facultySelected.name : "Facultad"}
-            icon={AcademicUnit}
-          />
-          <DropdownSolicitud
-            options={[
-              { id: 0, name: "Todos" },
-              ...specialityOptions.map((speciality) => ({
+              ...specialtyOptions.map((speciality) => ({
                 id: speciality.id,
                 name: speciality.name,
               })),

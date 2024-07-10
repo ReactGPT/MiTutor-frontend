@@ -3,7 +3,6 @@ import { AgGridReact } from "ag-grid-react";
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-alpine.css";
 import { ColDef, GridApi } from "ag-grid-community";
-import SolicitudGestionSearchBar from "./SolicitudGestionSearchBar";
 import { useTutorStudentPrograms } from "../../../store/hooks/useTutorStudentPrograms";
 import { Spinner } from "../../../components";
 import Accept from "../../../assets/svg/Accept";
@@ -30,7 +29,6 @@ const PageSolicitudGestion: React.FC = () => {
   const gridApiRef = useRef<GridApi | null>(null);
 
   const [filters, setFilters] = useState<{
-    faculty?: string;
     specialty?: string;
     status?: string;
     tutor?: string;
@@ -49,7 +47,6 @@ const PageSolicitudGestion: React.FC = () => {
   }, [filters]);
 
   const handleOnChangeFilters = (filter: {
-    faculty?: string;
     specialty?: string;
     tutor?: string;
     student?: string;
@@ -130,31 +127,20 @@ const PageSolicitudGestion: React.FC = () => {
   ];
 
   const { userData } = useAuth();
-  const facultyList = userData?.userInfo?.roles
-    .filter(role => role.type === 'FACULTYMANAGER')
-    .map(role => role.details);
-
-  console.log(facultyList);
 
   const filteredRowData = useMemo(() => {
     let filteredData = [...tutorStudentPrograms];
     filteredData = filteredData.filter(item =>
       userData?.userInfo?.roles.some(role =>
-        role.details && 'departmentName' in role.details && role.details.departmentName === item.studentProgram.student.specialty.faculty.name
+        role.details && 'departmentName' in role.details && role.details.departmentName === item.studentProgram.student.specialty.name
       )
     );
-    if (filters.faculty !== undefined && filters.faculty !== "Todos") {
-      filteredData = filteredData.filter(
-        (program) =>
-          program.studentProgram.student.specialty.faculty.name === filters.faculty
-      );
-    }
     if (filters.specialty !== undefined && filters.specialty !== "Todos") {
       filteredData = filteredData.filter(
         (program) =>
           program.studentProgram.student.specialty.name === filters.specialty
       );
-    }
+    }    
     if (filters.tutor !== undefined) {
       filteredData = filteredData.filter(
         (program) =>

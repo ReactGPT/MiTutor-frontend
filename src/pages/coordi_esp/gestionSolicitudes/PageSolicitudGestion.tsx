@@ -13,9 +13,6 @@ import ModalError from "../../../components/ModalError";
 import ModalConfirmation from "../../../components/ModalConfirmation";
 import ModalSuccess from "../../../components/ModalSuccess";
 import { useAuth } from "../../../context";
-import { ManagerRoleDetails } from "../../../store/types";
-import { useAppSelector } from "../../../store/hooks";
-import { RootState } from "../../../store/store";
 import NuevoSearchBar from "./nuevoSearch";
 
 const PageSolicitudGestion: React.FC = () => {
@@ -44,7 +41,7 @@ const PageSolicitudGestion: React.FC = () => {
 
   useEffect(() => {
     fetchTutorStudentPrograms();
-  }, [filters]);
+  }, []);
 
   const handleOnChangeFilters = (filter: {
     specialty?: string;
@@ -140,7 +137,7 @@ const PageSolicitudGestion: React.FC = () => {
         (program) =>
           program.studentProgram.student.specialty.name === filters.specialty
       );
-    }    
+    }
     if (filters.tutor !== undefined) {
       filteredData = filteredData.filter(
         (program) =>
@@ -197,7 +194,7 @@ const PageSolicitudGestion: React.FC = () => {
           handleOnChangeFilters={handleOnChangeFilters}
         />
       </div>
-      <h2 className="font-montserrat text-[26px] font-bold text-lg mb-[-8px]">
+      <h2 className="font-montserrat text-[26px] font-bold text-lg">
         Solicitudes
       </h2>
       <div className="ag-theme-alpine h-full w-full">

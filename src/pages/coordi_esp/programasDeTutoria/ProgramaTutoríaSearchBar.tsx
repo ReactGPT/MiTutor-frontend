@@ -82,7 +82,7 @@ const ProgramaTutoríaSearchBar = ({ handleOnChangeFilters }: InputProps) => {
                     <Label value="Buscar" className='font-roboto text-primary' />
                     <span className='flex gap-1'>
                         <InputCell placeholder='Escribe aquí' boxSize='w-[250px] h-[37px] mt-1' text={searchQuery} onChange={{ tipo: "simple", onChange: handleOnChangeQuery }} />
-                        <Button onClick={() => console.log(filters)} icon={IconSearch} iconSize={4} />
+                        {/* <Button onClick={() => console.log(filters)} icon={IconSearch} iconSize={4} /> */}
                     </span>
                 </div>
                 <div>

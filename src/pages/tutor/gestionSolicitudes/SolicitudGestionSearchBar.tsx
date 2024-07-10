@@ -1,9 +1,4 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { Button } from "../../../components";
-import DropdownSolicitud from "../../../components/DropdownSolicitud";
-import AcademicUnit from "../../../assets/svg/AcademicUnit";
-import Program from "../../../assets/svg/Program";
-import State from "../../../assets/svg/State";
 import { useNavigate } from "react-router-dom";
 import { Faculty, Specialty, Tutor } from "../../../store/types";
 import { RootState } from "../../../store/store";
@@ -67,10 +62,6 @@ export default function SolicitudGestionSearchBar({
 		});
 	};
 
-	/*const handleOnChangeSpeciality = (value: { id: number | string; name: string; }) => {
-		setSpecialitySelected({ id: value.id as number, name: value.name, acronym: "", numberStudents: 0, facultyId: 0 });
-	};*/
-
 	const handleOnChangeStatus = (value: {
 		id: number | string;
 		name: string;
@@ -116,45 +107,6 @@ export default function SolicitudGestionSearchBar({
 
 	return (
 		<div className="flex flex-col w-full h-full gap-1 justify-between">
-			{/* {<h2 className="font-montserrat text-[26px] font-bold text-lg mb-2 mt-[-6px]">
-				Filtros
-			</h2>} */}
-			{/* {<div className="flex w-full h-full flex-row">
-				<div className="w-[70%] max-w-[70%] min-w-[70%] h-full flex flex-row gap-4 mb-7">
-					<DropdownSolicitud
-						options={facultyList.map((faculty) => ({
-							id: faculty.id,
-							name: faculty.name,
-						}))}
-						onSelect={handleOnChangeFaculty}
-						defaultOption="Facultad"
-						icon={AcademicUnit}
-						value={
-							facultySelected ? facultySelected.name : "Facultad"
-						}
-					/>
-					{<DropdownSolicitud
-                    options={specialityOptions.map(speciality => ({ id: speciality.id, name: speciality.name }))}
-                    onSelect={handleOnChangeSpeciality}
-                    defaultOption="Especialidad"
-                    icon={Program}
-                    value={specialitySelected ? specialitySelected.name : "Especialidad"}
-                />}
-				</div>
-			</div>} */}
-			{/* {<div className="mb-2">
-				<h2 className="font-montserrat text-[26px] font-bold text-lg mb-2 mt-[-12px]">
-					Tutor
-				</h2>
-				<div className="flex space-x-4 mt-2">
-					<SimpleSearchInput
-						placeholder="Nombre o apellido del tutor"
-						value={tutorSearchValue || ""}
-						onChange={(value: string) => setTutorSearchValue(value)}
-						onSearch={handleOnSearchTutor}
-					/>
-				</div>
-			</div>} */}
 			<div className="mb-2">
 				<h2 className="font-montserrat text-[26px] font-bold text-lg mb-2">
 					Alumno

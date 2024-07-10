@@ -18,7 +18,7 @@ import { useAuth } from '../../../context';
 
 const PageSolicitudGestion: React.FC = () => {
 	const { userData } = useAuth();
-	
+
 	const {
 		fetchTutorStudentPrograms,
 		tutorStudentPrograms,
@@ -46,7 +46,7 @@ const PageSolicitudGestion: React.FC = () => {
 
 	useEffect(() => {
 		fetchTutorStudentPrograms();
-	}, [filters]);
+	}, []);
 
 	const handleOnChangeFilters = (filter: {
 		faculty?: string;
@@ -171,7 +171,7 @@ const PageSolicitudGestion: React.FC = () => {
 					program.tutor.userAccount.persona.name === userData?.userInfo?.personInfo.name &&
 					program.tutor.userAccount.persona.lastName === userData?.userInfo?.personInfo.lastName &&
 					program.tutor.userAccount.persona.secondLastName === userData?.userInfo?.personInfo.secondLastName
-			)
+			);
 		}
 		if (filters.student != undefined) {
 			filteredData = filteredData.filter(

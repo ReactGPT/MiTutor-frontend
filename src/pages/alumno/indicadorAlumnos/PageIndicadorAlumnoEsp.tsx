@@ -11,7 +11,7 @@ import ModalAlumnos from './ModalAlumnos';
 import noAvatar from '../../../assets/Tutor/no-avatar.webp';
 import { Services as ServicesProperties } from '../../../config';
 import { useAuth } from '../../../context';
-import { ManagerRoleDetails, Faculty } from '../../../store/types';
+import { ManagerRoleDetails, Specialty } from '../../../store/types';
 import { useAppSelector } from "../../../store/hooks";
 
 interface StudentData {
@@ -130,8 +130,8 @@ const PageIndicadorAlumno: React.FC = () => {
   const [idStudents, setIdStudent] = useState<IdsStudent[]>([]);
   const { userData } = useAuth();
 
-  const facultyList = Array.from(new Set(userData?.userInfo?.roles
-    .filter(role => role.type === 'FACULTYMANAGER')
+  const specialtyList = Array.from(new Set(userData?.userInfo?.roles
+    .filter(role => role.type === 'SPECIALTYMANAGER')
     .map(role => role.details)));
 
   // 1. Si es coordinador de Facultad: Puede ver todas las especialidades de esa facultad                     CASO 1
@@ -145,9 +145,9 @@ const PageIndicadorAlumno: React.FC = () => {
         let responseData = response.data.data;
         let finalData: StudentData[] = [];
 
-        for (const faculty of facultyList) {
-          if (isManagerRoleDetails(faculty)) {
-            const responseIds = await api.get<{ success: boolean, data: number[] }>(`/listarEstudiantePorIdFacultad/${faculty.departmentId}`);
+        for (const specialty of specialtyList) {
+          if (isManagerRoleDetails(specialty)) {
+            const responseIds = await api.get<{ success: boolean, data: number[] }>(`/listarEstudiantePorIdEspecialidad/${specialty.departmentId}`);
             let responseDataIds = responseIds.data.data;
             responseData = responseData.filter(item =>
               responseDataIds.some(data => data === item.studentId)
@@ -182,9 +182,9 @@ const PageIndicadorAlumno: React.FC = () => {
         const response = await api.get<{ success: boolean, data: StudentInfo[] }>('/listarCantidadAppointmentsStudent');
         let responseData = response.data.data;
         let finalData: StudentInfo[] = [];
-        for (const faculty of facultyList) {
-          if (isManagerRoleDetails(faculty)) {
-            const responseIds = await api.get<{ success: boolean, data: number[] }>(`/listarEstudiantePorIdFacultad/${faculty.departmentId}`);
+        for (const specialty of specialtyList) {
+          if (isManagerRoleDetails(specialty)) {
+            const responseIds = await api.get<{ success: boolean, data: number[] }>(`/listarEstudiantePorIdEspecialidad/${specialty.departmentId}`);
             let responseDataIds = responseIds.data.data;
             responseData = responseData.filter(item =>
               responseDataIds.some(data => data === item.studentId)
@@ -370,9 +370,9 @@ const PageIndicadorAlumno: React.FC = () => {
       let responseData = response.data.data;
       let finalData: Student[] = [];
 
-      for (const faculty of facultyList) {
-        if (isManagerRoleDetails(faculty)) {
-          const responseIds = await api.get<{ success: boolean, data: number[] }>(`/listarEstudiantePorIdFacultad/${faculty.departmentId}`);
+      for (const specialty of specialtyList) {
+        if (isManagerRoleDetails(specialty)) {
+          const responseIds = await api.get<{ success: boolean, data: number[] }>(`/listarEstudiantePorIdEspecialidad/${specialty.departmentId}`);
           let responseDataIds = responseIds.data.data;
           responseData = responseData.filter(item =>
             responseDataIds.some(data => data === item.id)

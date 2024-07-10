@@ -84,7 +84,7 @@ const Sidebar = ({ sidebarLinks }: SidebarProps) => {
           <div key={index} className="border-b border-gray-300">
             <h2 id="accordion-flush-heading-1">
               <button type="button"
-                className="flex items-center justify-between w-full py-5 font-medium rtl:text-right text-gray-500 border-b border-gray-200 dark:border-gray-700 dark:text-gray-400 gap-3"
+                className="flex items-center justify-between w-full py-2 font-medium rtl:text-right text-gray-500 border-b border-gray-200 dark:border-gray-700 dark:text-gray-400 gap-3"
                 onClick={() => handleItemClick(index)}
                 aria-expanded={activeIndex === index}
                 aria-controls={`accordion-body-${index}`}
@@ -107,7 +107,7 @@ const Sidebar = ({ sidebarLinks }: SidebarProps) => {
             {activeIndex === index && (
               <div
                 id={`accordion-body-${index}`}
-                className="p-4 bg-gray-100"
+                className="p-4"
                 aria-labelledby={`accordion-heading-${index}`}
               >
                 {item.links.map((link, index) => (

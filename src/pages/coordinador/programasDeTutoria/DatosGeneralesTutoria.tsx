@@ -34,19 +34,7 @@ function DatosGeneralesTutoria() {
   const [searchQuery, setSearchQuery] = useState<string>("");
 
   let selectedFaculties: Faculty[] = [];
-
-  /* if (roles) {
-    roles.forEach(role => {
-      if (role.rolName === 'Responsable de Facultad') {
-        const facultyId = parseInt((role.details as any).departmentId, 10);
-        const faculty = facultyList.find(faculty => faculty.id === facultyId);
-        if (faculty) {
-          selectedFaculties.push(faculty);
-        }
-      }
-    });
-  } */
-
+  
   if (roles) {
     const uniqueFacultyIds = new Set<number>();
     roles.forEach(role => {
@@ -93,7 +81,8 @@ function DatosGeneralesTutoria() {
     if (!facultySelected?.id) {
       return [];
     } else {
-      return specialityList.filter(item => item.facultyId === facultySelected.id);
+      const filteredOptions = specialityList.filter(item => item.facultyId === facultySelected.id);
+      return [{ id: 0, name: 'Todas', facultyId: facultySelected.id }, ...filteredOptions];
     }
   }, [facultySelected, specialityList]);
 

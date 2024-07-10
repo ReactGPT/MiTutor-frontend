@@ -14,6 +14,7 @@ import ModalConfirmation from '../../../components/ModalConfirmation';
 import ModalSuccess from '../../../components/ModalSuccess';
 import ModalError from '../../../components/ModalError';
 import { User } from '../../../store/types/User';
+import { useAuth } from '../../../context';
 
 
 export default function PageListadoEstudiantes() {
@@ -27,6 +28,9 @@ export default function PageListadoEstudiantes() {
   //const [programaSelected, setProgramaSelected] = useState<ProgramaTutoria | null>(null);
   const [studentSelected, setStudentSelected] = useState<User | null>(null);
   //const [programaTutoriaFiltered,setProgramaTutoriaFiltered] = useState<ProgramaTutoria[]|null>(null)
+
+  const { userData:userLogin } = useAuth(); 
+  const roles = userLogin?.userInfo?.roles;
   useEffect(() => {
     //console.log("llamada fetch prog tutoria");
     //fetchProgramaTutorias();
@@ -35,7 +39,9 @@ export default function PageListadoEstudiantes() {
 
   const handleNavigation = (data: User) => {
     console.log(data);
+    
     navigate("/estudiantes/detalle", { state: { userData: data } });
+
   };
   const handleOnSelectStudent = (estudiante: User) => {
     setStudentSelected(estudiante);
@@ -67,13 +73,44 @@ export default function PageListadoEstudiantes() {
     name: null
   });
 
-  const UserFiltered: User[] = useMemo(() => {
-    return [...(userData).filter((item) =>
-      item.persona.name.toLowerCase().includes(filters.name ? filters.name : "")
-      //&&(filters.idSpeciality?filters.idSpeciality===item.especialidadId:true)&&(filters.idFaculty?filters.idFaculty===item.facultadId:true)
-    )];
-  }, [userData, filters]);
+  let isAdmin: number = 0;
 
+  const UserFiltered: User[] = useMemo(() => {
+    let filteredUsers: User[]=[];
+       
+    // Filtrar por rol específico y facultad si aplica
+    if (roles) { 
+      //ADMIN GENERAL
+      const adminRole = roles.find(role => role.type === "ADMIN");
+
+      if (adminRole) {
+        isAdmin = 1;
+        filteredUsers = userData.filter((item) =>
+          item.persona.name.toLowerCase().includes(filters.name ? filters.name.toLowerCase() : "")
+        );
+      } 
+      //FACULTAD
+      const uniqueStudentIds = new Set<number>();
+  
+      roles.forEach(role => {
+        if (role.rolName === 'Responsable de Facultad') {
+          const facultyId = parseInt((role.details as any).departmentId, 10);
+  
+          userData.forEach(user => {
+            if (typeof user.id === 'number' && user.estudiante?.facultyId === facultyId) {
+              if (!uniqueStudentIds.has(user.id)) {
+                uniqueStudentIds.add(user.id);
+                filteredUsers.push(user);
+              }
+            }
+          });
+        }
+      });
+    }
+  
+    return filteredUsers;
+  }, [userData, filters, roles]);
+  
 
   const defaultColDef = {
     suppressHeaderMenuButton: true,
@@ -130,14 +167,16 @@ export default function PageListadoEstudiantes() {
   ];
   return (
     <div className='flex w-full h-full flex-col gap-5'>
-      <div className='flex w-full h-fit'>
-        <div className="text-base text-primary font-medium w-1/2 flex flex-col items-start justify-center">
-          <label>
-            • Los alumnos tendrán acceso al sistema.
-          </label>
+      {isAdmin === 1 && (
+        <div className='flex w-full h-fit'>
+          <div className="text-base text-primary font-medium w-1/2 flex flex-col items-start justify-center">
+            <label>
+              • Los alumnos tendrán acceso al sistema.
+            </label>
+          </div>
+          <ListadoUsuariosSearchBar rol='estudiante' />
         </div>
-        <ListadoUsuariosSearchBar rol='estudiante' />
-      </div>
+      )}
       <div className='flex w-full h-full ag-theme-alpine items-center justify-center'>
         {loading ? <Spinner size='lg' /> : <div className='w-full h-full'>
           <AgGridReact

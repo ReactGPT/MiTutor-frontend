@@ -1,12 +1,13 @@
 import { Dialog, Transition } from "@headlessui/react";
 import React, { Fragment, useEffect } from "react";
 import { Button } from "../../../components";
-import { FaFloppyDisk, FaX } from "react-icons/fa6";
+import { FaX } from "react-icons/fa6";
 import { AgGridReact } from "ag-grid-react";
 import { FaSearch } from "react-icons/fa";
 import axios from "axios";
 import { Services } from "../../../config";
 import { User } from "../../../store/types/User";
+import { AddCircleIcon, AddSquareIcon } from "../../../assets";
 
 interface AsignarResponsableProps {
   isOpen: boolean;
@@ -129,15 +130,15 @@ const AsignarResponsable = ({
                       }
                       defaultColDef={{
                         sortable: true,
-                        resizable: true,
+                        resizable: false,
                         flex: 1,
                       }}
                       columnDefs={[
                         {
-                          headerName: "Nombre",
+                          headerName: "Nombres y Apellidos",
                           valueGetter: (params) => {
                             if (params.data) {
-                              return `${params.data.persona?.name ?? ''} ${params.data.persona?.lastName ?? ''}`;
+                              return `${params.data.persona?.name ?? ''} ${params.data.persona?.lastName ?? ''} ${params.data.persona?.secondLastName ?? ''}`;
                             }
                             return '';
                           },
@@ -165,7 +166,7 @@ const AsignarResponsable = ({
                 <div className="flex items-center justify-around pt-5 ">
                   <Button
                     text="Agregar"
-                    icon={FaFloppyDisk}
+                    icon={AddCircleIcon}
                     onClick={() => {
                       if (selectedUser == null) return;
                       onClose();

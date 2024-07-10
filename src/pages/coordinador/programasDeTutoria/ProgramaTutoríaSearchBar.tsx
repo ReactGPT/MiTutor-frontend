@@ -48,7 +48,8 @@ const ProgramaTutoríaSearchBar = ({ handleOnChangeFilters }: InputProps) => {
         if (!facultySelected?.id) {
             return [];
         } else {
-            return specialityList.filter(item => item.facultyId === facultySelected.id);
+            const filteredOptions = specialityList.filter(item => item.facultyId === facultySelected.id);
+            return [{ id: 0, name: 'Todas', facultyId: facultySelected.id }, ...filteredOptions];
         }
     }, [facultySelected, specialityList]);
 
@@ -86,7 +87,7 @@ const ProgramaTutoríaSearchBar = ({ handleOnChangeFilters }: InputProps) => {
                     <Label value="Buscar" className='font-roboto text-primary' />
                     <span className='flex gap-1'>
                         <InputCell placeholder='Escribe aquí' boxSize='w-[250px] h-[37px] mt-1' text={searchQuery} onChange={{ tipo: "simple", onChange: handleOnChangeQuery }} />
-                        <Button onClick={() => { }} icon={IconSearch} iconSize={4} />
+                        {/* <Button onClick={() => { }} icon={IconSearch} iconSize={4} /> */}
                     </span>
                 </div>
                 <div>

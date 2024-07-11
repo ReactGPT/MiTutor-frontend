@@ -128,10 +128,10 @@ const PageSolicitudGestion: React.FC = () => {
 			maxWidth: 50,
 		},
 		{ headerName: "Código", field: "StudentCode", minWidth: 150 },
-		{ headerName: "Facultad", field: "FacultyName", minWidth: 150 },
-		{ headerName: "Especialidad", field: "SpecialtyName", minWidth: 150 },
 		{ headerName: "Alumno", field: "StudentFullName", minWidth: 240 },
 		{ headerName: "Tutor", field: "TutorFullName", hide: true },
+		{ headerName: "Facultad", field: "FacultyName", minWidth: 150 },
+		{ headerName: "Especialidad", field: "SpecialtyName", minWidth: 150 },
 		{ headerName: "Estado", field: "State", hide: true },
 		{
 			headerName: "ID TutorStudentProgram",

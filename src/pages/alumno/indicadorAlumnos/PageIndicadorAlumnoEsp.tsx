@@ -148,12 +148,12 @@ const PageIndicadorAlumno: React.FC = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await api.get<{ success: boolean, data: StudentData[] }>('/listarAlumnosConCantidadDeProgramas');
+        const response = await api.get<{ success: boolean, data: StudentData[]; }>('/listarAlumnosConCantidadDeProgramas');
         let responseData = response.data.data;
         let finalData: StudentData[] = [];
 
         if (selectedIdEspecialidad != null) {
-          const responseIds = await api.get<{ success: boolean, data: number[] }>(`/listarEstudiantePorIdEspecialidad/${selectedIdEspecialidad}`);
+          const responseIds = await api.get<{ success: boolean, data: number[]; }>(`/listarEstudiantePorIdEspecialidad/${selectedIdEspecialidad}`);
           let responseDataIds = responseIds.data.data;
           responseData = responseData.filter(item =>
             responseDataIds.some(data => data === item.studentId)
@@ -184,12 +184,12 @@ const PageIndicadorAlumno: React.FC = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await api.get<{ success: boolean, data: StudentInfo[] }>('/listarCantidadAppointmentsStudent');
+        const response = await api.get<{ success: boolean, data: StudentInfo[]; }>('/listarCantidadAppointmentsStudent');
         let responseData = response.data.data;
         let finalData: StudentInfo[] = [];
 
         if (selectedIdEspecialidad != null) {
-          const responseIds = await api.get<{ success: boolean, data: number[] }>(`/listarEstudiantePorIdEspecialidad/${selectedIdEspecialidad}`);
+          const responseIds = await api.get<{ success: boolean, data: number[]; }>(`/listarEstudiantePorIdEspecialidad/${selectedIdEspecialidad}`);
           let responseDataIds = responseIds.data.data;
           responseData = responseData.filter(item =>
             responseDataIds.some(data => data === item.studentId)
@@ -209,7 +209,7 @@ const PageIndicadorAlumno: React.FC = () => {
 
   const fetchProgramsData = async (studentId: number) => {
     try {
-      const response = await api.get<{ success: boolean, data: ProgramData[] }>(`/listarProgramasDeTutoriaPorStudentId/${studentId}`);
+      const response = await api.get<{ success: boolean, data: ProgramData[]; }>(`/listarProgramasDeTutoriaPorStudentId/${studentId}`);
       return response.data.data;
     } catch (error) {
       console.error("Error fetching programs data:", error);
@@ -219,7 +219,7 @@ const PageIndicadorAlumno: React.FC = () => {
 
   const handleTutorClick = async (studentId: number) => {
     try {
-      const response = await api.get<{ success: boolean, data: ProgramData[] }>(`/listarProgramasDeTutoriaPorStudentId/${studentId}`);
+      const response = await api.get<{ success: boolean, data: ProgramData[]; }>(`/listarProgramasDeTutoriaPorStudentId/${studentId}`);
       const programsData = response.data.data;
       console.log(programsData);
       setSelectedStudentPrograms(programsData);
@@ -370,13 +370,13 @@ const PageIndicadorAlumno: React.FC = () => {
 
   const handleBuscarAlumnosClick = async () => {
     try {
-      const response = await api.get<{ success: boolean, data: Student[] }>('/listarEstudiantes');
+      const response = await api.get<{ success: boolean, data: Student[]; }>('/listarEstudiantes');
       let responseData = response.data.data;
       let finalData: Student[] = [];
 
       for (const specialty of specialtyList) {
         if (isManagerRoleDetails(specialty)) {
-          const responseIds = await api.get<{ success: boolean, data: number[] }>(`/listarEstudiantePorIdEspecialidad/${specialty.departmentId}`);
+          const responseIds = await api.get<{ success: boolean, data: number[]; }>(`/listarEstudiantePorIdEspecialidad/${specialty.departmentId}`);
           let responseDataIds = responseIds.data.data;
           responseData = responseData.filter(item =>
             responseDataIds.some(data => data === item.id)
@@ -410,10 +410,10 @@ const PageIndicadorAlumno: React.FC = () => {
             value={null}
           />
         </div>
-        <button className="min-h-[40px] bg-primary cursor-default rounded-xl rounded-xl text-white px-5 shadow-custom border border-solid border-[rgba(116,170,255,0.70)] active:bg-black hover:cursor-pointer ml-6" onClick={handleExportClick}>
+        <button className="min-h-[40px] bg-primary cursor-default rounded-xl text-white px-5 shadow-custom border border-solid border-[rgba(116,170,255,0.70)] active:bg-black hover:cursor-pointer ml-6" onClick={handleExportClick}>
           Exportar
         </button>
-        <button className="min-h-[40px] bg-primary cursor-default rounded-xl rounded-xl text-white px-5 shadow-custom border border-solid border-[rgba(116,170,255,0.70)] active:bg-black hover:cursor-pointer ml-6" onClick={handleBuscarAlumnosClick}>
+        <button className="min-h-[40px] bg-primary cursor-default rounded-xl text-white px-5 shadow-custom border border-solid border-[rgba(116,170,255,0.70)] active:bg-black hover:cursor-pointer ml-6" onClick={handleBuscarAlumnosClick}>
           Buscar Alumnos
         </button>
         <div className="max-h-[40px] rounded-2xl flex">

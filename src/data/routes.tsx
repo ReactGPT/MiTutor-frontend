@@ -50,7 +50,6 @@ import PageUnidadFacultad from "../pages/administrador/gestionUnidad/PageUnidadF
 import PageEditarFacultad from "../pages/administrador/facultades/PageEditarFacultad.tsx";
 import PageEditarUnidadDerivacion from "../pages/administrador/gestionUnidad/PageEditarUnidadDerivacion.tsx";
 import PageInstitucion from "../pages/administrador/institucion/PageInstitucion.tsx";
-import PageAlumnosSeleccionados from "../pages/coordinador/programasDeTutoria/PageCargarAlumnos/PageAlumnosSeleccionados.tsx";
 import PageListadoEstudiantes from "../pages/administrador/gestionUsuarios/PageListadoEstudiantes.tsx";
 import PageEstudiante from "../pages/administrador/gestionUsuarios/PageEstudiante.tsx";
 import PageCargaMasiva from "../pages/administrador/gestionUsuarios/PageCargaMasiva.tsx";
@@ -76,6 +75,7 @@ import PageSolicitudGestionEsp from "../pages/coordi_esp/gestionSolicitudes/Page
 import PageArchivosAlumnos from "../pages/coordinador/alumnos/PageArchivosAlumno.tsx";
 import PageDisponibilidadTutores from "../pages/coordinador/tutores/PageDisponibilidadTutores.tsx";
 import DetalleDisponibilidadTutores from "../pages/coordinador/tutores/DetalleDisponibilidadTutores.tsx";
+import PageIndicadorTutorEspecialidad from "../pages/coordi_esp/IndicadoresTutores/PageIndicadorTutorEspecialidad.tsx";
 
 type RouterDetail = {
   pages: RouteObject[];
@@ -372,8 +372,8 @@ export const Routes: RouterConfig = {
         element: <PageIndicadorAlumnoEsp />
       },
       {
-        path: '/indicadorTutor',
-        element: <PageIndicadorTutor />
+        path: '/indicadorTutorEsp',
+        element: <PageIndicadorTutorEspecialidad />
       },
       {
         path: '/tutor-detail',
@@ -400,7 +400,7 @@ export const Routes: RouterConfig = {
         path: '/estudiantesEspecialidad/detalle/archivos',
         element: <PageArchivosAlumnos />
       },
-      { 
+      {
         path: 'tutores',
         element: <PageDisponibilidadTutores />
       },
@@ -434,12 +434,12 @@ export const Routes: RouterConfig = {
         path: '/indicadorAlumnoEsp',
         icon: <BiBarChart fontSize={32} />,
       },
-      /*{
+      {
         key: 'indicadorTutor',
         label: 'Indicador Tutor',
-        path: '/indicadorTutor',
+        path: '/indicadorTutorEsp',
         icon: <BiBarChartAlt fontSize={32} />,
-      },*/
+      },
       {
         key: 'maestroTutores',
         label: 'Asignación Tutores',
@@ -450,7 +450,7 @@ export const Routes: RouterConfig = {
         key: 'alumnos',
         label: 'Alumnos',
         path: '/estudiantesEspecialidad',
-        icon: <PiStudent fontSize={32} />, 
+        icon: <PiStudent fontSize={32} />,
       },
       {
         key: 'tutores',

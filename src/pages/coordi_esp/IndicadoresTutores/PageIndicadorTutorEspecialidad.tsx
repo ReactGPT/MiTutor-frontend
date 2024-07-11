@@ -137,7 +137,7 @@ const PageIndicadorTutorEspecialidad: React.FC = () => {
             if (startDate && endDate) {
                 url += `?startDate=${startDate}&endDate=${endDate}`;
             }
-            const response = await api.get<{ success: boolean, data: TutorData[] }>(url);
+            const response = await api.get<{ success: boolean, data: TutorData[]; }>(url);
             let responseData = response.data.data;
 
             const roles = userData?.userInfo?.roles;
@@ -145,7 +145,7 @@ const PageIndicadorTutorEspecialidad: React.FC = () => {
                 const iFaculty = roles.findIndex(rol => rol.rolName === 'Responsable de Facultad');
                 if (iFaculty != -1 && userData?.userInfo?.roles[iFaculty].details && 'departmentName' in userData.userInfo.roles[iFaculty].details) {
                     const facultyId = (userData.userInfo.roles[iFaculty].details as ManagerRoleDetails).departmentId;
-                    const responseIds = await api.get<{ success: boolean, data: number[] }>(`/listarTutoresPorIdFacultad/${facultyId}`);
+                    const responseIds = await api.get<{ success: boolean, data: number[]; }>(`/listarTutoresPorIdFacultad/${facultyId}`);
                     let responseDataIds = responseIds.data.data;
                     responseData = responseData.filter(item =>
                         responseDataIds.some(data => data === item.tutorId)
@@ -154,7 +154,7 @@ const PageIndicadorTutorEspecialidad: React.FC = () => {
                     const iSpecialty = roles.findIndex(rol => rol.rolName === 'Responsable de Especialidad');
                     if (iSpecialty != -1 && userData?.userInfo?.roles[iFaculty].details && 'departmentName' in userData.userInfo.roles[iFaculty].details) {
                         const specialtyId = (userData.userInfo.roles[iSpecialty].details as ManagerRoleDetails).departmentId;
-                        const responseIds = await api.get<{ success: boolean, data: number[] }>(`/listarTutoresPorIdEspecialidad/${specialtyId}`);
+                        const responseIds = await api.get<{ success: boolean, data: number[]; }>(`/listarTutoresPorIdEspecialidad/${specialtyId}`);
                         let responseDataIds = responseIds.data.data;
                         responseData = responseData.filter(item =>
                             responseDataIds.some(data => data === item.tutorId)
@@ -189,14 +189,14 @@ const PageIndicadorTutorEspecialidad: React.FC = () => {
             if (startDate && endDate) {
                 url += `?startDate=${startDate}&endDate=${endDate}`;
             }
-            const response = await api.get<{ success: boolean, data: TutorInfo[] }>(url);
+            const response = await api.get<{ success: boolean, data: TutorInfo[]; }>(url);
             let responseData = response.data.data;
             const roles = userData?.userInfo?.roles;
             if (roles) {
                 const iFaculty = roles.findIndex(rol => rol.rolName === 'Responsable de Facultad');
                 if (iFaculty != -1 && userData?.userInfo?.roles[iFaculty].details && 'departmentName' in userData.userInfo.roles[iFaculty].details) {
                     const facultyId = (userData.userInfo.roles[iFaculty].details as ManagerRoleDetails).departmentId;
-                    const responseIds = await api.get<{ success: boolean, data: number[] }>(`/listarTutoresPorIdFacultad/${facultyId}`);
+                    const responseIds = await api.get<{ success: boolean, data: number[]; }>(`/listarTutoresPorIdFacultad/${facultyId}`);
                     let responseDataIds = responseIds.data.data;
                     responseData = responseData.filter(item =>
                         responseDataIds.some(data => data === item.tutorId)
@@ -205,7 +205,7 @@ const PageIndicadorTutorEspecialidad: React.FC = () => {
                     const iSpecialty = roles.findIndex(rol => rol.rolName === 'Responsable de Especialidad');
                     if (iSpecialty != -1 && userData?.userInfo?.roles[iFaculty].details && 'departmentName' in userData.userInfo.roles[iFaculty].details) {
                         const specialtyId = (userData.userInfo.roles[iSpecialty].details as ManagerRoleDetails).departmentId;
-                        const responseIds = await api.get<{ success: boolean, data: number[] }>(`/listarTutoresPorIdEspecialidad/${specialtyId}`);
+                        const responseIds = await api.get<{ success: boolean, data: number[]; }>(`/listarTutoresPorIdEspecialidad/${specialtyId}`);
                         let responseDataIds = responseIds.data.data;
                         responseData = responseData.filter(item =>
                             responseDataIds.some(data => data === item.tutorId)
@@ -228,7 +228,7 @@ const PageIndicadorTutorEspecialidad: React.FC = () => {
 
     const fetchProgramsData = async (tutorId: number) => {
         try {
-            const response = await api.get<{ success: boolean, data: ProgramData[] }>(`/listarProgramasDeTutoriaPorTutorId/${tutorId}`);
+            const response = await api.get<{ success: boolean, data: ProgramData[]; }>(`/listarProgramasDeTutoriaPorTutorId/${tutorId}`);
             return response.data.data;
         } catch (error) {
             console.error("Error fetching programs data:", error);
@@ -237,7 +237,7 @@ const PageIndicadorTutorEspecialidad: React.FC = () => {
     };
     const handleTutorClick = async (tutorId: number) => {
         try {
-            const response = await api.get<{ success: boolean, data: ProgramData[] }>(`/listarProgramasDeTutoriaPorTutorId/${tutorId}`);
+            const response = await api.get<{ success: boolean, data: ProgramData[]; }>(`/listarProgramasDeTutoriaPorTutorId/${tutorId}`);
             const programsData = response.data.data;
             setSelectedTutorPrograms(programsData);
             setIsModalOpen(true);
@@ -380,46 +380,46 @@ const PageIndicadorTutorEspecialidad: React.FC = () => {
 
     const handleBuscarTutoresClick = async () => {
         try {
-            const response = await api.get<{ success: boolean, data: Tutor[] }>('/listarTutores');
+            const response = await api.get<{ success: boolean, data: Tutor[]; }>('/listarTutores');
             let responseData = response.data.data;
-            
+
             const roles = userData?.userInfo?.roles;
-            
+
             if (roles) {
                 const iFaculty = roles.findIndex(rol => rol.rolName === 'Responsable de Facultad');
-                
+
                 if (iFaculty !== -1 && userData?.userInfo?.roles[iFaculty].details && 'departmentName' in userData.userInfo.roles[iFaculty].details) {
                     const facultyId = (userData.userInfo.roles[iFaculty].details as ManagerRoleDetails).departmentId;
-                    
-                    const responseIds = await api.get<{ success: boolean, data: number[] }>(`/listarTutoresPorIdEspecialidad/17`);
+
+                    const responseIds = await api.get<{ success: boolean, data: number[]; }>(`/listarTutoresPorIdEspecialidad/17`);
                     const responseDataIds = responseIds.data.data;
-                    
+
                     responseData = responseData.filter(item =>
                         responseDataIds.includes(item.tutorId)
                     );
                 } else {
                     const iSpecialty = roles.findIndex(rol => rol.rolName === 'Responsable de Especialidad');
-                    
+
                     if (iSpecialty !== -1 && userData?.userInfo?.roles[iSpecialty].details && 'departmentName' in userData.userInfo.roles[iSpecialty].details) {
                         const specialtyId = (userData.userInfo.roles[iSpecialty].details as ManagerRoleDetails).departmentId;
-                        
-                        const responseIds = await api.get<{ success: boolean, data: number[] }>(`/listarTutoresPorIdEspecialidad/17`);
+
+                        const responseIds = await api.get<{ success: boolean, data: number[]; }>(`/listarTutoresPorIdEspecialidad/17`);
                         const responseDataIds = responseIds.data.data;
-                        
+
                         responseData = responseData.filter(item =>
                             responseDataIds.includes(item.tutorId)
                         );
                     }
                 }
             }
-    
+
             setTutors(responseData);
             setIsTutorModalOpen(true);
         } catch (error) {
             console.error("Error fetching tutors data:", error);
         }
     };
-    
+
     if (loading) {
         return <div>Loading...</div>;
     }
@@ -430,7 +430,7 @@ const PageIndicadorTutorEspecialidad: React.FC = () => {
     return (
         <>
             <div className="mb-4 flex justify-between">
-                <button className="bg-primary cursor-default rounded-xl rounded-xl text-white px-5 shadow-custom border border-solid border-[rgba(116,170,255,0.70)] active:bg-black hover:cursor-pointer ml-6" onClick={handleExportClick}>
+                <button className="bg-primary cursor-default rounded-xl text-white px-5 shadow-custom border border-solid border-[rgba(116,170,255,0.70)] active:bg-black hover:cursor-pointer ml-6" onClick={handleExportClick}>
                     Exportar
                 </button>
                 <button className="bg-primary cursor-default rounded-l-full rounded-r-full text-white px-5 shadow-custom border border-solid border-[rgba(116,170,255,0.70)] active:bg-black hover:cursor-pointer ml-6" onClick={handleBuscarTutoresClick}>
@@ -552,7 +552,7 @@ const PageIndicadorTutorEspecialidad: React.FC = () => {
                                 </AreaChart>
                             ) : (
                                 <div className="bg-gray-200 p-4 text-center">
-                                     No se encontraron datos para esta fecha
+                                    No se encontraron datos para esta fecha
                                 </div>
                             )}
                         </ResponsiveContainer>

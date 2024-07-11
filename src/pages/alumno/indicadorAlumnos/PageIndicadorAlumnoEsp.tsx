@@ -165,7 +165,7 @@ const PageIndicadorAlumno: React.FC = () => {
             programCount: student.cantidadProgramas,
             studentId: student.studentId
           }));
-          setData([...data, ...transformedData]);
+          setData(transformedData);
 
           // Ordenar los datos por cantidad de programas en orden descendente y seleccionar los primeros 3
           let topStudentsData = transformedData.sort((a, b) => b.programCount - a.programCount).slice(0, 7);

@@ -6,9 +6,10 @@ import { Datepicker, Label, TextInput } from 'flowbite-react';
 import { useAvailability } from '../../store/hooks/useAvailability';
 import { useAuth } from '../../context';
 import { TutorRoleDetails } from '../../store/types';
-import { getTutorId
-  
- } from '../../store/hooks/RolesIdTutor';
+import {
+  getTutorId
+
+} from '../../store/hooks/RolesIdTutor';
 const formatDate = (date: Date) => {
   const month = String(date.getMonth() + 1).padStart(2, '0');
   const day = String(date.getDate()).padStart(2, '0');
@@ -21,15 +22,16 @@ interface ModalModificarDisponibilidadProps {
   onClose: () => void;
   slotInfo: SlotInfo | null;
   refreshCalendar: () => void;
+  tutor?: any;
 }
 
 const ModalModificarDisponibilidad: React.FC<ModalModificarDisponibilidadProps> = (
-  { isOpen, onClose, slotInfo, refreshCalendar }
+  { isOpen, onClose, slotInfo, refreshCalendar, tutor }
 ) => {
 
   const { userData } = useAuth();
   //const tutorId = (userData?.userInfo?.roles[2].details as TutorRoleDetails).tutorId;
-  const tutorId = getTutorId(userData);
+  const tutorId = tutor ? tutor.idTutor : getTutorId(userData);
 
   const { addAvailability } = useAvailability(tutorId);
 
@@ -43,6 +45,10 @@ const ModalModificarDisponibilidad: React.FC<ModalModificarDisponibilidadProps> 
       setDate(formatDate(slotInfo.start));
       setStartTime(slotInfo.start.toTimeString().split(' ')[0]);
       setEndTime(slotInfo.end.toTimeString().split(' ')[0]);
+    } else {
+      setDate("");
+      setStartTime("");
+      setEndTime("");
     }
   }, [slotInfo]);
 
@@ -70,16 +76,16 @@ const ModalModificarDisponibilidad: React.FC<ModalModificarDisponibilidadProps> 
         <div className="w-full flex flex-col gap-5 items-center justify-between">
           <div className='w-full'>
             <Label value="Fecha" className='font-roboto text-primary' />
-            <Datepicker value={slotInfo?.start.toLocaleDateString()} disabled />
+            <Datepicker value={slotInfo ? slotInfo?.start.toLocaleDateString() : date} disabled />
           </div>
           <div className='w-full flex gap-5'>
             <div className='w-1/2'>
               <Label value="Desde" className='font-roboto text-primary' />
-              <TextInput type="time" value={slotInfo?.start.toTimeString().split(' ')[0]} disabled />
+              <TextInput type="time" value={slotInfo ? slotInfo?.start.toTimeString().split(' ')[0] : startTime} disabled />
             </div>
             <div className='w-1/2'>
               <Label value="Hasta" className='font-roboto text-primary' />
-              <TextInput type="time" value={slotInfo?.end.toTimeString().split(' ')[0]} disabled />
+              <TextInput type="time" value={slotInfo ? slotInfo?.end.toTimeString().split(' ')[0] : endTime} disabled />
             </div>
           </div>
         </div>

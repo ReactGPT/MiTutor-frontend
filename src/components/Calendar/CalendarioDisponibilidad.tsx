@@ -31,6 +31,7 @@ type Availability = {
 };
 
 interface CalendarioDisponibilidadProps {
+  tutor?: any;
   citas?: ListCita[];
   programable?: boolean;
   onSelectEvent?: (event: CustomEvent) => void;
@@ -91,22 +92,22 @@ function transformAvailabilityToEvent(availability: Availability[]): CustomEvent
   }));
 }
 
-const CalendarioDisponibilidad: React.FC<CalendarioDisponibilidadProps> = ({ citas = null, programable = false, onSelectEvent, onSelectSlot, refresh, refrescar, tipo }) => {
+const CalendarioDisponibilidad: React.FC<CalendarioDisponibilidadProps> = ({ citas = null, programable = false, onSelectEvent, onSelectSlot, refresh, refrescar, tipo, tutor }) => {
   const { userData } = useAuth();
   //const tutorId = (userData?.userInfo?.roles[2].details as TutorRoleDetails).tutorId;
-  const tutorId = getTutorId(userData);
+  const tutorId = tutor ? tutor.idTutor : getTutorId(userData);
 
   const { availability, fetchAvailability } = useAvailability(tutorId);
 
   const [refreshKey, setRefreshKey] = useState(0);
 
   useEffect(() => {
-    console.log(tutorId);
+    //console.log(tutorId);
     fetchAvailability();
   }, [refrescar, refreshKey]);
 
   useEffect(() => {
-    console.log(availability);
+    //console.log(availability);
   }, [fetchAvailability]);
 
   const events: CustomEvent[] = citas
@@ -250,7 +251,7 @@ const CalendarioDisponibilidad: React.FC<CalendarioDisponibilidadProps> = ({ cit
         onSelectSlot={onSelectSlot ? onSelectSlot : handleSelectSlot}
         selectable={programable}
       />
-      <ModalModificarDisponibilidad slotInfo={selectedSlot} isOpen={showModalDisponibilidad} onClose={closeModalDisponibilidad} refreshCalendar={refreshCalendar} />
+      <ModalModificarDisponibilidad slotInfo={selectedSlot} isOpen={showModalDisponibilidad} onClose={closeModalDisponibilidad} refreshCalendar={refreshCalendar} tutor={tutor} />
       <ModalProgramarCitaTutor slotInfo={selectedSlot} isOpen={showModalProgramarCita} onClose={closeModalProgramarCita} refreshCalendar={refresh ? refresh : () => { }} />
     </>
   );

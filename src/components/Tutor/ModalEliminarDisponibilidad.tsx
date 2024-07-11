@@ -4,6 +4,8 @@ import Button from '../Button';
 import { Event } from 'react-big-calendar';
 import { useAvailability } from '../../store/hooks/useAvailability';
 import { Datepicker, Label, TextInput } from 'flowbite-react';
+import { getTutorId } from '../../store/hooks/RolesIdTutor';
+import { useAuth } from '../../context';
 
 interface CustomEvent extends Event {
   isBackgroundEvent?: boolean;
@@ -23,7 +25,10 @@ interface ModalEliminarDisponibilidadProps {
 }
 
 const ModalEliminarDisponibilidad: React.FC<ModalEliminarDisponibilidadProps> = ({ isOpen, onClose, eventInfo, onAvailabilityRemoved }) => {
-  const { removeAvailability } = useAvailability(1);
+  const { userData } = useAuth();
+  const tutorId = getTutorId(userData);
+
+  const { removeAvailability } = useAvailability(tutorId);
 
   const handleEliminarDisponibilidad = async () => {
     if (eventInfo?.availabilityTutorId) {

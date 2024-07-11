@@ -26,7 +26,7 @@ const PagePerfilAlumnoTutor = () => {
 
   const goToArchivos = () => {
     if (data.studentId) {
-      navigate('/programasDeTutoria/detalle-programa/alumno/archivos', { state: { userDataId: data.studentId, data } });
+      navigate('/programasDeTutoria/detalle-programa/alumno/archivos', { state: { userDataId: data.studentId, userName: `${data.name} ${data.lastName} ${data.secondLastName}`, data } });
     } 
   };
 

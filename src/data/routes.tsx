@@ -265,15 +265,15 @@ export const Routes: RouterConfig = {
         element: <EspecialidadSingular />
       },
       {
-        path: '/estudiantes',
+        path: '/estudiantesFacultad',
         element: <PageListadoEstudiantes />
       },
       {
-        path: '/estudiantes/detalle',
+        path: '/estudiantesFacultad/detalle',
         element: <PageEstudiante />
       },
       {
-        path: '/estudiantes/detalle/archivos',
+        path: '/estudiantesFacultad/detalle/archivos',
         element: <PageArchivosAlumnos />
       }, 
     ],
@@ -323,7 +323,7 @@ export const Routes: RouterConfig = {
       {
         key: 'alumnos',
         label: 'Alumnos',
-        path: '/estudiantes',
+        path: '/estudiantesFacultad',
         icon: <PiStudent fontSize={32} />,
       }
     ]
@@ -370,7 +370,19 @@ export const Routes: RouterConfig = {
       {
         path: '/maestroTutores',
         element: <PageMaestroTutoresEsp />
-      }
+      },
+      {
+        path: '/estudiantesEspecialidad',
+        element: <PageListadoEstudiantes />
+      },
+      {
+        path: '/estudiantesEspecialidad/detalle',
+        element: <PageEstudiante />
+      },
+      {
+        path: '/estudiantesEspecialidad/detalle/archivos',
+        element: <PageArchivosAlumnos />
+      }, 
     ],
     navBarLink: [
       {
@@ -408,6 +420,12 @@ export const Routes: RouterConfig = {
         label: 'Asignación Tutores',
         path: '/maestroTutores',
         icon: <UserPlus size={6} />
+      },
+      {
+        key: 'alumnos',
+        label: 'Alumnos',
+        path: '/estudiantesEspecialidad',
+        icon: <PiStudent fontSize={32} />,
       }
     ]
   },

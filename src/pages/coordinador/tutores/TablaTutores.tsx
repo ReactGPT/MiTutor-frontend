@@ -11,7 +11,7 @@ type InputProps = {
   className?: string;
   tutores: Tutor[];
   loadingTutores: boolean;
-  setTutorSelectedForDelete: (tutor: Tutor) => void;
+  setTutorSelectedForDelete?: (tutor: Tutor) => void;
 };
 
 function TablaTutores({ className, tutores, loadingTutores, setTutorSelectedForDelete }: InputProps) {
@@ -36,18 +36,17 @@ function TablaTutores({ className, tutores, loadingTutores, setTutorSelectedForD
     { headerName: 'Nombres', field: 'fullname', filter: 'agTextColumnFilter', minWidth: 200 },
     { headerName: 'Correo', field: 'email', filter: 'agTextColumnFilter', minWidth: 300, maxWidth: 400 },
     {
-      headerName: 'Detalles',
+      headerName: 'Ver Disp.',
       field: '',
-      maxWidth: 100,
-      minWidth: 40,
+      maxWidth: 140,
+      minWidth: 80,
       cellRenderer: (rowData: any) => {
         return (
           <button
             className='text-primary'
             onClick={() => {
               navigate("/tutores/disponibilidad", { state: { tutor: rowData.data } });
-            }
-            }
+            }}
           >
             <CgDetailsMore size={24} />
           </button >

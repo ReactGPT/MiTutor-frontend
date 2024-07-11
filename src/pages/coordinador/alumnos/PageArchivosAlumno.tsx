@@ -18,7 +18,7 @@ import { getTutorId } from '../../../store/hooks/RolesIdTutor';
 
 const PageArchivosAlumnos: React.FC = () => {
   const { state } = useLocation();
-  const { userData } = state; 
+  const { userDataId } = state; 
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [previewError, setPreviewError] = useState<boolean>(false);
   const [pdfPreview, setPdfPreview] = useState<boolean>(false);
@@ -31,7 +31,11 @@ const PageArchivosAlumnos: React.FC = () => {
   const [ archivosBDCopia, setArchivosBDCopia] = useState<ExtendedFile[]>([]);
 
   const { userData:userLogin } = useAuth();   
-  const isTutor = getTutorId(userLogin);
+  //const isTutor = getTutorId(userLogin);
+ 
+  const location = useLocation(); 
+  const isFromArchivos = location.pathname.includes('/programasDeTutoria/detalle-programa/alumno/archivos');
+  const isTutor = isFromArchivos ? 1 : 0; 
 
   const closeModal = () => {
     setIsModalOpen(false);
@@ -43,8 +47,8 @@ const PageArchivosAlumnos: React.FC = () => {
 
   //CARGAR ARCHIVOS
   useEffect(() => {  
-    fetchArch_AlumnosBD(userData.id); 
-   }, [userData]);
+    fetchArch_AlumnosBD(userDataId); 
+   }, [userDataId]);
 
   useEffect(() => { 
     if (archivosBD) {
@@ -210,7 +214,7 @@ const PageArchivosAlumnos: React.FC = () => {
           const archivo:ArchivoStudent={  
               filesId: 0,
               filesName: file.name,
-              studentId: userData.id,
+              studentId: userDataId,
               privacyTypeId: 1,
               date: new Date().toISOString()
           }
@@ -317,24 +321,24 @@ const PageArchivosAlumnos: React.FC = () => {
               <span className='block truncate flex flex-row gap-4'>
                 <h3 className='font-montserrat text-lg font-bold text-primary'>Alumno:</h3>
                 <h3 className='font-montserrat text-lg font-semibold text-primary truncate'>
-                  {`${userData.persona.name} ${userData.persona.lastName} ${userData.persona.secondLastName}`}
+                  {/*`${userData.persona.name} ${userData.persona.lastName} ${userData.persona.secondLastName}`*/}
                 </h3>
               </span>
             </div>
             <div>
-            {isTutor && isTutor > 0 && ( // Verifica si isTutor existe y es mayor que cero
-        <div>
-          {!enableAttendance ? (
-            <Button variant="primario" onClick={() => setEnableAttendance(true)} text="Editar" />
-          ) : (
-            <div className="flex">
-              <Button variant="secundario" onClick={handleCancelar} text="Cancelar" className="mr-2" />
-              <Button variant="primario" onClick={handleGuardar} text="Guardar" />
+              {isTutor != 1 && (
+                <div>
+                  {!enableAttendance ? (
+                    <Button variant="primario" onClick={() => setEnableAttendance(true)} text="Editar" />
+                  ) : (
+                    <div className="flex">
+                      <Button variant="secundario" onClick={handleCancelar} text="Cancelar" className="mr-2" />
+                      <Button variant="primario" onClick={handleGuardar} text="Guardar" />
+                    </div>
+                  )}
+                </div>
+              )}
             </div>
-          )}
-        </div>
-      )}
-    </div>
           </div>
 
           <div className="overflow-y-auto flex-1 bg-gray-200 rounded-lg p-4 mb-4">

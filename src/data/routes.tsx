@@ -158,10 +158,12 @@ export const Routes: RouterConfig = {
       },
       {
         path: '/listaDeCitas/resultadoCitaGrupal',
-        element: <PageResultadoCitaGrupal />
-        //PageDetalleCitaGrupal
-      }
-
+        element: <PageResultadoCitaGrupal /> 
+      },
+      {
+        path: '/programasDeTutoria/detalle-programa/alumno/archivos',
+        element: <PageArchivosAlumnos /> 
+      }  
     ],
     navBarLink: [
       {
@@ -271,7 +273,7 @@ export const Routes: RouterConfig = {
         element: <PageEstudiante />
       },
       {
-        path: '/archivos',
+        path: '/estudiantes/detalle/archivos',
         element: <PageArchivosAlumnos />
       }, 
     ],

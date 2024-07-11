@@ -24,6 +24,12 @@ const PagePerfilAlumnoTutor = () => {
     navigate('/programasDeTutoria/detalle-programa/alumno/historicoCitas', { state: { data } });
   };
 
+  const goToArchivos = () => {
+    if (data.studentId) {
+      navigate('/programasDeTutoria/detalle-programa/alumno/archivos', { state: { userDataId: data.studentId, data } });
+    } 
+  };
+
   const handleClickPlanAccion=()=>{
     //navigate("/listadoPlanAccion", {state: {studentId: data.studentId, programId: data. cita?.programId}});
   }
@@ -49,9 +55,9 @@ const PagePerfilAlumnoTutor = () => {
             {/*<li className='mb-4'>
               <Button onClick={openModal} variant="call-to-action" text="Plan de Acción" />
             </li>*/}
-            {/*<li className='mb-4'>
-              <Button onClick={() => { }} variant="call-to-action" text="Archivos" />
-            </li>*/}
+            <li className='mb-4'>
+              <Button onClick={goToArchivos} variant="call-to-action" text="Archivos" />
+            </li>
             <li className='mb-4'>
               <Button onClick={goToHistoricoCitas} variant="call-to-action" text="Historico de Citas" />
             </li>

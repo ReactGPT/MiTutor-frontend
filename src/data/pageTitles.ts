@@ -220,7 +220,7 @@ export const PageTitles = [
     pageName: "Editar Especialidad"
   },
   {
-    path: '/archivos',
+    path: '/estudiantes/detalle/archivos',
     pageName: "Archivos"
   },
   {
@@ -259,4 +259,8 @@ export const PageTitles = [
     path: '/programasDeTutoriaMaestroEsp/editar',
     pageName: "Editar tutoría"
   },
+  {
+    path: '/programasDeTutoria/detalle-programa/alumno/archivos',
+    pageName: "Archivos"
+  }, 
 ];

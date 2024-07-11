@@ -187,7 +187,7 @@ function DatosEncabezadoCuenta({ rol, fieldErrors, setFieldErrors, isAdmin}: Inp
 
   const handleArchivos = () => {
     //console.log("Navigating with user data:", user);
-    navigate('/archivos', { state: { userData: user } });
+    navigate('/estudiantes/detalle/archivos', { state: { userDataId: user.id } });
   };
 
   return (

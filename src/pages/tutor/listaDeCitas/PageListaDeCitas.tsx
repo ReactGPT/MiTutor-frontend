@@ -93,7 +93,7 @@ const PageListaDeCitas = () => {
       {/* Filtro de búsqueda */}
 
       <div className="h-[7%]">
-        <SearchInput placeholder="Cosa a buscar" onSearch={handleSearch} handleOnChangeFilters={handleOnChangeFilters} />
+        <SearchInput placeholder="Buscador" onSearch={handleSearch} handleOnChangeFilters={handleOnChangeFilters} />
       </div>
 
       {/* Item de Cita       */}

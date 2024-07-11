@@ -61,7 +61,9 @@ function transformCitaToEvent(cita: ListCita): CustomEvent {
 }
 
 const CalendarioAlumno: React.FC<CalendarioAlumnoProps> = ({ citas = null, onSelectEvent }) => {
-  const events: CustomEvent[] = citas?.map(transformCitaToEvent) ?? [];
+  const events: CustomEvent[] = citas
+    ?.filter(cita => cita.appointmentStatus !== "cancelada")
+    .map(transformCitaToEvent) ?? [];
   //
   const eventPropGetter = (event: CustomEvent) => {
     if (event.isBackgroundEvent) {

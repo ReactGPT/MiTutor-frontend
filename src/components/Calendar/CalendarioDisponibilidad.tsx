@@ -106,10 +106,13 @@ const CalendarioDisponibilidad: React.FC<CalendarioDisponibilidadProps> = ({ cit
   }, [refrescar, refreshKey]);
 
   useEffect(() => {
-    console.log(availability); 
+    console.log(availability);
   }, [fetchAvailability]);
 
-  const events: CustomEvent[] = citas?.map(transformCitaToEvent) ?? [];
+  const events: CustomEvent[] = citas
+    ?.filter(cita => cita.appointmentStatus !== "cancelada")
+    .map(transformCitaToEvent) ?? [];
+
   const disponibilidad = transformAvailabilityToEvent(availability);
   //
   const [selectedSlot, setSelectedSlot] = useState<SlotInfo | null>(null);

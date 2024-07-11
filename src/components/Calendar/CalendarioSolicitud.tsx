@@ -107,7 +107,11 @@ const CalendarioSolicitud: React.FC<CalendarioSolicitudProps> = (
     return startDate >= today;
   });
 
-  const events: CustomEvent[] = filteredCita.map(transformCitaToEvent) ?? [];
+  //const events: CustomEvent[] = filteredCita.map(transformCitaToEvent) ?? [];
+  const events: CustomEvent[] = filteredCita
+    ?.filter(cita => cita.appointmentStatus !== "cancelada")
+    .map(transformCitaToEvent) ?? [];
+
   const disponibilidad = transformAvailabilityToEvent(availability);
   //
   const [selectedSlot, setSelectedSlot] = useState<SlotInfo | null>(null);

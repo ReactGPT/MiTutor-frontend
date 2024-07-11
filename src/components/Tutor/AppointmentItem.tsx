@@ -166,7 +166,7 @@ const AppointmentItem: React.FC<AppointmentItemProps> = ({ appointment, tipo, us
             <span className="text-black font-semibold">Hora:</span>
             <span className="text-primary">{`${appointment.startTime}`}</span>
           </div>
-          <Button variant='primario' onClick={goToDetalleCita} icon={IconDetails} />
+          <Button variant='primario' onClick={goToDetalleCita} icon={IconDetails} disabled={appointment.appointmentStatus == "cancelada"} />
           <div>{isModalOpen && <CitaModalDetalle onClose={closeModal} appointment={appointment} onCancelAppointment={onCancelAppointment} />}</div>
         </div>
       </div>

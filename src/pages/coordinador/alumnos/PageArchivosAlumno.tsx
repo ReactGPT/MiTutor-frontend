@@ -220,7 +220,7 @@ const PageArchivosAlumnos: React.FC = () => {
           }
           const idArchivo = await enviarArchivoAlumnoBD(archivo); // Espera a que se complete enviarArchivoBd
           // Enviar archivo al servidor
-          await enviarArchivoServidor(file, idArchivo.toString(), 'archivosCita').then(() => {
+          await enviarArchivoServidor(file, idArchivo.toString(), 'archivosAlumno').then(() => {
             // Actualizar el estado del archivo en archivosBD
             file.id_archivo=idArchivo; 
             }).catch(error => {

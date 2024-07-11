@@ -13,6 +13,9 @@ import { Services as ServicesProperties } from '../../../config';
 import { useAuth } from '../../../context';
 import { ManagerRoleDetails, Specialty } from '../../../store/types';
 import { useAppSelector } from "../../../store/hooks";
+import { getEspecialidadesFromRoleCoordinador } from '../../../store/hooks/EspecialidadesRolesIdCoordinador';
+import { Label } from 'flowbite-react';
+import { Combobox, Spinner } from '../../../components';
 
 interface StudentData {
   studentId: number;
@@ -130,13 +133,17 @@ const PageIndicadorAlumno: React.FC = () => {
   const [idStudents, setIdStudent] = useState<IdsStudent[]>([]);
   const { userData } = useAuth();
 
+  const especialidades: ManagerRoleDetails[] = getEspecialidadesFromRoleCoordinador(userData);
+  const [selectedIdEspecialidad, setSelectedIdEspecialidad] = useState<number | null>(null);
+
+  const handleOnChangeSpecialty = (value: any) => {
+    setSelectedIdEspecialidad(value.id);
+  };
+
+  // Lista de Especialidades del Coordinador de Especialidad
   const specialtyList = Array.from(new Set(userData?.userInfo?.roles
     .filter(role => role.type === 'SPECIALTYMANAGER')
     .map(role => role.details)));
-
-  // 1. Si es coordinador de Facultad: Puede ver todas las especialidades de esa facultad                     CASO 1
-  // 2. Si es coordinador de Especialidad: Puede ver solo la especialidad a la que pertenece                  CASO 2
-  // 3. Si es coordinador de Facultad y Especialidad: Puede ver todas las especialidades de esa facultad      CASO 1
 
   useEffect(() => {
     const fetchData = async () => {
@@ -145,27 +152,25 @@ const PageIndicadorAlumno: React.FC = () => {
         let responseData = response.data.data;
         let finalData: StudentData[] = [];
 
-        for (const specialty of specialtyList) {
-          if (isManagerRoleDetails(specialty)) {
-            const responseIds = await api.get<{ success: boolean, data: number[] }>(`/listarEstudiantePorIdEspecialidad/${specialty.departmentId}`);
-            let responseDataIds = responseIds.data.data;
-            responseData = responseData.filter(item =>
-              responseDataIds.some(data => data === item.studentId)
-            );
-            finalData = [...finalData, ...responseData.filter(item => !finalData.some(data => data.studentId === item.studentId))];
-          }
+        if (selectedIdEspecialidad != null) {
+          const responseIds = await api.get<{ success: boolean, data: number[] }>(`/listarEstudiantePorIdEspecialidad/${selectedIdEspecialidad}`);
+          let responseDataIds = responseIds.data.data;
+          responseData = responseData.filter(item =>
+            responseDataIds.some(data => data === item.studentId)
+          );
+          finalData = [...responseData.filter(item => !finalData.some(data => data.studentId === item.studentId))];
+
+          const transformedData: ChartData[] = finalData.map((student: StudentData) => ({
+            name: `${student.studentName} ${student.studentLastName} ${student.studentSecondLastName}`,
+            programCount: student.cantidadProgramas,
+            studentId: student.studentId
+          }));
+          setData([...data, ...transformedData]);
+
+          // Ordenar los datos por cantidad de programas en orden descendente y seleccionar los primeros 3
+          let topStudentsData = transformedData.sort((a, b) => b.programCount - a.programCount).slice(0, 7);
+          setTopStudents(topStudentsData);
         }
-        const transformedData: ChartData[] = finalData.map((student: StudentData) => ({
-          name: `${student.studentName} ${student.studentLastName} ${student.studentSecondLastName}`,
-          programCount: student.cantidadProgramas,
-          studentId: student.studentId
-        }));
-        setData([...data, ...transformedData]);
-
-        // Ordenar los datos por cantidad de programas en orden descendente y seleccionar los primeros 3
-        let topStudentsData = transformedData.sort((a, b) => b.programCount - a.programCount).slice(0, 7);
-        setTopStudents(topStudentsData);
-
       } catch (error) {
         console.error("Error fetching student data:", error);
       } finally {
@@ -174,7 +179,7 @@ const PageIndicadorAlumno: React.FC = () => {
     };
 
     fetchData();
-  }, []);
+  }, [selectedIdEspecialidad]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -182,15 +187,14 @@ const PageIndicadorAlumno: React.FC = () => {
         const response = await api.get<{ success: boolean, data: StudentInfo[] }>('/listarCantidadAppointmentsStudent');
         let responseData = response.data.data;
         let finalData: StudentInfo[] = [];
-        for (const specialty of specialtyList) {
-          if (isManagerRoleDetails(specialty)) {
-            const responseIds = await api.get<{ success: boolean, data: number[] }>(`/listarEstudiantePorIdEspecialidad/${specialty.departmentId}`);
-            let responseDataIds = responseIds.data.data;
-            responseData = responseData.filter(item =>
-              responseDataIds.some(data => data === item.studentId)
-            );
-            finalData = [...finalData, ...responseData.filter(item => !finalData.some(data => data.studentId === item.studentId))];
-          }
+
+        if (selectedIdEspecialidad != null) {
+          const responseIds = await api.get<{ success: boolean, data: number[] }>(`/listarEstudiantePorIdEspecialidad/${selectedIdEspecialidad}`);
+          let responseDataIds = responseIds.data.data;
+          responseData = responseData.filter(item =>
+            responseDataIds.some(data => data === item.studentId)
+          );
+          finalData = [...finalData, ...responseData.filter(item => !finalData.some(data => data.studentId === item.studentId))];
         }
         setData1(finalData);
       } catch (error) {
@@ -201,7 +205,7 @@ const PageIndicadorAlumno: React.FC = () => {
     };
 
     fetchData();
-  }, []);
+  }, [selectedIdEspecialidad]);
 
   const fetchProgramsData = async (studentId: number) => {
     try {
@@ -391,12 +395,25 @@ const PageIndicadorAlumno: React.FC = () => {
   }
 
   return (
-    <>
-      <div className="mb-4 flex justify-between">
-        <button className="bg-primary cursor-default rounded-xl rounded-xl text-white px-5 shadow-custom border border-solid border-[rgba(116,170,255,0.70)] active:bg-black hover:cursor-pointer ml-6" onClick={handleExportClick}>
+    <div className="w-full h-full flex flex-col gap-4">
+      <div className="flex justify-between items-end h-fit">
+        <div>
+          <Label value="Especialidad" className='font-roboto text-primary' />
+          <Combobox
+            className='w-[250px]'
+            options={especialidades.map(especialidad => ({
+              id: especialidad.departmentId,
+              name: especialidad.departmentName,
+              ...especialidad
+            }))}
+            onChange={handleOnChangeSpecialty}
+            value={null}
+          />
+        </div>
+        <button className="min-h-[40px] bg-primary cursor-default rounded-xl rounded-xl text-white px-5 shadow-custom border border-solid border-[rgba(116,170,255,0.70)] active:bg-black hover:cursor-pointer ml-6" onClick={handleExportClick}>
           Exportar
         </button>
-        <button className="bg-primary cursor-default rounded-xl rounded-xl text-white px-5 shadow-custom border border-solid border-[rgba(116,170,255,0.70)] active:bg-black hover:cursor-pointer ml-6" onClick={handleBuscarAlumnosClick}>
+        <button className="min-h-[40px] bg-primary cursor-default rounded-xl rounded-xl text-white px-5 shadow-custom border border-solid border-[rgba(116,170,255,0.70)] active:bg-black hover:cursor-pointer ml-6" onClick={handleBuscarAlumnosClick}>
           Buscar Alumnos
         </button>
         <div className="max-h-[40px] rounded-2xl flex">
@@ -421,33 +438,37 @@ const PageIndicadorAlumno: React.FC = () => {
         </div>
       </div>
 
-
       <div className="flex gap-4">
         <div className="w-1/3 h-screen">
           <div className="bg-white shadow-md rounded-md overflow-hidden max-w-lg mx-auto">
             <div className="bg-primary py-2 px-4">
               <h2 className="text-xl font-semibold text-white text-center">Alumnos Destacados por Programas</h2>
             </div>
+            {topStudents.length === 0 || topStudents.every(student => student.programCount === 0) ? (
+              <div className="bg-gray-200 py-4 px-6 text-center">
+                No se encontraron datos para esta fecha.
+              </div>
+            ) : (
+              <ul className="divide-y bg-gray-200">
+                {topStudents.map((student, index) => (
+                  <li key={index} className="flex items-center py-4 px-6 cursor-pointer hover:bg-gradient-to-r from-secondary to-blue-300" onClick={() => handleTutorClick(student.studentId)}>
+                    <span className="text-gray-700 text-lg font-medium mr-4">{index + 1}.</span>
+                    <img className="w-12 h-12 rounded-full object-cover mr-4" src={noAvatar} />
 
-            <ul className="divide-y bg-gray-200">
-              {topStudents.map((student, index) => (
-                <li key={index} className="flex items-center py-4 px-6 cursor-pointer hover:bg-gradient-to-r from-secondary to-blue-300" onClick={() => handleTutorClick(student.studentId)}>
-                  <span className="text-gray-700 text-lg font-medium mr-4">{index + 1}.</span>
-                  <img className="w-12 h-12 rounded-full object-cover mr-4" src={noAvatar} />
+                    <div className="flex-1">
+                      <h3 className="text-lg font-medium text-gray-800">{student.name}</h3>
+                      <p className="text-gray-600 text-base">En {student.programCount} programas</p>
+                    </div>
 
-                  <div className="flex-1">
-                    <h3 className="text-lg font-medium text-gray-800">{student.name}</h3>
-                    <p className="text-gray-600 text-base">En {student.programCount} programas</p>
-                  </div>
-
-                  <div className="ml-auto">
-                    {index === 0 && <IconTrophyGold />}
-                    {index === 1 && <IconTrophySilver />}
-                    {index === 2 && <IconTrophyBronze />}
-                  </div>
-                </li>
-              ))}
-            </ul>
+                    <div className="ml-auto">
+                      {index === 0 && <IconTrophyGold />}
+                      {index === 1 && <IconTrophySilver />}
+                      {index === 2 && <IconTrophyBronze />}
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            )}
           </div>
         </div>
 
@@ -457,22 +478,28 @@ const PageIndicadorAlumno: React.FC = () => {
           </div>
           <div className="h-1/3 m-4 shadow-md rounded-md overflow-hidden" id="chart-container">
             <ResponsiveContainer width="100%" height="100%">
-              <BarChart
-                data={data}
-                margin={{
-                  top: 5,
-                  right: 30,
-                  left: 20,
-                  bottom: 5,
-                }}
-              >
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="name" tick={{ fontWeight: 'bold' }} />
-                <YAxis />
-                <Tooltip />
-                <Legend />
-                <Bar name="Cantidad de programas académicos" dataKey="programCount" fill="#7d2bc5" activeBar={<Rectangle fill="skyblue" stroke="blue-bold" />} />
-              </BarChart>
+              {data && data.length > 0 ? (
+                <BarChart
+                  data={data}
+                  margin={{
+                    top: 5,
+                    right: 30,
+                    left: 20,
+                    bottom: 5,
+                  }}
+                >
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis dataKey="name" tick={{ fontWeight: 'bold' }} />
+                  <YAxis />
+                  <Tooltip />
+                  <Legend />
+                  <Bar name="Cantidad de programas académicos" dataKey="programCount" fill="#7d2bc5" activeBar={<Rectangle fill="skyblue" stroke="blue-bold" />} />
+                </BarChart>
+              ) : (
+                <div className="bg-gray-200 p-4 text-center">
+                  No se encontraron datos para esta fecha
+                </div>
+              )}
             </ResponsiveContainer>
           </div>
           <div className="bg-primary py-2 px-4">
@@ -480,27 +507,33 @@ const PageIndicadorAlumno: React.FC = () => {
           </div>
           <div className="h-1/2 bg-white-300 m-4 flex-grow p-4 overflow-auto">
             <ResponsiveContainer width="100%" height="100%">
-              <AreaChart
-                data={data1}
-                margin={{
-                  top: 5,
-                  right: 30,
-                  left: 20,
-                  bottom: 5,
-                }}
-              >
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis
-                  dataKey={(item) => `${item.studentName} ${item.studentLastName}`}
-                  tick={{ fontWeight: 'bold' }}
-                />
-                <YAxis />
-                <Tooltip />
-                <Legend />
-                <Area type="monotone" dataKey="registeredCount" stackId="1" stroke="#7d2bc5" fill="#7d2bc5" name="Registrado" />
-                <Area type="monotone" dataKey="pendingResultCount" stackId="1" stroke="#0f5827" fill="#0f5827" name="Pendiente Resultado" />
-                <Area type="monotone" dataKey="completedCount" stackId="1" stroke="#f7db18" fill="#f7db18" name="Completado" />
-              </AreaChart>
+              {data1 && data1.length > 0 ? (
+                <AreaChart
+                  data={data1}
+                  margin={{
+                    top: 5,
+                    right: 30,
+                    left: 20,
+                    bottom: 5,
+                  }}
+                >
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis
+                    dataKey={(item) => `${item.studentName} ${item.studentLastName}`}
+                    tick={{ fontWeight: 'bold' }}
+                  />
+                  <YAxis />
+                  <Tooltip />
+                  <Legend />
+                  <Area type="monotone" dataKey="registeredCount" stackId="1" stroke="#7d2bc5" fill="#7d2bc5" name="Registrado" />
+                  <Area type="monotone" dataKey="pendingResultCount" stackId="1" stroke="#0f5827" fill="#0f5827" name="Pendiente Resultado" />
+                  <Area type="monotone" dataKey="completedCount" stackId="1" stroke="#f7db18" fill="#f7db18" name="Completado" />
+                </AreaChart>
+              ) : (
+                <div className="bg-gray-200 p-4 text-center">
+                  No se encontraron datos para esta fecha
+                </div>
+              )}
             </ResponsiveContainer>
           </div>
         </div>
@@ -508,7 +541,7 @@ const PageIndicadorAlumno: React.FC = () => {
         <ModalAlumnos isOpen={isStudentModalOpen} onClose={() => setIsStudentModalOpen(false)} students={students}
         />
       </div>
-    </>
+    </div>
   );
 };
 

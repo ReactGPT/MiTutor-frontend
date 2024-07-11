@@ -38,6 +38,15 @@ const ProgramaTutoríaSearchBar = ({ handleOnChangeFilters }: InputProps) => {
                 }
             }
         });
+        selectedEspecialidades = [{
+            id: 0, name: 'Todas las especialidades',
+            acronym: '',
+            faculty: {
+                facultyId: 0, name: '', acronym: '',
+                numberOfStudents: 0, numberOfTutors: 0, isActive: false,
+                facultyManager: undefined, specialties: null
+            }, facultyId: 0
+        }, ...selectedEspecialidades];
     }
 
     const specialityOptions = useMemo(() => {

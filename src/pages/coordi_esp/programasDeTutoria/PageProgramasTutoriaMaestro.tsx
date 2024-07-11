@@ -117,8 +117,7 @@ export default function PageProgramasTutoriaMaestroEsp() {
                     }
                 });
             });
-        }
-
+        }   
         // Apply additional filters (name, speciality, faculty)
         filteredData = filteredData.filter(item =>
             item.nombre.toLowerCase().includes(filters.name ? filters.name.toString().toLowerCase() : "") &&

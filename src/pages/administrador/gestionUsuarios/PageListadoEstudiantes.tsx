@@ -6,7 +6,7 @@ import 'ag-grid-community/styles/ag-theme-alpine.css';
 import { ColDef } from 'ag-grid-community';
 import CustomUsuariosGridButton from './CustomUsuariosGridButton';
 import { DetailsIcon } from '../../../assets';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useUser } from '../../../store/hooks/useUser';
 import { Spinner } from '../../../components';
 import DeleteIcon from '../../../assets/svg/DeleteIcon';
@@ -31,15 +31,22 @@ export default function PageListadoEstudiantes() {
 
   const { userData:userLogin } = useAuth(); 
   const roles = userLogin?.userInfo?.roles;
-  useEffect(() => {
-    //console.log("llamada fetch prog tutoria");
-    //fetchProgramaTutorias();
+  const location = useLocation();
+
+  
+  useEffect(() => { 
+    //console.log("ddd");
     fetchStudents();
-  }, []);
+  }, [location]);
 
   const handleNavigation = (data: User) => {
     console.log(data);
-    navigate("/estudiantes/detalle", { state: { userData: data, isAdmin } });
+    const vieneDeEstudiantesFacultad = location.pathname.includes('/estudiantesFacultad');
+    if (vieneDeEstudiantesFacultad) {
+      navigate("/estudiantesFacultad/detalle", { state: { userData: data, isAdmin } });
+    } else {
+      navigate("/estudiantesEspecialidad/detalle", { state: { userData: data, isAdmin } });
+    }
   };
 
   const handleOnSelectStudent = (estudiante: User) => {
@@ -66,6 +73,10 @@ export default function PageListadoEstudiantes() {
     }
   };
 
+  //PARA DIFERENCIAR FACU/ESP
+  const isFromAlumnos = location.pathname.includes('/estudiantesFacultad');
+  const isFacu = isFromAlumnos ? 1 : 0;  
+
   const [filters, setFilters] = useState<any>({
     idSpeciality: null,
     idFaculty: null,
@@ -73,7 +84,7 @@ export default function PageListadoEstudiantes() {
   });
 
   let isAdmin: number = 0;
-
+  
   const UserFiltered: User[] = useMemo(() => {
     let filteredUsers: User[]=[];
        
@@ -89,24 +100,43 @@ export default function PageListadoEstudiantes() {
         );
       } 
       //FACULTAD
-      const uniqueStudentIds = new Set<number>();
+      if(isFacu){
+        const uniqueStudentIds = new Set<number>();
   
-      roles.forEach(role => {
-        if (role.rolName === 'Responsable de Facultad') {
-          const facultyId = parseInt((role.details as any).departmentId, 10);
-  
-          userData.forEach(user => {
-            if (typeof user.id === 'number' && user.estudiante?.facultyId === facultyId) {
-              if (!uniqueStudentIds.has(user.id)) {
-                uniqueStudentIds.add(user.id);
-                filteredUsers.push(user);
+        roles.forEach(role => {
+          if (role.rolName === 'Responsable de Facultad') {
+            const facultyId = parseInt((role.details as any).departmentId, 10);
+    
+            userData.forEach(user => {
+              if (typeof user.id === 'number' && user.estudiante?.facultyId === facultyId) {
+                if (!uniqueStudentIds.has(user.id)) {
+                  uniqueStudentIds.add(user.id);
+                  filteredUsers.push(user);
+                }
               }
-            }
-          });
-        }
-      });
-    }
-  
+            });
+          }
+        });
+      }else{
+        //ESPECIALIDAD
+        const uniqueStudenteEspIds = new Set<number>();
+    
+        roles.forEach(role => {
+          if (role.rolName === 'Responsable de Especialidad') {
+            const specialityId = parseInt((role.details as any).departmentId, 10);
+    
+            userData.forEach(user => {
+              if (typeof user.id === 'number' && user.estudiante?.specialityId === specialityId) {
+                if (!uniqueStudenteEspIds.has(user.id)) {
+                  uniqueStudenteEspIds.add(user.id);
+                  filteredUsers.push(user);
+                }
+              }
+            });
+          }
+        });
+      }        
+    } 
     return filteredUsers;
   }, [userData, filters, roles]);
   

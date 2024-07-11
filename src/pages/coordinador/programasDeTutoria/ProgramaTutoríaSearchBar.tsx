@@ -42,6 +42,12 @@ const ProgramaTutoríaSearchBar = ({ handleOnChangeFilters }: InputProps) => {
                 }
             }
         });
+        selectedFaculties = [{
+            id: 0, name: 'Todas las facultades',
+            acronym: '',
+            numberStudents: 0,
+            numberTutors: 0
+        }, ...selectedFaculties];
     }
 
     const specialityOptions = useMemo(() => {

@@ -220,7 +220,11 @@ export const PageTitles = [
     pageName: "Editar Especialidad"
   },
   {
-    path: '/estudiantes/detalle/archivos',
+    path: '/estudiantesFacultad/detalle/archivos',
+    pageName: "Archivos"
+  },
+  {
+    path: '/estudiantesEspecialidad/detalle/archivos',
     pageName: "Archivos"
   },
   {
@@ -274,5 +278,21 @@ export const PageTitles = [
   {
     path: '/tutores/disponibilidad',
     pageName: "Disponibilidad del Tutor"
+  },
+  {
+    path: '/estudiantesEspecialidad',
+    pageName: "Alumnos"
+  },
+  {
+    path: '/estudiantesEspecialidad/detalle',
+    pageName: "Detalle Alumno"
+  },
+  {
+    path: '/estudiantesFacultad',
+    pageName: "Alumnos"
+  },
+  {
+    path: '/estudiantesFacultad/detalle',
+    pageName: "Detalle Alumno"
   },
 ];

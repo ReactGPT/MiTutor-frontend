@@ -187,7 +187,13 @@ function DatosEncabezadoCuenta({ rol, fieldErrors, setFieldErrors, isAdmin}: Inp
 
   const handleArchivos = () => {
     //console.log("Navigating with user data:", user);
-    navigate('/estudiantes/detalle/archivos', { state: { userDataId: user.id } });
+    //navigate('/estudiantesFacultad/detalle/archivos', { state: { userDataId: user.id } });
+    const vieneDeEstudiantesFacultad = location.pathname.includes('/estudiantesFacultad/detalle');
+    if (vieneDeEstudiantesFacultad) {
+      navigate("/estudiantesFacultad/detalle/archivos", { state: {  userDataId: user.id, userName:`${user.persona.name} ${user.persona.lastName} ${user.persona.secondLastName}` } });
+    } else {
+      navigate("/estudiantesEspecialidad/detalle/archivos", { state: {  userDataId: user.id, userName:`${user.persona.name} ${user.persona.lastName} ${user.persona.secondLastName}`  } });
+    }
   };
 
   return (

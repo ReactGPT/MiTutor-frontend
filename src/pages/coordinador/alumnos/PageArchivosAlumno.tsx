@@ -18,10 +18,10 @@ import { getTutorId } from '../../../store/hooks/RolesIdTutor';
 
 const PageArchivosAlumnos: React.FC = () => {
   const { state } = useLocation();
-  const { userDataId } = state; 
+  const { userDataId, userName } = state; 
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [previewError, setPreviewError] = useState<boolean>(false);
-  const [pdfPreview, setPdfPreview] = useState<boolean>(false);
+  const [pdfPreview, setPreviewPdf] = useState<boolean>(false);
   const [txtContent, setTxtContent] = useState<string | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [filteredFiles, setFilteredFiles] = useState<ExtendedFile[]>([]);
@@ -131,41 +131,6 @@ const PageArchivosAlumnos: React.FC = () => {
     }
   };
 
-  const handleFilePreview = (file: ExtendedFile) => {
-    if (file && file.type && file.type.startsWith('image/')) {
-      const reader = new FileReader();
-      reader.onload = () => {
-        setPreviewUrl(reader.result as string);
-        setPdfPreview(false);
-        setTxtContent(null); // Limpiar el contenido de texto previo si es que había
-      };
-      reader.readAsDataURL(file);
-      setPreviewError(false);
-    } else if (file && file.type === 'application/pdf') {
-      const reader = new FileReader();
-      reader.onload = () => {
-        setPreviewUrl(reader.result as string);
-        setPdfPreview(true);
-        setTxtContent(null); // Limpiar el contenido de texto previo si es que había
-      };
-      reader.readAsArrayBuffer(file);
-      setPreviewError(false);
-    } else if (file && file.type === 'text/plain') { // Ajustar para archivos de texto .txt
-      const reader = new FileReader();
-      reader.onload = () => {
-        setTxtContent(reader.result as string);
-        setPreviewUrl(null); // Limpiar la vista previa de imagen o PDF si es que había
-        setPdfPreview(false);
-      };
-      reader.readAsText(file);
-      setPreviewError(false);
-    } else {
-      setPreviewUrl(null);
-      setPreviewError(true);
-      setTxtContent(null);
-    }
-  };
-   
   const triggerFileInput = () => {
     const input = document.getElementById('fileInput') as HTMLInputElement;
     input.value = ''; // Limpiar el valor del input
@@ -311,6 +276,57 @@ const PageArchivosAlumnos: React.FC = () => {
     setFilteredFiles(filtered);
   };
 
+
+  const [previewContent, setPreviewContent] = useState<string | ArrayBuffer | null>(null);
+  const [contentType, setContentType] = useState<string | null>(null);
+
+  const handleFilePreview = (file: ExtendedFile) => {
+    if (!file) {
+      return;
+    }
+  
+    const reader = new FileReader();
+  
+    reader.onload = () => {
+      const result = reader.result;
+  
+      if (file.type && file.type.startsWith('image/')) {
+        // Mostrar vista previa de imagen
+        console.log("Contenido de la imagen:", result);
+        setPreviewContent(result as string);
+        setContentType('image');
+      } else if (file.type === 'application/pdf') {
+        // Mostrar vista previa de PDF
+        console.log("Contenido del PDF:", result);
+        setPreviewContent(result as ArrayBuffer);
+        setContentType('pdf');
+      } else if (file.type === 'text/plain') {
+        // Mostrar contenido de archivo de texto
+        console.log("Contenido del archivo de texto:", result);
+        setPreviewContent(result as string);
+        setContentType('text');
+      } else {
+        // Tipo de archivo no compatible
+        console.log("Tipo de archivo no compatible para la vista previa");
+        setPreviewContent(null);
+        setContentType('unsupported');
+      }
+    };
+  
+    if (file.type && (file.type.startsWith('image/') || file.type === 'application/pdf' || file.type === 'text/plain')) {
+      if (file.type === 'application/pdf') {
+        reader.readAsArrayBuffer(file);
+      } else {
+        reader.readAsDataURL(file);
+      }
+      setPreviewError(false);
+    } else {
+      setPreviewError(true);
+      console.log("Tipo de archivo no compatible para la vista previa");
+    }
+  };
+  
+
   return ( 
     <div className="flex flex-col h-full"> 
       <SearchBar handleSearch={handleSearch} handleOnSearchTutor={handleOnSearchTutor} />   
@@ -321,7 +337,7 @@ const PageArchivosAlumnos: React.FC = () => {
               <span className='block truncate flex flex-row gap-4'>
                 <h3 className='font-montserrat text-lg font-bold text-primary'>Alumno:</h3>
                 <h3 className='font-montserrat text-lg font-semibold text-primary truncate'>
-                  {/*`${userData.persona.name} ${userData.persona.lastName} ${userData.persona.secondLastName}`*/}
+                  {userName}
                 </h3>
               </span>
             </div>

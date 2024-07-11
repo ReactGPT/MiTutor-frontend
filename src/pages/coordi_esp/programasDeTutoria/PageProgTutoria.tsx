@@ -38,7 +38,7 @@ export default function PageProgTutoriaEsp() {
           />
         </div>
         <div id="ProgramaTutoriaBox3" className='flex flex-row w-full h-[20%] gap-4'>
-          <DatosAlumnosSeleccionados className='flex flex-row w-full h-full items-center p-4 border-custom drop-shadow-md' />
+          <DatosAlumnosSeleccionados className='flex-grow flex-shrink-0 h-full items-center p-4 border-custom drop-shadow-md' />
         </div>
         <ModalAgregarTutores isOpen={isOpenModalAgregarTutores} closeModal={() => { setIsOpenModalAgregarTutores(false); }} />
       </div>

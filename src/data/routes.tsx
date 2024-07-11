@@ -71,6 +71,7 @@ import PageMaestroTutoresEsp from "../pages/coordi_esp/MaestroTutores/PageMaestr
 import PageProgramasTutoriaMaestroEsp from "../pages/coordi_esp/programasDeTutoria/PageProgramasTutoriaMaestro.tsx";
 import PageProgTutoriaEsp from "../pages/coordi_esp/programasDeTutoria/PageProgTutoria.tsx";
 import PageSolicitudGestionEsp from "../pages/coordi_esp/gestionSolicitudes/PageSolicitudGestion.tsx";
+import PageArchivosAlumnos from "../pages/coordinador/alumnos/PageArchivosAlumno.tsx";
 
 type RouterDetail = {
   pages: RouteObject[];
@@ -268,6 +269,10 @@ export const Routes: RouterConfig = {
         path: '/estudiantes/detalle',
         element: <PageEstudiante />
       },
+      {
+        path: '/archivos',
+        element: <PageArchivosAlumnos />
+      }, 
     ],
     navBarLink: [
       {

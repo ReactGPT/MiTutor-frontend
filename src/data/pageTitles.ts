@@ -218,5 +218,10 @@ export const PageTitles = [
   {
     path: '/facultades/editarFacultad/especialidades/editar',
     pageName: "Editar Especialidad"
+  },
+  {
+    path: '/archivos',
+    pageName: "Archivos"
   }
+
 ];

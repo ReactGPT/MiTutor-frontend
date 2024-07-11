@@ -41,6 +41,7 @@ import PageSolicitudGestion from "../pages/coordinador/gestionSolicitudes/PageSo
 import PageCalendarioAlumno from "../pages/alumno/calendario/PageCalendarioAlumno.tsx";
 import PageDetalleDeTutoria from "../pages/alumno/misTutorias/PageDetalleDeTutoria.tsx";
 import PageIndicadorAlumno from "../pages/alumno/indicadorAlumnos/PageIndicadorAlumno.tsx";
+import PageIndicadorAlumnoEsp from "../pages/alumno/indicadorAlumnos/PageIndicadorAlumnoEsp.tsx";
 import PageIndicadorTutor from "../pages/tutor/indicadorTutores/PageIndicadorTutor.tsx";
 import PageListadoUsuarios from "../pages/administrador/gestionUsuarios/PageListadoUsuarios.tsx";
 import PageUsuario from "../pages/administrador/gestionUsuarios/PageUsuario.tsx";
@@ -348,8 +349,8 @@ export const Routes: RouterConfig = {
         element: <PageSolicitudGestionEsp />,
       },
       {
-        path: '/indicadorAlumno',
-        element: <PageIndicadorAlumno />
+        path: '/indicadorAlumnoEsp',
+        element: <PageIndicadorAlumnoEsp />
       },
       {
         path: '/indicadorTutor',
@@ -388,13 +389,13 @@ export const Routes: RouterConfig = {
         path: '/gestionSolicitudesEsp',
         icon: <BiUserCheck fontSize={32} />,
       },
-      /*{
-        key: 'indicadorAlumno',
+      {
+        key: 'indicadorAlumnoEsp',
         label: 'Indicador Alumno',
-        path: '/indicadorAlumno',
+        path: '/indicadorAlumnoEsp',
         icon: <BiBarChart fontSize={32} />,
       },
-      {
+      /*{
         key: 'indicadorTutor',
         label: 'Indicador Tutor',
         path: '/indicadorTutor',

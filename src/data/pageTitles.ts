@@ -17,7 +17,7 @@ export const PageTitles = [
   },
   {
     path: '/programasDeTutoria',
-    pageName: "Tipos de tutoría",
+    pageName: "Tipos de Tutoría",
   },
   {
     path: '/listaDeCitas',
@@ -222,6 +222,41 @@ export const PageTitles = [
   {
     path: '/archivos',
     pageName: "Archivos"
-  }
-
+  },
+  {
+    path: '/programasDeTutoriaEsp',
+    pageName: "Tipos de Tutoría"
+  },
+  {
+    path: '/gestionSolicitudesEsp',
+    pageName: "Gestión de Solicitudes"
+  },
+  {
+    path: '/gestionSolicitudesEsp',
+    pageName: "Gestión de Solicitudes"
+  },
+  {
+    path: '/programasDeTutoriaMaestroEsp/nuevo',
+    pageName: "Nueva tutoría"
+  },
+  {
+    path: '/calendarioTutor',
+    pageName: "Calendario"
+  },
+  {
+    path: '/programasDeTutoriaTutor',
+    pageName: "Tipos de tutoría"
+  },
+  {
+    path: '/gestionSolicitudesTutor',
+    pageName: "Gestión de Solicitudes"
+  },
+  {
+    path: '/miPerfilTutor',
+    pageName: "Mi Perfil"
+  },
+  {
+    path: '/programasDeTutoriaMaestroEsp/editar',
+    pageName: "Editar tutoría"
+  },
 ];

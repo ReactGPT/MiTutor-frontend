@@ -255,4 +255,8 @@ export const PageTitles = [
     path: '/programasDeTutoriaMaestroEsp/editar',
     pageName: "Editar tutoría"
   },
+  {
+    path: '/indicadorAlumnoEsp',
+    pageName: "Indicadores Alumnos"
+  },
 ];

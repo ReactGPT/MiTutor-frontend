@@ -20,8 +20,7 @@ const PageArchivosAlumnos: React.FC = () => {
   const { state } = useLocation();
   const { userDataId, userName } = state; 
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
-  const [previewError, setPreviewError] = useState<boolean>(false);
-  const [pdfPreview, setPreviewPdf] = useState<boolean>(false);
+   const [pdfPreview, setPreviewPdf] = useState<boolean>(false);
   const [txtContent, setTxtContent] = useState<string | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [filteredFiles, setFilteredFiles] = useState<ExtendedFile[]>([]);
@@ -277,55 +276,54 @@ const PageArchivosAlumnos: React.FC = () => {
   };
 
 
-  const [previewContent, setPreviewContent] = useState<string | ArrayBuffer | null>(null);
+  const [previewContent, setPreviewContent] = useState<Blob | string | null>(null);
   const [contentType, setContentType] = useState<string | null>(null);
+  const [previewError, setPreviewError] = useState(false);
 
   const handleFilePreview = (file: ExtendedFile) => {
+    console.log("Archivo seleccionado:", file);
     if (!file) {
+      setPreviewContent(null);
+      setContentType(null);
+      setPreviewError(true);
       return;
     }
-  
-    const reader = new FileReader();
-  
-    reader.onload = () => {
-      const result = reader.result;
-  
-      if (file.type && file.type.startsWith('image/')) {
-        // Mostrar vista previa de imagen
-        console.log("Contenido de la imagen:", result);
-        setPreviewContent(result as string);
-        setContentType('image');
-      } else if (file.type === 'application/pdf') {
-        // Mostrar vista previa de PDF
-        console.log("Contenido del PDF:", result);
-        setPreviewContent(result as ArrayBuffer);
+
+    // Limpiar errores previos
+    setPreviewError(false);
+
+    // Determinar el tipo de archivo y contenido
+    const { type } = file;
+
+    if (type.startsWith('image/')) {
+      // Para imágenes, se muestra directamente la URL del archivo
+      setPreviewContent(URL.createObjectURL(file));
+      setContentType('image');
+    } else if (type === 'application/pdf') {
+      // Para archivos PDF, se carga como Blob para la vista previa
+      const reader = new FileReader();
+      reader.onload = () => {
+        const arrayBuffer = reader.result as ArrayBuffer;
+        const blob = new Blob([arrayBuffer], { type: 'application/pdf' });
+        setPreviewContent(blob);
         setContentType('pdf');
-      } else if (file.type === 'text/plain') {
-        // Mostrar contenido de archivo de texto
-        console.log("Contenido del archivo de texto:", result);
-        setPreviewContent(result as string);
+      };
+      reader.readAsArrayBuffer(file);
+    } else if (type === 'text/plain') {
+      // Tratar archivos de texto aquí si es necesario
+      const reader = new FileReader();
+      reader.onload = () => {
+        setPreviewContent(reader.result as string);
         setContentType('text');
-      } else {
-        // Tipo de archivo no compatible
-        console.log("Tipo de archivo no compatible para la vista previa");
-        setPreviewContent(null);
-        setContentType('unsupported');
-      }
-    };
-  
-    if (file.type && (file.type.startsWith('image/') || file.type === 'application/pdf' || file.type === 'text/plain')) {
-      if (file.type === 'application/pdf') {
-        reader.readAsArrayBuffer(file);
-      } else {
-        reader.readAsDataURL(file);
-      }
-      setPreviewError(false);
+      };
+      reader.readAsText(file);
     } else {
-      setPreviewError(true);
-      console.log("Tipo de archivo no compatible para la vista previa");
+      setPreviewContent(null);
+      setContentType(null);
+      setPreviewError(true); // Tipo de archivo no compatible
     }
   };
-  
+
 
   return ( 
     <div className="flex flex-col h-full"> 
@@ -403,17 +401,17 @@ const PageArchivosAlumnos: React.FC = () => {
           <div className="border p-4 flex-1 overflow-auto flex flex-col justify-center">
             {previewError ? (
               <p>No se puede mostrar la vista previa del archivo seleccionado.</p>
-            ) : txtContent !== null ? (
-              <pre className="whitespace-pre-wrap overflow-auto">{txtContent}</pre>
-            ) : previewUrl ? (
-              pdfPreview ? (
+            ) : previewContent !== null ? (
+              contentType === 'image' ? (
+                <img src={previewContent as string} alt="Vista Previa" className="w-full h-full object-contain" />
+              ) : contentType === 'pdf' ? (
                 <div className="pdf-viewer-container h-full">
-                  <Document file={{ url: previewUrl }}>
+                  <Document file={previewContent}>
                     <Page pageNumber={1} />
                   </Document>
                 </div>
               ) : (
-                <img src={previewUrl} alt="Vista Previa" className="w-full h-full object-contain" />
+                <p>Formato de archivo no compatible para la vista previa.</p>
               )
             ) : (
               <p>Selecciona un archivo para ver la vista previa</p>

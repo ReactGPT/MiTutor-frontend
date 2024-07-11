@@ -1,16 +1,17 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import DatosPersona from './DatosPersona'
 import { UserProvider} from '../../../context/UsuarioNuevo'
 import DatosCuenta from './DatosCuenta'
 import DatosEncabezadoCuenta from './DatosEncabezadoCuenta'
 import DatosEstudiante from './DatosEstudiante'
+import { useAuth } from '../../../context'
 
 
 export default function PageEstudiante() {
   const { state } = useLocation();
   const { userData, isAdmin } = state;
-  //console.log(userData);
+  console.log(isAdmin);
   const navigate = useNavigate();
   const [fieldErrors, setFieldErrors] = useState({
     phone: '',

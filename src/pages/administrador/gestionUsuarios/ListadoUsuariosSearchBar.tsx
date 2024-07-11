@@ -15,7 +15,7 @@ export default function ListadoUsuariosSearchBar({ rol }: InputProps) {
   const [triggerDownload, setTriggerDownload] = useState(false); // Estado para controlar la descarga
 
   const handleClickNuevoUsuario = () => {
-    navigate(`/${rol}s/nuevo`, { state: { userData: null } });
+    navigate(`/${rol}s/nuevo`, { state: { userData: null, isAdmin:1 } });
   };
 
   const capitalize = (s: string) => {

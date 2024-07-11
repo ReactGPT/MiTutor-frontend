@@ -32,7 +32,16 @@ export default function PageListadoEstudiantes() {
   const { userData:userLogin } = useAuth(); 
   const roles = userLogin?.userInfo?.roles;
   const location = useLocation();
+  const [isAdmin, setIsAdmin] = useState<number>(0);
 
+  useEffect(() => {
+    if (roles) {
+      const adminRole = roles.find(role => role.type === "ADMIN");
+      if (adminRole) {
+        setIsAdmin(1);
+      }
+    }
+  }, [roles]);
   
   useEffect(() => { 
     //console.log("ddd");
@@ -42,10 +51,16 @@ export default function PageListadoEstudiantes() {
   const handleNavigation = (data: User) => {
     console.log(data);
     const vieneDeEstudiantesFacultad = location.pathname.includes('/estudiantesFacultad');
+    const vieneDeEstudiantesEspecialidad= location.pathname.includes('/estudiantesEspecialidad');
     if (vieneDeEstudiantesFacultad) {
       navigate("/estudiantesFacultad/detalle", { state: { userData: data, isAdmin } });
     } else {
-      navigate("/estudiantesEspecialidad/detalle", { state: { userData: data, isAdmin } });
+      if(vieneDeEstudiantesEspecialidad){
+        navigate("/estudiantesEspecialidad/detalle", { state: { userData: data, isAdmin } });
+      }else{
+        //isAdmin=1;
+        navigate("/estudiantes/detalle", { state: { userData: data, isAdmin } });
+      }
     }
   };
 
@@ -81,9 +96,7 @@ export default function PageListadoEstudiantes() {
     idSpeciality: null,
     idFaculty: null,
     name: null
-  });
-
-  let isAdmin: number = 0;
+  }); 
   
   const UserFiltered: User[] = useMemo(() => {
     let filteredUsers: User[]=[];
@@ -93,8 +106,7 @@ export default function PageListadoEstudiantes() {
       //ADMIN GENERAL
       const adminRole = roles.find(role => role.type === "ADMIN");
 
-      if (adminRole) {
-        isAdmin = 1;
+      if (adminRole) { 
         filteredUsers = userData.filter((item) =>
           item.persona.name.toLowerCase().includes(filters.name ? filters.name.toLowerCase() : "")
         );
@@ -184,7 +196,7 @@ export default function PageListadoEstudiantes() {
       field: '',
       maxWidth: 60,
       minWidth: 40,
-      cellRenderer: (rowData: any) => {
+      cellRenderer: (rowData: any) => { 
         return (
           <button className='text-primary' onClick={() => handleOnSelectStudent(rowData.data)}>
             <DeleteIcon size={6} />

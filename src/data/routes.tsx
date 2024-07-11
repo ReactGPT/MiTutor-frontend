@@ -10,7 +10,8 @@ import {
   BiUserCheck,
   BiBarChart,
   BiBarChartAlt,
-  BiSolidWrench
+  BiSolidWrench,
+  BiUserPin
 } from "react-icons/bi";
 import { PiStudent } from "react-icons/pi";
 
@@ -73,6 +74,8 @@ import PageProgramasTutoriaMaestroEsp from "../pages/coordi_esp/programasDeTutor
 import PageProgTutoriaEsp from "../pages/coordi_esp/programasDeTutoria/PageProgTutoria.tsx";
 import PageSolicitudGestionEsp from "../pages/coordi_esp/gestionSolicitudes/PageSolicitudGestion.tsx";
 import PageArchivosAlumnos from "../pages/coordinador/alumnos/PageArchivosAlumno.tsx";
+import PageDisponibilidadTutores from "../pages/coordinador/tutores/PageDisponibilidadTutores.tsx";
+import DetalleDisponibilidadTutores from "../pages/coordinador/tutores/DetalleDisponibilidadTutores.tsx";
 
 type RouterDetail = {
   pages: RouteObject[];
@@ -158,12 +161,12 @@ export const Routes: RouterConfig = {
       },
       {
         path: '/listaDeCitas/resultadoCitaGrupal',
-        element: <PageResultadoCitaGrupal /> 
+        element: <PageResultadoCitaGrupal />
       },
       {
         path: '/programasDeTutoria/detalle-programa/alumno/archivos',
-        element: <PageArchivosAlumnos /> 
-      }  
+        element: <PageArchivosAlumnos />
+      }
     ],
     navBarLink: [
       {
@@ -275,7 +278,15 @@ export const Routes: RouterConfig = {
       {
         path: '/estudiantes/detalle/archivos',
         element: <PageArchivosAlumnos />
-      }, 
+      },
+      {
+        path: '/tutores',
+        element: <PageDisponibilidadTutores />
+      },
+      {
+        path: '/tutores/disponibilidad',
+        element: <DetalleDisponibilidadTutores />
+      },
     ],
     navBarLink: [
       {
@@ -318,13 +329,19 @@ export const Routes: RouterConfig = {
         key: 'maestroTutores',
         label: 'Asignación Tutores',
         path: '/maestroTutores',
-        icon: <UserPlus size={6} />
+        icon: <UserPlus size={8} />
       },
       {
         key: 'alumnos',
         label: 'Alumnos',
         path: '/estudiantes',
         icon: <PiStudent fontSize={32} />,
+      },
+      {
+        key: 'tutores',
+        label: 'Disponibilidad Tutores',
+        path: '/tutores',
+        icon: <BiUserPin fontSize={32} />,
       }
     ]
   },
@@ -370,7 +387,15 @@ export const Routes: RouterConfig = {
       {
         path: '/maestroTutores',
         element: <PageMaestroTutoresEsp />
-      }
+      },
+      {
+        path: 'tutores',
+        element: <PageDisponibilidadTutores />
+      },
+      {
+        path: '/tutores/disponibilidad',
+        element: <DetalleDisponibilidadTutores />
+      },
     ],
     navBarLink: [
       {
@@ -407,7 +432,13 @@ export const Routes: RouterConfig = {
         key: 'maestroTutores',
         label: 'Asignación Tutores',
         path: '/maestroTutores',
-        icon: <UserPlus size={6} />
+        icon: <UserPlus size={8} />
+      },
+      {
+        key: 'tutores',
+        label: 'Disponibilidad Tutores',
+        path: '/tutores',
+        icon: <BiUserPin fontSize={32} />,
       }
     ]
   },

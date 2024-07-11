@@ -262,9 +262,17 @@ export const PageTitles = [
   {
     path: '/programasDeTutoria/detalle-programa/alumno/archivos',
     pageName: "Archivos"
-  }, 
+  },
   {
     path: '/indicadorAlumnoEsp',
     pageName: "Indicadores Alumnos"
+  },
+  {
+    path: '/tutores',
+    pageName: "Disponibilidad Tutores"
+  },
+  {
+    path: '/tutores/disponibilidad',
+    pageName: "Disponibilidad del Tutor"
   },
 ];

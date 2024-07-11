@@ -411,7 +411,7 @@ const PageIndicadorTutor: React.FC = () => {
 
             const responseIds = await api.get<{ success: boolean, data: number[]; }>(`/listarTutoresPorIdEspecialidad/${selectedIdFacultad}`);
             const responseDataIds = responseIds.data.data;
-
+            
             responseData = responseData.filter(item =>
               responseDataIds.includes(item.tutorId)
             );

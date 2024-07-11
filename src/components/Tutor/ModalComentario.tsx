@@ -7,6 +7,7 @@ import { IconDelete,SaveIcon } from '../../assets';
 import { ExtendedFile } from '../../store/types/Archivo';
 import { FaDownload } from 'react-icons/fa';
 import ClipLoader from 'react-spinners/ClipLoader';
+import { date } from 'react-form-ease';
 
 interface ModalComentarioProps {
   isOpen: boolean;
@@ -28,7 +29,7 @@ export default function ModalComentario({ isOpen, onClose,  updatePage, commentV
         // Clonamos los archivos y agregamos la propiedad 'nuevo'
         const extendedFile: ExtendedFile = Object.assign(file, {
           nuevo: 1, eliminado:0, id_archivo: 0,
-          nombre:file.name
+          nombre:file.name, date: new Date().toISOString()
         });
         return extendedFile;
       });
@@ -75,7 +76,9 @@ export default function ModalComentario({ isOpen, onClose,  updatePage, commentV
   
     
   const triggerFileInput = () => {
-    document.getElementById('fileInput')?.click();
+    const input = document.getElementById('fileInput') as HTMLInputElement;
+    input.value = ''; // Limpiar el valor del input
+    input.click();
   };
 
   const handleFileDownload = (file: ExtendedFile) => {

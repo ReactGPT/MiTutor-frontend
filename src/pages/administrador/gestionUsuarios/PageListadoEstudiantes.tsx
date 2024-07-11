@@ -39,10 +39,9 @@ export default function PageListadoEstudiantes() {
 
   const handleNavigation = (data: User) => {
     console.log(data);
-    
-    navigate("/estudiantes/detalle", { state: { userData: data } });
-
+    navigate("/estudiantes/detalle", { state: { userData: data, isAdmin } });
   };
+
   const handleOnSelectStudent = (estudiante: User) => {
     setStudentSelected(estudiante);
   };
@@ -150,7 +149,7 @@ export default function PageListadoEstudiantes() {
         );
       }
     },
-    {
+    ...(isAdmin === 1 ? [{
       headerName: '',
       field: '',
       maxWidth: 60,
@@ -162,8 +161,7 @@ export default function PageListadoEstudiantes() {
           </button>
         );
       }
-    }
-
+    }] : []) 
   ];
   return (
     <div className='flex w-full h-full flex-col gap-5'>

@@ -220,6 +220,10 @@ export const PageTitles = [
     pageName: "Editar Especialidad"
   },
   {
+    path: '/archivos',
+    pageName: "Archivos"
+  },
+  {
     path: '/programasDeTutoriaEsp',
     pageName: "Tipos de Tutoría"
   },

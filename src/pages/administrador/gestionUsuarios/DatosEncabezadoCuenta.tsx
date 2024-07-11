@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Checkbox, Combobox, InputCell, Spinner, Toogle } from '../../../components';
-import { SaveIcon, CloseIcon } from '../../../assets';
+import { SaveIcon, CloseIcon, FileIcon } from '../../../assets';
 import { useUserContext } from '../../../context/UsuarioNuevo';
 import { RootState } from '../../../store/store';
 import { useUser } from '../../../store/hooks/useUser';
@@ -32,6 +32,7 @@ type InputProps = {
     lastName: string;
     specialityId: string;
   }>>;
+  isAdmin:number;
 }
 
 interface Usuarios {
@@ -39,7 +40,7 @@ interface Usuarios {
   email: string;
 }
 
-function DatosEncabezadoCuenta({ rol, fieldErrors, setFieldErrors }: InputProps) {
+function DatosEncabezadoCuenta({ rol, fieldErrors, setFieldErrors, isAdmin}: InputProps) {
   const { user, onChangeUser } = useUserContext();
   const { postUser, postStudent, loading, fetchUsersSingleSet } = useUser();
   const { fetchEspecialidadData2, especialidadData } = useEspecialidad();
@@ -184,6 +185,11 @@ function DatosEncabezadoCuenta({ rol, fieldErrors, setFieldErrors }: InputProps)
     }
   }
 
+  const handleArchivos = () => {
+    //console.log("Navigating with user data:", user);
+    navigate('/archivos', { state: { userData: user } });
+  };
+
   return (
     <div className='flex flex-col w-full'>
       <div className='flex flex-row items-center w-full justify-between'>
@@ -193,10 +199,17 @@ function DatosEncabezadoCuenta({ rol, fieldErrors, setFieldErrors }: InputProps)
           </h1>
         ) : (<h1 className="font-montserrat text-3xl font-bold text-primary text-center"></h1>)}
 
-        <div className='flex flex-row gap-4'>
-          {loading ? <Spinner /> : <Button text='Guardar' icon={SaveIcon} onClick={handleSaveUsuario} />}
-          <Button text='Cancelar' variant='primario' icon={CloseIcon} iconSize={4} onClick={() => { navigate(-1); }} />
-        </div>
+      <div className='flex flex-row gap-4'>
+        {isAdmin === 1 ? (
+          <>
+            {loading ? <Spinner /> : <Button text='Guardar' icon={SaveIcon} onClick={handleSaveUsuario} />}
+            <Button text='Cancelar' variant='primario' icon={CloseIcon} iconSize={4} onClick={() => { navigate(-1); }} />
+          </>
+        ) : (
+          <Button text='Archivos' variant='primario' icon={FileIcon} iconSize={4} onClick={handleArchivos}/>
+        )}
+      </div>
+
       </div>
       <ModalSuccess isOpen={isOpenModalSucess}
         message={!!user?.id ? "Se guardaron los cambios satisfactoriamente" : "Se creó el usuario satisfactoriamente"}

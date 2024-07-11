@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { enviarArchivo, enviarArchivoBD, listarArchivosBD, descargarArchivo } from '../services/archivos';
+import { enviarArchivo, enviarArchivoBD, listarArchivosBD, descargarArchivo, listarArchivosAlumnoBD } from '../services/archivos';
 import { Archivo, ExtendedFile, FileBD } from '../types/Archivo';
 
 type ArchivosHooksReturn = { 
@@ -46,7 +46,7 @@ type ArchivosBDHooksReturn = {
     enviarArchivoBd: (file: Archivo) => Promise<number>;
     archivosBD: ExtendedFile[]; 
     fetchArchivosBD: (idResultado: number, idTipo: number) => Promise<void>; 
-    //setArchivosBD: (archivos: ExtendedFile[]) => void;
+    fetchArch_AlumnosBD: (idResultado: number) => Promise<void>;  
     setArchivosBD: React.Dispatch<React.SetStateAction<ExtendedFile[]>>;
 };
   
@@ -97,8 +97,37 @@ function useArchivosDB(): ArchivosBDHooksReturn {
           throw error;  
         }
       }
+
+      async function fetchArch_AlumnosBD(idAlumno: number){
+        try {
+          setLoading(true);
+          setError(null);
+          const archivos = await listarArchivosAlumnoBD(idAlumno);
+          // Descargar contenido para cada archivo
+          const archivosConContenido = await Promise.all(
+            archivos.map(async (archivo) => {
+              const blobArchivo = await descargarArchivo(archivo.nombre, archivo.id_archivo.toString(), 'archivosAlumno');
+              const extendedFile: ExtendedFile = new File([blobArchivo], archivo.nombre) as ExtendedFile;
+              extendedFile.nuevo = archivo.nuevo;
+              extendedFile.eliminado = archivo.eliminado;
+              extendedFile.id_archivo = archivo.id_archivo;
+              extendedFile.date= archivo.date;
+              return extendedFile;
+            })
+          );
+          
+          
+          setArchivosBD(archivosConContenido);
+          console.log("archivos seteados ALUMNO",archivosConContenido);  
+          setLoading(false);
+        } catch (error) {
+          setError("Error en listarArchivosBD");
+          setLoading(false);
+          throw error;  
+        }
+      }
  
-    return { archivosBD, loading, error, enviarArchivoBd, fetchArchivosBD, setArchivosBD };
+    return { archivosBD, loading, error, enviarArchivoBd, fetchArchivosBD, fetchArch_AlumnosBD, setArchivosBD };
 }
 
 type ArchivosOtrosHooksReturn = { 

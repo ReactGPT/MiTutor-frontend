@@ -50,9 +50,11 @@ type Props = {
   setStudentDataModified: (state: (studentData: Student[]) => Student[]) => void;
   setPopout: (state: boolean) => void;
   onClose: () => void; // Prop to handle closing the dialog
+  idFacultad: number;
+  idEspecialidad: number;
 };
 
-const PageCargarMasivamente = ({ setStudentDataModified, setPopout, onClose }: Props) => {
+const PageCargarMasivamente = ({ setStudentDataModified, setPopout, onClose, idFacultad,idEspecialidad }: Props) => {
   const inputFileRef = useRef<HTMLInputElement>(null);
   const [file, setFile] = useState<InputFile>(initialFileState);
   const [inputState, setInputState] = useState<InputState>("normal");
@@ -74,11 +76,13 @@ const PageCargarMasivamente = ({ setStudentDataModified, setPopout, onClose }: P
           institutionalEmail: row.Correos,
           facultyName: row.Facultades,
           isRegistered: false,
+          facultyId:idFacultad,
+          specialtyId:idEspecialidad
         };
       })
     );
   }, [rowData]);
-  const handleAgregar = () => {
+  const handleAgregar = () => { 
     setStudentDataModified((prevData) => {
       return [...prevData, ...studentData.filter((student) =>
         student.studentId !== 0 && !prevData.some((prevStudent) => prevStudent.pucpCode === student.pucpCode))
@@ -138,7 +142,7 @@ const PageCargarMasivamente = ({ setStudentDataModified, setPopout, onClose }: P
     setRowData([]);
   };
 
-  const handleReadFile = () => {
+  const handleReadFile = () => { 
     if (file.file) {
       const reader = new FileReader();
 

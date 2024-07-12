@@ -38,16 +38,18 @@ async function getStudentInfo(idTutoringProgram:number):Promise<StudentDetailRes
 
 async function getStudentIdInfo(students:Student[]):Promise<StudentDetailResponse>{
   try {
+    console.log(students);
       const response = await axios({
           method: 'post',
           url: `${ServicesProperties.BaseUrl}/listarEstudiantesPorId`,
           headers: {
             'Content-Type': 'application/json'
           },
-          data: JSON.stringify(students)
+          data: (students)
       });
    
       if(!response.data.success){
+        console.log(students);
           return {studentList:[]};
       }
       const studentList: Student[] = response.data.data.map((item: any) => {
@@ -61,6 +63,8 @@ async function getStudentIdInfo(students:Student[]):Promise<StudentDetailRespons
             institutionalEmail: item.institutionalEmail,
             facultyName: item.facultyName,
             isRegistered: false,
+            facultyId: item.facultadId,
+            specialtyId: item.specialityId
           };
         });
 

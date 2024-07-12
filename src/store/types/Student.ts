@@ -10,4 +10,6 @@ export type Student = {
   isRegistered: boolean;
   tutorId?: number;
   tutorName?: string;
+  facultyId: number;
+  specialtyId: number;
 };

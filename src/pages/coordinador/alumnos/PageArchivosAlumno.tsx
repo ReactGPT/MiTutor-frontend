@@ -1,7 +1,7 @@
-import React, { useState, ChangeEvent, useEffect } from 'react';
+import React, { useState, ChangeEvent, useEffect, useRef } from 'react';
 import { FaDownload, FaTrashAlt } from 'react-icons/fa';
 import { Button } from '../../../components';
-import { Document, Page } from 'react-pdf';
+import { Document, Page,pdfjs } from 'react-pdf';
 import ModalResultadoCita from '../../../components/Tutor/ModalResultadoCita';
 import { useArchivos, useArchivosDB } from '../../../store/hooks/useArchivos';
 import { ArchivoStudent, ExtendedFile } from '../../../store/types/Archivo';
@@ -14,7 +14,17 @@ import { Services as ServicesProperties } from '../../../config';
 import SearchBar from './SearchBar';
 import SimpleSearchInput from '../../../components/SimpleSearchInput';
 import { useAuth } from '../../../context';
-import { getTutorId } from '../../../store/hooks/RolesIdTutor';
+import { getTutorId } from '../../../store/hooks/RolesIdTutor'; 
+import 'react-pdf/dist/esm/Page/AnnotationLayer.css'; 
+import { Viewer } from '@react-pdf-viewer/core';
+import '@react-pdf-viewer/core/lib/styles/index.css';
+import { GlobalWorkerOptions } from 'pdfjs-dist';
+
+// Ruta al worker de PDF.js, puedes usar una CDN o una ruta local
+GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
+
+// Resto de la configuración de tu aplicación, como React Router, etc.
+
 
 const PageArchivosAlumnos: React.FC = () => {
   const { state } = useLocation();
@@ -273,55 +283,21 @@ const PageArchivosAlumnos: React.FC = () => {
     setArchivoSearchValue(query);
     const filtered = archivosBDCopia.filter(file => file.name.toLowerCase().includes(query.toLowerCase()));
     setFilteredFiles(filtered);
-  };
-
-
-  const [previewContent, setPreviewContent] = useState<Blob | string | null>(null);
+  };  
+ 
+  // Configurar el worker de pdf.js
+  const [previewContent, setPreviewContent] = useState<string | Blob | null>(null);
   const [contentType, setContentType] = useState<string | null>(null);
   const [previewError, setPreviewError] = useState(false);
+  const viewerRef = useRef<Viewer>();
 
   const handleFilePreview = (file: ExtendedFile) => {
-    console.log("Archivo seleccionado:", file);
-    if (!file) {
-      setPreviewContent(null);
-      setContentType(null);
-      setPreviewError(true);
-      return;
-    }
-
-    // Limpiar errores previos
-    setPreviewError(false);
-
-    // Determinar el tipo de archivo y contenido
-    const { type } = file;
-
-    if (type.startsWith('image/')) {
-      // Para imágenes, se muestra directamente la URL del archivo
-      setPreviewContent(URL.createObjectURL(file));
-      setContentType('image');
-    } else if (type === 'application/pdf') {
-      // Para archivos PDF, se carga como Blob para la vista previa
-      const reader = new FileReader();
-      reader.onload = () => {
-        const arrayBuffer = reader.result as ArrayBuffer;
-        const blob = new Blob([arrayBuffer], { type: 'application/pdf' });
-        setPreviewContent(blob);
-        setContentType('pdf');
-      };
-      reader.readAsArrayBuffer(file);
-    } else if (type === 'text/plain') {
-      // Tratar archivos de texto aquí si es necesario
-      const reader = new FileReader();
-      reader.onload = () => {
-        setPreviewContent(reader.result as string);
-        setContentType('text');
-      };
-      reader.readAsText(file);
-    } else {
-      setPreviewContent(null);
-      setContentType(null);
-      setPreviewError(true); // Tipo de archivo no compatible
-    }
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      const url = reader.result as string;
+      setPreviewUrl(url);
+    };
+    reader.readAsDataURL(file);
   };
 
 
@@ -399,22 +375,10 @@ const PageArchivosAlumnos: React.FC = () => {
         <div className="w-1/2 p-4 flex flex-col h-full">
           <h2 className="text-xl font-bold mb-4">Vista Previa</h2>
           <div className="border p-4 flex-1 overflow-auto flex flex-col justify-center">
-            {previewError ? (
-              <p>No se puede mostrar la vista previa del archivo seleccionado.</p>
-            ) : previewContent !== null ? (
-              contentType === 'image' ? (
-                <img src={previewContent as string} alt="Vista Previa" className="w-full h-full object-contain" />
-              ) : contentType === 'pdf' ? (
-                <div className="pdf-viewer-container h-full">
-                  <Document file={previewContent}>
-                    <Page pageNumber={1} />
-                  </Document>
-                </div>
-              ) : (
-                <p>Formato de archivo no compatible para la vista previa.</p>
-              )
-            ) : (
-              <p>Selecciona un archivo para ver la vista previa</p>
+            {previewUrl && (
+              <div style={{ height: '500px', marginBottom: '20px' }}>
+                <Viewer fileUrl={previewUrl} />
+              </div>
             )}
           </div>
         </div>

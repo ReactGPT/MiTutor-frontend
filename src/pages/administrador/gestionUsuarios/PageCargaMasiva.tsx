@@ -111,6 +111,9 @@ export default function PageCargaMasiva() {
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const input = document.getElementById('fileInput') as HTMLInputElement;
+    input.value = ''; // Limpiar el valor del input
+    input.click();
     const selectedFile = e.target.files && e.target.files.length === 1 ? e.target.files[0] : null;
 
     if (selectedFile) {

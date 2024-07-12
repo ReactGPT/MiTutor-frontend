@@ -51,9 +51,10 @@ type Props = {
   setStudentDataModified: (state: (studentData: Student[]) => Student[]) => void;
   setPopout: (state: boolean) => void;
   onClose: () => void; // Prop to handle closing the dialog
+  idEspecialidad: number;
 };
 
-const PageCargarMasivamente = ({ setStudentDataModified, setPopout, onClose }: Props) => {
+const PageCargarMasivamente = ({ setStudentDataModified, setPopout, onClose, idEspecialidad }: Props) => {
   const inputFileRef = useRef<HTMLInputElement>(null);
   const [file, setFile] = useState<InputFile>(initialFileState);
   const [inputState, setInputState] = useState<InputState>("normal");
@@ -76,7 +77,7 @@ const PageCargarMasivamente = ({ setStudentDataModified, setPopout, onClose }: P
           facultyName: row.Facultades,
           isRegistered: false,
           facultyId:0,
-          specialtyId:0
+          specialtyId:idEspecialidad
         };
       })
     );

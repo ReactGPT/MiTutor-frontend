@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { Navigate, useLocation, useNavigate } from 'react-router-dom';
 import Pagination from '../../../components/Pagination';
 import Spinner from '../../../components/Spinner';
 import SimpleCard from '../../../components/Tutor/SimpleCard';
@@ -71,6 +71,8 @@ const PageSolicitarAlumno: React.FC = () => {
   const [motivo, setMotivo] = useState<string>('');
   const itemsPerPage = 6;
 
+  const navigate = useNavigate();
+
   useEffect(() => {
     const fetchTutors = async () => {
       setLoading(true);
@@ -134,6 +136,7 @@ const PageSolicitarAlumno: React.FC = () => {
       try {
         await insertarSolicitudTutoria(requestData); // Utilizamos el servicio para insertar la solicitud de tutoría
         closeModal();
+        navigate(-1);
       } catch (error) {
         console.error('Error creando el tutor-student program', error);
       }

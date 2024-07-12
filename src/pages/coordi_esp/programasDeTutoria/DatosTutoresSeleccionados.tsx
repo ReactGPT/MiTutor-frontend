@@ -31,6 +31,7 @@ const defaultColDef = {
         alignItems: 'center',
         display: 'flex',
     },
+    floatingFilter: true,
 };
 
 function DatosTutoresSeleccionados({ className, openModal }: InputProps) {
@@ -50,8 +51,8 @@ function DatosTutoresSeleccionados({ className, openModal }: InputProps) {
     //   };
     const columnDefs: ColDef[] = [
 
-        { headerName: 'Nombres Apellidos', field: 'fullname' },
-        { headerName: 'Email', field: 'email' },
+        { headerName: 'Nombres Apellidos', field: 'fullname', filter: 'agTextColumnFilter' },
+        { headerName: 'Email', field: 'email', filter: 'agTextColumnFilter' },
         {
             headerComponent: () => {
                 return (
@@ -79,7 +80,7 @@ function DatosTutoresSeleccionados({ className, openModal }: InputProps) {
 
     ];
     useEffect(() => {
-        console.log("ddsssss",tutoringProgram);
+        console.log("ddsssss", tutoringProgram);
         if (!!tutoringProgram.id) {
             //const idToSearch = tutoringProgramSelected.id;
             fetchTutoresByProgramaTutoria(tutoringProgram.id)

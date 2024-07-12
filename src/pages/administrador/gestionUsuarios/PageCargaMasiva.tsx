@@ -22,6 +22,7 @@ import { SaveIcon, TrashIcon } from '../../../assets';
 interface Especialidad {
   id: number;
   nombre: string;
+  nombreFacultad: string;
 }
 
 export default function PageCargaMasiva() {
@@ -87,8 +88,8 @@ export default function PageCargaMasiva() {
 
       // Agregar los usuarios en la primera hoja de datos
       data = [
-        ["Codigo", "Correo", "Nombres", "PrimerApellido", "SegundoApellido", "Telefono", "Especialidad"],
-        ["20240001", "ejemplo@pucp.edu.pe", "Lorem", "Ipsum", "Ipsum", "999999999", "Ingeniería Informática"]
+        ["Codigo", "Correo", "Nombres", "PrimerApellido", "SegundoApellido", "Telefono", "Facultad", "Especialidad"],
+        ["20240001", "ejemplo@pucp.edu.pe", "Lorem", "Ipsum", "Ipsum", "999999999", "Facultad Ejemplo", "Especialidad Ejemplo"]
       ];
 
       // Crear una hoja de formato alumnos
@@ -111,10 +112,8 @@ export default function PageCargaMasiva() {
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const input = document.getElementById('fileInput') as HTMLInputElement;
-    input.value = ''; // Limpiar el valor del input
-    input.click();
     const selectedFile = e.target.files && e.target.files.length === 1 ? e.target.files[0] : null;
+    console.log("selectedFile", selectedFile)
 
     if (selectedFile) {
       // Verificar si el archivo es de tipo Excel
@@ -137,14 +136,20 @@ export default function PageCargaMasiva() {
       setFile(null);
       setExistFile(false);
     }
+    console.log(file, existFile, selectedFile);
   };
 
-  const validateSpecialty = (specialty: string): { isValid: boolean; errorMessage: string; } => {
+  const validateSpecialty = (specialty: string, faculty: string): { isValid: boolean; errorMessage: string; } => {
     //console.log('rowData: ', especialidadData, specialty)
     const specialtyExists = listaEspecialidades.some(item => item.nombre === specialty);
     if (rol === "estudiante") {
       if (!specialtyExists) {
         return { isValid: false, errorMessage: 'La especialidad no existe en el sistema' };
+      }
+      //verificar que en esa facultad, exista la especialidad
+      const specialtyFacultyExists = listaEspecialidades.some(item => item.nombre === specialty && item.nombreFacultad === faculty);
+      if (!specialtyFacultyExists) {
+        return { isValid: false, errorMessage: 'La especialidad no existe en la facultad seleccionada' };
       }
       return { isValid: true, errorMessage: '' };
     } else {
@@ -207,13 +212,24 @@ export default function PageCargaMasiva() {
     return { isValid: true, errorMessage: '' };
   };
 
-  const validateCell = (field: string, value: any): { isValid: boolean; errorMessage: string; } => {
+  const validateFaculty = (faculty: string): { isValid: boolean; errorMessage: string } => {
+    // Verificar que la facultad exista
+    const facultyExists = listaEspecialidades.some(item => item.nombreFacultad === faculty);
+    if (rol === "estudiante") {
+      if (!facultyExists) {
+        return { isValid: false, errorMessage: 'La facultad no existe en el sistema' };
+      }
+    }
+    return { isValid: true, errorMessage: '' };
+  }
+
+  const validateCell = (field: string, value: any, secondValue?: any): { isValid: boolean; errorMessage: string; } => {
     ////console.log('rowData: ', especialidadData)
     switch (field) {
       case 'persona.phone':
         return validatePhone(value);
       case 'estudiante.specialtyName':
-        return validateSpecialty(value);
+        return validateSpecialty(value, secondValue);
       case 'persona.name':
         return validateName(value);
       case 'persona.lastName':
@@ -223,6 +239,8 @@ export default function PageCargaMasiva() {
         return validateCode(value);
       case 'institutionalEmail':
         return validateEmail(value);
+      case 'estudiante.facultyName':
+        return validateFaculty(value);
       default:
         return { isValid: true, errorMessage: '' };
     }
@@ -235,7 +253,7 @@ export default function PageCargaMasiva() {
       console.log(file);
 
       for (let i = 0; i < especialidadData.length; i++) {
-        listaEspecialidades.push({ id: especialidadData[i].id, nombre: especialidadData[i].name });
+        listaEspecialidades.push({ id: especialidadData[i].id, nombre: especialidadData[i].name, nombreFacultad: especialidadData[i].faculty.name });
       }
 
       setLoading(true); // Inicia la carga
@@ -256,6 +274,7 @@ export default function PageCargaMasiva() {
         let expectedColumns = ['Codigo', 'Correo', 'Nombres', 'PrimerApellido', 'SegundoApellido', 'Telefono'];
         if (rol === 'estudiante') {
           expectedColumns.push('Especialidad');
+          expectedColumns.push('Facultad');
         }
 
         // Obtener las columnas reales del primer objeto
@@ -289,8 +308,9 @@ export default function PageCargaMasiva() {
           .map((item, index) => {
             let estudiante = null;
             if (rol === 'estudiante') {
-              const specialty = especialidadData.find(spec => spec.name === item.Especialidad);
+              const specialty = especialidadData.find(spec => spec.name === item.Especialidad && spec.faculty.name === item.Facultad);
               console.log('Especialidad encontrada:', specialty);
+
               if (specialty) {
                 estudiante = {
                   isRisk: false, // Default value or fetch from data if available
@@ -301,10 +321,20 @@ export default function PageCargaMasiva() {
                   facultyName: specialty.faculty.name,
                   facultyAcronym: specialty.faculty.acronym,
                 };
+              } else {
+                estudiante = {
+                  isRisk: false, // Default value or fetch from data if available
+                  specialityId: 0,
+                  specialtyName: item.Especialidad,
+                  specialtyAcronym: "",
+                  facultyId: 0,
+                  facultyName: item.Facultad,
+                  facultyAcronym: "",
+                }
               }
             }
 
-            if (!validatePhone(item.Telefono).isValid || !validateSpecialty(item.Especialidad).isValid || !validateCode(item.Codigo).isValid || !validateEmail(item.Correo).isValid || !validateName(item.Nombres).isValid || !validateLastName(item.PrimerApellido).isValid) {
+            if (!validatePhone(item.Telefono).isValid || !validateSpecialty(item.Especialidad, item.Facultad).isValid || !validateCode(item.Codigo).isValid || !validateEmail(item.Correo).isValid || !validateName(item.Nombres).isValid || !validateLastName(item.PrimerApellido).isValid || !validateFaculty(item.Facultad).isValid) {
               console.log("error de validacion");
               hasAnyError = true;
             }
@@ -331,7 +361,8 @@ export default function PageCargaMasiva() {
           });
 
         if (users.length === 0) {
-          alert("No hay alumnos nuevos.");
+          //DEPENDE DEL rol
+          alert((rol === 'estudiante' ? 'Todos los estudiantes del archivo ya están registrados' : 'Todos los usuarios del archivo ya están registrados'));
         }
 
         setRowData(users);
@@ -450,19 +481,40 @@ export default function PageCargaMasiva() {
     // Si el rol es estudiante, agregar columna de Especialidad
     ...(rol === 'estudiante' ? [
       {
+        headerName: 'Facultad',
+        field: 'estudiante.facultyName',
+        filter: 'agTextColumnFilter',
+        minWidth: 150,
+        cellClassRules: {
+          'cell-error': (params: CellClassParams) => !validateCell('estudiante.facultyName', params.value).isValid
+        }
+      },
+      {
         headerName: 'Especialidad',
         field: 'estudiante.specialtyName',
         filter: 'agTextColumnFilter',
         minWidth: 150,
         cellClassRules: {
-          'cell-error': (params: CellClassParams) => !validateCell('estudiante.specialtyName', params.value).isValid
+          'cell-error': (params: CellClassParams) => {
+            const facultyName = params.data.estudiante.facultyName;
+            return !validateCell('estudiante.specialtyName', params.value, facultyName).isValid;
+          }
+          //'cell-error': (params: CellClassParams) => !validateCell('estudiante.specialtyName', params.value).isValid
         }
-      }] : [])
+      }
+    ] : [])
   ];
 
   const handleCellMouseOver = (event: CellMouseOverEvent) => {
     const cellValue = event.value; // Obtener el valor de la celda
-    const validacion = validateCell(event.column.getColId(), cellValue); // Validar
+    let validacion;
+
+    if (event.column.getColId() === 'estudiante.specialtyName') {
+      const facultyValue = event.data.estudiante.facultyName; // Obtener el valor de la facultad
+      validacion = validateCell(event.column.getColId(), cellValue, facultyValue);
+    } else {
+      validacion = validateCell(event.column.getColId(), cellValue);
+    }
 
     // Verificar si la columna es 'persona.phone', 'estudiante.specialtyName' o 'pucpCode'
     if (
@@ -471,7 +523,8 @@ export default function PageCargaMasiva() {
       event.column.getColId() === 'pucpCode' ||
       event.column.getColId() === 'institutionalEmail' ||
       event.column.getColId() === 'persona.name' ||
-      event.column.getColId() === 'persona.lastName'
+      event.column.getColId() === 'persona.lastName' ||
+      event.column.getColId() === 'estudiante.facultyName'
     ) {
       if (!validacion.isValid) {
         setTooltipContent(validacion.errorMessage); // Contenido del tooltip

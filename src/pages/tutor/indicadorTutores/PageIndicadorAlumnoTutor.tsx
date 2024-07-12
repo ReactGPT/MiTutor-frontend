@@ -9,6 +9,7 @@ import jsPDF from 'jspdf';
 import { IconSearch } from '../../../assets';
 import { PieChart, Pie, Tooltip, Legend, ResponsiveContainer, BarChart, CartesianGrid, XAxis, YAxis, Bar, Cell } from 'recharts';
 import { getTutorId } from '../../../store/hooks/RolesIdTutor';
+import { BiDownload } from 'react-icons/bi';
 
 interface StudentData {
   studentId: number;
@@ -154,12 +155,14 @@ const PageIndicadorAlumnoTutor: React.FC = () => {
     };
     loadStudentsData();
   }, []);
+
   useEffect(() => {
     fetchData();
     fetchAppointments();
     fetchProgramVirtualFace();
     fetchProgramaTutorias();
   }, []);
+
   const fetchProgramaTutorias = async () => {
     try {
       // Realiza la petición al servicio para obtener los programas de tutoría del tutor
@@ -175,6 +178,7 @@ const PageIndicadorAlumnoTutor: React.FC = () => {
       console.error('Error fetching data:', error);
     }
   };
+
   const fetchData = async () => {
     try {
       //let url = `http://api.daoch.me/listarProgramaFecha/${tutor?.tutorId}`;
@@ -202,7 +206,6 @@ const PageIndicadorAlumnoTutor: React.FC = () => {
       console.error('Error fetching data:', error);
     }
   };
-
 
   const fetchAppointments = async () => {
     try {
@@ -667,15 +670,18 @@ const PageIndicadorAlumnoTutor: React.FC = () => {
         <div className="w-1/3 h-screen">
           <div className="bg-white shadow-md rounded-md overflow-hidden max-w-lg mx-auto">
             <div className="bg-primary py-2 px-4">
-              <h2 className="text-xl font-semibold text-white text-center">Listado de Alumnos</h2>
+              <h2 className="text-xl font-semibold text-white text-center">Reportes de Alumnos</h2>
             </div>
             <div className="p-4">
               {students.map(student => (
-                <div key={student.studentId} className="bg-gray-100 p-4 mb-2 rounded-md shadow-sm cursor-pointer" onClick={() => fetchStudentDetails(tutorId, student.studentId)}>
-                  <h3 className="font-semibold">{student.name} {student.lastName} {student.secondLastName}</h3>
-                  <p>Teléfono: {student.phone}</p>
-                  <p>Especialidad: {student.specialtyName}</p>
-                  <p>Facultad: {student.facultyName}</p>
+                <div key={student.studentId} className="flex justify-between bg-gray-100 p-4 mb-2 rounded-md shadow-sm cursor-pointer" onClick={() => fetchStudentDetails(tutorId, student.studentId)}>
+                  <div className='flex flex-col'>
+                    <h3 className="font-semibold">{student.name} {student.lastName} {student.secondLastName}</h3>
+                    <p>Teléfono: {student.phone}</p>
+                    <p>Especialidad: {student.specialtyName}</p>
+                    <p>Facultad: {student.facultyName}</p>
+                  </div>
+                  <BiDownload size={24} />
                 </div>
               ))}
             </div>

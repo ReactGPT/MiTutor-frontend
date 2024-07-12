@@ -75,6 +75,8 @@ const PageCargarMasivamente = ({ setStudentDataModified, setPopout, onClose }: P
           institutionalEmail: row.Correos,
           facultyName: row.Facultades,
           isRegistered: false,
+          facultyId:0,
+          specialtyId:0
         };
       })
     );

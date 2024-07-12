@@ -330,7 +330,9 @@ const initialState:ParametersState={
             pucpCode: "20203340",
             institutionalEmail: "agomez@gmail.com",
             facultyName: "Ingeniería Mecatrónica",
-            isRegistered: true,            
+            isRegistered: true,
+            facultyId:0,
+            specialtyId:0      
         }
     ],
 };

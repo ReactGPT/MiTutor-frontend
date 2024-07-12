@@ -139,16 +139,20 @@ export default function PageCargaMasiva() {
     }
   };
 
-  const validateSpecialty = (specialty: string): { isValid: boolean; errorMessage: string } => {
+  const validateSpecialty = (specialty: string): { isValid: boolean; errorMessage: string; } => {
     //console.log('rowData: ', especialidadData, specialty)
     const specialtyExists = listaEspecialidades.some(item => item.nombre === specialty);
-    if (!specialtyExists) {
-      return { isValid: false, errorMessage: 'La especialidad no existe en el sistema' };
+    if (rol === "estudiante") {
+      if (!specialtyExists) {
+        return { isValid: false, errorMessage: 'La especialidad no existe en el sistema' };
+      }
+      return { isValid: true, errorMessage: '' };
+    } else {
+      return { isValid: true, errorMessage: '' };
     }
-    return { isValid: true, errorMessage: '' };
   };
 
-  const validatePhone = (phone: string): { isValid: boolean; errorMessage: string } => {
+  const validatePhone = (phone: string): { isValid: boolean; errorMessage: string; } => {
     // El teléfono puede estar vacío o contener hasta 15 dígitos
     if (phone === '' || phone === undefined) {
       return { isValid: true, errorMessage: '' };
@@ -161,7 +165,7 @@ export default function PageCargaMasiva() {
     return { isValid: true, errorMessage: '' };
   };
 
-  const validateCode = (code: string): { isValid: boolean; errorMessage: string } => {
+  const validateCode = (code: string): { isValid: boolean; errorMessage: string; } => {
     // Verificar longitud del código
     if (code.length < 7 || code.length > 15) {
       return { isValid: false, errorMessage: 'El código debe tener entre 7 y 15 caracteres' };
@@ -178,32 +182,32 @@ export default function PageCargaMasiva() {
     }
     // Si pasa todas las verificaciones, es válido
     return { isValid: true, errorMessage: '' };
-  }
+  };
 
-  const validateEmail = (email: string): { isValid: boolean; errorMessage: string } => {
+  const validateEmail = (email: string): { isValid: boolean; errorMessage: string; } => {
     // Puede ser cualquier correo, pero debe ser válido
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
       return { isValid: false, errorMessage: 'El correo no es válido' };
     }
     return { isValid: true, errorMessage: '' };
-  }
+  };
 
-  const validateName = (name: string): { isValid: boolean; errorMessage: string } => {
+  const validateName = (name: string): { isValid: boolean; errorMessage: string; } => {
     if (!name || name.trim() === '') {
       return { isValid: false, errorMessage: 'El nombre no puede estar vacío' };
     }
     return { isValid: true, errorMessage: '' };
   };
 
-  const validateLastName = (lastName: string): { isValid: boolean; errorMessage: string } => {
+  const validateLastName = (lastName: string): { isValid: boolean; errorMessage: string; } => {
     if (!lastName || lastName.trim() === '') {
       return { isValid: false, errorMessage: 'El primer apellido no puede estar vacío' };
     }
     return { isValid: true, errorMessage: '' };
   };
 
-  const validateCell = (field: string, value: any): { isValid: boolean; errorMessage: string } => {
+  const validateCell = (field: string, value: any): { isValid: boolean; errorMessage: string; } => {
     ////console.log('rowData: ', especialidadData)
     switch (field) {
       case 'persona.phone':
@@ -227,7 +231,9 @@ export default function PageCargaMasiva() {
   //en el caso rol sea estudiante debe tener una columna que se llame "Especialidad"
   const handleConvert = () => {
     if (file) {
-      ////console.log("lista solo especialidadData:", especialidadData);
+
+      console.log(file);
+
       for (let i = 0; i < especialidadData.length; i++) {
         listaEspecialidades.push({ id: especialidadData[i].id, nombre: especialidadData[i].name });
       }
@@ -299,6 +305,7 @@ export default function PageCargaMasiva() {
             }
 
             if (!validatePhone(item.Telefono).isValid || !validateSpecialty(item.Especialidad).isValid || !validateCode(item.Codigo).isValid || !validateEmail(item.Correo).isValid || !validateName(item.Nombres).isValid || !validateLastName(item.PrimerApellido).isValid) {
+              console.log("error de validacion");
               hasAnyError = true;
             }
 
@@ -343,18 +350,18 @@ export default function PageCargaMasiva() {
     setRowData([]);
     setHasErrors(true);
     setCleanActive(false);
-  }
+  };
   const handleClickLimpiarGridView = () => {
     setRowData([]);
     setHasErrors(true);
-  }
+  };
 
   const handleClickGuardarUsuarios = () => {
     //las validaciones
     if (!hasErrors) {
       setIsOpen(true);
     }
-  }
+  };
 
   const handleOnConfirmSaveUsuarios = () => {
     console.log("rowData: ", rowData);
@@ -554,5 +561,5 @@ export default function PageCargaMasiva() {
         </div>}
       </div>
     </div>
-  )
+  );
 }

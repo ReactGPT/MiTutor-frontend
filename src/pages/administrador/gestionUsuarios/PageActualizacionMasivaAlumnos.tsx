@@ -20,6 +20,7 @@ import 'ag-grid-community/styles/ag-theme-alpine.css';
 interface Especialidad {
   id: number;
   nombre: string;
+  nombreFacultad: string;
 }
 
 export default function PageActualizacionMasivaAlumnos() {
@@ -58,8 +59,10 @@ export default function PageActualizacionMasivaAlumnos() {
   const handleClickDescargarFormato = async () => {
     await fetchEspecialidadData2();
     let data = [
-      ["Correo", "Codigo", "Nombres", "PrimerApellido", "SegundoApellido", "Telefono", "Especialidad"],
-      ["ejemplo@pucp.edu.pe", "20240001", "Juan", "Perez", "Gomez", "999999999", "Ingeniería Informática"]
+      //["Correo", "Codigo", "Nombres", "PrimerApellido", "SegundoApellido", "Telefono", "Facultad", "Especialidad"],
+      //["ejemplo@pucp.edu.pe", "20240001", "Juan", "Perez", "Gomez", "999999999", "Estudios Generales Ciencias", "Ingeniería Informática",]
+      ["Correo", "Facultad", "Especialidad"],
+      ["ejemplo@pucp.edu.pe", "Facultad de Ejemplo", "Especialidad de Ejemplo",]
     ];
 
     let data2 = [["Facultad", "Especialidad"]];
@@ -95,6 +98,9 @@ export default function PageActualizacionMasivaAlumnos() {
   };
 
   const validatePhone = (phone: string): { isValid: boolean; errorMessage: string } => {
+    if (phone === undefined || phone === null || phone === '') {
+      return { isValid: true, errorMessage: '' };
+    }
     // Verifica que el teléfono solo contenga números y tenga una longitud razonable
     const phoneRegex = /^\d{7,15}$/;
     if (!phoneRegex.test(phone)) {
@@ -104,6 +110,9 @@ export default function PageActualizacionMasivaAlumnos() {
   };
 
   const validateCode = (code: string): { isValid: boolean; errorMessage: string } => {
+    if (code === undefined || code === null || code === '') {
+      return { isValid: true, errorMessage: '' };
+    }
     // Verificar longitud del código
     if (code.length < 7 || code.length > 15) {
       return { isValid: false, errorMessage: 'El código debe tener entre 7 y 15 caracteres' };
@@ -122,6 +131,15 @@ export default function PageActualizacionMasivaAlumnos() {
     return { isValid: true, errorMessage: '' };
   }
 
+  const validateFaculty = (faculty: string): { isValid: boolean; errorMessage: string } => {
+    // Verificar que la facultad exista
+    const facultyExists = listaEspecialidades.some(item => item.nombreFacultad === faculty);
+    if (!facultyExists) {
+      return { isValid: false, errorMessage: 'La facultad no existe en el sistema' };
+    }
+    return { isValid: true, errorMessage: '' };
+  }
+
   const validateCell = (field: string, value: any): { isValid: boolean; errorMessage: string } => {
     ////console.log('rowData: ', especialidadData)
     switch (field) {
@@ -134,6 +152,8 @@ export default function PageActualizacionMasivaAlumnos() {
       case 'persona.secondLastName':
       case 'pucpCode':
         return validateCode(value);
+      case 'estudiante.facultyName':
+        return validateFaculty(value);
       default:
         return { isValid: true, errorMessage: '' };
     }
@@ -143,9 +163,9 @@ export default function PageActualizacionMasivaAlumnos() {
     if (file) {
       ////console.log("lista solo especialidadData:", especialidadData);
       for (let i = 0; i < especialidadData.length; i++) {
-        listaEspecialidades.push({ id: especialidadData[i].id, nombre: especialidadData[i].name });
+        listaEspecialidades.push({ id: especialidadData[i].id, nombre: especialidadData[i].name, nombreFacultad: especialidadData[i].faculty.name });
       }
-
+      //console.log("lista solo especialidadData:", listaEspecialidades);
       setLoading(true);
       const reader = new FileReader();
       reader.onload = (e) => {
@@ -160,18 +180,23 @@ export default function PageActualizacionMasivaAlumnos() {
           return;
         }
 
-        const expectedColumns = ['Correo', 'Codigo', 'Nombres', 'PrimerApellido', 'SegundoApellido', 'Telefono', 'Especialidad'];
+        const expectedColumns = ['Correo', 'Facultad', 'Especialidad'];
+        console.log("expectedColumns", expectedColumns);
         const actualColumns = Object.keys(jsonData[0]);
+        console.log("actualColumns", actualColumns);
+
         const isValidFormat = expectedColumns.every(column => actualColumns.includes(column));
 
         if (!isValidFormat) {
-          alert("El archivo Excel no tiene el formato de columnas esperado.");
+          alert("El archivo Excel no tiene el formato de columnas esperado. Asegúrese de que las columnas Correo, Facultad y Especialidad estén presentes.");
           setLoading(false);
           return;
         }
+
         if (jsonData.length > 0) {
           setCleanActive(true);
         }
+
         let hasAnyError = false;
         const processedEmails = new Set();
         const users: User[] = jsonData
@@ -185,17 +210,18 @@ export default function PageActualizacionMasivaAlumnos() {
           })
           .map(item => {
             const existingStudent = existingStudents.find(student => student.institutionalEmail === item.Correo)!;
-            const specialty = especialidadData.find(spec => spec.name === item.Especialidad);
+            const specialty = especialidadData.find(spec => spec.name === item.Especialidad && spec.faculty.name === item.Facultad);
             if (specialty === undefined && existingStudent.estudiante) {
               // Para que en el datagrid muestre esa especialidad que ingresó mal el usuario
               existingStudent.estudiante.specialtyName = item.Especialidad;
+              existingStudent.estudiante.facultyName = item.Facultad;
             }
-            if (existingStudent.estudiante) {
-              existingStudent.pucpCode = item.Codigo || existingStudent.pucpCode;
-            }
+            console.log("especialidadData", especialidadData)
+            console.log("item.Facultad", item.Facultad)
 
-            if (!validatePhone(item.Telefono).isValid || !validateSpecialty(item.Especialidad).isValid || !validateCode(item.Codigo).isValid) {
+            if (!validateSpecialty(item.Especialidad).isValid || !validateFaculty(item.Facultad).isValid) {
               hasAnyError = true;
+              console.log(validateSpecialty(item.Especialidad).errorMessage, validateFaculty(item.Facultad).errorMessage);
             }
 
             return {
@@ -213,7 +239,7 @@ export default function PageActualizacionMasivaAlumnos() {
                 specialtyName: item.Especialidad,
                 specialtyAcronym: specialty.acronym,
                 facultyId: specialty.faculty.facultyId,
-                facultyName: specialty.faculty.name,
+                facultyName: item.Facultad,
                 facultyAcronym: specialty.faculty.acronym,
                 isRisk: existingStudent.estudiante?.isRisk || false,
               } : existingStudent.estudiante,
@@ -244,7 +270,7 @@ export default function PageActualizacionMasivaAlumnos() {
   };
 
   const handleClickGuardarUsuarios = () => {
-    //console.log("para guardar", rowData);
+    console.log("para guardar, de student solo toma el id de especilidad", rowData);
     if (!hasErrors) {
       setIsOpen(true);
     }
@@ -303,45 +329,30 @@ export default function PageActualizacionMasivaAlumnos() {
       minWidth: 250,
     },
     {
-      headerName: 'Código', field: 'pucpCode', filter: 'agTextColumnFilter', minWidth: 100,
-      cellClassRules: {
-        'cell-error': (params: CellClassParams) => !validateCell('pucpCode', params.value).isValid
+      headerName: 'Nueva Facultad', field: 'estudiante.facultyName', filter: 'agTextColumnFilter', minWidth: 150, cellClassRules: {
+        'cell-error': (params: CellClassParams) => !validateCell('estudiante.facultyName', params.value).isValid
       }
     },
     {
-      headerName: 'Nombres',
-      field: 'persona.name',
-      filter: 'agTextColumnFilter',
-      minWidth: 150,
-    },
-    {
-      headerName: 'Primer Apellido',
-      field: 'persona.lastName',
-      filter: 'agTextColumnFilter',
-      minWidth: 150,
-    },
-    {
-      headerName: 'Segundo Apellido',
-      field: 'persona.secondLastName',
-      filter: 'agTextColumnFilter',
-      minWidth: 150,
-    },
-    {
-      headerName: 'Teléfono',
-      field: 'persona.phone',
-      filter: 'agTextColumnFilter',
-      minWidth: 100,
-      cellClassRules: {
-        'cell-error': (params: CellClassParams) => !validateCell('persona.phone', params.value).isValid
-      }
-    },
-    {
-      headerName: 'Especialidad',
-      field: 'estudiante.specialtyName',
-      filter: 'agTextColumnFilter',
-      minWidth: 150,
-      cellClassRules: {
+      headerName: 'Nueva Especialidad', field: 'estudiante.specialtyName', filter: 'agTextColumnFilter', minWidth: 150, cellClassRules: {
         'cell-error': (params: CellClassParams) => !validateCell('estudiante.specialtyName', params.value).isValid
+      }
+    },
+    {
+      headerName: 'Código', field: 'pucpCode', filter: 'agTextColumnFilter', minWidth: 100,
+    },
+    {
+      headerName: 'Alumno',
+      field: 'persona',
+      filter: 'agTextColumnFilter',
+      minWidth: 250,
+      valueGetter: (params) => {
+        const { name, lastName, secondLastName } = params.data.persona;
+        return [name, lastName, secondLastName].filter(Boolean).join(' ');
+      },
+      filterValueGetter: (params) => {
+        const { name, lastName, secondLastName } = params.data.persona;
+        return [name, lastName, secondLastName].filter(Boolean).join(' ');
       }
     }
   ], []);
@@ -352,9 +363,10 @@ export default function PageActualizacionMasivaAlumnos() {
 
     // Verificar si la columna es 'persona.phone', 'estudiante.specialtyName' o 'pucpCode'
     if (
-      event.column.getColId() === 'persona.phone' ||
+      //event.column.getColId() === 'persona.phone' ||
       event.column.getColId() === 'estudiante.specialtyName' ||
-      event.column.getColId() === 'pucpCode'
+      //event.column.getColId() === 'pucpCode' ||
+      event.column.getColId() === 'estudiante.facultyName'
     ) {
       if (!validacion.isValid) {
         setTooltipContent(validacion.errorMessage); // Contenido del tooltip

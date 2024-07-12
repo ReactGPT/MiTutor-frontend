@@ -35,6 +35,7 @@ export type ExcelDataUser = {
   SegundoApellido: string;
   Telefono: string;
   Especialidad: string;
+  Facultad: string;
 };
 
 /* export type Student = {

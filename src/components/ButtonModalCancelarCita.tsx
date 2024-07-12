@@ -7,6 +7,8 @@ import { Dialog } from '@headlessui/react';
 import IconAlertCircle from '../assets/svg/IconAlertCircle';
 import { useAppointment } from '../store/hooks/useAppointment';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../context';
+import { useNotification } from '../store/hooks/useNotification';
 
 interface ButtonModalCancelarCitaProps {
   appointmentId: number;
@@ -17,6 +19,11 @@ interface ButtonModalCancelarCitaProps {
 const ButtonModalCancelarCita: React.FC<ButtonModalCancelarCitaProps> = (
   { appointmentId, redirectUrl, onCancelAppointment }
 ) => {
+  const { userData } = useAuth();
+  const userAcountId = userData?.userInfo?.id || 0;
+
+  const { notificarCancelarCita } = useNotification(userAcountId);
+
   const navigate = useNavigate();
   //console.log(appointmentId);
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -51,6 +58,7 @@ const ButtonModalCancelarCita: React.FC<ButtonModalCancelarCitaProps> = (
       if (isCancelled) {
         handleCloseModal();
         handleOpenSuccessModal();
+        await notificarCancelarCita(appointmentId);
         redirect();
       }
       else throw new Error("No se pudo cancelar la cita.");

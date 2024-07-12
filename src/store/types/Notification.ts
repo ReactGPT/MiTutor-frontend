@@ -1,5 +1,5 @@
-export type Notification={
-    resumen: string;
-    descripcion: string;
-    tipo: string;
+export type Notification = {
+  resumen: string;
+  descripcion: string;
+  tipo: string;
 };

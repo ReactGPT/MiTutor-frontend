@@ -112,6 +112,7 @@ const PageDetallePlanAccion = () => {
     console.log('id:', id);
     useDeleteActionPlan(id);
     setdeleteActionPlanModalOpen(false);
+    actualizarPagina();
     navigate(-1);
   };
 

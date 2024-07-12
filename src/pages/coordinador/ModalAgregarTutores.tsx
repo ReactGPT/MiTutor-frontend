@@ -10,7 +10,7 @@ import 'ag-grid-community/styles/ag-theme-alpine.css';
 import { ColDef } from 'ag-grid-community';
 import IconAdd from "../../assets/svg/IconAdd";
 import { CloseIcon, SaveIcon } from "../../assets";
-import { useAppSelector,useAppDispatch } from "../../store/hooks";
+import { useAppSelector, useAppDispatch } from "../../store/hooks";
 import { RootState } from "../../store/store";
 import { tutoringProgramSlice } from "../../store/slices";
 
@@ -34,7 +34,7 @@ function ModalAgregarTutores({ isOpen, closeModal }: ModalAgregarTutoresProps) {
   // const handleLocalChangeTutoringProgram= (name:string,value:any)=>{
   //   dispatch(handleChangeTutoringProgram({name:name,value:value}));
   // };
-  
+
   const handleSave = () => {
     const nuevosArrayTutores = [...(tutoringProgram.tutores), ...tutoresAgregados];
     onChangeTutoringProgram("tutores", nuevosArrayTutores);
@@ -53,12 +53,12 @@ function ModalAgregarTutores({ isOpen, closeModal }: ModalAgregarTutoresProps) {
       alignItems: 'center',
       display: 'flex',
     },
-
+    floatingFilter: true,
   };
   const columnDefs: ColDef[] = [
 
-    { headerName: 'Nombre Tutor', field: 'fullname', minWidth: 200 },
-    { headerName: 'Correo', field: 'email', minWidth: 150 },
+    { headerName: 'Nombre Tutor', field: 'fullname', minWidth: 200, filter: 'agTextColumnFilter' },
+    { headerName: 'Correo', field: 'email', minWidth: 150, filter: 'agTextColumnFilter' },
     {
       headerName: '', field: '', minWidth: 50, maxWidth: 50,
       cellRenderer: (rowData: any) => {
@@ -125,16 +125,13 @@ function ModalAgregarTutores({ isOpen, closeModal }: ModalAgregarTutoresProps) {
               leaveFrom="opacity-100 scale-100"
               leaveTo="opacity-0 scale-95"
             >
-              <Dialog.Panel className="max-w-screen-xl w-1/3 min-h-[50%] w-[50%] h-full max-h-[60%] bg-white  transform rounded-2xl p-6   shadow-xl transition-all">
+              <Dialog.Panel className="max-w-screen-xl  min-h-[50%] w-[50%] h-full max-h-[60%] bg-white  transform rounded-2xl p-6   shadow-xl transition-all">
                 <Dialog.Title as="div" className="flex flex-row h-[10%] max-h-[80px] items-center ml-2 mr-2 justify-begin">
-                  <h3 className='text-2xl font-bold w-full justify-begin text-primary font-large leading-6 text-gray-900'>{`Seleccionar Tutores`}</h3>
+                  <h3 className='text-2xl font-bold w-full justify-begin font-large leading-6 text-gray-900'>{`Seleccionar Tutores`}</h3>
                 </Dialog.Title>
-                <div className="flex flex-col w-full min-h-[450px] ml-2 mr-2 mt-4 flex flex-col gap-4">
-                  <div className="flex w-full h-[30%]">
-                    <SearchInput selectDisabled={true} placeholder="Escriba nombre o correo" handleOnChangeFilters={() => { }} onSearch={handleOnChangeSearch} />
-                  </div>
+                <div className="flex flex-col w-full min-h-[450px] ml-2 mr-2 mt-4  gap-4">
                   <div className="flex flex-row mt-4">
-                    <h4 className='text-2xl font-bold w-full justify-begin text-primary font-large leading-6 text-gray-900'>{`Tutores seleccionados : ${tutoresAgregados.length}`}</h4>
+                    <h4 className='text-2xl font-bold w-full justify-begin  font-large leading-6 text-gray-900'>{`Tutores seleccionados : ${tutoresAgregados.length}`}</h4>
 
                   </div>
                   <div className='w-[100%] h-[50%]'>

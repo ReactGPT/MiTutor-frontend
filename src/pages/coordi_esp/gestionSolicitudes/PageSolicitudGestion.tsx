@@ -33,6 +33,7 @@ const PageSolicitudGestion: React.FC = () => {
   }>({});
 
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
+  const [isSuccessRechazadoModalOpen, setIsSuccessRechazadoModalOpen] = useState(false);
   const [isErrorModalOpen, setIsErrorModalOpen] = useState(false);
   const [isConfirmationModalOpen, setIsConfirmationModalOpen] = useState(false);
   const [isWarningModalOpen, setIsWarningModalOpen] = useState(false);
@@ -81,7 +82,7 @@ const PageSolicitudGestion: React.FC = () => {
       setConfirmationAction(() => async () => {
         try {
           await updateProgramState(selectedIds, "RECHAZADO");
-          setIsSuccessModalOpen(true);
+          setIsSuccessRechazadoModalOpen(true);
         } catch (error) {
           setIsErrorModalOpen(true);
         }
@@ -247,10 +248,15 @@ const PageSolicitudGestion: React.FC = () => {
         onClose={() => setIsSuccessModalOpen(false)}
         message="Solicitudes aceptadas con éxito"
       />
+      <ModalSuccess
+        isOpen={isSuccessRechazadoModalOpen}
+        onClose={() => setIsSuccessRechazadoModalOpen(false)}
+        message="Solicitudes rechazadas con éxito"
+      />
       <ModalError
         isOpen={isErrorModalOpen}
         onClose={() => setIsErrorModalOpen(false)}
-        message="Solicitudes rechazadas con éxito"
+        message="Hay un error"
       />
       <ModalConfirmation
         isOpen={isConfirmationModalOpen}

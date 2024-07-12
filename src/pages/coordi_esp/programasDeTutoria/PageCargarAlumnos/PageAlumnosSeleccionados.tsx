@@ -257,6 +257,7 @@ const PageAlumnosSeleccionados = ({ isOpen, closeModal }: ModalAlumnosSelecciona
                       setPopout={setShowPageCargarMasivamente}
                       setStudentDataModified={setStudentDataModified}
                       onClose={handleClosePageCargarMasivamente}
+                      idEspecialidad={tutoringProgramSelected.especialidadId}
                     />
                   ) : ( showPageCargarAlumno ? (
                     <PageCargarAlumno

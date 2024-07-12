@@ -13,7 +13,8 @@ type RouterChildren = {
 };
 
 type NavBarOption = {
-    rol : "STUDENT"|"SPECIALTYMANAGER"|"FACULTYMANAGER" |"ADMIN"|"TUTOR"|"DERIVATION"|"CAREMANAGER";
+    rol : "STUDENT"|"SPECIALTYMANAGER"|"FACULTYMANAGER" |"ADMIN"|"TUTOR"|"DERIVATION"
+        |"CAREMANAGER"|"SUPPORTFACULTY"|"SUPPORTSPECIALTY";
     title: string;
     links: SidebarLink[];
   }
@@ -85,6 +86,26 @@ const RouterContextProvider = () => {
                         sideBarOptionsFound = sideBarOptionsFound.concat({
                             rol:"SPECIALTYMANAGER",
                             title:"Coord. Especialidad",
+                            links:Routes.coordinadorEspecialidad.navBarLink
+                        });
+                    }
+                    break;
+                case "SUPPORTFACULTY":
+                    childrenArrayFound = childrenArrayFound.concat(Routes.coordinadorFacultad.pages);
+                    if(! (sideBarOptionsFound.some((item)=>item.rol==="SUPPORTFACULTY"))){
+                        sideBarOptionsFound = sideBarOptionsFound.concat({
+                            rol:"SUPPORTFACULTY",
+                            title:"Apoyo Facultad",
+                            links:Routes.coordinadorFacultad.navBarLink
+                        });
+                    }
+                    break;
+                case "SUPPORTSPECIALTY":
+                    childrenArrayFound = childrenArrayFound.concat(Routes.coordinadorEspecialidad.pages);
+                    if(! (sideBarOptionsFound.some((item)=>item.rol==="SUPPORTSPECIALTY"))){
+                        sideBarOptionsFound = sideBarOptionsFound.concat({
+                            rol:"SUPPORTSPECIALTY",
+                            title:"Apoyo Especialidad",
                             links:Routes.coordinadorEspecialidad.navBarLink
                         });
                     }

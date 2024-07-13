@@ -31,6 +31,10 @@ const getEspecialidadesFromRoleCoordinador = (userData: UserData | null) => {
       }
     });
 
+    if (uniqueSpecialtyManagers.length === 0) {
+      uniqueSpecialtyManagers.push(userData.userInfo.roles[0].details as ManagerRoleDetails);
+    }
+
     return uniqueSpecialtyManagers;
   }
   else return [];

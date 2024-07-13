@@ -31,6 +31,10 @@ const getFacultadesFromRoleCoordinador = (userData: UserData | null) => {
       }
     });
 
+    if (uniqueFacultyManagers.length === 0) {
+      uniqueFacultyManagers.push(userData.userInfo.roles[0].details as ManagerRoleDetails);
+    }
+
     return uniqueFacultyManagers;
   }
   else return [];

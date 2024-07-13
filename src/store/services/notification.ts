@@ -12,9 +12,12 @@ async function getNotificationByUserAcountId(userAcountId: number): Promise<Noti
     const response = await axios.get(`${ServicesProperties.BaseUrl}/listarNotificaciones/${userAcountId}`);
     const notificaciones: Notification[] = response.data.data.map((item: any) => {
       return {
+        id: item.id,
         resumen: item.resumen,
         descripcion: item.descripcion,
-        tipo: item.tipo
+        tipo: item.tipo,
+        visto: item.visto,
+        horaFecha: item.horaFecha
       };
     });
 

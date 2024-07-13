@@ -89,7 +89,16 @@ function DatosGeneralesTutoria() {
                 rol.type === "SPECIALTYMANAGER" &&
                 rol.details.departmentType === 'Especialidad' &&
                 rol.details.departmentId.toString() === tutoringProgram.especialidadId.toString()
-              )}
+              )
+                &&
+                !((roles[0].type === "SUPPORTSPECIALTY") && (
+                  (roles[0].details as ManagerRoleDetails).departmentType === 'Especialidad'
+                    ?
+                    (roles[0].details as ManagerRoleDetails).departmentId.toString() === tutoringProgram.facultadId.toString()
+                    :
+                    (roles[0].details as ManagerRoleDetails).departmentId.toString() === tutoringProgram.especialidadId.toString()
+                ))
+              }
               text='Guardar'
               icon={SaveIcon}
               onClick={handleSaveTutoria}

@@ -9,7 +9,7 @@ import ModalError from '../../../components/ModalError';
 import { useProgramaTutoria } from '../../../store/hooks';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Label } from 'flowbite-react';
-import { Faculty, Specialty } from '../../../store/types';
+import { Faculty, ManagerRoleDetails, Specialty } from '../../../store/types';
 import { useAuth } from '../../../context';
 
 function DatosGeneralesTutoria() {
@@ -104,9 +104,44 @@ function DatosGeneralesTutoria() {
       <div id="ProgramaTutoriaBox1Header" className='flex flex-row justify-between items-center w-full h-full'>
         <h2 className='text-xl font-bold font-roboto text-black'>Datos del programa</h2>
         <div className='flex flex-row gap-4'>
-          {isLoading ? <Spinner /> : <Button disabled={!!roles ? !(roles.some((rol: any) => rol.type === "FACULTYMANAGER"
-            && (rol.details.departmentType === 'Facultad' ? rol.details.departmentId.toString() === tutoringProgram.facultadId.toString() : rol.details.departmentId.toString() === tutoringProgram.especialidadId.toString()))) : true} text='Guardar' icon={SaveIcon} onClick={handleSaveTutoria} />}
-          <Button text='Cancelar' variant='primario' icon={CloseIcon} iconSize={4} onClick={() => { navigate("/programasDeTutoria"); }} />
+          {isLoading
+            ?
+            <Spinner />
+            :
+            <Button
+              disabled=
+              {!!roles
+                ?
+                !(roles.some((rol: any) => rol.type === "FACULTYMANAGER"
+                  && (
+                    rol.details.departmentType === 'Facultad'
+                      ?
+                      rol.details.departmentId.toString() === tutoringProgram.facultadId.toString()
+                      :
+                      rol.details.departmentId.toString() === tutoringProgram.especialidadId.toString()
+                  ))
+                )
+                &&
+                !((roles[0].type === "SUPPORTFACULTY") && (
+                  (roles[0].details as ManagerRoleDetails).departmentType === 'Facultad'
+                    ?
+                    (roles[0].details as ManagerRoleDetails).departmentId.toString() === tutoringProgram.facultadId.toString()
+                    :
+                    (roles[0].details as ManagerRoleDetails).departmentId.toString() === tutoringProgram.especialidadId.toString()
+                ))
+                :
+                true
+              }
+              text='Guardar'
+              icon={SaveIcon}
+              onClick={handleSaveTutoria} />}
+          <Button
+            text='Cancelar'
+            variant='primario'
+            icon={CloseIcon}
+            iconSize={4}
+            onClick={() => { navigate("/programasDeTutoria"); }}
+          />
         </div>
       </div>
 

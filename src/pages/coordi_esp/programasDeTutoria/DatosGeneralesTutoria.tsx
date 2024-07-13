@@ -85,11 +85,13 @@ function DatosGeneralesTutoria() {
         <div className='flex flex-row gap-4'>
           {isLoading ? <Spinner /> :
             <Button
-              disabled={!!roles && !roles.some((rol: any) =>
-                rol.type === "SPECIALTYMANAGER" &&
-                rol.details.departmentType === 'Especialidad' &&
-                rol.details.departmentId.toString() === tutoringProgram.especialidadId.toString()
-              )
+              disabled={!!roles
+                &&
+                !roles.some((rol: any) =>
+                  rol.type === "SPECIALTYMANAGER" &&
+                  rol.details.departmentType === 'Especialidad' &&
+                  rol.details.departmentId.toString() === tutoringProgram.especialidadId.toString()
+                )
                 &&
                 !((roles[0].type === "SUPPORTSPECIALTY") && (
                   (roles[0].details as ManagerRoleDetails).departmentType === 'Especialidad'

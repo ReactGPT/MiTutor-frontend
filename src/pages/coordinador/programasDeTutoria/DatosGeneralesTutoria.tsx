@@ -31,10 +31,9 @@ function DatosGeneralesTutoria() {
 
   const [specialitySelected, setSpecialitySelected] = useState<Specialty | null>(null);
   const [facultySelected, setFacultySelected] = useState<Faculty | null>(null);
-  const [searchQuery, setSearchQuery] = useState<string>("");
 
   let selectedFaculties: Faculty[] = [];
-  
+
   if (roles) {
     const uniqueFacultyIds = new Set<number>();
     roles.forEach(role => {
@@ -46,6 +45,14 @@ function DatosGeneralesTutoria() {
           if (faculty) {
             selectedFaculties.push(faculty);
           }
+        }
+      }
+
+      if (selectedFaculties.length === 0) {
+        const facultyId = parseInt((roles[0].details as any).departmentId, 10);
+        const faculty = facultyList.find(faculty => faculty.id === facultyId);
+        if (faculty) {
+          selectedFaculties.push(faculty);
         }
       }
     });

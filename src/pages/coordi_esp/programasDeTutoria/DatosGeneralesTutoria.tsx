@@ -9,7 +9,7 @@ import ModalError from '../../../components/ModalError';
 import { useProgramaTutoria } from '../../../store/hooks';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Label } from 'flowbite-react';
-import { Faculty, Specialty } from '../../../store/types';
+import { Faculty, ManagerRoleDetails, Specialty } from '../../../store/types';
 import { useAuth } from '../../../context';
 
 function DatosGeneralesTutoria() {
@@ -31,7 +31,6 @@ function DatosGeneralesTutoria() {
 
   const [specialitySelected, setSpecialitySelected] = useState<Specialty | null>(null);
   const [facultySelected, setFacultySelected] = useState<Faculty | null>(null);
-  const [searchQuery, setSearchQuery] = useState<string>("");
 
   // Construir la lista de especialidades seleccionadas basadas en los roles
   const selectedEspecialidades: Specialty[] = roles.reduce((acc: Specialty[], role: any) => {
@@ -42,6 +41,14 @@ function DatosGeneralesTutoria() {
         acc.push(speciality);
       }
     }
+    if (acc.length === 0) {
+      const facultyId = parseInt((roles[0].details as ManagerRoleDetails).departmentId, 10);
+      const speciality = specialityList.find(faculty => faculty.id === facultyId);
+      if (speciality) {
+        acc.push(speciality);
+      }
+    }
+
     return acc;
   }, []);
 
@@ -76,17 +83,17 @@ function DatosGeneralesTutoria() {
       <div id="ProgramaTutoriaBox1Header" className='flex flex-row justify-between items-center w-full h-full'>
         <h2 className='text-xl font-bold font-roboto text-black'>Datos del programa</h2>
         <div className='flex flex-row gap-4'>
-        {isLoading ? <Spinner /> : 
-            <Button 
-            disabled={!!roles && !roles.some((rol: any) => 
-              rol.type === "SPECIALTYMANAGER" && 
-              rol.details.departmentType === 'Especialidad' && 
-              rol.details.departmentId.toString() === tutoringProgram.especialidadId.toString()
-            )} 
-            text='Guardar' 
-            icon={SaveIcon} 
-            onClick={handleSaveTutoria} 
-          />}
+          {isLoading ? <Spinner /> :
+            <Button
+              disabled={!!roles && !roles.some((rol: any) =>
+                rol.type === "SPECIALTYMANAGER" &&
+                rol.details.departmentType === 'Especialidad' &&
+                rol.details.departmentId.toString() === tutoringProgram.especialidadId.toString()
+              )}
+              text='Guardar'
+              icon={SaveIcon}
+              onClick={handleSaveTutoria}
+            />}
           <Button text='Cancelar' variant='primario' icon={CloseIcon} iconSize={4} onClick={() => { navigate("/programasDeTutoriaEsp"); }} />
         </div>
       </div>
@@ -108,7 +115,7 @@ function DatosGeneralesTutoria() {
               name="Elija una especialidad"
               options={selectedEspecialidades}
               onChange={(value: any) => {
-                onChangeTutoringProgram("facultadId", value.facultyId); 
+                onChangeTutoringProgram("facultadId", value.facultyId);
                 onChangeTutoringProgram("especialidadId", value.id);
               }}
               value={specialitySelected}

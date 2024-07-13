@@ -299,4 +299,8 @@ export const PageTitles = [
     path: '/indicadorTutorEsp',
     pageName: "Indicadores Tutores"
   },
+  {
+    path: '/facultad',
+    pageName: "Datos de Facultad"
+  },
 ];

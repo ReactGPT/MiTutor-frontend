@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { Button } from '../../../components';
+import { Button, Combobox } from '../../../components';
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-alpine.css';
-import { useEspecialidad } from '../../../store/hooks/useEspecialidad';
 import Facultad from '../../../store/types/Facultad';
 import { FacultadProvider } from '../../../context/FacultadContext';
 import { useLocation } from 'react-router-dom';
@@ -10,12 +9,36 @@ import ModalSearch from '../../../components/Administrador/ModalSearch';
 import { useFacultades } from '../../../store/hooks/useFacultades';
 import EspecialidadesPage from '../../coordinador/especialidades/Especialidades';
 import { MdDeleteOutline, MdOutlineEdit } from 'react-icons/md';
+import { ManagerRoleDetails } from '../../../store/types';
+import { getFacultadesFromRoleCoordinador } from '../../../store/hooks/FacultadesRolesIdCoordinador';
+import { useAuth } from '../../../context';
+import { Label } from 'flowbite-react';
+
+const defaultFacultad: Facultad = {
+  id: 0,
+  name: '-',
+  acronym: '-',
+  numberStudents: 0,
+  facultyManager: null,
+  bienestarManager: null,
+  personalApoyo: null,
+  numberTutors: 0
+};
 
 const PageEditarFacultad = () => {
+  const { userData } = useAuth();
+  const facultades: ManagerRoleDetails[] = getFacultadesFromRoleCoordinador(userData);
+  //
+  const [selectedFacultyId, setSelectedFacultyId] = useState<number | null>(null);
+  //
   const [editable, setEditable] = useState(false);
+  //
   const { state } = useLocation();
-  const { facultadEstado } = state;
-  const [facultadBorrador, setFacultadBorrador] = useState<Facultad>(facultadEstado);
+  const facultadEstado = state?.facultadEstado ? state?.facultadEstado : defaultFacultad;
+  //
+  const { facultadData, fetchFacultadData } = useFacultades();
+  //
+  const [facultadBorrador, setFacultadBorrador] = useState<Facultad>(facultadEstado ? facultadEstado : defaultFacultad);
   const { updateFacultad } = useFacultades();
   const [isOpenModalSearch, setIsOpenModalSearch] = useState<boolean>(false);
 
@@ -28,10 +51,11 @@ const PageEditarFacultad = () => {
   };
 
   useEffect(() => {
-    console.log("estado que me viene:");
-    console.log(facultadEstado);
-    setFacultadBorrador(facultadBorrador);
-  }, [isOpenModalSearch]);
+    if (!state) {
+      fetchFacultadData();
+      setFacultadBorrador(facultadData.find(fac => fac.id === selectedFacultyId) || defaultFacultad);
+    }
+  }, [selectedFacultyId]);
 
   const handleEditSaveButton = () => {
     if (!editable) {
@@ -81,7 +105,15 @@ const PageEditarFacultad = () => {
   };
 
   const handleClearFacultad = () => {
-    setFacultadBorrador(facultadEstado);
+    if (state) {
+      setFacultadBorrador(facultadEstado);
+    } else {
+      setFacultadBorrador(facultadData.find(fac => fac.id === selectedFacultyId) || defaultFacultad);
+    }
+  };
+
+  const handleOnChangeFaculty = (value: any) => {
+    setSelectedFacultyId(value.id);
   };
 
   return (
@@ -89,10 +121,32 @@ const PageEditarFacultad = () => {
       <div className="w-full h-full flex flex-col gap-4">
 
         <div className="w-full h-fit flex justify-between items-center">
+          {
+            state == null ?
+              <>
+                <div>
+                  <Label value="Facultad" className='font-roboto text-primary' />
+                  <Combobox
+                    className='w-[250px]'
+                    options={facultades.map(facultad => ({
+                      id: facultad.departmentId,
+                      name: facultad.departmentName,
+                      ...facultad
+                    }))}
+                    onChange={handleOnChangeFaculty}
+                    value={null}
+                  />
+                </div>
+                <h1 className="text-2xl font-bold text-[#2F2F2F]">
+                  {facultadBorrador?.name}
+                </h1>
+              </>
+              :
+              <h1 className="text-2xl font-bold text-[#2F2F2F]">
+                {facultadBorrador?.name}
+              </h1>
+          }
 
-          <h1 className="text-2xl font-bold text-[#2F2F2F]">
-            {`${facultadBorrador?.name}`}
-          </h1>
 
           {
             editable
@@ -124,6 +178,7 @@ const PageEditarFacultad = () => {
                 text='Editar'
                 onClick={() => { setEditable(true); }}
                 className='rounded-2xl '
+                disabled={selectedFacultyId == null && state == null}
               />
           }
 
@@ -135,11 +190,11 @@ const PageEditarFacultad = () => {
               <label className='text-base text-primary'>Siglas</label>
               <input
                 onChange={handleInputChange}
-                disabled={!editable}
+                disabled={!editable || state == null}
                 type="text"
                 placeholder='Siglas'
                 value={facultadBorrador?.acronym}
-                className={`grow border text-sm border-secondary rounded-xl shadow-md shadow-terciary text-primary py-1 px-5 ${!editable ? 'bg-blue-100' : ''}`}
+                className={`grow border text-sm border-secondary rounded-xl shadow-md shadow-terciary text-primary py-1 px-5 ${editable && state != null ? 'bg-white' : 'bg-blue-100'}`}
                 name="acronym"
               />
             </div>
@@ -147,11 +202,11 @@ const PageEditarFacultad = () => {
               <label className='text-base text-primary'>Facultad</label>
               <input
                 onChange={handleInputChange}
-                disabled={!editable}
+                disabled={!editable || state == null}
                 type="text"
                 placeholder='Nombre de Facultad'
                 value={facultadBorrador?.name}
-                className={`grow border text-sm border-secondary rounded-xl shadow-md shadow-terciary text-primary py-1 px-5 ${!editable ? 'bg-blue-100' : ''}`}
+                className={`grow border text-sm border-secondary rounded-xl shadow-md shadow-terciary text-primary py-1 px-5 ${editable && state != null ? 'bg-white' : 'bg-blue-100'}`}
                 name="name"
               />
             </div>
@@ -202,20 +257,20 @@ const PageEditarFacultad = () => {
                 <label className='text-base text-primary'> </label>
                 <div className='flex gap-3'>
                   <button
-                    className={`rounded-lg ${editable ? 'bg-white' : 'bg-secondary'} shadow p-2`}
+                    className={`rounded-lg ${editable && state != null ? 'bg-white' : 'bg-secondary'} shadow p-2`}
                     onClick={() => {
                       setUs("CoordFacultad");
                       update();
                       setIsOpenModalSearch(true);
                     }}
-                    disabled={!editable}
+                    disabled={!editable || state == null}
                   >
                     <MdOutlineEdit />
                   </button>
                   <button
-                    className={`rounded-lg ${editable ? 'bg-white' : 'bg-secondary'} shadow p-2`}
+                    className={`rounded-lg ${editable && state != null ? 'bg-white' : 'bg-secondary'} shadow p-2`}
                     onClick={setFacultyManagerToNull}
-                    disabled={!editable}
+                    disabled={!editable || state == null}
                   >
                     <MdDeleteOutline />
                   </button>
@@ -320,20 +375,20 @@ const PageEditarFacultad = () => {
                 <label className='text-base text-primary'> </label>
                 <div className='flex gap-3'>
                   <button
-                    className={`rounded-lg ${editable ? 'bg-white' : 'bg-secondary'} shadow p-2`}
+                    className={`rounded-lg ${editable && state != null ? 'bg-white' : 'bg-secondary'} shadow p-2`}
                     onClick={() => {
                       setUs("CoordBienestar");
                       update();
                       setIsOpenModalSearch(true);
                     }}
-                    disabled={!editable}
+                    disabled={!editable || state == null}
                   >
                     <MdOutlineEdit />
                   </button>
                   <button
-                    className={`rounded-lg ${editable ? 'bg-white' : 'bg-secondary'} shadow p-2`}
+                    className={`rounded-lg ${editable && state != null ? 'bg-white' : 'bg-secondary'} shadow p-2`}
                     onClick={setBienestarManagerToNull}
-                    disabled={!editable}
+                    disabled={!editable || state == null}
                   >
                     <MdDeleteOutline />
                   </button>
@@ -346,7 +401,7 @@ const PageEditarFacultad = () => {
 
         </div>
 
-        <EspecialidadesPage Facultyid={facultadEstado.id} disableAgregarEspecialidad={editable} />
+        {state != null && <EspecialidadesPage Facultyid={facultadEstado.id} disableAgregarEspecialidad={editable} />}
 
         <ModalSearch
           isOpen={isOpenModalSearch}

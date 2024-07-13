@@ -1,4 +1,4 @@
-import { Navigate, RouteObject } from "react-router-dom";
+import { RouteObject } from "react-router-dom";
 import { SidebarLink } from "../store/types/SidebarLink.ts";
 import {
   BiCabinet,
@@ -287,6 +287,10 @@ export const Routes: RouterConfig = {
         path: '/tutores/disponibilidad',
         element: <DetalleDisponibilidadTutores />
       },
+      {
+        path: '/facultad',
+        element: <PageEditarFacultad />
+      },
     ],
     navBarLink: [
       {
@@ -342,6 +346,12 @@ export const Routes: RouterConfig = {
         label: 'Disponibilidad Tutores',
         path: '/tutores',
         icon: <BiUserPin fontSize={32} />,
+      },
+      {
+        key: 'facultad',
+        label: 'Datos Facultad',
+        path: '/facultad',
+        icon: <BiSolidLandmark fontSize={32} />,
       }
     ]
   },

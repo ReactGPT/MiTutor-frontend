@@ -45,6 +45,8 @@ async function getUserInfo(email: string = '', codigoPUCP: string = ''): Promise
             };
           case "FACULTYMANAGER":
           case "SPECIALTYMANAGER":
+          case "SUPPORTFACULTY":
+          case "SUPPORTSPECIALTY":
             return {
               isManager: true,
               departmentType: item.departmentType,

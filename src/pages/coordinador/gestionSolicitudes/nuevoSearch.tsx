@@ -34,8 +34,8 @@ export default function NuevoSearchBar({
   } | null>(null);
 
   let selectedFaculties: Faculty[] = [];
+
   const roles = userData?.userInfo?.roles;
-  let rolEspecifico = '';
 
   if (roles) {
     roles.forEach(role => {
@@ -47,6 +47,14 @@ export default function NuevoSearchBar({
         }
       }
     });
+
+    if (selectedFaculties.length === 0) {
+      const facultyId = parseInt((roles[0].details as ManagerRoleDetails).departmentId, 10);
+      const faculty = facultyList.find(faculty => faculty.id === facultyId);
+      if (faculty) {
+        selectedFaculties.push(faculty);
+      }
+    }
   }
 
   const specialityOptions = useMemo(() => {

@@ -37,19 +37,28 @@ export default function NuevoSearchBar({
     name: string;
   } | null>(null);
 
-  const roles = userData?.userInfo?.roles.filter(role => role.type === "SPECIALTYMANAGER").map(role => role.details);
+  const roles = userData?.userInfo?.roles;
+  //const roles = userData?.userInfo?.roles.filter(role => role.type === "SPECIALTYMANAGER").map(role => role.details);
   const selectedSpecialties: Specialty[] = [];
 
   if (roles) {
     roles.forEach(role => {
-      if (isManagerRoleDetails(role)) {
-        const specialtyId = parseInt(role.departmentId);
-        const specialty = specialityList.find(specialty => specialty.id == specialtyId);
-        if (specialty && !selectedSpecialties.some((s) => s.id === specialty.id)) {
+      if (role.rolName === 'Responsable de Especialidad') {
+        const specialtyId = parseInt((role.details as ManagerRoleDetails).departmentId, 10); // Convertir a número
+        const specialty = specialityList.find(specialty => specialty.id === specialtyId);
+        if (specialty && !selectedSpecialties.some(f => f.id === specialty.id)) {
           selectedSpecialties.push(specialty);
         }
       }
     });
+
+    if (selectedSpecialties.length === 0) {
+      const specialtyId = parseInt((roles[0].details as ManagerRoleDetails).departmentId, 10);
+      const specialty = specialityList.find(specialty => specialty.id == specialtyId);
+      if (specialty) {
+        selectedSpecialties.push(specialty);
+      }
+    }
   }
 
   console.log(selectedSpecialties);

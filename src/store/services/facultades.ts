@@ -26,6 +26,7 @@ async function getFacultadInfo(): Promise<FacultyDetailResponse> {
         isActive: item.isActive,
         facultyManager: item.facultyManager,
         bienestarManager: item.bienestarManager,
+        personalApoyo: item.personalApoyo,
         specialties: item.specialties,
         tutoringPrograms: item.tutoringPrograms,
       };

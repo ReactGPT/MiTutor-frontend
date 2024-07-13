@@ -16,6 +16,7 @@ function useFacultades(): FacultadHookReturnType {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<Error | null>(null);
   const [facultadData, setFacultadData] = useState<Facultad[]>([]);
+
   const fetchFacultadData = async () => {
     setIsLoading(true);
     try {
@@ -77,6 +78,17 @@ function useFacultades(): FacultadHookReturnType {
       }
       if (facultad.bienestarManager === null) {
         facultad.bienestarManager = {
+          id: null,
+          institutionalEmail: "",
+          pucpCode: "",
+          isActive: true,
+          persona: null,
+          roles: null,
+          isVerified: true,
+        };
+      }
+      if (facultad.personalApoyo === null) {
+        facultad.personalApoyo = {
           id: null,
           institutionalEmail: "",
           pucpCode: "",

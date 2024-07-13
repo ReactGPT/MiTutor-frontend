@@ -1,34 +1,25 @@
 import React, { useEffect, useState } from 'react';
 import { Button } from '../../../components';
-import { AgGridReact } from 'ag-grid-react';
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-alpine.css';
-import { ColDef } from 'ag-grid-community';
-import SearchInput from '../../../components/SearchInput';
-import { PencilIcon } from '../../../assets';
 import { useEspecialidad } from '../../../store/hooks/useEspecialidad';
 import Facultad from '../../../store/types/Facultad';
 import { FacultadProvider } from '../../../context/FacultadContext';
-import { useLocation, useNavigate } from 'react-router-dom';
-import InputAdmin2 from '../../../components/Administrador/InputAdmin2';
+import { useLocation } from 'react-router-dom';
 import ModalSearch from '../../../components/Administrador/ModalSearch';
 import { useFacultades } from '../../../store/hooks/useFacultades';
 import EspecialidadesPage from '../../coordinador/especialidades/Especialidades';
 import { MdDeleteOutline, MdOutlineEdit } from 'react-icons/md';
 
-const circleButtonStyles = 'bg-[rgba(235,236,250,1)]';
-
 const PageEditarFacultad = () => {
-  const [searchValue, setSearchValue] = useState<string>('');
   const [editable, setEditable] = useState(false);
   const { state } = useLocation();
   const { facultadEstado } = state;
   const [facultadBorrador, setFacultadBorrador] = useState<Facultad>(facultadEstado);
   const { updateFacultad } = useFacultades();
-  const { especialidadData, fetchEspecialidadPorFacultadData } = useEspecialidad();
   const [isOpenModalSearch, setIsOpenModalSearch] = useState<boolean>(false);
 
-  const [us, setUs] = useState<"CoordFacultad" | "CoordBienestar">("CoordFacultad");
+  const [us, setUs] = useState<"CoordFacultad" | "CoordBienestar" | "PersonalApoyo">("CoordFacultad");
 
   const [refreshKey, setRefreshKey] = useState(0);
 
@@ -40,12 +31,7 @@ const PageEditarFacultad = () => {
     console.log("estado que me viene:");
     console.log(facultadEstado);
     setFacultadBorrador(facultadBorrador);
-    fetchEspecialidadPorFacultadData(facultadEstado.id);
   }, [isOpenModalSearch]);
-
-  const handleSearch = (query: string) => {
-    setSearchValue(query);
-  };
 
   const handleEditSaveButton = () => {
     if (!editable) {
@@ -87,6 +73,13 @@ const PageEditarFacultad = () => {
     }));
   };
 
+  const setPersonalApoyoToNull = () => {
+    setFacultadBorrador((prevState) => ({
+      ...prevState,
+      personalApoyo: null
+    }));
+  };
+
   const handleClearFacultad = () => {
     setFacultadBorrador(facultadEstado);
   };
@@ -100,12 +93,6 @@ const PageEditarFacultad = () => {
           <h1 className="text-2xl font-bold text-[#2F2F2F]">
             {`${facultadBorrador?.name}`}
           </h1>
-
-          {/* <Button
-            className=""
-            onClick={() => { handleEditSaveButton(); }}
-            text={`${editable ? "Guardar" : "Editar"}`}
-          /> */}
 
           {
             editable
@@ -155,13 +142,6 @@ const PageEditarFacultad = () => {
                 className={`grow border text-sm border-secondary rounded-xl shadow-md shadow-terciary text-primary py-1 px-5 ${!editable ? 'bg-blue-100' : ''}`}
                 name="acronym"
               />
-              {/* <InputAdmin2
-                titulo="Siglas"
-                valor={facultadBorrador?.acronym}
-                onChange={handleInputChange}
-                name="acronym"
-                enable={editable}
-              /> */}
             </div>
             <div className='w-3/4 flex flex-col'>
               <label className='text-base text-primary'>Facultad</label>
@@ -174,13 +154,6 @@ const PageEditarFacultad = () => {
                 className={`grow border text-sm border-secondary rounded-xl shadow-md shadow-terciary text-primary py-1 px-5 ${!editable ? 'bg-blue-100' : ''}`}
                 name="name"
               />
-              {/* <InputAdmin2
-                titulo="Nombre de la Facultad"
-                valor={facultadBorrador?.name}
-                enable={editable}
-                name="name"
-                onChange={handleInputChange}
-              /> */}
             </div>
             <div className='w-[15%] flex flex-col'>
               <label className='text-base text-primary'>Num. Estudiantes</label>
@@ -192,50 +165,6 @@ const PageEditarFacultad = () => {
               />
             </div>
           </div>
-
-          {/* <div className='w-full h-fit flex'>
-            <div className='w-[85%] h-fit flex'>
-              <div className='w-[20%]'>
-                <InputAdmin2
-                  titulo="Cod. de Responsable"
-                  valor={facultadBorrador?.facultyManager?.pucpCode ? facultadBorrador?.facultyManager.pucpCode : '-'}
-                  enable={false}
-                />
-              </div>
-
-              <div className='w-[80%] h-fit flex'>
-                <div className='w-full'>
-                  <InputAdmin2
-                    titulo="Nombre del Responsable"
-                    className={`${facultadBorrador?.facultyManager?.persona ? "" : " text-[#b20000] "}`}
-                    valor={facultadBorrador?.facultyManager?.persona?.name ? facultadBorrador?.facultyManager?.persona?.name + ' ' + facultadBorrador?.facultyManager?.persona?.lastName + ' ' + (facultadBorrador?.facultyManager?.persona?.secondLastName ? facultadBorrador?.facultyManager?.persona?.secondLastName : '') : "¡Falta Asignar Responsable!"}
-                    onChange={handleInputChange}
-                    enable={false}
-                  />
-                </div>
-
-                <div className='flex flex-col items-center justify-center pt-6'>
-                  <button
-                    className={`flex text-primary rounded-full w-11 h-11 justify-center items-center shadow-custom border border-solid border-[rgba(116,170,255,0.70)] ${!editable ? 'bg-[rgba(225,_229,_232,_1.00)]' : circleButtonStyles}`}
-                    onClick={() => { setIsOpenModalSearch(true); }}
-                    disabled={!editable}
-                  >
-                    <PencilIcon className='flex flex-col justify-center items-center' size={6} />
-                  </button>
-                </div>
-              </div>
-
-            </div>
-
-            <div className='w-[15%]'>
-              <InputAdmin2
-                titulo="Num. de Estudiantes"
-                valor={facultadBorrador?.numberStudents.toString()}
-                enable={false}
-              />
-            </div>
-
-          </div> */}
 
           <div className='flex w-full justify-between gap-4'>
 
@@ -295,7 +224,68 @@ const PageEditarFacultad = () => {
 
             </div>
 
-            {/* Falta Editar Responsable de Bienestar */}
+            <div className='flex gap-5 w-1/2 justify-end items-end'>
+              <div className='flex flex-col w-1/3'>
+                <label className='text-base text-primary'>Personal de Apoyo</label>
+                <input
+                  disabled
+                  type="text"
+                  placeholder='Responsable'
+                  value={
+                    facultadBorrador?.personalApoyo?.persona?.name && facultadBorrador?.personalApoyo?.persona?.lastName
+                      ? `${facultadBorrador?.personalApoyo?.persona?.name} ${facultadBorrador?.personalApoyo?.persona?.lastName}`
+                      : "-"
+                  }
+                  className="grow border text-sm border-secondary rounded-xl shadow-md shadow-terciary text-primary py-1 px-5 bg-blue-100"
+                />
+              </div>
+
+              <div className='flex flex-col w-2/3'>
+                <label className='text-base text-primary'>Correo Personal de Apoyo</label>
+                <input
+                  disabled
+                  type="text"
+                  value={
+                    facultadBorrador?.personalApoyo?.institutionalEmail
+                      ? facultadBorrador.personalApoyo?.institutionalEmail
+                      : "-"
+                  }
+                  className="grow border text-sm border-secondary rounded-xl shadow-md shadow-terciary text-primary py-1 px-5 bg-blue-100"
+                />
+              </div>
+
+              <div className='flex flex-col w-fit'>
+                <label className='text-base text-primary'> </label>
+                <div className='flex gap-3'>
+                  <button
+                    className={`rounded-lg ${editable ? 'bg-white' : 'bg-secondary'} shadow p-2`}
+                    onClick={() => {
+                      setUs("PersonalApoyo");
+                      update();
+                      setIsOpenModalSearch(true);
+                    }}
+                    disabled={!editable}
+                  >
+                    <MdOutlineEdit />
+                  </button>
+                  <button
+                    className={`rounded-lg ${editable ? 'bg-white' : 'bg-secondary'} shadow p-2`}
+                    onClick={setPersonalApoyoToNull}
+                    disabled={!editable}
+                  >
+                    <MdDeleteOutline />
+                  </button>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <div className='flex w-full justify-between gap-4'>
+            <div className='flex gap-5 w-1/2 justify-end items-end'>
+              <div className='w-full'></div>
+            </div>
+
             <div className='flex gap-5 w-1/2 justify-end items-end'>
               <div className='flex flex-col w-1/3'>
                 <label className='text-base text-primary'>Responsable Bienestar</label>
@@ -351,7 +341,9 @@ const PageEditarFacultad = () => {
               </div>
 
             </div>
+
           </div>
+
         </div>
 
         <EspecialidadesPage Facultyid={facultadEstado.id} disableAgregarEspecialidad={editable} />

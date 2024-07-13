@@ -62,7 +62,7 @@ async function getEspecialidadInfo2(): Promise<EspecialidadDetailResponse> {
     try {
         const response = await axios({
             method: 'GET',
-            url: Services.BaseUrl+'/api/Specialty/listarEspecialidad',
+            url: Services.BaseUrl + '/api/Specialty/listarEspecialidad',
         });
         if (response.data.success === false) {
             return { especialidadList: [] };
@@ -82,7 +82,7 @@ async function getEspecialidadInfo2(): Promise<EspecialidadDetailResponse> {
                 tutoringPrograms: item.tutoringPrograms,
                 id: item.specialtyId, //el id del type Specialty                 
                 // COMPLETAR CON DATOS DEL RESPONSABLE
-            }
+            };
         });
         console.log("EspecialidadList", especialidadList);
         return { especialidadList };
@@ -93,13 +93,13 @@ async function getEspecialidadInfo2(): Promise<EspecialidadDetailResponse> {
     }
 }
 
-async function getEspecialidadByNameInfo(name:string): Promise<EspecialidadDetailResponse> {
+async function getEspecialidadByNameInfo(name: string): Promise<EspecialidadDetailResponse> {
     try {
         const response = await axios({
             method: 'GET',
-            url:Services.BaseUrl+'/api/Specialty/listarEspecialidadXNombre?name='+name
+            url: Services.BaseUrl + '/api/Specialty/listarEspecialidadXNombre?name=' + name
         });
-        console.log({response})
+        console.log({ response });
         if (response.data.success === false) {
             return { especialidadList: [] };
         }
@@ -114,21 +114,22 @@ async function getEspecialidadByNameInfo(name:string): Promise<EspecialidadDetai
                 faculty: item.faculty,
                 isActive: item.isActive,
                 specialtyManager: item.specialtyManager,
+                personalApoyo: item.personalApoyo,
                 students: item.students,
                 tutoringPrograms: item.tutoringPrograms,
 
-                
+
                 // COMPLETAR CON DATOS DEL RESPONSABLE
-            }
+            };
         });
         console.log("EspecialidadList", especialidadList);
         return { especialidadList };
     }
     catch (error) {
         console.log("EspecialidadList error");
-        console.log({error})
+        console.log({ error });
         return { especialidadList: [] };
     }
 }
 
-export { getEspecialidadInfo, getEspecialidadPorFacultadInfo, getEspecialidadInfo2,getEspecialidadByNameInfo };
+export { getEspecialidadInfo, getEspecialidadPorFacultadInfo, getEspecialidadInfo2, getEspecialidadByNameInfo };

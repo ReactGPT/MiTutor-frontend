@@ -29,6 +29,7 @@ type Facultad = {
     isActive?: boolean | null;
     facultyManager: FacultyManager | null;
     bienestarManager?: FacultyManager | null;
+    personalApoyo?: FacultyManager | null;
     specialties?: Specialty[] | null;
     tutoringPrograms?: TutoringProgram[] | null;
 };

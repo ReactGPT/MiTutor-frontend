@@ -25,10 +25,28 @@ const EspecialidadSingular = () => {
     especialidadEspecifica?.specialtyManager ? especialidadEspecifica.specialtyManager.institutionalEmail : "-"
   );
   //
+  const [personalApoyoId, setPersonalApoyoId] = useState(
+    especialidadEspecifica?.personalApoyo ? especialidadEspecifica?.personalApoyo.id : -1
+  );
+  const [personalApoyo, setPersonalApoyo] = useState<string>(
+    especialidadEspecifica?.personalApoyo ? especialidadEspecifica.personalApoyo.persona.name + " " + especialidadEspecifica.personalApoyo.persona.lastName : "-"
+  );
+  const [correoPersonalApoyo, setCorreoPersonalApoyo] = useState<string>(
+    especialidadEspecifica?.personalApoyo ? especialidadEspecifica.personalApoyo.institutionalEmail : "-"
+  );
+  //
+  const [user, setUser] = useState<"Responsable" | "PersonalApoyo">("Responsable");
+  //
   const handleClearResponsable = () => {
     setResponsableId(-1);
     setResponsable("-");
     setCorreoResponsable("-");
+  };
+  //
+  const handleClearPersonalApoyo = () => {
+    setPersonalApoyoId(-1);
+    setPersonalApoyo("-");
+    setCorreoPersonalApoyo("-");
   };
   //
   return (
@@ -37,7 +55,6 @@ const EspecialidadSingular = () => {
         <span className='text-3xl text-primary font-bold'>
           {especialidadEspecifica?.name}
         </span>
-
         {
           editable
             ?
@@ -55,6 +72,7 @@ const EspecialidadSingular = () => {
                     Acronym: acronym,
                     IsActive: true,
                     SpecialtyManager: { Id: responsableId === -1 ? null : responsableId },
+                    PersonalApoyo: { Id: personalApoyoId === -1 ? null : personalApoyoId },
                   });
                   setEditable(false);
                 }}
@@ -78,6 +96,16 @@ const EspecialidadSingular = () => {
                   );
                   setCorreoResponsable(
                     especialidadEspecifica?.specialtyManager ? especialidadEspecifica.specialtyManager.institutionalEmail : "-"
+                  );
+                  //
+                  setPersonalApoyoId(
+                    especialidadEspecifica?.personalApoyo ? especialidadEspecifica?.personalApoyo.id : -1
+                  );
+                  setPersonalApoyo(
+                    especialidadEspecifica?.personalApoyo ? especialidadEspecifica.personalApoyo.persona.name + " " + especialidadEspecifica.personalApoyo.persona.lastName : "-"
+                  );
+                  setCorreoPersonalApoyo(
+                    especialidadEspecifica?.personalApoyo ? especialidadEspecifica.personalApoyo.institutionalEmail : "-"
                   );
                   //
                   setEditable(false);
@@ -140,6 +168,7 @@ const EspecialidadSingular = () => {
                 <button
                   className={`rounded-lg ${editable ? 'bg-white' : 'bg-secondary'} shadow p-2`}
                   onClick={() => {
+                    setUser("Responsable");
                     setIsOpenAsignarResponsable(true);
                   }}
                   disabled={!editable}
@@ -173,17 +202,59 @@ const EspecialidadSingular = () => {
             />
           </div>
 
-          {/* <div className='grid-cols-2 grid gap-4 max-w-[700px]'>
-            <label className='text-lg text-gray-500'>Estado</label>
-            <select
-              onChange={(e) => {
-                setIsActive(e.target.value === 'on');
-              }}
-              disabled={!editable} className={`grow border text-sm border-secondary rounded-xl shadow-md shadow-terciary text-primary py-1 px-5 ${!editable ? 'bg-blue-100' : ''}`}>
-              <option value="on">Activo</option>
-              <option value="off">Inactivo</option>
-            </select>
-          </div> */}
+          <div className='grid-cols-2 grid gap-4 max-w-[700px]'>
+            <label className='text-lg text-gray-500'>Personal de Apoyo</label>
+            <div className='flex justify-between align-center gap-5'>
+              <input
+                disabled
+                type="text"
+                placeholder='Responsable'
+                value={
+                  personalApoyo
+                    ? personalApoyo
+                    : especialidadEspecifica?.personalApoyo?.persona?.name && especialidadEspecifica?.personalApoyo?.persona?.lastName
+                      ? `${especialidadEspecifica.personalApoyo.persona.name} ${especialidadEspecifica.personalApoyo.persona.lastName}`
+                      : "-"
+                }
+                className="grow border text-sm border-secondary rounded-xl shadow-md shadow-terciary text-primary py-1 px-5 bg-blue-100"
+              />
+              <>
+                <button
+                  className={`rounded-lg ${editable ? 'bg-white' : 'bg-secondary'} shadow p-2`}
+                  onClick={() => {
+                    setUser("PersonalApoyo");
+                    setIsOpenAsignarResponsable(true);
+                  }}
+                  disabled={!editable}
+                >
+                  <MdOutlineEdit />
+                </button>
+                <button
+                  className={`rounded-lg ${editable ? 'bg-white' : 'bg-secondary'} shadow p-2`}
+                  onClick={handleClearPersonalApoyo}
+                  disabled={!editable}
+                >
+                  <MdDeleteOutline />
+                </button>
+              </>
+            </div>
+          </div>
+
+          <div className='grid-cols-2 grid gap-4 max-w-[700px]'>
+            <label className='text-lg text-gray-500'>Correo personal de apoyo</label>
+            <input
+              disabled
+              type="text"
+              value={
+                personalApoyo
+                  ? correoPersonalApoyo
+                  : especialidadEspecifica?.personalApoyo?.institutionalEmail
+                    ? especialidadEspecifica.personalApoyo?.institutionalEmail
+                    : "-"
+              }
+              className="grow border text-sm border-secondary rounded-xl shadow-md shadow-terciary text-primary py-1 px-5 bg-blue-100"
+            />
+          </div>
 
         </div>
       </div>
@@ -194,9 +265,20 @@ const EspecialidadSingular = () => {
         }}
         onSelect={(User) => {
           console.log(`User selected: ${JSON.stringify(User, null, 5)}`);
-          setResponsable(User.persona.name);
-          setCorreoResponsable(User.institutionalEmail);
-          setResponsableId(User.id);
+          switch (user) {
+            case "Responsable":
+              //
+              setResponsable(User.persona.name);
+              setCorreoResponsable(User.institutionalEmail);
+              setResponsableId(User.id);
+              break;
+            case "PersonalApoyo":
+              //
+              setPersonalApoyo(User.persona.name);
+              setCorreoPersonalApoyo(User.institutionalEmail);
+              setPersonalApoyoId(User.id);
+              break;
+          }
         }}
       />
     </div>

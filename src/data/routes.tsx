@@ -418,6 +418,10 @@ export const Routes: RouterConfig = {
         path: '/tutores/disponibilidad',
         element: <DetalleDisponibilidadTutores />
       },
+      {
+        path: '/especialidad',
+        element: <EspecialidadSingular />
+      },
     ],
     navBarLink: [
       {
@@ -467,6 +471,12 @@ export const Routes: RouterConfig = {
         label: 'Disponibilidad Tutores',
         path: '/tutores',
         icon: <BiUserPin fontSize={32} />,
+      },
+      {
+        key: 'especialidad',
+        label: 'Datos Especialidad',
+        path: '/especialidad',
+        icon: <BiSolidLandmark fontSize={32} />,
       }
     ]
   },

@@ -8,6 +8,7 @@ type Persona = {
   usuario: any | null;
 
 };
+
 export type SpecialtyManager = {
   id: number;
   institutionalEmail: string;
@@ -46,5 +47,6 @@ export type Specialty = {
   tutoringPrograms?: any[] | null;
   numberStudents?: number;
   facultyId: number;
+  specialtyId?: number;
   // COMPLETAR CON DATOS DEL RESPONSABLE
 };

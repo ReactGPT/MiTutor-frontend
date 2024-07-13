@@ -1,16 +1,111 @@
 import { useLocation } from 'react-router-dom';
-import { Button } from '../../../components';
+import { Button, Combobox } from '../../../components';
 import { actualizarEspecialidad } from '../../../store/services/actualizarEspecialidad';
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { MdDeleteOutline, MdOutlineEdit } from "react-icons/md";
 import AsignarResponsable from "./AsignarResponsable";
+import { ManagerRoleDetails, Specialty } from '../../../store/types';
+import { useEspecialidadByName } from '../../../store/hooks/useEspecialidad';
+import { useAuth } from '../../../context';
+import { getEspecialidadesFromRoleCoordinador } from '../../../store/hooks/EspecialidadesRolesIdCoordinador';
+import { Label } from 'flowbite-react';
+
+type Persona = {
+  id: number;
+  name: string;
+  lastName: string;
+  secondLastName: string | null;
+  phone: string | null;
+  isActive: boolean;
+  usuario: any | null;
+
+};
+
+type SpecialtyManager = {
+  id: number;
+  institutionalEmail: string;
+  pucpCode: string;
+  isActive: boolean;
+  persona: Persona;
+  roles: any[] | null;
+  isVerified: boolean;
+  creationDate: string;
+  modificationDate: string;
+};
+
+type Facultad = {
+  facultyId: number;
+  name: string;
+  acronym: string;
+  numberOfStudents: number;
+  numberOfTutors: number;
+  isActive: boolean;
+  facultyManager: any | null;
+  specialties: any[] | null;
+};
+
+const defaultPersona: Persona = {
+  id: 0,
+  name: '-',
+  lastName: '',
+  secondLastName: null,
+  phone: null,
+  isActive: true,
+  usuario: null
+};
+
+const defaultSpecialtyManager: SpecialtyManager = {
+  id: 0,
+  institutionalEmail: '-',
+  pucpCode: '-',
+  isActive: true,
+  persona: defaultPersona,
+  roles: null,
+  isVerified: false,
+  creationDate: '2023-01-01',
+  modificationDate: '2023-01-01'
+};
+
+const defaultFacultad: Facultad = {
+  facultyId: 0,
+  name: '-',
+  acronym: '-',
+  numberOfStudents: 0,
+  numberOfTutors: 0,
+  isActive: true,
+  facultyManager: null,
+  specialties: null
+};
+
+const defaultEspecialidad: Specialty = {
+  id: 0,
+  name: '-',
+  acronym: '-',
+  numberOfStudents: 0,
+  isActive: true,
+  faculty: defaultFacultad,
+  specialtyManager: defaultSpecialtyManager,
+  personalApoyo: defaultSpecialtyManager,
+  creationDate: '2023-01-01',
+  modificationDate: '2023-01-01',
+  students: null,
+  tutoringPrograms: null,
+  numberStudents: 0,
+  facultyId: 0
+};
 
 const EspecialidadSingular = () => {
+  const { userData } = useAuth();
+  const especialidades: ManagerRoleDetails[] = getEspecialidadesFromRoleCoordinador(userData);
+
   const [editable, setEditable] = React.useState(false);
   const { state } = useLocation();
-  const { especialidadEspecifica } = state;
+  //const { especialidadEspecifica } = state;
+  const especialidadEspecifica = state?.especialidadEspecifica ? state?.especialidadEspecifica : defaultEspecialidad;
 
   const [isOpenAsignarResponsable, setIsOpenAsignarResponsable] = useState<boolean>(false);
+
+  const [selectedSpecialtyId, setSelectedSpecialtyId] = useState<number | null>(null);
 
   const [name, setName] = useState<string>(especialidadEspecifica?.name);
   const [acronym, setAcronym] = useState<string>(especialidadEspecifica?.acronym);
@@ -49,11 +144,88 @@ const EspecialidadSingular = () => {
     setCorreoPersonalApoyo("-");
   };
   //
+  const restablecerDatos = () => {
+    if (state) {
+      setName(especialidadEspecifica?.name);
+      setAcronym(especialidadEspecifica?.acronym);
+      //
+      setResponsableId(
+        especialidadEspecifica?.specialtyManager ? especialidadEspecifica?.specialtyManager.id : -1
+      );
+      setResponsable(
+        especialidadEspecifica?.specialtyManager ? especialidadEspecifica.specialtyManager.persona.name + " " + especialidadEspecifica.specialtyManager.persona.lastName : "-"
+      );
+      setCorreoResponsable(
+        especialidadEspecifica?.specialtyManager ? especialidadEspecifica.specialtyManager.institutionalEmail : "-"
+      );
+      //
+      setPersonalApoyoId(
+        especialidadEspecifica?.personalApoyo ? especialidadEspecifica?.personalApoyo.id : -1
+      );
+      setPersonalApoyo(
+        especialidadEspecifica?.personalApoyo ? especialidadEspecifica.personalApoyo.persona.name + " " + especialidadEspecifica.personalApoyo.persona.lastName : "-"
+      );
+      setCorreoPersonalApoyo(
+        especialidadEspecifica?.personalApoyo ? especialidadEspecifica.personalApoyo.institutionalEmail : "-"
+      );
+    } else {
+      const espe: Specialty = especialidadData.find(esp => esp.specialtyId === selectedSpecialtyId) || defaultEspecialidad;
+      console.log("espe", espe);
+      setName(espe.name);
+      setAcronym(espe.acronym);
+      setResponsableId(espe.specialtyManager?.id);
+      setResponsable(espe.specialtyManager ? espe.specialtyManager?.persona.name + " " + espe.specialtyManager?.persona.lastName : "-");
+      setCorreoResponsable(espe.specialtyManager?.institutionalEmail ? espe.specialtyManager?.institutionalEmail : "-");
+      setPersonalApoyoId(espe.personalApoyo?.id);
+      setPersonalApoyo(espe.personalApoyo ? espe.personalApoyo?.persona.name + " " + espe.personalApoyo?.persona.lastName : "-");
+      setCorreoPersonalApoyo(espe.personalApoyo?.institutionalEmail ? espe.personalApoyo?.institutionalEmail : "-");
+    }
+  };
+  //
+  const { especialidadData, fetchEspecialidadData } = useEspecialidadByName();
+
+  useEffect(() => {
+    if (!state) {
+      fetchEspecialidadData("");
+      console.log("especialidadData", especialidadData);
+      const espe: Specialty = especialidadData.find(esp => esp.specialtyId === selectedSpecialtyId) || defaultEspecialidad;
+      console.log("espe", espe);
+      setName(espe.name);
+      setAcronym(espe.acronym);
+      setResponsableId(espe.specialtyManager?.id);
+      setResponsable(espe.specialtyManager ? espe.specialtyManager?.persona.name + " " + espe.specialtyManager?.persona.lastName : "-");
+      setCorreoResponsable(espe.specialtyManager?.institutionalEmail ? espe.specialtyManager?.institutionalEmail : "-");
+      setPersonalApoyoId(espe.personalApoyo?.id);
+      setPersonalApoyo(espe.personalApoyo ? espe.personalApoyo?.persona.name + " " + espe.personalApoyo?.persona.lastName : "-");
+      setCorreoPersonalApoyo(espe.personalApoyo?.institutionalEmail ? espe.personalApoyo?.institutionalEmail : "-");
+    }
+  }, [selectedSpecialtyId]);
+  //
+  const handleOnChangeSpecialty = (value: any) => {
+    setSelectedSpecialtyId(value.id);
+  };
+  //
   return (
     <div className="w-full h-full flex flex-col gap-5">
       <div className='flex gap-2 items-center justify-between'>
+        {
+          state == null &&
+          <div>
+            <Label value="Especialidad" className='font-roboto text-primary' />
+            <Combobox
+              className='w-[250px]'
+              options={especialidades.map(especialidad => ({
+                id: especialidad.departmentId,
+                name: especialidad.departmentName,
+                ...especialidad
+              }))}
+              onChange={handleOnChangeSpecialty}
+              value={null}
+            />
+          </div>
+        }
         <span className='text-3xl text-primary font-bold'>
-          {especialidadEspecifica?.name}
+          {name}
         </span>
         {
           editable
@@ -86,27 +258,7 @@ const EspecialidadSingular = () => {
                     return;
                   }
                   //restablecer
-                  setName(especialidadEspecifica?.name);
-                  setAcronym(especialidadEspecifica?.acronym);
-                  setResponsableId(
-                    especialidadEspecifica?.specialtyManager ? especialidadEspecifica?.specialtyManager.id : -1
-                  );
-                  setResponsable(
-                    especialidadEspecifica?.specialtyManager ? especialidadEspecifica.specialtyManager.persona.name + " " + especialidadEspecifica.specialtyManager.persona.lastName : "-"
-                  );
-                  setCorreoResponsable(
-                    especialidadEspecifica?.specialtyManager ? especialidadEspecifica.specialtyManager.institutionalEmail : "-"
-                  );
-                  //
-                  setPersonalApoyoId(
-                    especialidadEspecifica?.personalApoyo ? especialidadEspecifica?.personalApoyo.id : -1
-                  );
-                  setPersonalApoyo(
-                    especialidadEspecifica?.personalApoyo ? especialidadEspecifica.personalApoyo.persona.name + " " + especialidadEspecifica.personalApoyo.persona.lastName : "-"
-                  );
-                  setCorreoPersonalApoyo(
-                    especialidadEspecifica?.personalApoyo ? especialidadEspecifica.personalApoyo.institutionalEmail : "-"
-                  );
+                  restablecerDatos();
                   //
                   setEditable(false);
                 }}
@@ -119,6 +271,7 @@ const EspecialidadSingular = () => {
               text='Editar'
               onClick={() => { setEditable(true); }}
               className='rounded-2xl '
+              disabled={selectedSpecialtyId == null && state == null}
             />
         }
       </div>
@@ -131,11 +284,11 @@ const EspecialidadSingular = () => {
               onChange={(e) => {
                 setAcronym(e.target.value);
               }}
-              disabled={!editable}
+              disabled={!editable || state == null}
               type="text"
               placeholder='Siglas'
               value={acronym}
-              className={`grow border text-sm border-secondary rounded-xl shadow-md shadow-terciary text-primary py-1 px-5 ${!editable ? 'bg-blue-100' : ''}`}
+              className={`grow border text-sm border-secondary rounded-xl shadow-md shadow-terciary text-primary py-1 px-5 ${editable && state != null ? 'bg-white' : 'bg-blue-100'}`}
             />
           </div>
 
@@ -145,7 +298,11 @@ const EspecialidadSingular = () => {
               onChange={(e) => {
                 setName(e.target.value);
               }}
-              disabled={!editable} type="text" placeholder='Siglas' value={name} className={`grow border text-sm border-secondary rounded-xl shadow-md shadow-terciary text-primary py-1 px-5 ${!editable ? 'bg-blue-100' : ''}`} />
+              disabled={!editable || state == null}
+              type="text"
+              placeholder='Siglas'
+              value={name}
+              className={`grow border text-sm border-secondary rounded-xl shadow-md shadow-terciary text-primary py-1 px-5 ${editable && state != null ? 'bg-white' : 'bg-blue-100'}`} />
           </div>
 
           <div className='grid-cols-2 grid gap-4 max-w-[700px]'>
@@ -166,19 +323,19 @@ const EspecialidadSingular = () => {
               />
               <>
                 <button
-                  className={`rounded-lg ${editable ? 'bg-white' : 'bg-secondary'} shadow p-2`}
+                  className={`rounded-lg ${editable && state != null ? 'bg-white' : 'bg-secondary'} shadow p-2`}
                   onClick={() => {
                     setUser("Responsable");
                     setIsOpenAsignarResponsable(true);
                   }}
-                  disabled={!editable}
+                  disabled={!editable || state == null}
                 >
                   <MdOutlineEdit />
                 </button>
                 <button
-                  className={`rounded-lg ${editable ? 'bg-white' : 'bg-secondary'} shadow p-2`}
+                  className={`rounded-lg ${editable && state != null ? 'bg-white' : 'bg-secondary'} shadow p-2`}
                   onClick={handleClearResponsable}
-                  disabled={!editable}
+                  disabled={!editable || state == null}
                 >
                   <MdDeleteOutline />
                 </button>

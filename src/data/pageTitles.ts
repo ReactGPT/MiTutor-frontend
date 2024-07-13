@@ -303,4 +303,8 @@ export const PageTitles = [
     path: '/facultad',
     pageName: "Datos de Facultad"
   },
+  {
+    path: '/especialidad',
+    pageName: "Datos de Especialidad"
+  },
 ];

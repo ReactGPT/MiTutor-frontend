@@ -17,7 +17,7 @@ interface ModalSearchProps {
   onClose: () => void;
   facultad: Facultad;
   setFacultadData: (facultad: Facultad) => void;
-  userType: "CoordFacultad" | "CoordBienestar";
+  userType: "CoordFacultad" | "CoordBienestar" | "PersonalApoyo";
   updateKey: number;
 }
 
@@ -33,6 +33,9 @@ const ModalSearch: React.FC<ModalSearchProps> = ({ isOpen, onClose, facultad, se
         fetchUsersNoStudents();
         break;
       case "CoordBienestar":
+        fetchUsersNoRoles();
+        break;
+      case "PersonalApoyo":
         fetchUsersNoRoles();
         break;
     }
@@ -83,6 +86,11 @@ const ModalSearch: React.FC<ModalSearchProps> = ({ isOpen, onClose, facultad, se
         return {
           ...facultad,
           bienestarManager: managerData,
+        };
+      } else if (userType === "PersonalApoyo") {
+        return {
+          ...facultad,
+          personalApoyo: managerData,
         };
       }
     }

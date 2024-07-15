@@ -49,10 +49,12 @@ function DatosGeneralesTutoria() {
       }
 
       if (selectedFaculties.length === 0) {
-        const facultyId = parseInt((roles[0].details as any).departmentId, 10);
-        const faculty = facultyList.find(faculty => faculty.id === facultyId);
-        if (faculty) {
-          selectedFaculties.push(faculty);
+        if (roles[0].type === "SUPPORTFACULTY") {
+          const facultyId = parseInt((roles[0].details as any).departmentId, 10);
+          const faculty = facultyList.find(faculty => faculty.id === facultyId);
+          if (faculty) {
+            selectedFaculties.push(faculty);
+          }
         }
       }
     });

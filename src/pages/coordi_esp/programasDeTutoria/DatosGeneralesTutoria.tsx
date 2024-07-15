@@ -42,10 +42,12 @@ function DatosGeneralesTutoria() {
       }
     }
     if (acc.length === 0) {
-      const facultyId = parseInt((roles[0].details as ManagerRoleDetails).departmentId, 10);
-      const speciality = specialityList.find(faculty => faculty.id === facultyId);
-      if (speciality) {
-        acc.push(speciality);
+      if (roles[0].type === "SUPPORTSPECIALTY") {
+        const facultyId = parseInt((roles[0].details as ManagerRoleDetails).departmentId, 10);
+        const speciality = specialityList.find(faculty => faculty.id === facultyId);
+        if (speciality) {
+          acc.push(speciality);
+        }
       }
     }
 

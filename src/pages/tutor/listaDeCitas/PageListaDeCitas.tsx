@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import AppointmentItem from "../../../components/Tutor/AppointmentItem";
 import Pagination from "../../../components/Pagination";
 import { SearchInput } from "../../../components";
@@ -45,10 +45,20 @@ const PageListaDeCitas = () => {
     setCurrentPage(1);
   };
 
-  const citasFiltradas = cita?.filter(cita =>
-    cita.programName.toLowerCase().includes(searchText.toLowerCase())
-  );
-
+  const citasFiltradas = useMemo(() => {
+    return cita?.filter(cita => {
+      const matchesProgramName = cita.programName.toLowerCase().includes(filters.name?.toLowerCase() || '');
+      const matchesStatus = filters.status && filters.status.toLowerCase() !== 'todos' 
+        ? (filters.status.toLowerCase() === 'pendiente' 
+          ? (cita.appointmentStatus.toLowerCase() === 'pendiente resultado' || cita.appointmentStatus.toLowerCase() === 'pendiente de resultado')
+          : cita.appointmentStatus.toLowerCase() === filters.status.toLowerCase())
+        : true;
+      const matchesStartDate = filters.startDate ? new Date(cita.creationDate) >= new Date(filters.startDate) : true;
+      const matchesEndDate = filters.endDate ? new Date(cita.creationDate) <= new Date(filters.endDate) : true;
+      return matchesProgramName && matchesStatus && matchesStartDate && matchesEndDate;
+    });
+  }, [cita, filters]);
+   
   const indiceUltimaCita = currentPage * itemsPerPage;
   const indicePrimeraCita = indiceUltimaCita - itemsPerPage;
   const citasFiltradasRango = citasFiltradas.slice(indicePrimeraCita, indiceUltimaCita);
@@ -93,7 +103,9 @@ const PageListaDeCitas = () => {
       {/* Filtro de búsqueda */}
 
       <div className="h-[7%]">
-        <SearchInput placeholder="Buscador" onSearch={handleSearch} handleOnChangeFilters={handleOnChangeFilters} />
+        <SearchInput placeholder="Buscador" onSearch={handleSearch} 
+        handleOnChangeFilters={handleOnChangeFilters} 
+        iconoBusqueda={true}/>
       </div>
 
       {/* Item de Cita       */}

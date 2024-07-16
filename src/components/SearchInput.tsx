@@ -21,6 +21,7 @@ type SearchInputProps = {
   selectDisabled?: boolean;
   onSearch: (query: string) => void;
   handleOnChangeFilters: (filters: any) => void;
+  iconoBusqueda: boolean;
 };
 
 type AppointmentStatus = {
@@ -33,12 +34,13 @@ const SearchInput: React.FC<SearchInputProps> = ({
   onSearch,
   selectDisabled = false,
   handleOnChangeFilters,
+  iconoBusqueda,
 }: SearchInputProps) => {
 
   const [query, setQuery] = useState('');
   const [selectedStatus, setSelectedStatus] = useState<AppointmentStatus | null>(null);
-  const [startDateSelected, setStartDateSelected] = useState<Date | null>(null);
-  const [endDateSelected, setEndDateSelected] = useState<Date | null>(null);
+  const [startDateSelected, setStartDateSelected] = useState<string | null>(null);
+  const [endDateSelected, setEndDateSelected] = useState<string | null>(null);
 
   const { appointmentStatusList } = useAppSelector((state: RootState) => state.parameters);
 
@@ -54,6 +56,28 @@ const SearchInput: React.FC<SearchInputProps> = ({
     onSearch(query);
   };
 
+  const handleStartDateChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const selectedStartDate = e.target.value;
+    if (endDateSelected && new Date(selectedStartDate) > new Date(endDateSelected)) {
+      alert('La fecha de fin no puede ser menor que la fecha de inicio');
+    } else {
+      setStartDateSelected(selectedStartDate);
+      // Si selecciona una nueva fecha de inicio, limpiamos la fecha de fin si es menor
+      if (!selectedStartDate) {
+        setEndDateSelected(null);
+        setEndDateSelected('');
+      }
+    }
+  };
+  
+  const handleEndDateChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const selectedEndDate = e.target.value;
+    if (startDateSelected && new Date(selectedEndDate) < new Date(startDateSelected)) {
+      alert('La fecha de fin no puede ser menor que la fecha de inicio');
+    } else {
+      setEndDateSelected(selectedEndDate);
+    }
+  };
   const filters = useMemo(() => {
     return {
       status: selectedStatus?.name,
@@ -67,11 +91,14 @@ const SearchInput: React.FC<SearchInputProps> = ({
     handleOnChangeFilters(filters);
   }, [filters]);
 
+  const endDateISO = startDateSelected ? new Date(startDateSelected).toISOString().split('T')[0] : '';
+
   return (
     <div className="flex w-full max-h-[40px] rounded-2xl">
 
       <input
-        className={`w-full p-3 rounded-l-2xl focus:outline-none ${className}`}
+        className={`w-full p-3 rounded-l-2xl 
+        ${iconoBusqueda && selectDisabled ? 'rounded-r-2xl' : ''} focus:outline-none ${className}`}
         onChange={handleInputChange}
         type="search"
         placeholder={placeholder}
@@ -97,6 +124,7 @@ const SearchInput: React.FC<SearchInputProps> = ({
       {!selectDisabled && <input
         type="date"
         className={`${className} border-l-0`}
+        onChange={handleStartDateChange}
         name="Fecha Inicio" id="" />}
       {!selectDisabled && <p
         className={`text-center flex items-center justify-center w-28 ${className} 
@@ -105,11 +133,14 @@ const SearchInput: React.FC<SearchInputProps> = ({
       </p>}
       {!selectDisabled && <input
         type="date"
-        className={`${className} border-l-0`}
+        className={`${className} border-l-0 ${iconoBusqueda ? 'rounded-r-2xl' : ''}`}
+        onChange={handleEndDateChange}
+        min={endDateISO}
+        disabled={!startDateSelected}
         name="Fecha Fin" id="" />}
 
-      <button className=" bg-primary cursor-default rounded-r-2xl text-white px-5 shadow-custom border border-solid border-[rgba(116,170,255,0.70)] active:bg-black hover:cursor-pointer" onClick={handleSearch}><IconSearch /></button>
-
+      {!iconoBusqueda && <button className="bg-primary cursor-default rounded-r-2xl text-white px-5 shadow-custom border border-solid border-[rgba(116,170,255,0.70)] active:bg-black hover:cursor-pointer" 
+              onClick={handleSearch}><IconSearch /></button>}
     </div>
   );
 };

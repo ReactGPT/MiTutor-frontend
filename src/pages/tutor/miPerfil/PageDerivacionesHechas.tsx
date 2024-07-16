@@ -58,7 +58,8 @@ const PageMisDerivacionesHechas = () => {
       {/* Filtro de búsqueda */}
 
       <div className="h-[7%]">
-        <SearchInput placeholder="Cosa a buscar" onSearch={handleSearch} handleOnChangeFilters={handleOnChangeFilters} />
+        <SearchInput placeholder="Cosa a buscar" onSearch={handleSearch} 
+        handleOnChangeFilters={handleOnChangeFilters} iconoBusqueda={false} />
       </div>
 
       {/* Item de Cita       */}

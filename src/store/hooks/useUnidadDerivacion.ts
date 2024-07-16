@@ -77,7 +77,7 @@ function useUnidadDerivacion(): UnidadHookReturnType {
         setIsLoading(true);
         try {
             //console.log("user en postUser: ",user)
-            console.log("en updateUnidad",unidad)
+            console.log("en updateUnidad aaaa",unidad)
             const response = await actualizarUnidad(unidad);
             if (!response.success) {
             throw new Error(response.message);

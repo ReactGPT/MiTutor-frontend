@@ -32,6 +32,11 @@ const PageDetalleDeTutoriaSolicitado = () => {
     fetchTutoresPorTutoria();
   }, []);
 
+  //console.log("tutores",listaDeTutores);
+  useEffect(() => { 
+    console.log("tutores",listaDeTutores);
+  }, [listaDeTutores]);
+  
   const goToTutorPlan = () => {
     navigate('/misTutorias/detalle/planesDeAccion', { state: { programId: data.tutoringProgramId, tutorId: listaDeTutores[0].tutorId } });
   };

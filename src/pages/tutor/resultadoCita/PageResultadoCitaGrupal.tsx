@@ -54,8 +54,8 @@ const PageDetalleCitaGrupal: React.FC = () => {
   };
 
   const handleCancelar = () => {
-    setCommentValue2(estudiantes[0].message1);
-    setCommentValue(estudiantes[0].message2);
+    setCommentValue2(estudiantes[0].message2);
+    setCommentValue(estudiantes[0].message1);
     setEstudiantes(originalEstudiantes); // Restaurar los datos originales
     setEditMode(false); // Salir del modo de edición
   };

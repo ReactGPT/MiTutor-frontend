@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { Button, SearchInput, Spinner } from "../../../components";
 import { useProgramaDeTutoriaAlumno } from "../../../store/hooks/useProgramaDeTutoriaAlumno";
 import Pagination from "../../../components/Pagination";
@@ -36,10 +36,13 @@ const PageListaDeTutorias = () => {
   const handleOnChangeFilters = (filter: any) => {
     setFilters(filter);
   };
-
-  const filteredPrograms = programaTutoriaAlumno?.filter(program =>
-    program.programName.toLowerCase().includes(searchText.toLowerCase())
-  );
+    
+  const filteredPrograms = useMemo(() => {
+    return programaTutoriaAlumno?.filter(prog => { 
+      const matchesProgramName = prog.programName.toLowerCase().includes(filters.name?.toLowerCase() || '');
+      return matchesProgramName;
+    });
+  }, [programaTutoriaAlumno, filters]);
 
   const indexOfLastProgram = currentPage * itemsPerPage;
   const indexOfFirstProgram = indexOfLastProgram - itemsPerPage;
@@ -52,7 +55,8 @@ const PageListaDeTutorias = () => {
   return (
     <div className="flex flex-col gap-5 w-full h-full">
       <div className="w-full h-[5%]">
-        <SearchInput placeholder="Programa de Tutoria" onSearch={handleSearch} handleOnChangeFilters={handleOnChangeFilters} />
+        <SearchInput placeholder="Programa de Tutoria" onSearch={handleSearch} 
+        handleOnChangeFilters={handleOnChangeFilters} selectDisabled={true} iconoBusqueda={true}/>
       </div>
 
       {

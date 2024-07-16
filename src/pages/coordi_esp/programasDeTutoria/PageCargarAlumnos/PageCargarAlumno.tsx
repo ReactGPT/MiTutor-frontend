@@ -105,6 +105,7 @@ const PageCargarAlumno = ({ setStudentDataModified, setPopout, idEspecialidad }:
         handleOnChangeFilters={() => {}}
         placeholder={`Nombre o código del usuario...`}
         selectDisabled={true}
+        iconoBusqueda={false}
       />
       <div className="flex w-full h-full ag-theme-alpine items-center justify-center mt-4" style={{ height: '300px' }}>
         <div className="w-full h-full">

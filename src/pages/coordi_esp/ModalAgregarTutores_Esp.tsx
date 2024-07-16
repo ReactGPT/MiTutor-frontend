@@ -131,7 +131,8 @@ function ModalAgregarTutores({ isOpen, closeModal }: ModalAgregarTutoresProps) {
                 </Dialog.Title>
                 <div className="flex flex-col w-full min-h-[450px] ml-2 mr-2 mt-4 gap-4">
                   <div className="flex w-full h-[30%]">
-                    <SearchInput selectDisabled={true} placeholder="Escriba nombre o correo" handleOnChangeFilters={() => { }} onSearch={handleOnChangeSearch} />
+                    <SearchInput selectDisabled={true} placeholder="Escriba nombre o correo" 
+                    handleOnChangeFilters={() => { }} onSearch={handleOnChangeSearch} iconoBusqueda={false}/>
                   </div>
                   <div className="flex flex-row mt-4">
                     <h4 className='text-2xl font-bold w-full justify-begin  font-large leading-6 text-gray-900'>{`Tutores seleccionados : ${tutoresAgregados.length}`}</h4>

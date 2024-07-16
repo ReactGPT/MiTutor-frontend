@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import AppointmentItem from "../../../components/Tutor/AppointmentItem";
 import Pagination from "../../../components/Pagination";
 import { SearchInput } from "../../../components";
@@ -26,13 +26,31 @@ const PageHistoricoDeCitas = () => {
     fetchCita();
   }, []);
 
+  
+  const [filters, setFilters] = useState<any>({
+    status: null,
+    startDate: null,
+    endDate: null,
+    name: null
+  });
+  
   const [searchText, setSearchText] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5;
 
-  const citasFiltradas = cita?.filter(cita =>
-    cita.programName.toLowerCase().includes(searchText.toLowerCase())
-  );
+  const citasFiltradas = useMemo(() => {
+    return cita?.filter(cita => {
+      const matchesProgramName = cita.programName.toLowerCase().includes(filters.name?.toLowerCase() || '');
+      const matchesStatus = filters.status && filters.status.toLowerCase() !== 'todos' 
+        ? (filters.status.toLowerCase() === 'pendiente' 
+          ? (cita.appointmentStatus.toLowerCase() === 'pendiente resultado' || cita.appointmentStatus.toLowerCase() === 'pendiente de resultado')
+          : cita.appointmentStatus.toLowerCase() === filters.status.toLowerCase())
+        : true;
+      const matchesStartDate = filters.startDate ? new Date(cita.creationDate) >= new Date(filters.startDate) : true;
+      const matchesEndDate = filters.endDate ? new Date(cita.creationDate) <= new Date(filters.endDate) : true;
+      return matchesProgramName && matchesStatus && matchesStartDate && matchesEndDate;
+    });
+  }, [cita, filters]);
 
   const indiceUltimaCita = currentPage * itemsPerPage;
   const indicePrimeraCita = indiceUltimaCita - itemsPerPage;
@@ -46,6 +64,11 @@ const PageHistoricoDeCitas = () => {
   const handlePageChange = (newPage: number) => {
     setCurrentPage(newPage);
   };
+  
+  const handleOnChangeFilters = (filter: any) => {
+    setFilters(filter);
+  };
+
 
   return (
     <div className="w-full h-full flex flex-col gap-5">
@@ -58,7 +81,9 @@ const PageHistoricoDeCitas = () => {
       </div>
 
       <div>
-        <SearchInput placeholder="Cosa a buscar" onSearch={handleSearch} handleOnChangeFilters={() => { }} />
+        <SearchInput placeholder="Buscador" onSearch={handleSearch} 
+        handleOnChangeFilters={handleOnChangeFilters} 
+        iconoBusqueda={true}/>
       </div>
 
       <div className="w-full h-[65%] min-h-[60px] flex flex-col gap-5">

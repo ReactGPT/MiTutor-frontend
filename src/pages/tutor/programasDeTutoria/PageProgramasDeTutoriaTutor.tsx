@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { SearchInput, Spinner } from "../../../components";
 import TutoringProgramCard from "../../../components/Tutor/TutoringProgramCard";
 import Pagination from "../../../components/Pagination";
@@ -37,9 +37,12 @@ const PageProgramasDeTutoriaTutor: React.FC = () => {
     setCurrentPage(1);
   };
 
-  const filteredPrograms = programaTutoria?.filter(program =>
-    program.programName.toLowerCase().includes(searchText.toLowerCase())
-  );
+  const filteredPrograms = useMemo(() => {
+    return programaTutoria?.filter(prog => { 
+      const matchesProgramName = prog.programName.toLowerCase().includes(filters.name?.toLowerCase() || '');
+      return matchesProgramName;
+    });
+  }, [programaTutoria, filters]);
 
   const indexOfLastProgram = currentPage * itemsPerPage;
   const indexOfFirstProgram = indexOfLastProgram - itemsPerPage;
@@ -52,7 +55,9 @@ const PageProgramasDeTutoriaTutor: React.FC = () => {
   return (
     <div className="flex flex-col gap-5 w-full h-full">
       <div className="w-full h-[5%]">
-        <SearchInput placeholder="Programa de Tutoria" onSearch={handleSearch} handleOnChangeFilters={handleOnChangeFilters} />
+        <SearchInput placeholder="Programa de Tutoria" 
+        onSearch={handleSearch} handleOnChangeFilters={handleOnChangeFilters} 
+        selectDisabled={true} iconoBusqueda={true}/>
       </div>
 
       {loading ?

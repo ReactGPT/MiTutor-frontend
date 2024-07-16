@@ -19,6 +19,7 @@ function useTutoresPorTutoriayAlumno(programId: number, studentId: number): Tuto
     const fetchTutoresPorTutoria = async () => {
       try {
         const data: TutorEstadoSolicitud = await getTutoresPorTutoriayAlumno(programId, studentId);
+        console.log("tutoresss",data.tutores);
         setlistaDeTutores(data.tutores);
         setEstado(data.estado);
         setLoading(false);

@@ -41,7 +41,7 @@ const PageDetalleProgramaTutoriaTutor: React.FC = () => {
       <div className="flex flex-col gap-5 w-full h-3/4 bg-[rgba(255,_255,_255,_0.50)] border-custom drop-shadow-md p-5 mt-4">
         <h1 className="text-3xl font-bold">Alumnos inscritos</h1>
         <div className='w-full h-full'>
-          <TablaDetalle onclick={toDetail} tutoringProgramId={data.tutoringProgramId} />
+          <TablaDetalle onclick={toDetail} tutoringProgramId={data.tutoringProgramId} tutorType={data.tutorType} />
         </div>
       </div>
 

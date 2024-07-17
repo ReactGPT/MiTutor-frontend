@@ -9,22 +9,34 @@ import axios from 'axios';
 import { ListStudent } from '../../store/types/ListStudent';
 import { useNavigate } from "react-router-dom";
 import { Services as ServicesProperties } from '../../config';
+import { useAuth } from '../../context';
+import { getTutorId } from '../../store/hooks/RolesIdTutor';
 
 type TablaDetalleProps = {
+  tutorType?: string;
   tutoringProgramId: number;
   onclick?: () => void;
 };
 
 const TablaDetalle: React.FC<TablaDetalleProps> = ({
   tutoringProgramId,
+  tutorType
 }) => {
 
   const [estudiantes, setEstudiantes] = useState<ListStudent[]>([]);
 
+  const { userData } = useAuth();
+  const tutorId = getTutorId(userData);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`${ServicesProperties.BaseUrl}/listarEstudiantesPorProgramaDeTutoria/${tutoringProgramId}`);
+        let response;
+        if (tutorType == "TUTOR VARIABLE") {
+          response = await axios.get(`${ServicesProperties.BaseUrl}/listarEstudiantesPorProgramaDeTutoria/${tutoringProgramId}`);
+        } else {
+          response = await axios.get(`${ServicesProperties.BaseUrl}/listarEstudiantesPorProgramaDeTutoria/${tutoringProgramId}/${tutorId}`);
+        }
         setEstudiantes(response.data.data);
       } catch (error) {
         console.error('Error al obtener datos:', error);

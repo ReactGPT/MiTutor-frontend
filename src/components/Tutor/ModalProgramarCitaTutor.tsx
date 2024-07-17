@@ -303,6 +303,7 @@ const ModalProgramarCitaTutor: React.FC<ProgramarCitaTutorProps> = ({ isOpen, on
                     selectedRows={selectedRows}
                     setSelectedRows={setSelectedRows}
                     cantidad={selectedProgram?.data.groupBased ? "grupal" : "individual"}
+                    tutorType={selectedProgram?.data.tutorType}
                   />
                 }
 
@@ -333,6 +334,7 @@ const ModalProgramarCitaTutor: React.FC<ProgramarCitaTutorProps> = ({ isOpen, on
 export default ModalProgramarCitaTutor;
 
 type TablaAlumnosProps = {
+  tutorType: string;
   tutoringProgramId: number;
   selectedRows: ListStudent[]; // Prop para almacenar los rows seleccionados
   setSelectedRows: React.Dispatch<React.SetStateAction<ListStudent[]>>; // Setter para actualizar selectedRows
@@ -345,14 +347,22 @@ const TablaAlumnos: React.FC<TablaAlumnosProps> = ({
   selectedRows,
   setSelectedRows,
   cantidad,
+  tutorType
 }) => {
 
   const [estudiantes, setEstudiantes] = useState<ListStudent[]>([]);
+  const { userData } = useAuth();
+  const tutorId = getTutorId(userData);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`${ServicesProperties.BaseUrl}/listarEstudiantesPorProgramaDeTutoria/${tutoringProgramId}`);
+        let response;
+        if (tutorType == "TUTOR VARIABLE") {
+          response = await axios.get(`${ServicesProperties.BaseUrl}/listarEstudiantesPorProgramaDeTutoria/${tutoringProgramId}`);
+        } else {
+          response = await axios.get(`${ServicesProperties.BaseUrl}/listarEstudiantesPorProgramaDeTutoria/${tutoringProgramId}/${tutorId}`);
+        }
         setEstudiantes(response.data.data);
       } catch (error) {
         console.error('Error al obtener datos:', error);

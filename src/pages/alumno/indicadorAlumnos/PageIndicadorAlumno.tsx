@@ -148,12 +148,12 @@ const PageIndicadorAlumno: React.FC = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await api.get<{ success: boolean, data: StudentData[] }>('/listarAlumnosConCantidadDeProgramas');
+        const response = await api.get<{ success: boolean, data: StudentData[]; }>('/listarAlumnosConCantidadDeProgramas');
         let responseData = response.data.data;
         let finalData: StudentData[] = [];
 
         if (selectedIdFacultad != null) {
-          const responseIds = await api.get<{ success: boolean, data: number[] }>(`/listarEstudiantePorIdFacultad/${selectedIdFacultad}`);
+          const responseIds = await api.get<{ success: boolean, data: number[]; }>(`/listarEstudiantePorIdFacultad/${selectedIdFacultad}`);
           let responseDataIds = responseIds.data.data;
           responseData = responseData.filter(item =>
             responseDataIds.some(data => data === item.studentId)
@@ -184,12 +184,12 @@ const PageIndicadorAlumno: React.FC = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await api.get<{ success: boolean, data: StudentInfo[] }>('/listarCantidadAppointmentsStudent');
+        const response = await api.get<{ success: boolean, data: StudentInfo[]; }>('/listarCantidadAppointmentsStudent');
         let responseData = response.data.data;
         let finalData: StudentInfo[] = [];
 
         if (selectedIdFacultad != null) {
-          const responseIds = await api.get<{ success: boolean, data: number[] }>(`/listarEstudiantePorIdFacultad/${selectedIdFacultad}`);
+          const responseIds = await api.get<{ success: boolean, data: number[]; }>(`/listarEstudiantePorIdFacultad/${selectedIdFacultad}`);
           let responseDataIds = responseIds.data.data;
           responseData = responseData.filter(item =>
             responseDataIds.some(data => data === item.studentId)
@@ -209,7 +209,7 @@ const PageIndicadorAlumno: React.FC = () => {
 
   const fetchProgramsData = async (studentId: number) => {
     try {
-      const response = await api.get<{ success: boolean, data: ProgramData[] }>(`/listarProgramasDeTutoriaPorStudentId/${studentId}`);
+      const response = await api.get<{ success: boolean, data: ProgramData[]; }>(`/listarProgramasDeTutoriaPorStudentId/${studentId}`);
       return response.data.data;
     } catch (error) {
       console.error("Error fetching programs data:", error);
@@ -219,7 +219,7 @@ const PageIndicadorAlumno: React.FC = () => {
 
   const handleTutorClick = async (studentId: number) => {
     try {
-      const response = await api.get<{ success: boolean, data: ProgramData[] }>(`/listarProgramasDeTutoriaPorStudentId/${studentId}`);
+      const response = await api.get<{ success: boolean, data: ProgramData[]; }>(`/listarProgramasDeTutoriaPorStudentId/${studentId}`);
       const programsData = response.data.data;
       console.log(programsData);
       setSelectedStudentPrograms(programsData);
@@ -370,20 +370,25 @@ const PageIndicadorAlumno: React.FC = () => {
 
   const handleBuscarAlumnosClick = async () => {
     try {
-      const response = await api.get<{ success: boolean, data: Student[] }>('/listarEstudiantes');
+      const response = await api.get<{ success: boolean, data: Student[]; }>('/listarEstudiantes');
       let responseData = response.data.data;
+      console.log("responseData inicial", responseData);
       let finalData: Student[] = [];
 
-      for (const faculty of facultyList) {
-        if (isManagerRoleDetails(faculty)) {
-          const responseIds = await api.get<{ success: boolean, data: number[] }>(`/listarEstudiantePorIdFacultad/${faculty.departmentId}`);
-          let responseDataIds = responseIds.data.data;
-          responseData = responseData.filter(item =>
-            responseDataIds.some(data => data === item.id)
-          );
-          finalData = [...new Set([...finalData, ...responseData])];
-        }
+      if (selectedIdFacultad) {
+        console.log("yyyyy");
+        const responseIds = await api.get<{ success: boolean, data: number[]; }>(`/listarEstudiantePorIdFacultad/${selectedIdFacultad}`);
+        console.log("responseIds", responseIds);
+        let responseDataIds = responseIds.data.data;
+        console.log("responseDataIds", responseDataIds);
+        const filteredResponseData = responseData.filter(item => responseDataIds.includes(item.id));
+        console.log(filteredResponseData);
+        finalData = [...new Set([...filteredResponseData])];
+        console.log("finalData", finalData);
+      } else {
+        console.log("xxxxx");
       }
+
       setStudents(finalData);
       setIsStudentModalOpen(true);
     } catch (error) {

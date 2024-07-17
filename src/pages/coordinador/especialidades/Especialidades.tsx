@@ -37,6 +37,12 @@ const EspecialidadesPage: React.FC<EspecialidadesPageProps> = ({ Facultyid, disa
   const [search, setSearch] = React.useState<string>("");
   const { especialidadData, fetchEspecialidadData } = useEspecialidadByName();
 
+  const [isOpenConfirmation, setIsOpenConfirmation] = useState<boolean>(false);
+  const [selectedFacultyId, setSelectedFacultyId] = useState<number | null>(null);
+  const [selectedEspecialidadId, setSelectedEspecialidadId] = useState<number | null>(null);
+  const [isOpenModalSuccess, setIsOpenModalSuccess] = useState<boolean>(false);
+  const [isOpenModalError, setIsOpenModalError] = useState<boolean>(false);
+
   useEffect(() => {
     fetchEspecialidadData("");
   }, []);
@@ -90,15 +96,20 @@ const EspecialidadesPage: React.FC<EspecialidadesPageProps> = ({ Facultyid, disa
 
   const departmentId = useMemo(() => {
     if (Facultyid) {
+      console.log("se recibe un faculty id", Facultyid);
       return Facultyid;
     }
-  }, [userInfo]);
+    else {
+      console.log("No se recibe un id");
+      if (selectedFacultyId) {
+        console.log("pero no es null");
+      } else {
+        console.log("pero si es null");
+      }
+      return selectedFacultyId;
+    }
+  }, [userInfo, selectedFacultyId]);
 
-  const [isOpenConfirmation, setIsOpenConfirmation] = useState<boolean>(false);
-  const [selectedFacultyId, setSelectedFacultyId] = useState<number | null>(null);
-  const [selectedEspecialidadId, setSelectedEspecialidadId] = useState<number | null>(null);
-  const [isOpenModalSuccess, setIsOpenModalSuccess] = useState<boolean>(false);
-  const [isOpenModalError, setIsOpenModalError] = useState<boolean>(false);
 
   const handleOnConfirmDeleteEspecialidad = async () => {
     if (selectedEspecialidadId !== null) {
@@ -180,7 +191,7 @@ const EspecialidadesPage: React.FC<EspecialidadesPageProps> = ({ Facultyid, disa
               setIsOpen(true);
             }}
             className="rounded-2xl"
-            disabled={disableAgregarEspecialidad}
+            disabled={disableAgregarEspecialidad || (Facultyid == null && selectedFacultyId == null)}
           />
         </div>
         <div className="border border-terciary shadow-lg rounded-2xl w-full  bg-white flex overflow-clip">
@@ -224,7 +235,7 @@ const EspecialidadesPage: React.FC<EspecialidadesPageProps> = ({ Facultyid, disa
         />
       </div >
       <NuevaEspecialidad
-        FacultyId={departmentId}
+        FacultyId={departmentId ? departmentId : 0}
         isOpen={isOpen}
         onClose={() => {
           setIsOpen(false);
@@ -232,6 +243,8 @@ const EspecialidadesPage: React.FC<EspecialidadesPageProps> = ({ Facultyid, disa
         onConfirm={() => {
           fetchEspecialidadData(search).then(() => {
             console.log("Especialidad creada exitosamente");
+            console.log("selectedFacultyId", selectedFacultyId);
+            console.log("departmentId", departmentId);
           });
         }}
       />

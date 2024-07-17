@@ -26,17 +26,11 @@ const NuevaEspecialidad = ({
   const userInfo = userData?.userInfo;
 
   const departmentId = useMemo(() => {
-    let departmentId: number = 0;
     if (FacultyId) {
       return FacultyId;
     }
-    userInfo?.roles.forEach((role: any) => {
-      if (role.type === "MANAGER") {
-        departmentId = role.details.departmentId;
-      }
-    });
-    return departmentId;
-  }, [userInfo]);
+    return -1;
+  }, [userInfo, FacultyId]);
 
   //Modals
   const [isOpenSuccess, setIsOpenSuccess] = React.useState(false);

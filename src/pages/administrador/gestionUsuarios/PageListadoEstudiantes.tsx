@@ -111,12 +111,12 @@ export default function PageListadoEstudiantes() {
           item.persona.name.toLowerCase().includes(filters.name ? filters.name.toLowerCase() : "")
         );
       } 
+      console.log("usuario",userLogin);
       //FACULTAD
       if(isFacu){
         const uniqueStudentIds = new Set<number>();
-  
-        roles.forEach(role => {
-          if (role.rolName === 'Responsable de Facultad') {
+         roles.forEach(role => {
+          if (role.rolName === 'Responsable de Facultad' || role.rolName === 'Personal Apoyo de Facultad') {
             const facultyId = parseInt((role.details as any).departmentId, 10);
     
             userData.forEach(user => {
@@ -134,7 +134,7 @@ export default function PageListadoEstudiantes() {
         const uniqueStudenteEspIds = new Set<number>();
     
         roles.forEach(role => {
-          if (role.rolName === 'Responsable de Especialidad') {
+          if (role.rolName === 'Responsable de Especialidad' || role.rolName === 'Personal Apoyo de Especialidad') {
             const specialityId = parseInt((role.details as any).departmentId, 10);
     
             userData.forEach(user => {

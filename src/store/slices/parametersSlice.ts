@@ -266,24 +266,24 @@ const initialState:ParametersState={
     appointmentStatusList:[
         {
             id:1,
-            name:"Cualquiera"
+            name:"todos"
         },
         {
             id:2,
-            name:"Pendiente"
+            name:"cancelada"
         },
         {
             id:3,
-            name:"Registrada"
+            name:"pendiente"
         },
         {
             id:4,
-            name:"Solicitado"
+            name:"registrada"
         },
         {
             id:5,
-            name:"Completado"
-        },
+            name:"completada"
+        }, 
     ],
     unitDerivationList:[{
         id:1,

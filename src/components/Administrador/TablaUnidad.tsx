@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { ChangeEvent, useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import SearchInput from '../SearchInput';
 import DeleteIcon from '../../assets/svg/DeleteIcon';
@@ -106,6 +106,17 @@ const TablaUnidad: React.FC<TablaProps> = ({
     }
   ];
 
+  const [search, setSearch] = React.useState<string>("");
+
+  const unidadesFiltered: UnidadDerivacion[] = useMemo(() => {
+    return unidadData.filter(unidad =>
+      unidad.nombre.toLowerCase().includes(search.toLowerCase()) || unidad.siglas.toLowerCase().includes(search.toLowerCase()));
+  }, [unidadData, search]);
+
+  const handleSearchChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setSearch(event.target.value);
+  };
+
   return (
     <div className='w-full h-full flex flex-col'>
       <div className="w-full flex justify-between items-center">
@@ -116,12 +127,15 @@ const TablaUnidad: React.FC<TablaProps> = ({
       </div>
 
       <div className="w-full mt-[1%]">
-        <SearchInput
-          onSearch={handleSearch}
-          handleOnChangeFilters={() => { }}
-          placeholder={`Siglas o nombre de la ${abreviatura}`}
-          selectDisabled={true}
-        />
+      <div className="border border-terciary shadow-lg rounded-2xl w-full  bg-white flex overflow-clip">
+          <input
+            type="text"
+            placeholder="Buscar unidad"
+            className="grow border-0"
+            value={search}
+            onChange={handleSearchChange}
+          />  
+        </div>
       </div>
 
       <div className="flex w-full h-full flex-col space-y-5 mt-5 ag-theme-alpine items-center">
@@ -129,9 +143,7 @@ const TablaUnidad: React.FC<TablaProps> = ({
           <AgGridReact
             defaultColDef={defaultColDef}
             columnDefs={columnUni}
-            rowData={unidadData.filter((item) =>
-              item.nombre.toLowerCase().includes(searchValue.toLowerCase()) || item.siglas.toLowerCase().includes(searchValue.toLowerCase())
-            )}
+            rowData={(unidadesFiltered)}
             paginationAutoPageSize
             suppressMovableColumns
           />

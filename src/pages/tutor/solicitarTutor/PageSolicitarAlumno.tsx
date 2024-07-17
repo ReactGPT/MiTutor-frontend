@@ -7,6 +7,7 @@ import ModalSolicitud from '../../../components/Tutor/ModalSolicitud';
 import { listarTutoresTipo } from '../../../store/services/listarTutoresTipo';
 import { insertarSolicitudTutoria } from '../../../store/services/insertarSolicitudTutoria';
 import { useAuth } from '../../../context';
+import ModalConfirmacion from '../../../components/Tutor/ModalConfirmacion';
 
 // Interfaces
 export interface Persona {
@@ -78,6 +79,7 @@ const PageSolicitarAlumno: React.FC = () => {
       setLoading(true);
       try {
         const tutorsData = await listarTutoresTipo(tutoringProgramId);
+        console.log("tutoresssFDFD",tutorsData);
         setTutors(tutorsData);
         setLoading(false);
       } catch (err) {
@@ -136,29 +138,32 @@ const PageSolicitarAlumno: React.FC = () => {
       try {
         await insertarSolicitudTutoria(requestData); // Utilizamos el servicio para insertar la solicitud de tutoría
         closeModal();
-        navigate(-1);
+        setConfirmacionOpen(true);
+        //navigate(-1);
       } catch (error) {
         console.error('Error creando el tutor-student program', error);
       }
     }
   };
 
+  const [confirmacionOpen, setConfirmacionOpen] = useState(false);
+  const handleAceptarClick = () => {
+    setConfirmacionOpen(false); // Cerramos el modal de confirmación
+    closeModal();
+    navigate(-1);
+  };
+
   return (
     <div className="flex flex-col items-center w-full h-full">
       <div className="flex w-full max-h-[40px] rounded-2xl">
         <input
-          className="w-full font-roboto p-3 rounded-l-2xl bg-[rgba(235,236,250,1)] shadow-custom border border-solid border-[rgba(116,170,255,0.70)] focus:outline-none"
+          className="w-full font-roboto p-3 rounded-l-2xl bg-[rgba(235,236,250,1)] shadow-custom border border-solid border-[rgba(116,170,255,0.70)] 
+            focus:outline-none rounded-r-2xl"
           onChange={handleInputChange}
           type="search"
           placeholder="Nombres o Apellidos"
           value={searchText}
-        />
-        <button
-          className="bg-primary cursor-default rounded-r-2xl text-white px-5 shadow-custom border border-solid border-[rgba(116,170,255,0.70)] active:bg-black hover:cursor-pointer"
-          onClick={handleSearch}
-        >
-          Buscar
-        </button>
+        />  
       </div>
 
       {loading ? (
@@ -197,8 +202,9 @@ const PageSolicitarAlumno: React.FC = () => {
           motivo={motivo}
           setMotivo={setMotivo}
           handleSolicitarTutor={handleSolicitarTutor}
-        />
+        /> 
       )}
+      <ModalConfirmacion show={confirmacionOpen} onClose={handleAceptarClick} /> 
     </div>
   );
 };

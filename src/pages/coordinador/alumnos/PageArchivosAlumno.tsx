@@ -305,7 +305,7 @@ const PageArchivosAlumnos: React.FC = () => {
     <div className="flex flex-col h-full"> 
       <SearchBar handleSearch={handleSearch} handleOnSearchTutor={handleOnSearchTutor} />   
       <div className="flex w-full h-full">
-        <div className="w-1/2 p-4 border-r border-gray-300 flex flex-col relative h-full">
+        <div className="w-full p-4 border-r border-gray-300 flex flex-col relative h-full">
           <div className="flex justify-between items-center mb-4">
             <div className='flex w-full h-full items-center border-custom border drop-shadow-md px-4 py-2 mr-2'>
               <span className='block truncate flex flex-row gap-4'>
@@ -372,7 +372,7 @@ const PageArchivosAlumnos: React.FC = () => {
           />
         </div>
 
-        <div className="w-1/2 p-4 flex flex-col h-full">
+        {/*<div className="w-1/2 p-4 flex flex-col h-full">
           <h2 className="text-xl font-bold mb-4">Vista Previa</h2>
           <div className="border p-4 flex-1 overflow-auto flex flex-col justify-center">
             {previewUrl && (
@@ -381,7 +381,7 @@ const PageArchivosAlumnos: React.FC = () => {
               </div>
             )}
           </div>
-        </div>
+        </div>*/}
       </div>
 
       <div>{isModalOpen && <ModalResultadoCita onClose={closeModal} loading={loadingServidor} />}</div>

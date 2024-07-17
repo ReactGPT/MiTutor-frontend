@@ -22,13 +22,12 @@ export default function ModalSolicitud({ onClose, content, motivo, setMotivo, ha
 
   const handleSolicitarClick = () => {
     handleSolicitarTutor();
-    setIsOpen(false); // Cerramos el modal principal
+    //setIsOpen(false); // Cerramos el modal principal
     setConfirmacionOpen(true); // Abrimos el modal de confirmación
   };
 
   const handleAceptarClick = () => {
-    setConfirmacionOpen(false); // Cerramos el modal de confirmación
-    onClose();
+    //setConfirmacionOpen(false); // Cerramos el modal de confirmación 
   };
 
   return (
@@ -105,7 +104,7 @@ export default function ModalSolicitud({ onClose, content, motivo, setMotivo, ha
           </div>
         </Dialog>
       </Transition>
-      <ModalConfirmacion show={confirmacionOpen} onClose={handleAceptarClick} />
+      {/*<ModalConfirmacion show={confirmacionOpen} onClose={handleAceptarClick} />*/}
     </>
   );
 }

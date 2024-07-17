@@ -143,7 +143,7 @@ const ModalInputUnidadUpdate: React.FC<ModalInputProps> = ({ isOpen, onClose, on
               </div>
               <div className="flex items-center justify-center pt-5 space-x-4">
                 <Button text='Cancelar' onClick={onClose} />
-                <Button text='Editar' onClick={() => {
+                <Button text='Guardar' onClick={() => {
                   if(nuevaUnidad && nuevaUnidad.nombre && nuevaUnidad.siglas){
                     handleOnAddAgregarUnidad(nuevaUnidad);
                     // onClose();

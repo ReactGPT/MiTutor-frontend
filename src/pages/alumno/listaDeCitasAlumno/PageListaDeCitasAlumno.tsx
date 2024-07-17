@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import AppointmentItem from "../../../components/Tutor/AppointmentItem";
 import Pagination from "../../../components/Pagination";
 import { SearchInput } from "../../../components";
@@ -42,10 +42,25 @@ const PageListaDeCitasAlumno = () => {
     return text.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
   };
 
-  const citasFiltradas = cita?.filter(cita =>
-    normalizeText(cita.programName.toLowerCase()).includes(normalizeText(searchText.toLowerCase()))
-    // && (selectedStatus === 'Cualquiera' || cita.appointmentStatus.toLowerCase() === selectedStatus.toLowerCase())
-  );
+  const citasFiltradas = useMemo(() => {
+    return cita?.filter(cita => {
+      const matchesProgramName = cita.programName.toLowerCase().includes(filters.name?.toLowerCase() || '');
+      const matchesStatus = filters.status && filters.status.toLowerCase() !== 'todos' 
+        ? (filters.status.toLowerCase() === 'pendiente' 
+          ? (cita.appointmentStatus.toLowerCase() === 'pendiente resultado' || cita.appointmentStatus.toLowerCase() === 'pendiente de resultado')
+          : cita.appointmentStatus.toLowerCase() === filters.status.toLowerCase())
+        : true;
+        // Convertir las fechas de filtro a objetos Date si están definidas 
+      const startDateFilter = filters.startDate ? new Date(filters.startDate) : null;
+      const endDateFilter = filters.endDate ? new Date(filters.endDate) : null;
+
+      // Comparar las fechas si ambos filtros están definidos
+      const matchesStartDate = !startDateFilter || new Date(cita.creationDate) >= startDateFilter;
+      const matchesEndDate = !endDateFilter || new Date(cita.creationDate) <= endDateFilter;
+
+      return matchesProgramName && matchesStatus && matchesStartDate && matchesEndDate;
+    });
+  }, [cita, filters]);
 
   const indiceUltimaCita = currentPage * itemsPerPage;
   const indicePrimeraCita = indiceUltimaCita - itemsPerPage;
@@ -60,7 +75,10 @@ const PageListaDeCitasAlumno = () => {
       {/* Filtro de búsqueda */}
 
       <div className="h-[7%]">
-        <SearchInput placeholder="Ingresa el nombre de la cita..." onSearch={handleSearch} handleOnChangeFilters={handleOnChangeFilters} />
+        <SearchInput placeholder="Ingresa el nombre de la cita..." 
+        onSearch={handleSearch} 
+        handleOnChangeFilters={handleOnChangeFilters} 
+        iconoBusqueda={true}/>
       </div>
 
       {/* Item de Cita       */}

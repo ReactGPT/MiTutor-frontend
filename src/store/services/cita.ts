@@ -91,7 +91,7 @@ async function getListaDeCitasByStudentId(studentId: number): Promise<listaRespo
         endTime: item.endTime,
         reason: item.reason,
         tutorId: item.tutorId,
-        meetingRoom: item.meetingRoom,
+        meetingRoom: item.tutorMeetingRoom,
         tutorName: item.tutorName,
         tutorLastName: item.tutorLastName,
         tutorSecondLastName: item.tutorSecondLastName,

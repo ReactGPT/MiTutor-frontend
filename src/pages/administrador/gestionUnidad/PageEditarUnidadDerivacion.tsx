@@ -39,7 +39,7 @@ const PageEditarUnidadDerivacion = () => {
   const { state } = useLocation();
   
   
-  const { unidadData } = state;
+  const { unidadData, setUnitDerivation} = state;
   const { subUnidadData, fetchSubUnidadData, updateUnidad, deleteUnidad } = useUnidadDerivacion();
   const { unidad, onChangeUnidad } = useUnidadContext();
   const [editable, setEditable] = useState(false);
@@ -98,9 +98,7 @@ const PageEditarUnidadDerivacion = () => {
     console.log(unidadData);
     setSearchValue(query);
   };
-
-
-
+ 
   const defaultColDef = {
     suppressHeaderMenuButton: true,
     flex: 1,
@@ -164,22 +162,42 @@ const PageEditarUnidadDerivacion = () => {
       };
     });
   };
+  
+  const [showConfirmationModal, setShowConfirmationModal] = useState(false);
 
   const handleEditSaveButton = () => {
     if (editable) {
       if (unidadBorrador) {
-        updateUnidad(unidadBorrador);
+        setShowConfirmationModal(true); // Mostrar modal de confirmación
       }
     }
     setEditable(!editable);
   };
 
+  // Función para confirmar y realizar el update
+  const confirmUpdate = () => {
+    if (unidadBorrador) {
+      updateUnidad(unidadBorrador)
+        .then(() => { 
+          setShowConfirmationModal(false); // Oculta el modal de confirmación
+          setIsOpenModalSuccess(true); 
+          setUnitDerivation(unidadBorrador);
+          setUnidadBorrador(unidadBorrador);
+        })  
+    }
+  };
+
+  // Función para cancelar el update
+  const cancelUpdate = () => {
+    setUnidadBorrador(unidadData);
+    setShowConfirmationModal(false); // Oculta el modal de confirmación 
+  };
   return (
-    <UnidadProvider unidad={unidadData}>
+    <UnidadProvider unidad={unidadBorrador}>
       <div className="w-full h-full">
         <div className="w-full flex justify-between items-center">
           <h1 className="text-2xl font-bold text-[#2F2F2F]">
-            {`${unidadData?.nombre}`}
+            {`${unidadBorrador?.nombre}`}
           </h1>
           <Button className="" onClick={() => { handleEditSaveButton(); }} text={`${editable ? "Guardar" : "Editar"} Unidad`} />
         </div>
@@ -188,14 +206,15 @@ const PageEditarUnidadDerivacion = () => {
           <div className='grid grid-cols-1'>
             <InputAdmin2
               titulo="Nombre de la Unidad de Derivación"
-              valor={unidadData?.nombre}
+              valor={unidadBorrador?.nombre}
+              name="nombre"
               enable={editable}
               onChange={handleInputChange} />
             <div className='flex'>
               <div className='w-[40%]'>
                 <InputAdmin2
                   titulo="Nombre del Responsable"
-                  valor={unidadData?.responsable}
+                  valor={unidadBorrador?.responsable}
                   name="responsable"
                   enable={editable}
                   onChange={handleInputChange} />
@@ -203,7 +222,7 @@ const PageEditarUnidadDerivacion = () => {
               <div className='w-[60%]'>
                 <InputAdmin2
                   titulo="Email del Responsable"
-                  valor={unidadData?.email}
+                  valor={unidadBorrador?.email}
                   name="email"
                   enable={editable}
                   onChange={handleInputChange} />
@@ -215,7 +234,7 @@ const PageEditarUnidadDerivacion = () => {
           <div className='grid grid-cols-2 h-fit'>
             <InputAdmin2
               titulo="Siglas"
-              valor={unidadData?.siglas}
+              valor={unidadBorrador?.siglas}
               name="siglas"
               enable={editable}
               onChange={handleInputChange}
@@ -223,7 +242,7 @@ const PageEditarUnidadDerivacion = () => {
             {/* <InputAdmin2 titulo="Estado" valor={unidadData?.estado} enable={false} /> */}
             <InputAdmin2
               titulo="Teléfono del Responsable"
-              valor={unidadData?.telefono}
+              valor={unidadBorrador?.telefono}
               name="telefono"
               enable={editable}
               onChange={handleInputChange}
@@ -251,6 +270,7 @@ const PageEditarUnidadDerivacion = () => {
             handleOnChangeFilters={() => { }}
             placeholder="Siglas o nombre de la SubUnidad"
             selectDisabled={true}
+            iconoBusqueda={false}
           />
           <div className='flex items-end align-center justify-between gap-4'>
             <Button
@@ -303,7 +323,7 @@ const PageEditarUnidadDerivacion = () => {
           }}
           isAcceptAction={true}
           esHijo={true}
-          idPadre={unidadData.unidadDerivacionId}
+          idPadre={unidadBorrador?.unidadDerivacionId}
         />
         <ModalConfirmation isOpen={isOpen} message={`¿Esta seguro de inhabilitar la subunidad: ${subUnidadSelected && subUnidadSelected.nombre}?`}
           onClose={() => {
@@ -325,6 +345,18 @@ const PageEditarUnidadDerivacion = () => {
           onClose={() => {
             setSubUnidadSelected(subUnidadInicial);
             setIsOpenModalError(false);
+          }}
+        />
+        <ModalConfirmation
+          isOpen={showConfirmationModal}
+          message="¿Está seguro de realizar el update?"
+          onClose={ cancelUpdate }
+          onConfirm={confirmUpdate} // Confirma y realiza el update 
+          isAcceptAction={true}        
+        />
+        <ModalSuccess isOpen={isOpenModalSuccess} message={`Se actualizo con éxito la ubunidad: ${unidadBorrador?.nombre}`}
+          onClose={() => { 
+            setIsOpenModalSuccess(false);
           }}
         />
       </div>

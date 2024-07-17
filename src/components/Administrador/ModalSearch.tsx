@@ -199,6 +199,7 @@ const ModalSearch: React.FC<ModalSearchProps> = ({ isOpen, onClose, facultad, se
                       handleOnChangeFilters={() => { }}
                       placeholder={`Nombre o código del usuario`}
                       selectDisabled={true}
+                      iconoBusqueda={false}
                     />
                   </div>
                   <div className="flex w-full h-full flex-col">

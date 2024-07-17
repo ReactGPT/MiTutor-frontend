@@ -277,6 +277,7 @@ const PageAlumnosSeleccionados = ({ isOpen, closeModal }: ModalAlumnosSelecciona
                             handleOnChangeFilters={() => {}}
                             selectDisabled={true}
                             placeholder=""
+                            iconoBusqueda={false} 
                           />
                         </div>
                         <div className="flex w-full justify-end gap-5">

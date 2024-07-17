@@ -26,6 +26,7 @@ function PageResultadoCitaIndividualAlumno() {
       fetchArchivosBD(resultadoCita.appointmentResult.appointmentResultId, 1);
       setCommentValue(resultadoCita.appointmentResult.comments[0]?.message || '');
       console.log("comentario", commentValue);
+      console.log("link",cita);
     }
   }, [resultadoCita]);
 
@@ -94,7 +95,7 @@ function PageResultadoCitaIndividualAlumno() {
               </div>
               <div className='w-full'>
                 <Label className="text-primary font-roboto">{cita.isInPerson ? 'Lugar' : 'Sesión'}</Label>
-                <TextInput value={cita.isInPerson ? 'Oficina del Profesor' : 'Link de Zoom'} readOnly />
+                <TextInput value={cita.isInPerson ? 'Oficina del Profesor' : cita.meetingRoom} readOnly />
               </div>
               <div className='w-full'>
               </div>

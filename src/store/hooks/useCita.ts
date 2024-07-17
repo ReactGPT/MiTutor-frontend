@@ -62,6 +62,7 @@ function useCitasPorAlumno(studentId: number): CitaHooksReturn {
             const data = await getListaDeCitasByStudentId(studentId);
             setCita(data.listaDeCitas);
             setLoading(false);
+            console.log("lista de citas",data.listaDeCitas);
         }catch(error){
             setError("Error en useCita");
             setLoading(false);

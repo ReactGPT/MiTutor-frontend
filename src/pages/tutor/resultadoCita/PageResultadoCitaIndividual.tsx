@@ -22,7 +22,6 @@ const PageResultadoCitaIndividual: React.FC = () =>{
 
    return (
     <div className='w-full overflow-hidden'>
-        <div className='max-h-[80vh] overflow-auto'>
             {cita && (
                 <>
                 <ResultadoCitaBlockAlumno 
@@ -33,13 +32,14 @@ const PageResultadoCitaIndividual: React.FC = () =>{
                 />  
                 <div className='flex w-full h-[90%] max-h-[90%] gap-4'>
                     <ResultadoCitaBlock2 cita={cita} className='flex w-[50%] max-h-[90vh] h-full flex-col gap-4 flex-grow pb-4' />
-                    <div className='flex w-[50%] h-full border-custom drop-shadow-md p-4 pb4'>
-                        <FormularioDerivacion cita={cita} className='flex max-h-[90vh] h-full flex-col gap-4 flex-grow'/>
-                    </div>
+                    <div className='flex w-[50%] border-custom drop-shadow-md p-4 mb-4'>
+                        <div className='flex w-full h-full'>
+                            <FormularioDerivacion cita={cita} className='flex max-h-[90vh] h-full flex-col gap-4 flex-grow' />
+                        </div>
+                    </div> 
                 </div>
                 </>
             )}
-        </div>
     </div>
   )
 }

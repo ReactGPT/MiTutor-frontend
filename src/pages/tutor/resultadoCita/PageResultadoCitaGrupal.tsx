@@ -195,52 +195,56 @@ const PageDetalleCitaGrupal: React.FC = () => {
       <div className="flex flex-col w-full h-fit bg-[rgba(255,255,255,0.5)] border-custom drop-shadow-md p-5">
         <div className="flex w-full h-full">
           <div className="flex flex-col w-full">
-            <div className='flex w-full gap-5'>
-              <div className='w-1/4'>
-                <label className="font-semibold text-gray-700">Fecha</label>
-                <textarea
-                  name='studentAnnotations'
-                  value={cita.creationDate}
-                  className='w-full rounded-md font-montserrat border-custom drop-shadow-md font-bold text-gray-500 px-3 py-2 mt-0'
-                  disabled={true}
-                  rows={1}
-                  style={{ resize: 'none', textAlign: 'left' }}
-                />
+            <div className='flex flex-col h-full'>
+              <div className='flex flex-1'>
+                <div className='w-1/2 pr-2'>
+                  <label className="font-semibold text-gray-700">Hora</label>
+                  <textarea
+                    name='studentAnnotations'
+                    value={`${cita.startTime} - ${cita.endTime}`}
+                    className='w-full rounded-md font-montserrat border-custom drop-shadow-md font-bold text-gray-500 px-3 py-2 mt-0'
+                    disabled={true}
+                    rows={1}
+                    style={{ resize: 'none', textAlign: 'left' }}
+                  />
+                </div>
+                <div className='w-1/2 pl-2'>
+                  <label className="font-semibold text-gray-700">Fecha</label>
+                  <textarea
+                    name='studentAnnotations'
+                    value={cita.creationDate}
+                    className='w-full rounded-md font-montserrat border-custom drop-shadow-md font-bold text-gray-500 px-3 py-2 mt-0'
+                    disabled={true}
+                    rows={1}
+                    style={{ resize: 'none', textAlign: 'left' }}
+                  />
+                </div>
               </div>
-              <div className='w-1/4'>
-                <label className="font-semibold text-gray-700">Hora</label>
-                <textarea
-                  name='studentAnnotations'
-                  value={`${cita.startTime} - ${cita.endTime}`}
-                  className='w-full rounded-md font-montserrat border-custom drop-shadow-md font-bold text-gray-500 px-3 py-2 mt-0'
-                  disabled={true}
-                  rows={1}
-                  style={{ resize: 'none', textAlign: 'left' }}
-                />
+              <div className='flex flex-1 mt-4'>
+                <div className='w-1/2 pr-2'>
+                  <label className="font-semibold text-gray-700">Motivo</label>
+                  <textarea
+                    name='studentAnnotations'
+                    value={cita.reason}
+                    className='w-full rounded-md font-montserrat border-custom drop-shadow-md font-bold text-gray-500 px-3 py-2 mt-0'
+                    disabled={true}
+                    rows={1}
+                    style={{ resize: 'none', textAlign: 'left' }}
+                  />
+                </div>
+                <div className='w-1/2 pl-2'>
+                  <label className="font-semibold text-gray-700">Tipo de Tutoría</label>
+                  <textarea
+                    name='studentAnnotations'
+                    value={cita.programName}
+                    className='w-full rounded-md font-montserrat border-custom drop-shadow-md font-bold text-gray-500 px-3 py-2 mt-0'
+                    disabled={true}
+                    rows={1}
+                    style={{ resize: 'none', textAlign: 'left' }}
+                  />
+                </div>
               </div>
-              <div className='w-1/4'>
-                <label className="font-semibold text-gray-700">Motivo</label>
-                <textarea
-                  name='studentAnnotations'
-                  value={cita.reason}
-                  className='w-full rounded-md font-montserrat border-custom drop-shadow-md font-bold text-gray-500 px-3 py-2 mt-0'
-                  disabled={true}
-                  rows={1}
-                  style={{ resize: 'none', textAlign: 'left' }}
-                />
-              </div>
-              <div className='w-1/4'>
-                <label className="font-semibold text-gray-700">Tipo de Tutoría</label>
-                <textarea
-                  name='studentAnnotations'
-                  value={cita.programName}
-                  className='w-full rounded-md font-montserrat border-custom drop-shadow-md font-bold text-gray-500 px-3 py-2 mt-0'
-                  disabled={true}
-                  rows={1}
-                  style={{ resize: 'none', textAlign: 'left' }}
-                />
-              </div>
-            </div>
+            </div> 
           </div>
         </div>
       </div>
@@ -250,9 +254,9 @@ const PageDetalleCitaGrupal: React.FC = () => {
           <div className="flex items-center justify-between">
             <h1 className="text-3xl font-bold">Comentarios</h1> 
           </div> 
-          <div className='flex flex-col w-full pb-5'>
+          <div className='flex flex-col h-1/2 w-full pb-5'>
             <h3 className='font-montserrat text-lg font-bold text-primary w-full mb-2'>Comentario para los alumnos</h3>
-            <div className='w-full'>
+            <div className='w-full h-full'>
               <div className='relative w-full h-full'>
                 <textarea
                   name='studentAnnotations'
@@ -265,9 +269,9 @@ const PageDetalleCitaGrupal: React.FC = () => {
               </div>
             </div>
           </div>
-          <div className='flex flex-col w-full pb-5'>
+          <div className='flex flex-col h-1/2 w-full pb-5'>
             <h3 className='font-montserrat text-lg font-bold text-primary w-full mb-2'>Comentario Privado</h3>
-            <div className='w-full'>
+            <div className='w-full h-full'>
               <div className='relative w-full h-full'>
                 <textarea
                   name='studentAnnotations'

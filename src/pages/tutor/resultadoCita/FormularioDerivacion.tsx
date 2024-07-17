@@ -386,42 +386,46 @@ function FormularioDerivacion({className,cita}:InputProps){
     <div className={className}> 
       <div className='w-full flex items-center mb-5 '>
         <h3 className='font-montserrat text-lg font-bold text-primary w-full'>Derivación Estudiantil</h3>
-        <div className='flex items-center gap-4'>
+        <div className='flex items-center gap-2'>
           <Button variant='primario' onClick={handleCancelar} text={enableAttendance ? 'Cancelar' : 'Editar'}  /> 
           <div style={{ display: enableAttendance ? 'inline-block' : 'none' }}>
             <Button variant='secundario' onClick={handleSubmit} text='Guardar' />
           </div> 
         </div>
       </div>
-      <form noValidate>
-        <div className='mb-5'>
-          <label className='block mb-2 from-label'>Motivo de Derivación:</label> 
-          <textarea
-            name='studentAnnotations'
-            value={formData.motivo} 
-            onChange={(e) => updateForm({ motivo: e.target.value })}
-            className={`w-full h-16 rounded-md resize-none 
-              outline-none px-3 py-2 mt-1 font-montserrat text-[90%] border-custom drop-shadow-md font-bold 
-              ${enableAttendance ? 'text-sm':'text-gray-500'}`}
-            disabled={!enableAttendance}
-          />
-
-          {enableAttendance && <p>{errors?.motivo}</p>}
-        </div> 
-        <div className='mb-5'>
-          <label className='block mb-2 from-label'>Comentario Opcional:</label> 
-          <textarea
-            name='studentAnnotations'
-            value={formData.comentario} 
-            onChange={(e) => updateForm({ comentario: e.target.value })}
-            className={`w-full h-16 rounded-md resize-none 
-              outline-none px-3 py-2 mt-1 font-montserrat text-[90%] border-custom drop-shadow-md font-bold 
-              ${enableAttendance ? 'text-sm':'text-gray-500'}`}
-            disabled={!enableAttendance}
-          />
-
-        </div> 
- 
+      <form noValidate className='flex flex-col h-full'> 
+        <div className='flex flex-col h-1/2 w-full pb-5'>
+          <h3 className='block mb-2 from-label'>Motivo de Derivación</h3>
+            <div className='w-full h-full'>
+              <div className='relative w-full h-full'> 
+                <textarea
+                  name='studentAnnotations'
+                  value={formData.motivo} 
+                  onChange={(e) => updateForm({ motivo: e.target.value })}
+                  className={`w-full h-full rounded-md resize-none 
+                    outline-none px-3 py-2 mt-1 font-montserrat text-[90%] border-custom drop-shadow-md font-bold 
+                    ${enableAttendance ? 'text-sm':'text-gray-500'}`}
+                  disabled={!enableAttendance}
+                /> {enableAttendance && <p>{errors?.motivo}</p>}
+              </div>
+            </div> 
+        </div>
+        <div className='flex flex-col h-1/2 w-full pb-5'>
+          <h3 className='block mb-2 from-label'>Comentario Opcional:</h3>
+            <div className='w-full h-full'>
+              <div className='relative w-full h-full'> 
+                <textarea
+                  name='studentAnnotations'
+                  value={formData.comentario} 
+                  onChange={(e) => updateForm({ comentario: e.target.value })}
+                  className={`w-full h-full rounded-md resize-none 
+                    outline-none px-3 py-2 mt-1 font-montserrat text-[90%] border-custom drop-shadow-md font-bold 
+                    ${enableAttendance ? 'text-sm':'text-gray-500'}`}
+                  disabled={!enableAttendance}
+                />
+              </div>
+            </div> 
+        </div>    
         <label className='block mb-2 from-label'>Unidad a Derivar:</label>
         <select
           value={formData.unidadDerivada}
@@ -435,8 +439,8 @@ function FormularioDerivacion({className,cita}:InputProps){
             {unidad.unitName}
           </option>
         ))}
-      </select>
-      <p>{errors?.unidadDerivada}</p> 
+        </select>
+        <p>{errors?.unidadDerivada}</p> 
       </form>
         <div style={{ display: (derivation?.derivationId !== 0 ? 'block' : 'none') }}>
           <Button variant='secundario' onClick={descargarArchivo} text='Descargar Ficha' disabled={enableAttendance}/>
@@ -448,103 +452,4 @@ function FormularioDerivacion({className,cita}:InputProps){
 };
 
 export default FormularioDerivacion;
-
-//<option value="">Selecciona una unidad</option>
-
-/*const transformToListUnitDerivation = (data: { name: string; unitDerivationId: number }[]): ListUnitDerivation[] => {
-    return data.map(item => ({
-        unitId: item.unitDerivationId,
-        unitName: item.name
-    }));
-};
-
-  const fetchData = async () => {
-    try {
-      const response = await axios.get(ServicesProperties.BaseUrl+'/listarUnidadesDerivacion');
-      const transformedData = transformToListUnitDerivation(response.data.data);
-      //setUnidadesDerivacion(transformedData);
-    } catch (error) {
-      console.error('Error fetching data:', error);
-    }
-  };
-*/
-/*<div className='mb-5'>
-          <label className='block mb-2 from-label'>Nombre de Alumno:</label>
-          <input type='text' 
-            className='w-full p-2 border border-gray-300 rounded'
-            onChange={(e) => updateForm({ nombreAlumno: e.target.value })} 
-            value={formData.nombreAlumno} 
-            disabled
-          />
-          <p>{errors?.nombreAlumno}</p>
-        </div>
-        <div className='mb-5'>
-          <label className='block mb-2 from-label'>Código:</label>
-          <input type='text' 
-            className='w-full p-2 border border-gray-300 rounded'
-            onChange={(e) => updateForm({ codigo: e.target.value })} 
-            value={formData.codigo} 
-            disabled
-          />
-          <p>{errors?.codigo}</p>
-        </div>
-        <div className='mb-5'>
-          <label className='block mb-2 from-label'>Correo Electrónico del Alumno:</label>
-          <input type='email'
-            className='w-full p-2 border border-gray-300 rounded' 
-            onChange={(e) => updateForm({ correoAlumno: e.target.value })} 
-            value={formData.correoAlumno} 
-            disabled
-          />
-          <p>{errors?.correoAlumno}</p>
-        </div>
-        <div className='mb-5'>
-          <label className='block mb-2 from-label'>Derivado Por:</label>
-          <input type='text' 
-            className='w-full p-2 border border-gray-300 rounded'
-            onChange={(e) => updateForm({ derivadoPor: e.target.value })} 
-            value={formData.derivadoPor} 
-            disabled
-          />
-          <p>{errors?.derivadoPor}</p>
-        </div> 
-        <div className='mb-5'>
-          <label className='block mb-2 from-label'>Cargo:</label>
-          <input type='text' 
-            className='w-full p-2 border border-gray-300 rounded'
-            onChange={(e) => updateForm({ cargo: e.target.value })} 
-            value={formData.cargo} 
-            disabled
-          />
-          <p>{errors?.cargo}</p>
-        </div> 
-        <div className='mb-5'>
-          <label className='block mb-2 from-label'>Correo electrónico de quien deriva:</label>
-          <input type='text' 
-            className='w-full p-2 border border-gray-300 rounded'
-            onChange={(e) => updateForm({ correoTutor: e.target.value })} 
-            value={formData.correoTutor} 
-            disabled
-          />
-          <p>{errors?.correoTutor}</p>
-        </div> 
-        <div className='mb-5'>
-          <label className='block mb-2 from-label'>Unidad de la persona que Deriva:</label>
-          <input type='text' 
-            className='w-full p-2 border border-gray-300 rounded'
-            onChange={(e) => updateForm({ unidadAlumno: e.target.value })} 
-            value={formData.unidadAlumno} 
-            disabled
-          />
-          <p>{errors?.unidadAlumno}</p>
-        </div> 
-        <div className='mb-5'>
-          <label className='block mb-2 from-label'>Fecha Derivación:</label>
-          <input type='text' 
-            className='w-full p-2 border border-gray-300 rounded'
-            onChange={(e) => updateForm({ fecha: e.target.value })} 
-            value={formData.fecha} 
-            disabled
-          />
-          <p>{errors?.fecha}</p>
-        </div>  */
+ 
